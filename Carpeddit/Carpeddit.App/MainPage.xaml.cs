@@ -227,9 +227,16 @@ namespace Carpeddit.App
                     .FirstOrDefault(n => n.Tag.Equals(item.Tag));
                 } catch (InvalidOperationException)
                 {
-                    NavView.SelectedItem = NavView.FooterMenuItems
+                    try
+                    {
+                        NavView.SelectedItem = NavView.FooterMenuItems
                         .OfType<muxc.NavigationViewItem>()
                         .FirstOrDefault(n => n.Tag.Equals(item.Tag));
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        Debug.WriteLine("Cannot navigate...");
+                    }
                 }
                 
 
