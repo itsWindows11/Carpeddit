@@ -224,14 +224,14 @@ namespace Carpeddit.App
                 {
                     NavView.SelectedItem = NavView.MenuItems
                     .OfType<muxc.NavigationViewItem>()
-                    .FirstOrDefault(n => n.Tag.Equals(item.Tag));
+                    .First(n => n.Tag.Equals(item.Tag));
                 } catch (InvalidOperationException)
                 {
                     try
                     {
                         NavView.SelectedItem = NavView.FooterMenuItems
                         .OfType<muxc.NavigationViewItem>()
-                        .FirstOrDefault(n => n.Tag.Equals(item.Tag));
+                        .First(n => n.Tag.Equals(item.Tag));
                     }
                     catch (InvalidOperationException)
                     {
