@@ -8,6 +8,6 @@
     mc:Ignorable="d">
 
     <Grid>
-
+        <TextBlock Text="Mailbox" />
     </Grid>
 </Page>

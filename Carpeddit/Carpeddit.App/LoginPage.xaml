@@ -10,6 +10,6 @@
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
 
     <Grid>
-
+        <TextBlock Text="Login" />
     </Grid>
 </Page>
