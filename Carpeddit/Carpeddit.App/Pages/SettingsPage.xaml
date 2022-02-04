@@ -9,27 +9,9 @@
 
     <ScrollViewer Padding="0,10,0,0">
         <StackPanel Orientation="Vertical" Spacing="10">
-            <uc:SettingsBlockControl Title="Test yay!" Description="This is some short description of this setting.">
-                <uc:SettingsBlockControl.Icon>
-                    <SymbolIcon Symbol="Permissions"/>
-                </uc:SettingsBlockControl.Icon>
-                <uc:SettingsBlockControl.ExpandableContent>
-                    <Grid Margin="16">
-                        <TextBlock Text="I am a label" />
-                    </Grid>
-                </uc:SettingsBlockControl.ExpandableContent>
-                <ToggleButton Content="wew"/>
-            </uc:SettingsBlockControl>
 
-            <uc:SettingsBlockControl Title="Show account button" Description="Show account profile on titlebar">
+            <uc:SettingsBlockControl Title="Show account button" Description="Show account profile on titlebar (Note: may get overriden by size changes)">
                 <ToggleSwitch IsOn="{x:Bind local:App.SViewModel.ShowAccountBtnInTitleBar, Mode=TwoWay}" Margin="0,0,-70,0" />
-            </uc:SettingsBlockControl>
-
-            <uc:SettingsBlockControl Title="Test yay 3!" Description="This is some short description of this setting 3.">
-                <uc:SettingsBlockControl.Icon>
-                    <SymbolIcon Symbol="Permissions"/>
-                </uc:SettingsBlockControl.Icon>
-                <ToggleButton Content="wewaaaaaaaaaaaaaaaaaaaa"/>
             </uc:SettingsBlockControl>
         </StackPanel>
     </ScrollViewer>
