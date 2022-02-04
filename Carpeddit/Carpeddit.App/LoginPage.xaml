@@ -10,6 +10,28 @@
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
 
     <Grid>
-        <TextBlock Text="Login" />
+        <Border x:Name="AppTitleBar"
+                IsHitTestVisible="True"
+                VerticalAlignment="Top"
+                Background="Transparent"
+                Height="40"
+                Canvas.ZIndex="1" 
+                Margin="20,7,0,0">
+            <StackPanel Orientation="Horizontal">
+                <Image x:Name="AppFontIcon"
+                         HorizontalAlignment="Left" 
+                         VerticalAlignment="Center"
+                         Source="ms-appx:///Assets/Square44x44Logo.png" 
+                         Width="16" 
+                         Height="16"
+                         Margin="0,2,0,0" />
+                <TextBlock x:Name="AppTitle"
+                           Text="Carpeddit"
+                           VerticalAlignment="Center"
+                           Margin="12,2,0,0"
+                           Style="{StaticResource CaptionTextBlockStyle}" />
+            </StackPanel>
+        </Border>
+
     </Grid>
 </Page>

@@ -7,7 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
+    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
+    SizeChanged="Page_SizeChanged">
 
     <Page.Resources>
         <Thickness x:Key="NavigationViewContentMargin">0,48,0,0</Thickness>
@@ -20,7 +21,7 @@
                 Background="Transparent"
                 Height="40"
                 Canvas.ZIndex="1" 
-                Margin="52,7,0,0">
+                Margin="52,7,290,0">
             <StackPanel Orientation="Horizontal">
                 <Image x:Name="AppFontIcon"
                          HorizontalAlignment="Left" 
@@ -37,8 +38,13 @@
             </StackPanel>
         </Border>
 
-        <Button x:Name="TitleBarButton" Content="Account"
-            HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,7,150,0" Canvas.ZIndex="2" />
+        <Button x:Name="AccountMenuBtn"
+                Content="Account"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Margin="0,7,200,0"
+                Canvas.ZIndex="2"
+                Visibility="{x:Bind local:App.SViewModel.ShowAccountBtnInTitleBar, Mode=OneWay, Converter={StaticResource BoolToVis}}"/>
 
         <muxc:NavigationView x:Name="NavView"
                              Loaded="NavView_Loaded"

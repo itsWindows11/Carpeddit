@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Carpeddit.App.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -26,10 +27,14 @@ namespace Carpeddit.App
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
+        public static SettingsViewModel SViewModel;
+
         public App()
         {
             InitializeComponent();
             Suspending += OnSuspending;
+
+            SViewModel = new SettingsViewModel();
         }
 
         /// <summary>

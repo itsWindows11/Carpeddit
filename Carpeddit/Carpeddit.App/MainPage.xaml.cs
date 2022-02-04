@@ -23,7 +23,6 @@ namespace Carpeddit.App
     /// </summary>
     public sealed partial class MainPage : Page
     {
-
         private double NavViewCompactModeThresholdWidth { get { return NavView.CompactModeThresholdWidth; } }
 
         public MainPage()
@@ -152,7 +151,7 @@ namespace Carpeddit.App
             var preNavPageType = ContentFrame.CurrentSourcePageType;
 
             // Only navigate if the selected page isn't currently loaded.
-            if (_page is not null && !Type.Equals(preNavPageType, _page))
+            if (_page is not null && !Equals(preNavPageType, _page))
             {
                 ContentFrame.Navigate(_page, null, transitionInfo);
             }
@@ -242,6 +241,20 @@ namespace Carpeddit.App
 
                 NavView.Header =
                     ((muxc.NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
+            }
+        }
+
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.NewSize.Width >= 641)
+            {
+                AppTitleBar.Margin = new Thickness(52, 7, 290, 0);
+                AccountMenuBtn.Visibility = App.SViewModel.ShowAccountBtnInTitleBar ? Visibility.Visible : Visibility.Collapsed;
+            }
+            else if (e.NewSize.Width < 641)
+            {
+                AppTitleBar.Margin = new Thickness(95, 7, 290, 0);
+                AccountMenuBtn.Visibility = Visibility.Collapsed;
             }
         }
     }

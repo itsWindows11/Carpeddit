@@ -2,12 +2,35 @@
     x:Class="Carpeddit.App.Pages.SettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Carpeddit.App.Pages"
+    xmlns:local="using:Carpeddit.App"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:uc="using:Carpeddit.App.UserControls"
     mc:Ignorable="d">
 
-    <Grid>
-        <TextBlock Text="Settings" />
-    </Grid>
+    <ScrollViewer Padding="0,10,0,0">
+        <StackPanel Orientation="Vertical" Spacing="10">
+            <uc:SettingsBlockControl Title="Test yay!" Description="This is some short description of this setting.">
+                <uc:SettingsBlockControl.Icon>
+                    <SymbolIcon Symbol="Permissions"/>
+                </uc:SettingsBlockControl.Icon>
+                <uc:SettingsBlockControl.ExpandableContent>
+                    <Grid Margin="16">
+                        <TextBlock Text="I am a label" />
+                    </Grid>
+                </uc:SettingsBlockControl.ExpandableContent>
+                <ToggleButton Content="wew"/>
+            </uc:SettingsBlockControl>
+
+            <uc:SettingsBlockControl Title="Show account button" Description="Show account profile on titlebar">
+                <ToggleSwitch IsOn="{x:Bind local:App.SViewModel.ShowAccountBtnInTitleBar, Mode=TwoWay}" Margin="0,0,-70,0" />
+            </uc:SettingsBlockControl>
+
+            <uc:SettingsBlockControl Title="Test yay 3!" Description="This is some short description of this setting 3.">
+                <uc:SettingsBlockControl.Icon>
+                    <SymbolIcon Symbol="Permissions"/>
+                </uc:SettingsBlockControl.Icon>
+                <ToggleButton Content="wewaaaaaaaaaaaaaaaaaaaa"/>
+            </uc:SettingsBlockControl>
+        </StackPanel>
+    </ScrollViewer>
 </Page>
