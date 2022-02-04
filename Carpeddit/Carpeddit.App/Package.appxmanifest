@@ -32,7 +32,7 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="Carpeddit.App.App">
       <uap:VisualElements
-        DisplayName="Carpeddi"
+        DisplayName="Carpeddit"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="A fluent designed reddit client which aims to be flexible, safe and full featured."
