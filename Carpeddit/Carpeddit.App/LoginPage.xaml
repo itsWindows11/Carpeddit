@@ -10,6 +10,10 @@
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
         <Border x:Name="AppTitleBar"
                 IsHitTestVisible="True"
                 VerticalAlignment="Top"
@@ -32,6 +36,18 @@
                            Style="{StaticResource CaptionTextBlockStyle}" />
             </StackPanel>
         </Border>
+        <StackPanel Grid.Row="1" Padding="20" Spacing="10" x:Name="Thing2Container">
+            <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" FontWeight="SemiBold" Text="Login" Padding="0,0,0,50" />
+            <TextBox Header="Username" TextChanged="TextBox_TextChanged" x:Name="UsernameBox" />
+            <Button Content="Sign in" Click="Button_Click" />
+        </StackPanel>
 
+        <Grid       Grid.Row="1"
+                    HorizontalAlignment="Stretch"
+                    Visibility="{x:Bind _isOnAuthPage, Mode=OneWay, Converter={StaticResource BoolToVis}}"
+                    x:Name="ThingContainer"
+                    Margin="0,80,0,0">
+            <WebView x:Name="LoginWebView" />
+        </Grid>
     </Grid>
 </Page>

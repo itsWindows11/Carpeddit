@@ -82,7 +82,7 @@
                     </Frame.ContentTransitions>
                 </Frame>
             <muxc:NavigationView.FooterMenuItems>
-                <muxc:NavigationViewItem Tag="your_profile" Icon="Contact" Content="Your profile"/>
+                <muxc:NavigationViewItem Tag="your_profile" Icon="Contact" Content="Your profile" x:Name="YourProfileItem"/>
             </muxc:NavigationView.FooterMenuItems>
 
         </muxc:NavigationView>

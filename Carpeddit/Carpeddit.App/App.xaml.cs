@@ -1,20 +1,18 @@
-﻿using Carpeddit.App.ViewModels;
+﻿using Carpeddit.App.Controllers;
+using Carpeddit.App.Models;
+using Carpeddit.App.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+using System.Diagnostics;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Reddit;
+using Carpeddit.App.Other;
 
 namespace Carpeddit.App
 {
@@ -27,14 +25,32 @@ namespace Carpeddit.App
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
+
         public static SettingsViewModel SViewModel;
+
+        public static HttpClient GlobalClient;
+
+        public static AccountDatabaseController AccDBController;
+        public static CustomAccountModel CurrentAccount;
+        public static RedditClient RedditClient;
 
         public App()
         {
             InitializeComponent();
             Suspending += OnSuspending;
+        }
 
+        public async Task InitDb()
+        {
             SViewModel = new SettingsViewModel();
+            GlobalClient = new HttpClient();
+            AccDBController = await AccountDatabaseController.Init();
+            CurrentAccount = await AccDBController.GetAsync() ?? new CustomAccountModel();
+            Debug.WriteLine($"I'm here! CurrentAccount is {(CurrentAccount != null ? "not null" : "null")}");
+            if (CurrentAccount.RefreshToken != null)
+            {
+                RedditClient = new RedditClient(Constants.ClientId, CurrentAccount.RefreshToken, Constants.ClientSecret);
+            }
         }
 
         /// <summary>
@@ -42,12 +58,33 @@ namespace Carpeddit.App
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
+        {
+            await InitApp(e);
+        }
+
+        protected override async void OnActivated(IActivatedEventArgs args)
+        {
+            /*if (args.Kind == ActivationKind.Protocol && args is ProtocolActivatedEventArgs args1)
+            {
+                // TODO: Handle URI activation
+                // The received URI is eventArgs.Uri.AbsoluteUri
+                // string param1 = HttpUtility.ParseQueryString(myUri.Query).Get("param1");
+                Debug.WriteLine(args1.Uri.Query);
+                
+            }*/
+            Window.Current.Activate();
+        }
+
+
+        private async Task InitApp(LaunchActivatedEventArgs e)
         {
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
             if (Window.Current.Content is not Frame rootFrame)
             {
+                await InitDb();
+
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
 
@@ -62,14 +99,14 @@ namespace Carpeddit.App
                 Window.Current.Content = rootFrame;
             }
 
-            if (e.PrelaunchActivated == false)
+            if (!e.PrelaunchActivated)
             {
                 if (rootFrame.Content == null)
                 {
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    rootFrame.Navigate((CurrentAccount != null && CurrentAccount.LoggedIn) ? typeof(MainPage) : typeof(LoginPage), e.Arguments);
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();

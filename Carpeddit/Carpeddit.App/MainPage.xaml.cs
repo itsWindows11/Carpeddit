@@ -42,6 +42,11 @@ namespace Carpeddit.App
 
             coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
             coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged;
+
+            if (App.RedditClient != null)
+            {
+                YourProfileItem.Content = App.RedditClient.Account.GetMe().UserData.Name;
+            }
         }
 
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)

@@ -11,6 +11,7 @@
                 <!-- Other app resources here -->
                 <ResourceDictionary>
                     <converters:BoolToVisibilityConverter x:Key="BoolToVis" />
+                    <converters:BoolToVisibilityConverter x:Key="BoolToVisReverse" Reverse="True" />
                 </ResourceDictionary>
             </controls:XamlControlsResources.MergedDictionaries>
         </controls:XamlControlsResources>
