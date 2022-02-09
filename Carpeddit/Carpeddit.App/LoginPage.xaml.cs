@@ -97,7 +97,7 @@ namespace Carpeddit.App
                 account.Scope = tokenInfo?.Scope;
                 account.TokenExpiresIn = tokenInfo?.ExpiresIn;
                 account.LoggedIn = true;
-                App.RedditClient = new RedditClient(Constants.ClientId, account.RefreshToken);
+                App.RedditClient = new RedditClient(Constants.ClientId, account.RefreshToken, Constants.ClientSecret);
 
                 await App.AccDBController.UpdateAsync(account);
 

@@ -36,6 +36,22 @@ namespace Carpeddit.App.Controllers
             return await Launcher.LaunchUriAsync(new Uri("https://www.reddit.com/api/v1/authorize?client_id=" + CLIENT_ID + "&response_type=code&state=login&redirect_uri=" + Constants.RedirectUri + "&duration=permanent&scope=creddits modcontributors modmail modconfig subscribe structuredstyles vote wikiedit mysubreddits submit modlog modposts modflair save modothers adsconversions read privatemessages report identity livemanage account modtraffic wikiread edit modwiki modself history flair"));
         }
 
+        public static string GetImageUrl(Reddit.Things.User user)
+        {
+            return user.IconImg.Replace("&amp;", "&");
+        }
+
+        public static Uri GetImageUrlForBind(Reddit.Things.User user)
+        {
+            return new Uri(user.IconImg.Replace("&amp;", "&"));
+        }
+
+        public static async Task LogOutAsync()
+        {
+            App.RedditClient = null;
+            await App.AccDBController.UpdateAsync(null);
+        }
+
         public static async Task<AuthViewModel> TryGetTokenInfoAsync(string code)
         {
             try

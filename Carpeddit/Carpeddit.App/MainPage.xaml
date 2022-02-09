@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:controllers="using:Carpeddit.App.Controllers"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     SizeChanged="Page_SizeChanged">
 
@@ -39,12 +40,30 @@
         </Border>
 
         <Button x:Name="AccountMenuBtn"
-                Content="Account"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
-                Margin="0,7,200,0"
+                Margin="0,5,200,0"
                 Canvas.ZIndex="2"
-                Visibility="{x:Bind local:App.SViewModel.ShowAccountBtnInTitleBar, Mode=OneWay, Converter={StaticResource BoolToVis}}"/>
+                Visibility="{x:Bind local:App.SViewModel.ShowAccountBtnInTitleBar, Mode=OneWay, Converter={StaticResource BoolToVis}}">
+            <Button.Content>
+                <Image x:Name="Pfp" Width="25" Height="25" />
+            </Button.Content>
+            <Button.Flyout>
+                <MenuFlyout Placement="Bottom">
+                    <MenuFlyoutItem Text="Log out" Click="LogoutFlyoutItem_Click">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon Glyph="&#xF3B1;" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
+
+                    <MenuFlyoutItem Text="Profile">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon Glyph="&#xE13D;" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
+                </MenuFlyout>
+            </Button.Flyout>
+        </Button>
 
         <muxc:NavigationView x:Name="NavView"
                              Loaded="NavView_Loaded"
@@ -82,7 +101,24 @@
                     </Frame.ContentTransitions>
                 </Frame>
             <muxc:NavigationView.FooterMenuItems>
-                <muxc:NavigationViewItem Tag="your_profile" Icon="Contact" Content="Your profile" x:Name="YourProfileItem"/>
+                <muxc:NavigationViewItem Tag="your_profile" Content="Your profile" x:Name="YourProfileItem">
+                    <muxc:NavigationViewItem.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem Text="Log out" Click="LogoutFlyoutItem_Click">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xF3B1;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyout>
+                    </muxc:NavigationViewItem.ContextFlyout>
+                    <muxc:NavigationViewItem.Icon>
+                        <muxc:ImageIcon>
+                            <muxc:ImageIcon.Source>
+                                <BitmapImage UriSource="{x:Bind controllers:AccountController.GetImageUrlForBind(local:App.RedditClient.Account.Me.UserData), Mode=OneWay}" />
+                            </muxc:ImageIcon.Source>
+                        </muxc:ImageIcon>
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
             </muxc:NavigationView.FooterMenuItems>
 
         </muxc:NavigationView>

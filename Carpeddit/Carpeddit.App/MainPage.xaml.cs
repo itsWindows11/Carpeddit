@@ -1,4 +1,5 @@
-﻿using Carpeddit.App.Pages;
+﻿using Carpeddit.App.Controllers;
+using Carpeddit.App.Pages;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,6 +11,7 @@ using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 using muxc = Microsoft.UI.Xaml.Controls;
@@ -46,6 +48,8 @@ namespace Carpeddit.App
             if (App.RedditClient != null)
             {
                 YourProfileItem.Content = App.RedditClient.Account.GetMe().UserData.Name;
+                Debug.WriteLine(AccountController.GetImageUrl(App.RedditClient.Account.Me.UserData));
+                Pfp.Source = new BitmapImage(new Uri(AccountController.GetImageUrl(App.RedditClient.Account.Me.UserData), UriKind.Absolute));
             }
         }
 
@@ -109,7 +113,7 @@ namespace Carpeddit.App
         private void NavView_ItemInvoked(muxc.NavigationView sender,
                                          muxc.NavigationViewItemInvokedEventArgs args)
         {
-            if (args.IsSettingsInvoked == true)
+            if (args.IsSettingsInvoked)
             {
                 NavView_Navigate("settings", args.RecommendedNavigationTransitionInfo);
             }
@@ -126,7 +130,7 @@ namespace Carpeddit.App
         private void NavView_SelectionChanged(muxc.NavigationView sender,
                                               muxc.NavigationViewSelectionChangedEventArgs args)
         {
-            if (args.IsSettingsSelected == true)
+            if (args.IsSettingsSelected)
             {
                 NavView_Navigate("settings", args.RecommendedNavigationTransitionInfo);
             }
@@ -242,10 +246,8 @@ namespace Carpeddit.App
                         Debug.WriteLine("Cannot navigate...");
                     }
                 }
-                
 
-                NavView.Header =
-                    ((muxc.NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
+                NavView.Header = (((muxc.NavigationViewItem)NavView.SelectedItem)?.Tag.ToString() == "your_profile") ? "Your profile" : ((muxc.NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
             }
         }
 
@@ -260,6 +262,15 @@ namespace Carpeddit.App
             {
                 AppTitleBar.Margin = new Thickness(95, 7, 290, 0);
                 AccountMenuBtn.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private async void LogoutFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
+            await AccountController.LogOutAsync();
+            if (Window.Current.Content is Frame rootFrame)
+            {
+                rootFrame.Navigate(typeof(LoginPage));
             }
         }
     }
