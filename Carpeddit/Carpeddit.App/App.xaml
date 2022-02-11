@@ -12,6 +12,9 @@
                 <ResourceDictionary>
                     <converters:BoolToVisibilityConverter x:Key="BoolToVis" />
                     <converters:BoolToVisibilityConverter x:Key="BoolToVisReverse" Reverse="True" />
+                    <converters:DecimalPointToPercentageConverter x:Key="DecimalPointToPercentage" WithPercentage="False" />
+                    <converters:DecimalPointToPercentageConverter x:Key="DecimalPointToPercentageWithPercent" WithPercentage="True" />
+                    <converters:DecimalPointConverter x:Key="DecimalPoint" />
                 </ResourceDictionary>
             </controls:XamlControlsResources.MergedDictionaries>
         </controls:XamlControlsResources>

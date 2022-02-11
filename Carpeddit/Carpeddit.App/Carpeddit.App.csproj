@@ -122,6 +122,7 @@
     </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DatabaseControllers.cs" />
+    <Compile Include="Converters\DecimalPointToPercentageConverter.cs" />
     <Compile Include="Converters\SettingsConverters.cs" />
     <Compile Include="LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
@@ -131,6 +132,7 @@
     </Compile>
     <Compile Include="Models\AuthViewModel.cs" />
     <Compile Include="Models\CustomAccountModel.cs" />
+    <Compile Include="Models\PostViewModel.cs" />
     <Compile Include="Other\Constants.cs" />
     <Compile Include="Pages\CollectionsPage.xaml.cs">
       <DependentUpon>CollectionsPage.xaml</DependentUpon>

@@ -2,12 +2,50 @@
     x:Class="Carpeddit.App.Pages.PopularPostsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Carpeddit.App.Pages"
+    xmlns:local="using:Carpeddit.App"
+    xmlns:reddit="using:Reddit.Controllers"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:Carpeddit.App.Models"
     mc:Ignorable="d">
 
-    <Grid>
-        <TextBlock Text="Popular" />
-    </Grid>
+    <ListView Margin="-56,0,-56,0" Padding="56,10,76,10" MaxWidth="1200" VirtualizingStackPanel.VirtualizationMode="Recycling" x:Name="MainList" ItemsSource="{x:Bind posts, Mode=OneWay}">
+        <ListView.ItemTemplate>
+            <DataTemplate x:DataType="models:PostViewModel">
+                <Grid Padding="0,10" ColumnSpacing="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="40" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Spacing="5">
+                        <ToggleButton Tag="{x:Bind}" Click="UpvoteButton_Click" IsChecked="{x:Bind Upvoted, Mode=OneWay}" Padding="3" HorizontalAlignment="Center">
+                            <FontIcon Glyph="&#xE010;" />
+                        </ToggleButton>
+                        <TextBlock Text="{x:Bind VoteRatio, Mode=OneWay}" HorizontalAlignment="Center" />
+                        <ToggleButton Tag="{x:Bind}" Click="DownvoteButton_Click" IsChecked="{x:Bind Downvoted, Mode=OneWay}" Padding="3" HorizontalAlignment="Center">
+                            <FontIcon Glyph="&#xE019;" />
+                        </ToggleButton>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" Grid.Column="1">
+                        <TextBlock TextWrapping="WrapWholeWords">
+                                    <Run Text="By" /> <Hyperlink>u/<Run Text="{x:Bind Post.Author}" /></Hyperlink> • Posted <Run Text="{x:Bind local:App.GetRelativeDate(Post.Created, x:True)}" /> in <Hyperlink>r/<Run Text="{x:Bind Post.Subreddit}" /></Hyperlink>
+                        </TextBlock>
+                        <TextBlock Text="{x:Bind Post.Title}" Style="{StaticResource SubtitleTextBlockStyle}" TextWrapping="WrapWholeWords" />
+                        <TextBlock Text="{x:Bind Description}" TextWrapping="WrapWholeWords" Margin="0,5,0,0" MaxLines="5" TextTrimming="CharacterEllipsis" />
+                        <Image Source="{x:Bind Image}" Visibility="{x:Bind HasImage}" Margin="0,5,0,0" MaxHeight="320" MaxWidth="500" />
+
+                        <Button Margin="0,5,0,0">
+                            <Button.Content>
+                                <TextBlock>
+                                            <Run Text="{x:Bind CommentsCount}" /> comment(s)
+                                </TextBlock>
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
 </Page>
