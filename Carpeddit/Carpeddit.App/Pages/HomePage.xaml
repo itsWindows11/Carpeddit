@@ -9,7 +9,7 @@
     xmlns:models="using:Carpeddit.App.Models"
     mc:Ignorable="d">
 
-    <ListView Margin="-56,0,-56,0" Padding="56,10,76,10" MaxWidth="1200" VirtualizingStackPanel.VirtualizationMode="Recycling" x:Name="MainList" ItemsSource="{x:Bind posts, Mode=OneWay}">
+    <ListView Margin="-56,0,-56,0" Padding="56,10,76,10" MaxWidth="1200" VirtualizingStackPanel.VirtualizationMode="Standard" x:Name="MainList" ItemsSource="{x:Bind posts, Mode=OneWay}">
         <ListView.ItemTemplate>
             <DataTemplate x:DataType="models:PostViewModel">
                 <Grid Padding="0,10" ColumnSpacing="10">
