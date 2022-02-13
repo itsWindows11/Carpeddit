@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Carpeddit.App"
     xmlns:converters="using:Carpeddit.App.Converters"
-    xmlns:controls="using:Microsoft.UI.Xaml.Controls">
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls" xmlns:reddit="using:Reddit.Controllers" xmlns:helpers="using:Carpeddit.App.Helpers">
     <Application.Resources>
         <controls:XamlControlsResources>
             <controls:XamlControlsResources.MergedDictionaries>

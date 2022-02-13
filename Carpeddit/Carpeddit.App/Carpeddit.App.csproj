@@ -124,6 +124,7 @@
     <Compile Include="Controllers\DatabaseControllers.cs" />
     <Compile Include="Converters\DecimalPointToPercentageConverter.cs" />
     <Compile Include="Converters\SettingsConverters.cs" />
+    <Compile Include="Helpers\PostHelpers.cs" />
     <Compile Include="LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
