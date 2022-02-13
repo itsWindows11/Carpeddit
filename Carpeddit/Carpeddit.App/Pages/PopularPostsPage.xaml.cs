@@ -28,7 +28,7 @@ namespace Carpeddit.App.Pages
     /// </summary>
     public sealed partial class PopularPostsPage : Page
     {
-        private ObservableCollection<PostViewModel> posts = new();
+        private List<Post> posts = new();
         private string chosenFilter;
 
         public PopularPostsPage()
@@ -40,15 +40,7 @@ namespace Carpeddit.App.Pages
 
         public async Task InitAsync()
         {
-            foreach (Post post in App.RedditClient.Subreddit("all").Posts.GetNew(limit: 13))
-            {
-                posts.Add(new PostViewModel()
-                {
-                    Post = post
-                });
-            }
-            Debug.WriteLine(posts[0]);
-            Debug.WriteLine(MainList.Items[0]);
+            posts = App.RedditClient.Subreddit("all").Posts.GetHot(limit: 13);
         }
 
         private void UpvoteButton_Click(object sender, RoutedEventArgs e)
@@ -70,54 +62,23 @@ namespace Carpeddit.App.Pages
             {
                 case 0:
                     // New
-                    foreach (Post post in App.RedditClient.Subreddit("all").Posts.New)
-                    {
-                        posts.Add(new PostViewModel() { Post = post });
-                    }
                     chosenFilter = "New";
-                    MainList.ItemsSource = posts;
                     break;
                 case 1:
                     // Hot
-                    foreach (Post post in App.RedditClient.Subreddit("all").Posts.Hot)
-                    {
-                        posts.Add(new PostViewModel() { Post = post });
-                    }
                     chosenFilter = "Hot";
-                    MainList.ItemsSource = posts;
                     break;
                 case 2:
                     // Top
-                    foreach (Post post in App.RedditClient.Subreddit("all").Posts.Top)
-                    {
-                        posts.Add(new PostViewModel()
-                        {
-                            Post = post
-                        });
-                    }
                     chosenFilter = "Top";
-                    MainList.ItemsSource = posts;
                     break;
                 case 3:
                     // Rising
-                    foreach (Post post in App.RedditClient.Subreddit("all").Posts.Rising)
-                    {
-                        posts.Add(new PostViewModel()
-                        {
-                            Post = post
-                        });
-                    }
                     chosenFilter = "Rising"; // fun fact: this string once used to hold a value of "Rising Media Player"
-                    MainList.ItemsSource = posts;
                     break;
                 case 4:
                     // Controversial
-                    foreach (Post post in App.RedditClient.Subreddit("all").Posts.Controversial)
-                    {
-                        posts.Add(new PostViewModel() { Post = post });
-                    }
                     chosenFilter = "Controversial";
-                    MainList.ItemsSource = posts;
                     break;
             }
         }

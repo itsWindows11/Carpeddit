@@ -26,22 +26,13 @@ namespace Carpeddit.App.Pages
     /// </summary>
     public sealed partial class HomePage : Page
     {
-        private List<PostViewModel> posts = new();
-        private List<Post> _frontPage;
+        private List<Post> posts;
 
         public HomePage()
         {
             InitializeComponent();
 
-            _frontPage = App.RedditClient.GetFrontPage(limit: 13).ToList();
-            
-            for (int i = 0; i < _frontPage.Count; i++)
-            {
-                posts.Add(new PostViewModel()
-                {
-                    Post = _frontPage[i]
-                });
-            }
+            posts = App.RedditClient.GetFrontPage(limit: 13);
         }
 
         private void UpvoteButton_Click(object sender, RoutedEventArgs e)
