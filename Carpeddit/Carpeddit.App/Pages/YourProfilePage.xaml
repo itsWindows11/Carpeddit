@@ -59,7 +59,7 @@
 
                                 <StackPanel Orientation="Vertical" Grid.Column="1">
                                     <TextBlock TextWrapping="WrapWholeWords">
-                             <Run Text="By" /> <Hyperlink>u/<Run Text="{x:Bind Author}" /></Hyperlink> • Posted <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Created, x:True)}" /> in <Hyperlink>r/<Run Text="{x:Bind Subreddit}" /></Hyperlink>
+                                        <Run Text="By" /> <Hyperlink>u/<Run Text="{x:Bind Author}" /></Hyperlink> • Posted <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Created, x:True)}" /> in <Hyperlink>r/<Run Text="{x:Bind Subreddit}" /></Hyperlink>
                                     </TextBlock>
                                     <TextBlock Text="{x:Bind Title}" Style="{StaticResource SubtitleTextBlockStyle}" TextWrapping="WrapWholeWords" />
                                     <TextBlock Text="{x:Bind helpers:PostHelpers.GetPostDescription((reddit:Post))}" x:Phase="1" TextWrapping="WrapWholeWords" Margin="0,5,0,0" MaxLines="5" TextTrimming="CharacterEllipsis" />
@@ -67,7 +67,7 @@
                                     <Button Margin="0,5,0,0">
                                         <Button.Content>
                                             <TextBlock>
-                                   <Run Text="{x:Bind Comments.Top.Count}" /> comment(s)
+                                                <Run Text="{x:Bind Comments.Top.Count}" /> comment(s)
                                             </TextBlock>
                                         </Button.Content>
                                     </Button>
