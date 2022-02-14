@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Reddit.Controllers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,9 +23,23 @@ namespace Carpeddit.App.Pages
     /// </summary>
     public sealed partial class YourProfilePage : Page
     {
+        private readonly List<Post> posts = App.RedditClient.Account.Me.PostHistory;
+
         public YourProfilePage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+        }
+
+        private void UpvoteButton_Click(object sender, RoutedEventArgs e)
+        {
+            Post post = (sender as ToggleButton).Tag as Post;
+            post.UpvoteAsync();
+        }
+
+        private void DownvoteButton_Click(object sender, RoutedEventArgs e)
+        {
+            Post post = (sender as ToggleButton).Tag as Post;
+            post.DownvoteAsync();
         }
     }
 }

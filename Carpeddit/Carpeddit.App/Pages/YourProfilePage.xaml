@@ -4,11 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Carpeddit.App"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controllers="using:Carpeddit.App.Controllers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controllers="using:Carpeddit.App.Controllers" xmlns:reddit="using:Reddit.Controllers" xmlns:helpers="using:Carpeddit.App.Helpers"
     mc:Ignorable="d"
     NavigationCacheMode="Required">
 
-    <ScrollViewer Padding="0,10,0,0">
+    <ScrollViewer Padding="56,10,56,0" Margin="-56,0" x:Name="Scroll">
         <StackPanel Orientation="Vertical" Spacing="10">
             <Border>
                 <StackPanel Orientation="Vertical">
@@ -38,6 +38,48 @@
 
             <StackPanel Orientation="Vertical" Margin="0,10">
                 <!-- TODO: add list, other elements here -->
+                <ListView Margin="-56,0,-56,0" Padding="56,10,76,10" MaxWidth="1200" VirtualizingStackPanel.VirtualizationMode="Standard" x:Name="MainList" ItemsSource="{x:Bind posts, Mode=OneWay}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="reddit:Post">
+                            <Grid Padding="0,10" ColumnSpacing="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Spacing="5">
+                                    <ToggleButton Tag="{x:Bind}" Click="UpvoteButton_Click" IsChecked="{x:Bind IsUpvoted, Mode=OneWay}" Padding="3" HorizontalAlignment="Center">
+                                        <FontIcon Glyph="&#xE010;" />
+                                    </ToggleButton>
+                                    <TextBlock Text="{x:Bind helpers:PostHelpers.SubtractVotesAndFormat(UpVotes, DownVotes), Mode=OneWay}" HorizontalAlignment="Center" />
+                                    <ToggleButton Tag="{x:Bind}" Click="DownvoteButton_Click" IsChecked="{x:Bind IsDownvoted, Mode=OneWay}" Padding="3" HorizontalAlignment="Center">
+                                        <FontIcon Glyph="&#xE019;" />
+                                    </ToggleButton>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Vertical" Grid.Column="1">
+                                    <TextBlock TextWrapping="WrapWholeWords">
+                             <Run Text="By" /> <Hyperlink>u/<Run Text="{x:Bind Author}" /></Hyperlink> • Posted <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Created, x:True)}" /> in <Hyperlink>r/<Run Text="{x:Bind Subreddit}" /></Hyperlink>
+                                    </TextBlock>
+                                    <TextBlock Text="{x:Bind Title}" Style="{StaticResource SubtitleTextBlockStyle}" TextWrapping="WrapWholeWords" />
+                                    <TextBlock Text="{x:Bind helpers:PostHelpers.GetPostDescription((reddit:Post))}" x:Phase="1" TextWrapping="WrapWholeWords" Margin="0,5,0,0" MaxLines="5" TextTrimming="CharacterEllipsis" />
+
+                                    <Button Margin="0,5,0,0">
+                                        <Button.Content>
+                                            <TextBlock>
+                                   <Run Text="{x:Bind Comments.Top.Count}" /> comment(s)
+                                            </TextBlock>
+                                        </Button.Content>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
+                    <ListView.Footer>
+                        <Button Content="Load more posts" HorizontalAlignment="Center" Margin="0,10" Style="{StaticResource AccentButtonStyle}" />
+                    </ListView.Footer>
+                </ListView>
             </StackPanel>
         </StackPanel>
     </ScrollViewer>
