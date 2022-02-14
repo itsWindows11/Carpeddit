@@ -11,7 +11,6 @@
     NavigationCacheMode="Required">
 
     <ListView Margin="-56,0,-56,0" Padding="56,10,76,10" MaxWidth="1200" VirtualizingStackPanel.VirtualizationMode="Standard" x:Name="MainList" ItemsSource="{x:Bind posts, Mode=OneWay}">
-
         <ListView.ItemTemplate>
             <DataTemplate x:DataType="reddit:Post">
                 <Grid Padding="0,10" ColumnSpacing="10">
@@ -21,11 +20,11 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Spacing="5">
-                        <ToggleButton Tag="{x:Bind}" Click="UpvoteButton_Click" IsChecked="{x:Bind IsUpvoted, Mode=OneWay}" Padding="3" HorizontalAlignment="Center">
+                        <ToggleButton Style="{StaticResource TransparentToggleButton}" Tag="{x:Bind}" Click="UpvoteButton_Click" IsChecked="{x:Bind IsUpvoted, Mode=OneWay}" Padding="3" HorizontalAlignment="Center">
                             <FontIcon Glyph="&#xE010;" />
                         </ToggleButton>
                         <TextBlock Text="{x:Bind helpers:PostHelpers.SubtractVotesAndFormat(UpVotes, DownVotes), Mode=OneWay}" HorizontalAlignment="Center" />
-                        <ToggleButton Tag="{x:Bind}" Click="DownvoteButton_Click" IsChecked="{x:Bind IsDownvoted, Mode=OneWay}" Padding="3" HorizontalAlignment="Center">
+                        <ToggleButton Style="{StaticResource TransparentToggleButton}" Tag="{x:Bind}" Click="DownvoteButton_Click" IsChecked="{x:Bind IsDownvoted, Mode=OneWay}" Padding="3" HorizontalAlignment="Center">
                             <FontIcon Glyph="&#xE019;" />
                         </ToggleButton>
                     </StackPanel>
@@ -37,7 +36,7 @@
                         <TextBlock Text="{x:Bind Title}" Style="{StaticResource SubtitleTextBlockStyle}" TextWrapping="WrapWholeWords" />
                         <TextBlock Text="{x:Bind helpers:PostHelpers.GetPostDescription((reddit:Post))}" x:Phase="1" TextWrapping="WrapWholeWords" Margin="0,5,0,0" MaxLines="5" TextTrimming="CharacterEllipsis" />
 
-                        <Button Margin="0,5,0,0">
+                        <Button Style="{StaticResource TransparentButton}" Margin="0,5,0,0">
                             <Button.Content>
                                 <TextBlock>
                                    <Run Text="{x:Bind Comments.Top.Count}" /> comment(s)
