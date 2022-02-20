@@ -28,13 +28,13 @@
                          HorizontalAlignment="Left" 
                          VerticalAlignment="Center"
                          Source="ms-appx:///Assets/Square44x44Logo.png" 
-                         Width="16" 
-                         Height="16"
-                         Margin="0,2,0,0" />
+                         Width="24" 
+                         Height="24"
+                         Margin="-5,2,0,0" />
                 <TextBlock x:Name="AppTitle"
                            Text="Carpeddit"
                            VerticalAlignment="Center"
-                           Margin="12,2,0,0"
+                           Margin="10,2,0,0"
                            Style="{StaticResource CaptionTextBlockStyle}" />
             </StackPanel>
         </Border>
