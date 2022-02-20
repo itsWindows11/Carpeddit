@@ -11,7 +11,7 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
+            <RowDefinition Height="40" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <Border x:Name="AppTitleBar"
@@ -20,34 +20,36 @@
                 Background="Transparent"
                 Height="40"
                 Canvas.ZIndex="1" 
-                Margin="20,7,0,0">
+                Margin="13,0,0,0">
             <StackPanel Orientation="Horizontal">
                 <Image x:Name="AppFontIcon"
                          HorizontalAlignment="Left" 
                          VerticalAlignment="Center"
                          Source="ms-appx:///Assets/Square44x44Logo.png" 
-                         Width="16" 
-                         Height="16"
+                         Width="24" 
+                         Height="24"
                          Margin="0,2,0,0" />
                 <TextBlock x:Name="AppTitle"
                            Text="Carpeddit"
                            VerticalAlignment="Center"
-                           Margin="12,2,0,0"
+                           Margin="10,2,0,0"
                            Style="{StaticResource CaptionTextBlockStyle}" />
             </StackPanel>
         </Border>
-        <StackPanel Grid.Row="1" Padding="20" Spacing="10" x:Name="Thing2Container">
-            <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" FontWeight="SemiBold" Text="Login" Padding="0,0,0,50" />
-            <TextBox Header="Username" TextChanged="TextBox_TextChanged" x:Name="UsernameBox" />
-            <Button Content="Sign in" Click="Button_Click" />
-        </StackPanel>
 
         <Grid       Grid.Row="1"
                     HorizontalAlignment="Stretch"
                     Visibility="{x:Bind _isOnAuthPage, Mode=OneWay, Converter={StaticResource BoolToVis}}"
-                    x:Name="ThingContainer"
-                    Margin="0,80,0,0">
-            <WebView x:Name="LoginWebView" />
+                    x:Name="ThingContainer">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <TextBlock Style="{StaticResource SubheaderTextBlockStyle}" FontWeight="SemiBold" Text="Login" Padding="20,0,0,50" />
+
+            <WebView x:Name="LoginWebView" Grid.Row="1" />
         </Grid>
     </Grid>
 </Page>
