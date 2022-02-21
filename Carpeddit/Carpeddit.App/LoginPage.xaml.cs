@@ -50,8 +50,8 @@ namespace Carpeddit.App
             coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
             coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged;
 
-            ThingContainer.Visibility = Visibility.Collapsed;
-            Thing2Container.Visibility = Visibility.Visible;
+            LoginWebView.Source = new Uri("https://www.reddit.com/api/v1/authorize?client_id=" + Constants.ClientId + "&response_type=code&state=login&redirect_uri=" + Constants.RedirectUri + "&duration=permanent&scope=creddits modcontributors modmail modconfig subscribe structuredstyles vote wikiedit mysubreddits submit modlog modposts modflair save modothers adsconversions read privatemessages report identity livemanage account modtraffic wikiread edit modwiki modself history flair");
+            LoginWebView.NavigationStarting += LoginWebView_NavigationStarting;
         }
 
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
@@ -72,14 +72,6 @@ namespace Carpeddit.App
             // Ensure the custom title bar does not overlap window caption controls
             Thickness currMargin = AppTitleBar.Margin;
             AppTitleBar.Margin = new Thickness(currMargin.Left, currMargin.Top, coreTitleBar.SystemOverlayRightInset, currMargin.Bottom);
-        }
-
-        private async void Button_Click(object sender, RoutedEventArgs e)
-        {
-            ThingContainer.Visibility = Visibility.Visible;
-            Thing2Container.Visibility = Visibility.Collapsed;
-            LoginWebView.Source = new Uri("https://www.reddit.com/api/v1/authorize?client_id=" + Constants.ClientId + "&response_type=code&state=login&redirect_uri=" + Constants.RedirectUri + "&duration=permanent&scope=creddits modcontributors modmail modconfig subscribe structuredstyles vote wikiedit mysubreddits submit modlog modposts modflair save modothers adsconversions read privatemessages report identity livemanage account modtraffic wikiread edit modwiki modself history flair");
-            LoginWebView.NavigationStarting += LoginWebView_NavigationStarting;
         }
 
         private async void LoginWebView_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
@@ -106,11 +98,6 @@ namespace Carpeddit.App
                     rootFrame.Navigate(typeof(MainPage));
                 }
             }
-        }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            Username = UsernameBox.Text;
         }
     }
 }
