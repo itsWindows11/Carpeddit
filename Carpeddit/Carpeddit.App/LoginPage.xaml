@@ -39,7 +39,6 @@
 
         <Grid       Grid.Row="1"
                     HorizontalAlignment="Stretch"
-                    Visibility="{x:Bind _isOnAuthPage, Mode=OneWay, Converter={StaticResource BoolToVis}}"
                     x:Name="ThingContainer">
 
             <Grid.RowDefinitions>
