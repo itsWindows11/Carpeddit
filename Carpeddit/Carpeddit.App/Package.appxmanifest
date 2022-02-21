@@ -14,7 +14,7 @@
   <mp:PhoneIdentity PhoneProductId="8cfaee93-c15a-4492-8ce0-248785a6044f" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>Carpeddit.App</DisplayName>
+    <DisplayName>Carpeddit</DisplayName>
     <PublisherDisplayName>loremipsum</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -38,7 +38,7 @@
         Description="A fluent designed client for reddit which aims to be flexible, safe and full featured."
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
-        <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        <uap:SplashScreen a:Optional="true" xmlns:a="http://schemas.microsoft.com/appx/manifest/uap/windows10/5" Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
 	    <Extensions>
             <uap:Extension Category="windows.protocol">
