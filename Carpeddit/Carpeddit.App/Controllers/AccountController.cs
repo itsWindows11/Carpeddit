@@ -19,10 +19,6 @@ namespace Carpeddit.App.Controllers
         public static string AccessToken;
         public static string DeviceID;
 
-#if DEBUG
-        public static string CLIENT_ID = "mR-hqfet7BP__S3i1ZEplA";
-#endif
-
         public static string CreateDeviceID()
         {
             string deviceId = Guid.NewGuid().ToString();
@@ -33,7 +29,7 @@ namespace Carpeddit.App.Controllers
 
         public static async Task<bool> TryLaunchLoginFlowAsync()
         {
-            return await Launcher.LaunchUriAsync(new Uri("https://www.reddit.com/api/v1/authorize?client_id=" + CLIENT_ID + "&response_type=code&state=login&redirect_uri=" + Constants.RedirectUri + "&duration=permanent&scope=creddits modcontributors modmail modconfig subscribe structuredstyles vote wikiedit mysubreddits submit modlog modposts modflair save modothers adsconversions read privatemessages report identity livemanage account modtraffic wikiread edit modwiki modself history flair"));
+            return await Launcher.LaunchUriAsync(new Uri("https://www.reddit.com/api/v1/authorize?client_id=" + Constants.ClientId + "&response_type=code&state=login&redirect_uri=" + Constants.RedirectUri + "&duration=permanent&scope=creddits modcontributors modmail modconfig subscribe structuredstyles vote wikiedit mysubreddits submit modlog modposts modflair save modothers adsconversions read privatemessages report identity livemanage account modtraffic wikiread edit modwiki modself history flair"));
         }
 
         public static string GetImageUrl(Reddit.Things.User user)
