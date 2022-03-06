@@ -54,7 +54,7 @@
                             <TextBlock TextWrapping="WrapWholeWords">
                                 <Run Text="By" /> <Hyperlink>u/<Run Text="{x:Bind Author}" /></Hyperlink> • Posted <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Post.Created, x:True)}" /> in <Hyperlink>r/<Run Text="{x:Bind Subreddit}" /></Hyperlink>
                             </TextBlock>
-                            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" TextWrapping="WrapWholeWords">
+                            <TextBlock Tag="{x:Bind}" PointerReleased="Title_PointerReleased" Style="{StaticResource SubtitleTextBlockStyle}" TextWrapping="WrapWholeWords">
                                 <Hyperlink UnderlineStyle="None"><Run Text="{x:Bind Title}" /></Hyperlink>
                             </TextBlock>
                             <TextBlock Text="{x:Bind Description}" x:Phase="1" TextWrapping="WrapWholeWords" Margin="0,5,0,0" MaxLines="5" TextTrimming="CharacterEllipsis" />

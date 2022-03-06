@@ -1,0 +1,113 @@
+﻿<Page
+    x:Class="Carpeddit.App.Pages.PostDetailsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Carpeddit.App.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:controllers="using:Carpeddit.App.Controllers" xmlns:helpers="using:Carpeddit.App.Helpers" xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
+    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Border x:Name="AppTitleBar"
+                IsHitTestVisible="True"
+                Background="Transparent"
+                Canvas.ZIndex="1" 
+                Padding="20,0,290,0">
+            <StackPanel Orientation="Horizontal">
+                <Image x:Name="AppFontIcon"
+                         HorizontalAlignment="Left" 
+                         VerticalAlignment="Center"
+                         Source="ms-appx:///Assets/Square44x44Logo.png" 
+                         Width="24" 
+                         Height="24"
+                         Margin="30,2,0,0" />
+                <TextBlock x:Name="AppTitle"
+                           Text="Post details"
+                           VerticalAlignment="Center"
+                           Margin="10,2,0,0"
+                           Style="{StaticResource CaptionTextBlockStyle}" />
+            </StackPanel>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" Padding="10,0">
+            <StackPanel>
+                <Grid Padding="6,10,8,10"
+                      MaxWidth="1200"
+                      BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                      Background="{StaticResource LayerFillColorDefaultBrush}"
+                      BorderThickness="1"
+                      ColumnSpacing="10"
+                      CornerRadius="6"
+                      Margin="0,4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="40" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Spacing="5">
+                        <ToggleButton Style="{StaticResource TransparentToggleButton}"
+                                          Tag="{x:Bind}"
+                                          IsChecked="{x:Bind Post.Upvoted, Mode=OneWay}"
+                                          Padding="3"
+                                          HorizontalAlignment="Center">
+                            <FontIcon Glyph="&#xE010;" />
+                        </ToggleButton>
+                        <TextBlock Text="{x:Bind Post.VoteRatio, Mode=OneWay}"
+                                       HorizontalAlignment="Center" />
+                        <ToggleButton Style="{StaticResource TransparentToggleButton}"
+                                          Tag="{x:Bind}"
+                                          IsChecked="{x:Bind Post.Downvoted, Mode=OneWay}"
+                                          Padding="3"
+                                          HorizontalAlignment="Center">
+                            <FontIcon Glyph="&#xE019;" />
+                        </ToggleButton>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" Grid.Column="1">
+                        <TextBlock TextWrapping="WrapWholeWords">
+                                <Run Text="By" /> <Hyperlink>u/<Run Text="{x:Bind Post.Author}" /></Hyperlink> • Posted <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Post.Post.Created, x:True)}" /> in <Hyperlink>r/<Run Text="{x:Bind Post.Subreddit}" /></Hyperlink>
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" TextWrapping="WrapWholeWords">
+                                <Hyperlink UnderlineStyle="None"><Run Text="{x:Bind Post.Title}" /></Hyperlink>
+                        </TextBlock>
+                        <TextBlock Text="{x:Bind Post.Description}" TextWrapping="WrapWholeWords" Margin="0,5,0,0" MaxLines="5" TextTrimming="CharacterEllipsis" />
+
+                        <TextBlock Margin="0,10,0,3">
+                                <Run Text="{x:Bind Post.CommentsCountInUI}" /> • <Hyperlink>Share</Hyperlink> • <Hyperlink>Save</Hyperlink>
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Button VerticalAlignment="Top" x:Name="BackButton"
+                CornerRadius="5"
+                Height="28"
+                Margin="6,6,0,0"
+                Canvas.ZIndex="2"
+                Click="BackButton_Click"
+                Style="{StaticResource TransparentButton}"
+                Width="40"
+                AutomationProperties.Name="Back"
+                AutomationProperties.AutomationId="BackButton"
+                AutomationProperties.ItemType="Navigation Button">
+            <muxc:AnimatedIcon x:Name="BackAnimatedIcon" Height="16" Width="16">
+                <muxc:AnimatedIcon.Source>
+                    <animatedvisuals:AnimatedBackVisualSource/>
+                </muxc:AnimatedIcon.Source>
+                <muxc:AnimatedIcon.FallbackIconSource>
+                    <muxc:SymbolIconSource Symbol="Back"/>
+                </muxc:AnimatedIcon.FallbackIconSource>
+            </muxc:AnimatedIcon>
+        </Button>
+
+    </Grid>
+</Page>

@@ -84,5 +84,13 @@ namespace Carpeddit.App.Pages
             await GetPostsAsync().ConfigureAwait(false);
             MainList.ItemsSource = posts;
         }
+
+        private void Title_PointerReleased(object sender, PointerRoutedEventArgs e)
+        {
+            if (Window.Current.Content is Frame rootFrame && sender is TextBlock text && text.Tag is PostViewModel post)
+            {
+                rootFrame.Navigate(typeof(PostDetailsPage), post);
+            }
+        }
     }
 }

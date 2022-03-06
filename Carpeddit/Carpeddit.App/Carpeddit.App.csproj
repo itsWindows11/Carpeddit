@@ -156,6 +156,9 @@
     <Compile Include="Pages\PopularPostsPage.xaml.cs">
       <DependentUpon>PopularPostsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\PostDetailsPage.xaml.cs">
+      <DependentUpon>PostDetailsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
@@ -215,6 +218,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\PopularPostsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\PostDetailsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

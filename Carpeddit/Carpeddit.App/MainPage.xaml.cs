@@ -31,6 +31,8 @@ namespace Carpeddit.App
         {
             InitializeComponent();
 
+            NavigationCacheMode = NavigationCacheMode.Required;
+
             var appViewTitleBar = ApplicationView.GetForCurrentView().TitleBar;
 
             appViewTitleBar.ButtonBackgroundColor = Colors.Transparent;
