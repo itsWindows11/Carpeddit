@@ -11,7 +11,27 @@ namespace Carpeddit.App.Models
 {
     public class PostViewModel
     {
-        public Reddit.Controllers.Post Post;
+        public Reddit.Controllers.Post Post { get; set; }
+
+        public string Title
+        {
+            get => Post.Title;
+        }
+
+        public string Author
+        {
+            get => Post.Author;
+        }
+
+        public DateTime Created
+        {
+            get => Post.Created;
+        }
+
+        public string Subreddit
+        {
+            get => Post.Subreddit;
+        }
 
         public string Description
         {
@@ -42,7 +62,9 @@ namespace Carpeddit.App.Models
             }
         }
 
-        public int CommentsCount => Post.Comments.GetComments("new").Count;
+        public int CommentsCount => Post.Comments.Top.Count;
+
+        public string CommentsCountInUI => $"{Post.Comments.Top.Count} comment(s)";
 
         public bool HasImage
         {

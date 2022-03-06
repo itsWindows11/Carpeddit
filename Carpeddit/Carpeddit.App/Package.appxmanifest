@@ -7,15 +7,15 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="8cfaee93-c15a-4492-8ce0-248785a6044f"
-    Publisher="CN=loremipsum"
-    Version="1.0.0.0" />
+    Name="14777GamalAsker.Carpeddit"
+    Publisher="CN=35F1B82D-C87E-47CF-B0C0-F084E1490E1E"
+    Version="0.1.1.0" />
 
-  <mp:PhoneIdentity PhoneProductId="8cfaee93-c15a-4492-8ce0-248785a6044f" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="5d029827-5d1c-4317-84ed-63c9f118b844" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>Carpeddit</DisplayName>
-    <PublisherDisplayName>loremipsum</PublisherDisplayName>
+    <PublisherDisplayName>itsWindows11</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 

@@ -1,4 +1,5 @@
-﻿using Carpeddit.App.Models;
+﻿using Carpeddit.App.Collections;
+using Carpeddit.App.Models;
 using Reddit.Controllers;
 using System;
 using System.Collections.Generic;
@@ -28,19 +29,31 @@ namespace Carpeddit.App.Pages
     /// </summary>
     public sealed partial class PopularPostsPage : Page
     {
-        private List<Post> posts = new();
-        private string chosenFilter;
+        BulkConcurrentObservableCollection<PostViewModel> posts = new();
+        int postsCount = 0;
+        bool ArePostsLoaded = false;
+        string chosenFilter = "Hot";
 
         public PopularPostsPage()
         {
             InitializeComponent();
 
-            _ = InitAsync();
         }
 
-        public async Task InitAsync()
+        private async Task GetPostsAsync(string after = "", int limit = 13, string before = "")
         {
-            posts = App.RedditClient.Subreddit("all").Posts.GetHot(limit: 13);
+            List<Post> frontpage = App.RedditClient.Subreddit("all").Posts.GetHot(limit: 13, after: after, before: before);
+
+            foreach (Post post in frontpage)
+            {
+                posts.Add(new()
+                {
+                    Post = post
+                });
+            }
+
+            for (postsCount = 0; postsCount < frontpage.Count; postsCount++) ;
+            ArePostsLoaded = true;
         }
 
         private void UpvoteButton_Click(object sender, RoutedEventArgs e)
@@ -53,6 +66,26 @@ namespace Carpeddit.App.Pages
         {
             Post post = (sender as ToggleButton).Tag as Post;
             post.DownvoteAsync();
+        }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button)
+            {
+                button.Visibility = Visibility.Collapsed;
+                SampleProgress.Visibility = Visibility.Visible;
+                await Task.Delay(500);
+                await GetPostsAsync(after: posts[postsCount - 1].Post.Fullname).ConfigureAwait(false);
+                SampleProgress.Visibility = Visibility.Collapsed;
+                button.Visibility = Visibility.Visible;
+            }
+        }
+
+        private async void MainList_Loaded(object sender, RoutedEventArgs e)
+        {
+            await Task.Delay(500);
+            await GetPostsAsync().ConfigureAwait(false);
+            MainList.ItemsSource = posts;
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

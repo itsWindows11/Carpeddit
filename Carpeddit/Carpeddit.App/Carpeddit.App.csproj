@@ -127,6 +127,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Collections\BulkConcurrentObservableCollection.cs" />
+    <Compile Include="Collections\GroupedCollection.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DatabaseControllers.cs" />
     <Compile Include="Converters\DecimalPointToPercentageConverter.cs" />
@@ -234,6 +236,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm">
+      <Version>7.1.2</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.13</Version>
     </PackageReference>
