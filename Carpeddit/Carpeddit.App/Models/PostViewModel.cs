@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Reddit.Controllers;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -11,44 +13,32 @@ namespace Carpeddit.App.Models
 {
     public class PostViewModel
     {
-        public Reddit.Controllers.Post Post { get; set; }
+        public Post Post { get; set; }
 
-        public string Title
-        {
-            get => Post.Title;
-        }
+        public string Title { get; set; }
 
-        public string Author
-        {
-            get => Post.Author;
-        }
+        public string Author { get; set; }
 
-        public DateTime Created
-        {
-            get => Post.Created;
-        }
+        public DateTime Created { get; set; }
 
-        public string Subreddit
-        {
-            get => Post.Subreddit;
-        }
+        public string Subreddit { get; set; }
 
-        public string Description
-        {
+        public string Description { get; set; }
+        /*{
             get
             {
-                if (Post is Reddit.Controllers.LinkPost linkPost)
+                if (Post is LinkPost linkPost)
                 {
                     return linkPost.URL;
                 }
-                else if (Post is Reddit.Controllers.SelfPost selfPost)
+                else if (Post is SelfPost selfPost)
                 {
                     return selfPost.SelfText;
                 }
 
                 return "No content";
             }
-        }
+        }*/
 
         public BitmapImage Image
         {
@@ -65,6 +55,35 @@ namespace Carpeddit.App.Models
         public int CommentsCount => Post.Comments.Top.Count;
 
         public string CommentsCountInUI => $"{Post.Comments.Top.Count} comment(s)";
+
+        public ObservableCollection<CommentViewModel> Comments => GetComments();
+
+        public ObservableCollection<CommentViewModel> GetComments()
+        {
+            ObservableCollection<CommentViewModel> comments = new();
+
+            foreach (Comment comment in Post.Comments.Top)
+            {
+                CommentViewModel comment1 = new()
+                {
+                    OriginalComment = comment
+                };
+
+                foreach (Comment reply in comment.Replies)
+                {
+                    CommentViewModel comment2 = new()
+                    {
+                        OriginalComment = reply
+                    };
+
+                    comment1.Replies.Add(comment2);
+                }
+
+                comments.Add(comment1);
+            }
+
+            return comments;
+        }
 
         public bool HasImage
         {

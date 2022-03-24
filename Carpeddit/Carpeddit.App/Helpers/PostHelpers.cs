@@ -1,10 +1,13 @@
-﻿using Reddit.Controllers;
+﻿using Carpeddit.App.Models;
+using Microsoft.Toolkit.Collections;
+using Reddit.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media.Imaging;
@@ -167,4 +170,81 @@ namespace Carpeddit.App.Helpers
             return Visibility.Collapsed;
         }
     }
+
+
+    public class PostLoadingHelper : IIncrementalSource<PostViewModel>
+    {
+        private readonly List<PostViewModel> posts;
+        int postsCount = 0;
+
+        public PostLoadingHelper()
+        {
+            posts = new();
+
+            List<Post> frontpage = App.RedditClient.GetFrontPage(limit: 13);
+
+            foreach (Post post in frontpage)
+            {
+                PostViewModel vm = new()
+                {
+                    Post = post,
+                    Title = post.Title,
+                    Description = GetPostDesc(post),
+                    Created = post.Created,
+                    Subreddit = post.Subreddit,
+                    Author = post.Author
+                };
+
+                _ = vm.CommentsCount;
+
+                posts.Add(vm);
+            }
+
+            for (postsCount = 0; postsCount < frontpage.Count; postsCount++);
+        }
+
+        public async Task<IEnumerable<PostViewModel>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cancellationToken)
+        {
+            List<PostViewModel> posts1 = await Task.Run(async () =>
+            {
+                List<PostViewModel> posts = new();
+
+                foreach (Post post in App.RedditClient.GetFrontPage(limit: pageSize, after: posts[postsCount - 1].Post.Fullname))
+                {
+                    PostViewModel vm = new()
+                    {
+                        Post = post,
+                        Title = post.Title,
+                        Description = GetPostDesc(post),
+                        Created = post.Created,
+                        Subreddit = post.Subreddit,
+                        Author = post.Author
+                    };
+
+                    _ = vm.CommentsCount;
+
+                    posts.Add(vm);
+                }
+
+                return posts;
+            });
+
+            return posts1.AsEnumerable();
+        }
+
+        private string GetPostDesc(Post post)
+        {
+            if (post is LinkPost linkPost)
+            {
+                return linkPost.URL;
+            }
+            else if (post is SelfPost selfPost)
+            {
+                return selfPost.SelfText;
+            }
+
+            return "No content";
+        }
+    }
+
 }

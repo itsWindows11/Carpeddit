@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    xmlns:controllers="using:Carpeddit.App.Controllers" xmlns:helpers="using:Carpeddit.App.Helpers" xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
+    xmlns:controllers="using:Carpeddit.App.Controllers" xmlns:helpers="using:Carpeddit.App.Helpers" xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals" xmlns:viewmodels="using:Carpeddit.App.Models"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
 
     <Grid>
@@ -81,10 +81,24 @@
                         <TextBlock Text="{x:Bind Post.Description}" TextWrapping="WrapWholeWords" Margin="0,5,0,0" MaxLines="5" TextTrimming="CharacterEllipsis" />
 
                         <TextBlock Margin="0,10,0,3">
-                                <Run Text="{x:Bind Post.CommentsCountInUI}" /> • <Hyperlink>Share</Hyperlink> • <Hyperlink>Save</Hyperlink>
+                                <Hyperlink>Share</Hyperlink> • <Hyperlink>Save</Hyperlink>
                         </TextBlock>
                     </StackPanel>
                 </Grid>
+
+                <muxc:TreeView ItemsSource="{x:Bind Post.Comments}">
+                    <muxc:TreeView.ItemTemplate>
+                        <DataTemplate x:DataType="viewmodels:CommentViewModel">
+                            <muxc:TreeViewItem IsExpanded="{x:Bind Expanded}" ItemsSource="{x:Bind Replies}">
+                                <muxc:TreeViewItem.Content>
+                                    <TextBlock TextWrapping="Wrap">
+                                        By <Hyperlink>u/<Run Text="{x:Bind OriginalComment.Author}" /></Hyperlink><LineBreak /><LineBreak /><Run Text="{x:Bind OriginalComment.Body}" />
+                                    </TextBlock>
+                                </muxc:TreeViewItem.Content>
+                            </muxc:TreeViewItem>
+                        </DataTemplate>
+                    </muxc:TreeView.ItemTemplate>
+                </muxc:TreeView>
             </StackPanel>
         </ScrollViewer>
 

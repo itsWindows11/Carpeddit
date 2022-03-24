@@ -1,4 +1,5 @@
 ﻿using Carpeddit.App.Collections;
+using Carpeddit.App.Helpers;
 using Carpeddit.App.Models;
 using Microsoft.Toolkit.Uwp;
 using Reddit.Controllers;
@@ -30,27 +31,11 @@ namespace Carpeddit.App.Pages
     {
         BulkConcurrentObservableCollection<PostViewModel> posts = new();
         int postsCount = 0;
-        bool ArePostsLoaded = false;
-
         public HomePage()
         {
             InitializeComponent();
-        }
 
-        private async Task GetPostsAsync(string after = "", int limit = 13, string before = "")
-        {
-            List<Post> frontpage = App.RedditClient.GetFrontPage(limit: 13, after: after, before: before);
-
-            foreach (Post post in frontpage)
-            {
-                posts.Add(new()
-                {
-                    Post = post
-                });
-            }
-
-            for (postsCount = 0; postsCount < frontpage.Count; postsCount++);
-            ArePostsLoaded = true;
+            Loaded += Page_Loaded;
         }
 
         private void UpvoteButton_Click(object sender, RoutedEventArgs e)
@@ -70,19 +55,79 @@ namespace Carpeddit.App.Pages
             if (sender is Button button)
             {
                 button.Visibility = Visibility.Collapsed;
-                SampleProgress.Visibility = Visibility.Visible;
-                await Task.Delay(500);
-                await GetPostsAsync(after: posts[postsCount - 1].Post.Fullname).ConfigureAwait(false);
-                SampleProgress.Visibility = Visibility.Collapsed;
+                FooterProgress.Visibility = Visibility.Visible;
+
+                var posts1 = await Task.Run(async () =>
+                {
+                    return await GetPostsAsync(after: posts[posts.Count - 1].Post.Fullname);
+                });
+
+                posts.AddRange(posts1);
+
                 button.Visibility = Visibility.Visible;
+                FooterProgress.Visibility = Visibility.Collapsed;
             }
         }
 
-        private async void MainList_Loaded(object sender, RoutedEventArgs e)
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            await Task.Delay(500);
-            await GetPostsAsync().ConfigureAwait(false);
+            Loaded -= Page_Loaded;
+
+            LoadMoreButton.Visibility = Visibility.Collapsed;
+            Progress.Visibility = Visibility.Visible;
+
+            var posts1 = await Task.Run(async () =>
+            {
+                return await GetPostsAsync();
+            });
+
+            posts.AddRange(posts1);
+
             MainList.ItemsSource = posts;
+
+            Progress.Visibility = Visibility.Collapsed;
+            LoadMoreButton.Visibility = Visibility.Visible;
+        }
+
+        private async Task<ObservableCollection<PostViewModel>> GetPostsAsync(string after = "", int limit = 13, string before = "")
+        {
+            List<Post> frontpage = App.RedditClient.GetFrontPage(limit: 13, after: after, before: before);
+            ObservableCollection<PostViewModel> postViews = new();
+
+            foreach (Post post in frontpage)
+            {
+                PostViewModel vm = new()
+                {
+                    Post = post,
+                    Title = post.Title,
+                    Description = GetPostDesc(post),
+                    Created = post.Created,
+                    Subreddit = post.Subreddit,
+                    Author = post.Author
+                };
+
+                _ = vm.CommentsCount;
+
+                postViews.Add(vm);
+            }
+
+            //for (postsCount = 0; postsCount < posts.Count; postsCount++);
+
+            return postViews;
+        }
+
+        private string GetPostDesc(Post post)
+        {
+            if (post is LinkPost linkPost)
+            {
+                return linkPost.URL;
+            }
+            else if (post is SelfPost selfPost)
+            {
+                return selfPost.SelfText;
+            }
+
+            return "No content";
         }
 
         private void Title_PointerReleased(object sender, PointerRoutedEventArgs e)

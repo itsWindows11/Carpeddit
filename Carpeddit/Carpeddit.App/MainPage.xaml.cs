@@ -25,7 +25,7 @@ namespace Carpeddit.App
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private double NavViewCompactModeThresholdWidth { get { return NavView.CompactModeThresholdWidth; } }
+        private double NavViewCompactModeThresholdWidth { get => NavView.CompactModeThresholdWidth; }
 
         public MainPage()
         {
