@@ -38,16 +38,46 @@ namespace Carpeddit.App.Pages
             Loaded += Page_Loaded;
         }
 
-        private void UpvoteButton_Click(object sender, RoutedEventArgs e)
+        private async void UpvoteButton_Click(object sender, RoutedEventArgs e)
         {
-            Post post = (sender as ToggleButton).Tag as Post;
-            post.UpvoteAsync();
+            ToggleButton toggle = sender as ToggleButton;
+            PostViewModel post = toggle.Tag as PostViewModel;
+
+            if (toggle.IsChecked.Value)
+            {
+                await post.Post.UpvoteAsync();
+                //post.RawVoteRatio = (post.Post.UpVotes - post.Post.DownVotes) + 1;
+                post.Upvoted = true;
+                post.Downvoted = false;
+            }
+            else
+            {
+                await post.Post.UnvoteAsync();
+                //post.RawVoteRatio = post.Post.UpVotes - post.Post.DownVotes;
+                post.Upvoted = false;
+                post.Downvoted = false;
+            }
         }
 
-        private void DownvoteButton_Click(object sender, RoutedEventArgs e)
+        private async void DownvoteButton_Click(object sender, RoutedEventArgs e)
         {
-            Post post = (sender as ToggleButton).Tag as Post;
-            post.DownvoteAsync();
+            ToggleButton toggle = sender as ToggleButton;
+            PostViewModel post = toggle.Tag as PostViewModel;
+
+            if (toggle.IsChecked.Value)
+            {
+                await post.Post.DownvoteAsync();
+                //post.RawVoteRatio = (post.Post.UpVotes - post.Post.DownVotes) - 1;
+                post.Upvoted = false;
+                post.Downvoted = true;
+            }
+            else
+            {
+                await post.Post.UnvoteAsync();
+                //post.RawVoteRatio = post.Post.UpVotes - post.Post.DownVotes;
+                post.Upvoted = false;
+                post.Downvoted = false;
+            }
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -103,7 +133,8 @@ namespace Carpeddit.App.Pages
                     Description = GetPostDesc(post),
                     Created = post.Created,
                     Subreddit = post.Subreddit,
-                    Author = post.Author
+                    Author = post.Author,
+                    CommentsCount = post.Comments.GetComments().Count
                 };
 
                 _ = vm.CommentsCount;

@@ -2,18 +2,32 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace Carpeddit.App.Models
 {
-    public class PostViewModel
+    public class PostViewModel : INotifyPropertyChanged
     {
-        public Post Post { get; set; }
+        private Post _post;
+
+        public Post Post
+        {
+            get => _post;
+            set
+            {
+                _post = value;
+
+                _upvoted = value.IsUpvoted;
+                _downvoted = value.IsDownvoted;
+            }
+        }
 
         public string Title { get; set; }
 
@@ -40,6 +54,13 @@ namespace Carpeddit.App.Models
             }
         }*/
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void OnPropertyChanged([CallerMemberName] string propName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
+
         public BitmapImage Image
         {
             get
@@ -52,9 +73,9 @@ namespace Carpeddit.App.Models
             }
         }
 
-        public int CommentsCount => Post.Comments.Top.Count;
+        public int CommentsCount { get; set; }
 
-        public string CommentsCountInUI => $"{Post.Comments.Top.Count} comment(s)";
+        public string CommentsCountInUI => $"{CommentsCount} comment(s)";
 
         public ObservableCollection<CommentViewModel> Comments => GetComments();
 
@@ -108,35 +129,29 @@ namespace Carpeddit.App.Models
             }
         }
 
+        private bool _upvoted;
+
         public bool Upvoted
         {
-            get
-            {
-                return Post.IsUpvoted && !Post.IsDownvoted;
-            }
+            get => _upvoted;
             set
             {
-                if (value)
-                {
-                    Post.UpvoteAsync();
-                    RawVoteRatio += 1;
-                }
+                _upvoted = value;
+
+                OnPropertyChanged(nameof(Upvoted));
             }
         }
 
+        private bool _downvoted;
+
         public bool Downvoted
         {
-            get
-            {
-                return Post.IsDownvoted && !Post.IsUpvoted;
-            }
+            get => _downvoted;
             set
             {
-                if (value)
-                {
-                    Post.DownvoteAsync();
-                    RawVoteRatio -= 1;
-                }
+                _downvoted = value;
+
+                OnPropertyChanged(nameof(Downvoted));
             }
         }
 
@@ -148,7 +163,7 @@ namespace Carpeddit.App.Models
             }
             private set
             {
-
+                OnPropertyChanged(nameof(VoteRatio));
             }
         }
 
@@ -161,6 +176,7 @@ namespace Carpeddit.App.Models
             set
             {
                 VoteRatio = FormatNumber(value);
+                OnPropertyChanged(nameof(RawVoteRatio));
             }
         }
 

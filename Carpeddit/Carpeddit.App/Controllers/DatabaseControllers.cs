@@ -13,11 +13,6 @@ namespace Carpeddit.App.Controllers
     {
         private static StorageFile _dbFile;
 
-        public AccountDatabaseController()
-        {
-            _ = Init();
-        }
-
         public static async Task<AccountDatabaseController> Init()
         {
             _dbFile = await ApplicationData.Current.LocalCacheFolder.CreateFileAsync($"Accounts.json", CreationCollisionOption.OpenIfExists);

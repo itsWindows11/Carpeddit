@@ -32,23 +32,23 @@
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Spacing="5">
                             <ToggleButton Style="{StaticResource TransparentToggleButton}"
                                           Tag="{x:Bind}"
-                                          Click="UpvoteButton_Click"
                                           IsChecked="{x:Bind Upvoted, Mode=OneWay}"
                                           Padding="3"
+                                          Click="UpvoteButton_Click"
                                           HorizontalAlignment="Center"
-                                      x:Phase="3">
+                                          x:Phase="3">
                                 <FontIcon Glyph="&#xE010;" />
                             </ToggleButton>
                             <TextBlock Text="{x:Bind VoteRatio, Mode=OneWay}"
                                        HorizontalAlignment="Center"
-                                   x:Phase="3"/>
+                                       x:Phase="3"/>
                             <ToggleButton Style="{StaticResource TransparentToggleButton}"
                                           Tag="{x:Bind}"
-                                          Click="DownvoteButton_Click"
                                           IsChecked="{x:Bind Downvoted, Mode=OneWay}"
                                           Padding="3"
+                                          Click="DownvoteButton_Click"
                                           HorizontalAlignment="Center"
-                                      x:Phase="3">
+                                          x:Phase="3">
                                 <FontIcon Glyph="&#xE019;" />
                             </ToggleButton>
                         </StackPanel>
