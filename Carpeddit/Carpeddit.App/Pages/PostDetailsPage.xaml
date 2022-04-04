@@ -7,8 +7,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    xmlns:controllers="using:Carpeddit.App.Controllers" xmlns:helpers="using:Carpeddit.App.Helpers" xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals" xmlns:viewmodels="using:Carpeddit.App.Models"
+    xmlns:controllers="using:Carpeddit.App.Controllers"
+    xmlns:converters="using:Carpeddit.App.Converters"
+    xmlns:helpers="using:Carpeddit.App.Helpers" xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals" xmlns:viewmodels="using:Carpeddit.App.Models" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
+
+    <Page.Resources>
+        <converters:InvertBoolConverter x:Key="InvertBoolConv" />
+    </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -86,14 +92,27 @@
                     </StackPanel>
                 </Grid>
 
-                <muxc:TreeView ItemsSource="{x:Bind Post.Comments}">
+                <muxc:TreeView x:Name="CommentsTree" MaxWidth="1200">
                     <muxc:TreeView.ItemTemplate>
                         <DataTemplate x:DataType="viewmodels:CommentViewModel">
-                            <muxc:TreeViewItem IsExpanded="{x:Bind Expanded}" ItemsSource="{x:Bind Replies}">
+                            <muxc:TreeViewItem IsExpanded="{x:Bind Collapsed, Mode=TwoWay, Converter={StaticResource InvertBoolConv}}" ItemsSource="{x:Bind Replies}">
                                 <muxc:TreeViewItem.Content>
-                                    <TextBlock TextWrapping="Wrap">
-                                        By <Hyperlink>u/<Run Text="{x:Bind OriginalComment.Author}" /></Hyperlink><LineBreak /><LineBreak /><Run Text="{x:Bind OriginalComment.Body}" />
-                                    </TextBlock>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="30" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Border Width="1" Padding="0,0,30,0" Background="{StaticResource AppBarSeparatorForegroundThemeBrush}" />
+
+                                        <StackPanel Grid.Column="1" Spacing="5">
+                                            <TextBlock>
+                                                By <Hyperlink>u/<Run Text="{x:Bind OriginalComment.Author}" /></Hyperlink>
+                                            </TextBlock>
+
+                                            <controls:MarkdownTextBlock Text="{x:Bind OriginalComment.Body}" />
+                                        </StackPanel>
+                                    </Grid>
                                 </muxc:TreeViewItem.Content>
                             </muxc:TreeViewItem>
                         </DataTemplate>

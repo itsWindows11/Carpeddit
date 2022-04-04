@@ -45,6 +45,7 @@ namespace Carpeddit.App.Pages
 
             coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
             coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged;
+
         }
 
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
@@ -67,10 +68,12 @@ namespace Carpeddit.App.Pages
             AppTitleBar.Margin = new Thickness(currMargin.Left, currMargin.Top, coreTitleBar.SystemOverlayRightInset, currMargin.Bottom);
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             Post = e.Parameter as PostViewModel;
+
+            CommentsTree.ItemsSource = await Post.GetCommentsAsync();
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)

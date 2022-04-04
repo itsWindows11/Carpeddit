@@ -77,33 +77,26 @@ namespace Carpeddit.App.Models
 
         public string CommentsCountInUI => $"{CommentsCount} comment(s)";
 
-        public ObservableCollection<CommentViewModel> Comments => GetComments();
-
-        public ObservableCollection<CommentViewModel> GetComments()
+        public Task<ObservableCollection<CommentViewModel>> GetCommentsAsync()
         {
-            ObservableCollection<CommentViewModel> comments = new();
-
-            foreach (Comment comment in Post.Comments.Top)
+            return Task.Run(async () =>
             {
-                CommentViewModel comment1 = new()
-                {
-                    OriginalComment = comment
-                };
+                ObservableCollection<CommentViewModel> comments = new();
 
-                foreach (Comment reply in comment.Replies)
+                foreach (Comment comment in Post.Comments.GetComments(limit: 100))
                 {
-                    CommentViewModel comment2 = new()
+                    CommentViewModel comment1 = new()
                     {
-                        OriginalComment = reply
+                        OriginalComment = comment
                     };
 
-                    comment1.Replies.Add(comment2);
+                    _ = await comment1.GetRepliesAsync(true);
+
+                    comments.Add(comment1);
                 }
 
-                comments.Add(comment1);
-            }
-
-            return comments;
+                return comments;
+            });
         }
 
         public bool HasImage

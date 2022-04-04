@@ -131,6 +131,7 @@
     <Compile Include="Collections\GroupedCollection.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DatabaseControllers.cs" />
+    <Compile Include="Converters\InvertBoolConverter.cs" />
     <Compile Include="Converters\DecimalPointToPercentageConverter.cs" />
     <Compile Include="Converters\SettingsConverters.cs" />
     <Compile Include="Helpers\PostHelpers.cs" />

@@ -169,5 +169,10 @@ namespace Carpeddit.App.Helpers
             }
             return Visibility.Collapsed;
         }
+
+        public static bool Invert(bool boolean)
+        {
+            return !boolean;
+        }
     }
 }
