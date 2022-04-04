@@ -38,6 +38,19 @@ namespace Carpeddit.App.Models
         public string Subreddit { get; set; }
 
         public string Description { get; set; }
+
+        public string ShortDescription
+        {
+            get
+            {
+                if (Description.Length >= 350)
+                {
+                    return Description.Substring(0, 350) + "...";
+                }
+
+                return Description;
+            }
+        }
         /*{
             get
             {
