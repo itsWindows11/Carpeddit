@@ -45,7 +45,12 @@ namespace Carpeddit.App.Pages
 
             coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
             coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged;
+            Loaded += PostDetailsPage_Loaded;
+        }
 
+        private void PostDetailsPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            CommentProgress.Visibility = Visibility.Visible;
         }
 
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
@@ -74,6 +79,7 @@ namespace Carpeddit.App.Pages
             Post = e.Parameter as PostViewModel;
 
             CommentsTree.ItemsSource = await Post.GetCommentsAsync();
+            CommentProgress.Visibility = Visibility.Collapsed;
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)

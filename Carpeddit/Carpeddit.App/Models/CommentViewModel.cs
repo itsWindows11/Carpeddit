@@ -1,14 +1,16 @@
-﻿using Reddit.Controllers;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Reddit.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 
 namespace Carpeddit.App.Models
 {
-    public class CommentViewModel
+    public class CommentViewModel : ObservableObject
     {
         public CommentViewModel()
         {
@@ -24,6 +26,7 @@ namespace Carpeddit.App.Models
             {
                 _originalComment = value;
                 _collapsed = OriginalComment.Collapsed;
+                OnPropertyChanged(nameof(OriginalComment));
             }
         }
 
@@ -32,7 +35,11 @@ namespace Carpeddit.App.Models
         public ObservableCollection<CommentViewModel> Replies
         {
             get => _replies;
-            set => _replies = value;
+            set
+            {
+                _replies = value;
+                OnPropertyChanged(nameof(Replies));
+            }
         }
 
         private bool _collapsed = false;
@@ -44,6 +51,7 @@ namespace Carpeddit.App.Models
             {
                 _collapsed = value;
                 OriginalComment.Collapsed = value;
+                OnPropertyChanged(nameof(Collapsed));
             }
         }
 
@@ -55,6 +63,55 @@ namespace Carpeddit.App.Models
         {
             get => _isTopLevel;
             set => _isTopLevel = value;
+        }
+
+        public Thickness Thickn => Replies.Count > 0 ? new(-10, 0, 0, 0) : (IsTopLevel ? new(-30, 0, 0, 0) : new(-10, 0, 0, 0));
+
+        public string VoteRatio
+        {
+            get
+            {
+                return FormatNumber(OriginalComment.UpVotes - OriginalComment.DownVotes);
+            }
+            private set
+            {
+                OnPropertyChanged(nameof(VoteRatio));
+            }
+        }
+
+        public int RawVoteRatio
+        {
+            get
+            {
+                return OriginalComment.UpVotes - OriginalComment.DownVotes;
+            }
+            set
+            {
+                VoteRatio = FormatNumber(value);
+                OnPropertyChanged(nameof(RawVoteRatio));
+            }
+        }
+
+        public static string FormatNumber(long num)
+        {
+            if (num >= 100000000)
+            {
+                return (num / 1000000D).ToString("0.#M");
+            }
+            if (num >= 1000000)
+            {
+                return (num / 1000000D).ToString("0.##M");
+            }
+            if (num >= 100000)
+            {
+                return (num / 1000D).ToString("0.#k");
+            }
+            if (num >= 10000)
+            {
+                return (num / 1000D).ToString("0.##k");
+            }
+
+            return num.ToString("#,0");
         }
 
         public Task<ObservableCollection<CommentViewModel>> GetRepliesAsync(bool addToRepliesList = false)
@@ -84,57 +141,6 @@ namespace Carpeddit.App.Models
                     }
 
                     currentCommentVm = commentVm;
-                }
-
-                return comments;
-            });
-        }
-
-        public Task<ObservableCollection<CommentViewModel>> GetRepliesAsync(CommentViewModel comment)
-        {
-            return Task.Run(() =>
-            {
-                ObservableCollection<CommentViewModel> comments = new();
-
-                // Loop 4 levels deep to find the replies.
-                foreach (Comment comment1 in comment.OriginalComment.Replies)
-                {
-                    CommentViewModel comment1Vm = new()
-                    {
-                        OriginalComment = comment1
-                    };
-
-                    comments.Add(comment1Vm);
-
-                    foreach (Comment comment2 in comment1.Replies)
-                    {
-                        CommentViewModel comment2Vm = new()
-                        {
-                            OriginalComment = comment2
-                        };
-
-                        comment1Vm.Replies.Add(comment2Vm);
-
-                        foreach (Comment comment3 in comment2.Replies)
-                        {
-                            CommentViewModel comment3Vm = new()
-                            {
-                                OriginalComment = comment3
-                            };
-
-                            comment2Vm.Replies.Add(comment2Vm);
-
-                            foreach (Comment comment4 in comment3.Replies)
-                            {
-                                CommentViewModel comment4Vm = new()
-                                {
-                                    OriginalComment = comment4
-                                };
-
-                                comment3Vm.Replies.Add(comment2Vm);
-                            }
-                        }
-                    }
                 }
 
                 return comments;

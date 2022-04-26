@@ -26,7 +26,7 @@
                 IsHitTestVisible="True"
                 Background="Transparent"
                 Canvas.ZIndex="1" 
-                Padding="20,0,290,0">
+                Padding="20,0,0,0">
             <StackPanel Orientation="Horizontal">
                 <Image x:Name="AppFontIcon"
                          HorizontalAlignment="Left" 
@@ -92,20 +92,29 @@
                     </StackPanel>
                 </Grid>
 
+                <muxc:ProgressRing IsActive="True" x:Name="CommentProgress" />
+
                 <muxc:TreeView x:Name="CommentsTree" MaxWidth="1200">
                     <muxc:TreeView.ItemTemplate>
                         <DataTemplate x:DataType="viewmodels:CommentViewModel">
                             <muxc:TreeViewItem IsExpanded="{x:Bind Collapsed, Mode=TwoWay, Converter={StaticResource InvertBoolConv}}" ItemsSource="{x:Bind Replies}">
                                 <muxc:TreeViewItem.Content>
-                                    <Grid>
+                                    <Grid Margin="{x:Bind Thickn}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="30" />
+                                            <ColumnDefinition Width="40" />
                                             <ColumnDefinition />
                                         </Grid.ColumnDefinitions>
 
                                         <Border Width="1" Padding="0,0,30,0" Background="{StaticResource AppBarSeparatorForegroundThemeBrush}" />
 
-                                        <StackPanel Grid.Column="1" Spacing="5">
+                                        <StackPanel Grid.Column="1" Spacing="3">
+                                            <Button Content="u" />
+                                            <TextBlock TextAlignment="Center" Margin="-7,0,0,0" HorizontalAlignment="Center" Text="{x:Bind VoteRatio}" />
+                                            <Button Content="d" />
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2" Spacing="5">
                                             <TextBlock>
                                                 By <Hyperlink>u/<Run Text="{x:Bind OriginalComment.Author}" /></Hyperlink>
                                             </TextBlock>
