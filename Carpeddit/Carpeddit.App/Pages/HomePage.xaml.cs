@@ -137,8 +137,6 @@ namespace Carpeddit.App.Pages
                     CommentsCount = post.Comments.GetComments().Count
                 };
 
-                _ = vm.CommentsCount;
-
                 postViews.Add(vm);
             }
 
