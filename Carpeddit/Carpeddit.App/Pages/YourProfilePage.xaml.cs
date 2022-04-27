@@ -1,33 +1,21 @@
 ﻿using Carpeddit.App.Collections;
 using Carpeddit.App.Models;
 using Reddit.Controllers;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Carpeddit.App.Pages
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class YourProfilePage : Page
     {
         private BulkConcurrentObservableCollection<PostViewModel> posts;
+        private User user = App.RedditClient.Account.Me;
 
         public YourProfilePage()
         {
@@ -35,6 +23,19 @@ namespace Carpeddit.App.Pages
 
             posts = new();
             Loaded += Page_Loaded;
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            if (e.Parameter is Account account)
+            {
+                user = account.Me;
+            } else if (e.Parameter is User _user)
+            {
+                user = _user;
+            }
         }
 
         private async void UpvoteButton_Click(object sender, RoutedEventArgs e)
@@ -102,7 +103,13 @@ namespace Carpeddit.App.Pages
         {
             Loaded -= Page_Loaded;
 
-
+            if (user != App.RedditClient.Account.Me)
+            {
+                FloatingSplit.Visibility = Visibility.Collapsed;
+            } else
+            {
+                FloatingSplit.Visibility = Visibility.Visible;
+            }
 
             LoadMoreButton.Visibility = Visibility.Collapsed;
             ProgressR.Visibility = Visibility.Visible;
@@ -122,7 +129,7 @@ namespace Carpeddit.App.Pages
 
         private async Task<ObservableCollection<PostViewModel>> GetPostsAsync(string after = "", int limit = 13, string before = "")
         {
-            List<Post> frontpage = App.RedditClient.Account.Me.GetPostHistory(limit: 13, after: after, before: before);
+            List<Post> frontpage = user.GetPostHistory(limit: 13, after: after, before: before);
             ObservableCollection<PostViewModel> postViews = new();
 
             foreach (Post post in frontpage)

@@ -166,5 +166,14 @@ namespace Carpeddit.App.Pages
                 rootFrame.Navigate(typeof(PostDetailsPage), post);
             }
         }
+
+        private void UserHyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
+        {
+            string text = (sender.Inlines[1] as Windows.UI.Xaml.Documents.Run).Text;
+            if (!text.Contains("[deleted]"))
+            {
+                Frame.Navigate(typeof(YourProfilePage), App.RedditClient.SearchUsers(new Reddit.Inputs.Search.SearchGetSearchInput(text)).FirstOrDefault(u => u.Name.Contains(text)));
+            }
+        }
     }
 }

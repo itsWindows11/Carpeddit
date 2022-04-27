@@ -230,26 +230,54 @@ namespace Carpeddit.App
             {
                 var item = _pages.FirstOrDefault(p => p.Page == e.SourcePageType);
 
-                try
+                if (e.Content is YourProfilePage)
                 {
-                    NavView.SelectedItem = NavView.MenuItems
-                    .OfType<muxc.NavigationViewItem>()
-                    .First(n => n.Tag.Equals(item.Tag));
-                } catch (InvalidOperationException)
+                    if (e.Parameter == null)
+                    {
+                        try
+                        {
+                            NavView.SelectedItem = NavView.MenuItems
+                            .OfType<muxc.NavigationViewItem>()
+                            .First(n => n.Tag.Equals(item.Tag));
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            try
+                            {
+                                NavView.SelectedItem = NavView.FooterMenuItems
+                                .OfType<muxc.NavigationViewItem>()
+                                .First(n => n.Tag.Equals(item.Tag));
+                            }
+                            catch (InvalidOperationException)
+                            {
+                                Debug.WriteLine("Cannot navigate...");
+                            }
+                        }
+                    }
+                } else
                 {
                     try
                     {
-                        NavView.SelectedItem = NavView.FooterMenuItems
+                        NavView.SelectedItem = NavView.MenuItems
                         .OfType<muxc.NavigationViewItem>()
                         .First(n => n.Tag.Equals(item.Tag));
                     }
                     catch (InvalidOperationException)
                     {
-                        Debug.WriteLine("Cannot navigate...");
+                        try
+                        {
+                            NavView.SelectedItem = NavView.FooterMenuItems
+                            .OfType<muxc.NavigationViewItem>()
+                            .First(n => n.Tag.Equals(item.Tag));
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            Debug.WriteLine("Cannot navigate...");
+                        }
                     }
                 }
 
-                NavView.Header = (((muxc.NavigationViewItem)NavView.SelectedItem)?.Tag.ToString() == "your_profile") ? "Your profile" : ((muxc.NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
+                NavView.Header = (((muxc.NavigationViewItem)NavView.SelectedItem)?.Tag.ToString() == "your_profile") ? (e.Parameter == null ? "Your profile" : "Profile") : ((muxc.NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
             }
         }
 
