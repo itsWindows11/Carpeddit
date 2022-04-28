@@ -1,0 +1,60 @@
+﻿<Page
+    x:Class="Carpeddit.App.Pages.SearchResultsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Carpeddit.App.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:reddit="using:Reddit.Controllers"
+    mc:Ignorable="d"
+    d:RequestedTheme="Dark">
+
+    <Grid RowSpacing="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        
+        <muxc:NavigationView ItemInvoked="NavigationView_ItemInvoked"
+                             PaneDisplayMode="Top"
+                             IsSettingsVisible="False"
+                             SelectedItem="{x:Bind PostsItem}"
+                             IsTabStop="False"
+                             IsBackButtonVisible="Collapsed">
+            <muxc:NavigationView.MenuItems>
+                <muxc:NavigationViewItem x:Name="PostsItem" Tag="posts" Content="Posts" />
+                <muxc:NavigationViewItem Tag="communities" Content="Communities" />
+                <muxc:NavigationViewItem Tag="people" Content="People" />
+            </muxc:NavigationView.MenuItems>
+        </muxc:NavigationView>
+
+        <Grid Grid.Row="1">
+            <muxc:ProgressRing IsActive="True" Visibility="Collapsed" x:Name="LoadingProgress" />
+
+            <ListView Margin="-56,0" Padding="56,0" x:Name="PostsList">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="reddit:Post">
+                        <TextBlock Text="{x:Bind Title}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <ListView Margin="-56,0" Padding="56,0" x:Name="SubredditsList" Visibility="Collapsed">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="reddit:Subreddit">
+                        <TextBlock Text="{x:Bind Name}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <ListView Margin="-56,0" Padding="56,0" x:Name="PeopleList" Visibility="Collapsed">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="reddit:User">
+                        <TextBlock Text="{x:Bind Name}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Grid>
+</Page>
