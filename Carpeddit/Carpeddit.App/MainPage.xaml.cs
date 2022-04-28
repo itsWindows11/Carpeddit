@@ -277,7 +277,15 @@ namespace Carpeddit.App
                     }
                 }
 
-                NavView.Header = (((muxc.NavigationViewItem)NavView.SelectedItem)?.Tag.ToString() == "your_profile") ? (e.Parameter == null ? "Your profile" : "Profile") : ((muxc.NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
+                if (((muxc.NavigationViewItem)NavView.SelectedItem)?.Tag.ToString() == "your_profile") {
+                    NavView.Header = (e.Parameter == null ? "Your profile" : "Profile");
+                } else if (ContentFrame.SourcePageType == typeof(SearchResultsPage))
+                {
+                    NavView.Header = "Search results";
+                } else
+                {
+                    NavView.Header = ((muxc.NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
+                }
             }
         }
 
@@ -302,6 +310,11 @@ namespace Carpeddit.App
             {
                 rootFrame.Navigate(typeof(LoginPage));
             }
+        }
+
+        private void NavViewSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            ContentFrame.Navigate(typeof(SearchResultsPage), sender.Text);
         }
     }
 }
