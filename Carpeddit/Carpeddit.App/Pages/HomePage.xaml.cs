@@ -137,8 +137,6 @@ namespace Carpeddit.App.Pages
                     CommentsCount = post.Comments.GetComments().Count
                 };
 
-                _ = vm.CommentsCount;
-
                 postViews.Add(vm);
             }
 
@@ -166,6 +164,15 @@ namespace Carpeddit.App.Pages
             if (Window.Current.Content is Frame rootFrame && sender is TextBlock text && text.Tag is PostViewModel post)
             {
                 rootFrame.Navigate(typeof(PostDetailsPage), post);
+            }
+        }
+
+        private void UserHyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
+        {
+            string text = (sender.Inlines[1] as Windows.UI.Xaml.Documents.Run).Text;
+            if (!text.Contains("[deleted]"))
+            {
+                Frame.Navigate(typeof(YourProfilePage), App.RedditClient.SearchUsers(new Reddit.Inputs.Search.SearchGetSearchInput(text)).FirstOrDefault(u => u.Name.Contains(text)));
             }
         }
     }
