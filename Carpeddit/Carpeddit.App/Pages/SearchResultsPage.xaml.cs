@@ -1,4 +1,5 @@
-﻿using Reddit.Controllers;
+﻿using Carpeddit.App.Models;
+using Reddit.Controllers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -46,7 +47,25 @@ namespace Carpeddit.App.Pages
             List<User> users = await GetUsersAsync();
             List<Subreddit> subreddits = await GetSubredditsAsync();
 
-            PostsList.ItemsSource = posts;
+            List<PostViewModel> posts2 = new();
+
+            foreach (Post post in posts)
+            {
+                PostViewModel post1 = new()
+                {
+                    Post = post,
+                    Title = post.Title,
+                    Description = GetPostDesc(post),
+                    Created = post.Created,
+                    Subreddit = post.Subreddit,
+                    Author = post.Author,
+                    CommentsCount = post.Comments.GetComments().Count
+                };
+
+                posts2.Add(post1);
+            }
+
+            PostsList.ItemsSource = posts2;
             PeopleList.ItemsSource = users;
             SubredditsList.ItemsSource = subreddits;
 
@@ -123,6 +142,70 @@ namespace Carpeddit.App.Pages
                         SubredditsList.Visibility = Visibility.Collapsed;
                         break;
                 }
+            }
+        }
+
+        private string GetPostDesc(Post post)
+        {
+            if (post is LinkPost linkPost)
+            {
+                return linkPost.URL;
+            }
+            else if (post is SelfPost selfPost)
+            {
+                return selfPost.SelfText;
+            }
+
+            return "No content";
+        }
+
+        private void Title_PointerReleased(object sender, PointerRoutedEventArgs e)
+        {
+            if (Window.Current.Content is Frame rootFrame && sender is TextBlock text && text.Tag is PostViewModel post)
+            {
+                rootFrame.Navigate(typeof(PostDetailsPage), post);
+            }
+        }
+
+        private async void UpvoteButton_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleButton toggle = sender as ToggleButton;
+            PostViewModel post = toggle.Tag as PostViewModel;
+
+            if (toggle.IsChecked.Value)
+            {
+                await post.Post.UpvoteAsync();
+                //post.RawVoteRatio = (post.Post.UpVotes - post.Post.DownVotes) + 1;
+                post.Upvoted = true;
+                post.Downvoted = false;
+            }
+            else
+            {
+                await post.Post.UnvoteAsync();
+                //post.RawVoteRatio = post.Post.UpVotes - post.Post.DownVotes;
+                post.Upvoted = false;
+                post.Downvoted = false;
+            }
+        }
+
+        private async void DownvoteButton_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleButton toggle = sender as ToggleButton;
+            PostViewModel post = toggle.Tag as PostViewModel;
+
+            if (toggle.IsChecked.Value)
+            {
+                await post.Post.DownvoteAsync();
+                //post.RawVoteRatio = (post.Post.UpVotes - post.Post.DownVotes) - 1;
+                post.Upvoted = false;
+                post.Downvoted = true;
+            }
+            else
+            {
+                await post.Post.UnvoteAsync();
+                //post.RawVoteRatio = post.Post.UpVotes - post.Post.DownVotes;
+                post.Upvoted = false;
+                post.Downvoted = false;
             }
         }
     }
