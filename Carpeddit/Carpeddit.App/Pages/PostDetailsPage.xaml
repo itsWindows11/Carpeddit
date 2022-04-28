@@ -94,7 +94,7 @@
 
                 <muxc:ProgressRing IsActive="True" x:Name="CommentProgress" />
 
-                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" FontSize="16" Text="{x:Bind Post.CommentsCountInUI}" TextWrapping="WrapWholeWords" Margin="0,5" />
+                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" MaxWidth="1200" FontSize="16" Text="{x:Bind Post.CommentsCountInUI}" TextWrapping="WrapWholeWords" Margin="0,5" />
 
                 <muxc:TreeView x:Name="CommentsTree" MaxWidth="1200" Margin="0,0,0,12">
                     <muxc:TreeView.ItemTemplate>
