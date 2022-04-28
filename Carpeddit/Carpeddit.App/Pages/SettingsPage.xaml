@@ -9,10 +9,15 @@
 
     <ScrollViewer Padding="0,10,0,0">
         <StackPanel Orientation="Vertical" Spacing="10">
-
             <uc:SettingsBlockControl Title="Show account button" Description="Show account profile on titlebar (Note: may get overriden by size changes)">
                 <ToggleSwitch IsOn="{x:Bind local:App.SViewModel.ShowAccountBtnInTitleBar, Mode=TwoWay}" Margin="0,0,-70,0" />
             </uc:SettingsBlockControl>
+
+            <TextBlock Text="About" FontWeight="SemiBold" />
+
+            <TextBlock x:Name="VersionTextBlock" d:Text="Carpeddit, version 0.0.0.0" />
+
+            <TextBlock Text="© 2022 itsWindows11." />
         </StackPanel>
     </ScrollViewer>
 </Page>
