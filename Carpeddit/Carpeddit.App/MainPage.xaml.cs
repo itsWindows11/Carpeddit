@@ -230,7 +230,7 @@ namespace Carpeddit.App
             {
                 var item = _pages.FirstOrDefault(p => p.Page == e.SourcePageType);
 
-                if (e.Content is YourProfilePage)
+                if (ContentFrame.SourcePageType == typeof(YourProfilePage))
                 {
                     if (e.Parameter == null)
                     {
@@ -277,8 +277,8 @@ namespace Carpeddit.App
                     }
                 }
 
-                if (((muxc.NavigationViewItem)NavView.SelectedItem)?.Tag.ToString() == "your_profile") {
-                    NavView.Header = (e.Parameter == null ? "Your profile" : "Profile");
+                if (ContentFrame.SourcePageType == typeof(YourProfilePage)) {
+                    NavView.Header = e.Parameter == null ? "Your profile" : "Profile";
                 } else if (ContentFrame.SourcePageType == typeof(SearchResultsPage))
                 {
                     NavView.Header = "Search results";
