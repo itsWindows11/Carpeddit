@@ -15,7 +15,7 @@ namespace Carpeddit.App.Pages
 
         private void SettingsPageLoaded(object sender, RoutedEventArgs e)
         {
-            VersionTextBlock.Text = $"Carpeddit, version ${string.Format("{0}.{1}.{2}.{3}", Package.Current.Id.Version.Major, Package.Current.Id.Version.Minor, Package.Current.Id.Version.Build, Package.Current.Id.Version.Revision)}";
+            VersionTextBlock.Text = $"Carpeddit, version {string.Format("{0}.{1}.{2}.{3}", Package.Current.Id.Version.Major, Package.Current.Id.Version.Minor, Package.Current.Id.Version.Build, Package.Current.Id.Version.Revision)}";
         }
     }
 }
