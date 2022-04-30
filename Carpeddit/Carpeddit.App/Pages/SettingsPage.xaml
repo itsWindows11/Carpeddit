@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Carpeddit.App"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:uc="using:Carpeddit.App.UserControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:uc="using:Carpeddit.App.UserControls" xmlns:windowsui="using:Windows.UI"
     mc:Ignorable="d">
 
     <ScrollViewer Padding="0,10,0,0">
@@ -12,6 +12,33 @@
 
             <uc:SettingsBlockControl Title="Show account button" Description="Show account profile on titlebar (Note: may get overriden by size changes)">
                 <ToggleSwitch IsOn="{x:Bind local:App.SViewModel.ShowAccountBtnInTitleBar, Mode=TwoWay}" Margin="0,0,-70,0" />
+            </uc:SettingsBlockControl>
+
+            <uc:SettingsBlockControl Title="Window tint color" Description="Show a color overlay behind the app content.">
+                <ComboBox SelectedIndex="{x:Bind local:App.SViewModel.ColorMode, Mode=TwoWay}">
+                    <ComboBoxItem Content="No color"     />
+                    <ComboBoxItem Content="Accent color" />
+                    <ComboBoxItem Content="Custom color" />
+                </ComboBox>
+
+                <uc:SettingsBlockControl.ExpandableContent>
+                    <StackPanel Spacing="12" Padding="12">
+                        <StackPanel x:Name="ColorListStack" Spacing="12">
+                            <TextBlock Text="Colors" />
+                            <GridView x:Name="GridViewColorList" SelectionChanged="GridViewColorList_SelectionChanged" ItemsSource="{x:Bind local:App.SViewModel.TintColorsList}">
+                                <GridView.ItemTemplate>
+                                    <DataTemplate x:DataType="windowsui:Color">
+                                        <Border PointerReleased="Border_PointerReleased" CornerRadius="5" Tag="{x:Bind}" Width="45" Height="45">
+                                            <Border.Background>
+                                                <SolidColorBrush Color="{x:Bind}" />
+                                            </Border.Background>
+                                        </Border>
+                                    </DataTemplate>
+                                </GridView.ItemTemplate>
+                            </GridView>
+                        </StackPanel>
+                    </StackPanel>                    
+                </uc:SettingsBlockControl.ExpandableContent>
             </uc:SettingsBlockControl>
         </StackPanel>
     </ScrollViewer>
