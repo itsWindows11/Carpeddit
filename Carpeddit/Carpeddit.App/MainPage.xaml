@@ -92,7 +92,7 @@
             </muxc:NavigationView.MenuItems>
 
             <muxc:NavigationView.AutoSuggestBox>
-                <AutoSuggestBox x:Name="NavViewSearchBox" PlaceholderText="Search..." Width="288" QueryIcon="Find"/>
+                <AutoSuggestBox x:Name="NavViewSearchBox" QuerySubmitted="NavViewSearchBox_QuerySubmitted" PlaceholderText="Search..." Width="288" QueryIcon="Find"/>
             </muxc:NavigationView.AutoSuggestBox>
 
                 <Frame x:Name="ContentFrame" Padding="56,0,56,0"

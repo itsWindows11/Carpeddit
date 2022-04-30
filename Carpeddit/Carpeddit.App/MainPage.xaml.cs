@@ -262,26 +262,62 @@ namespace Carpeddit.App
             {
                 var item = _pages.FirstOrDefault(p => p.Page == e.SourcePageType);
 
-                try
+                if (ContentFrame.SourcePageType == typeof(YourProfilePage))
                 {
-                    NavView.SelectedItem = NavView.MenuItems
-                    .OfType<muxc.NavigationViewItem>()
-                    .First(n => n.Tag.Equals(item.Tag));
-                } catch (InvalidOperationException)
+                    if (e.Parameter == null)
+                    {
+                        try
+                        {
+                            NavView.SelectedItem = NavView.MenuItems
+                            .OfType<muxc.NavigationViewItem>()
+                            .First(n => n.Tag.Equals(item.Tag));
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            try
+                            {
+                                NavView.SelectedItem = NavView.FooterMenuItems
+                                .OfType<muxc.NavigationViewItem>()
+                                .First(n => n.Tag.Equals(item.Tag));
+                            }
+                            catch (InvalidOperationException)
+                            {
+                                Debug.WriteLine("Cannot navigate...");
+                            }
+                        }
+                    }
+                } else
                 {
                     try
                     {
-                        NavView.SelectedItem = NavView.FooterMenuItems
+                        NavView.SelectedItem = NavView.MenuItems
                         .OfType<muxc.NavigationViewItem>()
                         .First(n => n.Tag.Equals(item.Tag));
                     }
                     catch (InvalidOperationException)
                     {
-                        Debug.WriteLine("Cannot navigate...");
+                        try
+                        {
+                            NavView.SelectedItem = NavView.FooterMenuItems
+                            .OfType<muxc.NavigationViewItem>()
+                            .First(n => n.Tag.Equals(item.Tag));
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            Debug.WriteLine("Cannot navigate...");
+                        }
                     }
                 }
 
-                NavView.Header = (((muxc.NavigationViewItem)NavView.SelectedItem)?.Tag.ToString() == "your_profile") ? "Your profile" : ((muxc.NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
+                if (ContentFrame.SourcePageType == typeof(YourProfilePage)) {
+                    NavView.Header = e.Parameter == null ? "Your profile" : "Profile";
+                } else if (ContentFrame.SourcePageType == typeof(SearchResultsPage))
+                {
+                    NavView.Header = "Search results";
+                } else
+                {
+                    NavView.Header = ((muxc.NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
+                }
             }
         }
 
@@ -306,6 +342,11 @@ namespace Carpeddit.App
             {
                 rootFrame.Navigate(typeof(LoginPage));
             }
+        }
+
+        private void NavViewSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            ContentFrame.Navigate(typeof(SearchResultsPage), sender.Text);
         }
     }
 }
