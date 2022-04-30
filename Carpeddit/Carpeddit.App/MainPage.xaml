@@ -16,6 +16,9 @@
     </Page.Resources>
 
     <Grid>
+        <Grid.Background>
+            <SolidColorBrush x:Name="ColorBrushBg" Opacity="0.1" />
+        </Grid.Background>
         <Border x:Name="AppTitleBar"
                 IsHitTestVisible="True"
                 VerticalAlignment="Top"

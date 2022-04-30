@@ -9,7 +9,7 @@
   <Identity
     Name="8cfaee93-c15a-4492-8ce0-248785a6044f"
     Publisher="CN=loremipsum"
-    Version="1.0.0.0" />
+    Version="0.1.2.0" />
 
   <mp:PhoneIdentity PhoneProductId="5d029827-5d1c-4317-84ed-63c9f118b844" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 

@@ -110,6 +110,38 @@ namespace Carpeddit.App
             Window.Current.CoreWindow.PointerPressed += CoreWindow_PointerPressed;
 
             SystemNavigationManager.GetForCurrentView().BackRequested += System_BackRequested;
+
+            switch (App.SViewModel.ColorMode)
+            {
+                case 0:
+                    ColorBrushBg.Color = Colors.Transparent;
+                    break;
+                case 1:
+                    ColorBrushBg.Color = (Color)Resources["SystemAccentColor"];
+                    break;
+                case 2:
+                    ColorBrushBg.Color = App.SViewModel.TintColorsList[App.SViewModel.TintColor];
+                    break;
+            }
+
+            App.SViewModel.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(App.SViewModel.TintColor) || e.PropertyName == nameof(App.SViewModel.ColorMode))
+                {
+                    switch (App.SViewModel.ColorMode)
+                    {
+                        case 0:
+                            ColorBrushBg.Color = Colors.Transparent;
+                            break;
+                        case 1:
+                            ColorBrushBg.Color = (Color)Resources["SystemAccentColor"];
+                            break;
+                        case 2:
+                            ColorBrushBg.Color = App.SViewModel.TintColorsList[App.SViewModel.TintColor];
+                            break;
+                    }
+                }
+            };
         }
 
         private void NavView_ItemInvoked(muxc.NavigationView sender,
