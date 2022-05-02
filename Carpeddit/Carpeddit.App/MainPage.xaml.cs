@@ -31,7 +31,7 @@ namespace Carpeddit.App
         {
             InitializeComponent();
 
-            NavigationCacheMode = NavigationCacheMode.Required;
+            NavigationCacheMode = NavigationCacheMode.Enabled;
 
             var appViewTitleBar = ApplicationView.GetForCurrentView().TitleBar;
 
@@ -53,6 +53,25 @@ namespace Carpeddit.App
                 Debug.WriteLine(AccountController.GetImageUrl(App.RedditClient.Account.Me.UserData));
                 Pfp.Source = new BitmapImage(new Uri(AccountController.GetImageUrl(App.RedditClient.Account.Me.UserData), UriKind.Absolute));
             }
+
+            App.SViewModel.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(App.SViewModel.TintColor) || e.PropertyName == nameof(App.SViewModel.ColorMode))
+                {
+                    switch (App.SViewModel.ColorMode)
+                    {
+                        case 0:
+                            ColorBrushBg.Color = Colors.Transparent;
+                            break;
+                        case 1:
+                            ColorBrushBg.Color = (Color)Resources["SystemAccentColor"];
+                            break;
+                        case 2:
+                            ColorBrushBg.Color = App.SViewModel.TintColorsList[App.SViewModel.TintColor];
+                            break;
+                    }
+                }
+            };
         }
 
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
@@ -123,25 +142,6 @@ namespace Carpeddit.App
                     ColorBrushBg.Color = App.SViewModel.TintColorsList[App.SViewModel.TintColor];
                     break;
             }
-
-            App.SViewModel.PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == nameof(App.SViewModel.TintColor) || e.PropertyName == nameof(App.SViewModel.ColorMode))
-                {
-                    switch (App.SViewModel.ColorMode)
-                    {
-                        case 0:
-                            ColorBrushBg.Color = Colors.Transparent;
-                            break;
-                        case 1:
-                            ColorBrushBg.Color = (Color)Resources["SystemAccentColor"];
-                            break;
-                        case 2:
-                            ColorBrushBg.Color = App.SViewModel.TintColorsList[App.SViewModel.TintColor];
-                            break;
-                    }
-                }
-            };
         }
 
         private void NavView_ItemInvoked(muxc.NavigationView sender,
