@@ -50,6 +50,19 @@ namespace Carpeddit.App.Pages
 
         private void PostDetailsPage_Loaded(object sender, RoutedEventArgs e)
         {
+            switch (App.SViewModel.ColorMode)
+            {
+                case 0:
+                    ColorBrushBg.Color = Colors.Transparent;
+                    break;
+                case 1:
+                    ColorBrushBg.Color = (Color)Resources["SystemAccentColor"];
+                    break;
+                case 2:
+                    ColorBrushBg.Color = App.SViewModel.TintColorsList[App.SViewModel.TintColor];
+                    break;
+            }
+
             CommentProgress.Visibility = Visibility.Visible;
         }
 

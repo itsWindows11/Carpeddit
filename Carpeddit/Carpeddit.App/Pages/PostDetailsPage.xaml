@@ -22,6 +22,10 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
+        <Grid.Background>
+            <SolidColorBrush x:Name="ColorBrushBg" Opacity="0.1" />
+        </Grid.Background>
+
         <Border x:Name="AppTitleBar"
                 IsHitTestVisible="True"
                 Background="Transparent"
