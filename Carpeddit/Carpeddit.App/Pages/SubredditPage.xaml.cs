@@ -29,6 +29,18 @@ namespace Carpeddit.App.Pages
 
             coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
             coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged;
+
+            Loaded += SubredditPage_Loaded;
+        }
+
+        private void SubredditPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(Subreddit.HeaderTitle) || Subreddit.HeaderTitle == Subreddit.Name)
+            {
+                SubredditFriendlyName.Visibility = Visibility.Collapsed;
+                SubredditName.Style = Resources["SubtitleTextBlockStyle"] as Style;
+                SubredditName.FontSize = 20;
+            }
         }
 
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)

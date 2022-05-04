@@ -7,7 +7,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:pages="using:Carpeddit.App.Pages"
-    d:DataContext="{d:DesignInstance Type=pages:SubredditPage}"
     d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
@@ -71,15 +70,21 @@
                     </StackPanel>
                 </Border>
 
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    FontWeight="SemiBold"
-                    Style="{StaticResource SubtitleTextBlockStyle}"
-                    Text="{Binding Subreddit.HeaderTitle}" />
+                <StackPanel Spacing="8">
+                    <TextBlock
+                        x:Name="SubredditFriendlyName"
+                        HorizontalAlignment="Center"
+                        FontWeight="SemiBold"
+                        Style="{StaticResource SubtitleTextBlockStyle}"
+                        Text="{x:Bind Subreddit.HeaderTitle}" />
 
-                <TextBlock HorizontalAlignment="Center" FontSize="12">
-                    r/<Run Text="{x:Bind Subreddit.Name}" />
-                </TextBlock>
+                    <TextBlock
+                        x:Name="SubredditName"
+                        HorizontalAlignment="Center"
+                        FontSize="12">
+                        r/<Run Text="{x:Bind Subreddit.Name}" />
+                    </TextBlock>
+                </StackPanel>
             </StackPanel>
         </ScrollViewer>
 
