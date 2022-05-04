@@ -156,6 +156,9 @@
     <Compile Include="Pages\MailboxPage.xaml.cs">
       <DependentUpon>MailboxPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\OfflinePage.xaml.cs">
+      <DependentUpon>OfflinePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\PopularPostsPage.xaml.cs">
       <DependentUpon>PopularPostsPage.xaml</DependentUpon>
     </Compile>
@@ -224,6 +227,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\MailboxPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\OfflinePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
