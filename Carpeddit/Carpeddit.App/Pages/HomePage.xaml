@@ -55,7 +55,7 @@
 
                         <StackPanel Orientation="Vertical" Grid.Column="1">
                             <TextBlock TextWrapping="WrapWholeWords">
-                                <Run Text="By" /> <Hyperlink Click="UserHyperlink_Click">u/<Run Text="{x:Bind Author}" /></Hyperlink> • Posted <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Post.Created, x:True)}" /> in <Hyperlink>r/<Run Text="{x:Bind Subreddit}" /></Hyperlink>
+                                <Run Text="By" /> <Hyperlink Click="UserHyperlink_Click">u/<Run Text="{x:Bind Author}" /></Hyperlink> • Posted <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Post.Created, x:True)}" /> in <Hyperlink Click="SubredditHyperlink_Click">r/<Run Text="{x:Bind Subreddit}" /></Hyperlink>
                             </TextBlock>
                             <TextBlock Tag="{x:Bind}" Text="{x:Bind Title}" x:Phase="2" PointerReleased="Title_PointerReleased" Style="{StaticResource SubtitleTextBlockStyle}" TextWrapping="WrapWholeWords" />
 

@@ -175,5 +175,14 @@ namespace Carpeddit.App.Pages
                 Frame.Navigate(typeof(YourProfilePage), App.RedditClient.SearchUsers(new Reddit.Inputs.Search.SearchGetSearchInput(text)).FirstOrDefault(u => u.Name.Contains(text)));
             }
         }
+
+        private void SubredditHyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
+        {
+            string text = (sender.Inlines[1] as Windows.UI.Xaml.Documents.Run).Text;
+            if (Window.Current.Content is Frame rootFrame)
+            {
+                rootFrame.Navigate(typeof(SubredditPage), App.RedditClient.SearchSubreddits(new Reddit.Inputs.Search.SearchGetSearchInput(text)).FirstOrDefault(s => s.Name.Contains(text)));
+            }
+        }
     }
 }

@@ -134,6 +134,7 @@
     <Compile Include="Converters\InvertBoolConverter.cs" />
     <Compile Include="Converters\DecimalPointToPercentageConverter.cs" />
     <Compile Include="Converters\SettingsConverters.cs" />
+    <Compile Include="Converters\StringToUriConverter.cs" />
     <Compile Include="Helpers\PostHelpers.cs" />
     <Compile Include="LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
@@ -167,6 +168,9 @@
     <Compile Include="Pages\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\SubredditPage.xaml.cs">
+      <DependentUpon>SubredditPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\YourProfilePage.xaml.cs">
       <DependentUpon>YourProfilePage.xaml</DependentUpon>
     </Compile>
@@ -188,6 +192,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Package.StoreAssociation.xml" />
+    <Content Include="Assets\DefaultSubredditIcon.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -235,6 +240,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\SettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SubredditPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
