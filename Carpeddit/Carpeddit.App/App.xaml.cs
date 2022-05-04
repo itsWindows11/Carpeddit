@@ -14,6 +14,8 @@ using Windows.UI.Xaml.Navigation;
 using Reddit;
 using Carpeddit.App.Other;
 using System.Text;
+using Windows.Networking.Connectivity;
+using Carpeddit.App.Pages;
 
 namespace Carpeddit.App
 {
@@ -112,7 +114,22 @@ namespace Carpeddit.App
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
-                    rootFrame.Navigate((CurrentAccount != null && CurrentAccount.LoggedIn) ? typeof(MainPage) : typeof(LoginPage), e.Arguments);
+
+                    bool isOnline;
+
+                    try
+                    {
+                        _ = RedditClient.Account.GetMe();
+                        isOnline = true;
+                    } catch (Reddit.Exceptions.RedditNoResponseException e1)
+                    {
+#if DEBUG
+                        Debug.WriteLine(e1);
+#endif
+                        isOnline = false;
+                    }
+
+                    rootFrame.Navigate(isOnline ? ((CurrentAccount != null && CurrentAccount.LoggedIn) ? typeof(MainPage) : typeof(LoginPage)) : typeof(OfflinePage), e.Arguments);
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();
