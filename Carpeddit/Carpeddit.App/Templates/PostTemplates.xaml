@@ -96,4 +96,91 @@
             </StackPanel>
         </Grid>
     </DataTemplate>
+
+    <DataTemplate x:Key="UserPostTemplate" x:DataType="models:PostViewModel">
+        <Grid
+            MaxWidth="1200"
+            Margin="0,4"
+            Padding="6,10,8,10"
+            Background="{StaticResource LayerFillColorDefaultBrush}"
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            BorderThickness="1"
+            ColumnSpacing="10"
+            CornerRadius="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel
+                HorizontalAlignment="Center"
+                Orientation="Vertical"
+                Spacing="5">
+                <ToggleButton
+                    Padding="3"
+                    HorizontalAlignment="Center"
+                    x:Phase="3"
+                    Click="UpvoteButton_Click"
+                    IsChecked="{x:Bind Upvoted, Mode=OneWay}"
+                    Style="{StaticResource TransparentToggleButton}"
+                    Tag="{x:Bind}">
+                    <FontIcon Glyph="&#xE010;" />
+                </ToggleButton>
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    x:Phase="3"
+                    Text="{x:Bind VoteRatio, Mode=OneWay}" />
+                <ToggleButton
+                    Padding="3"
+                    HorizontalAlignment="Center"
+                    x:Phase="3"
+                    Click="DownvoteButton_Click"
+                    IsChecked="{x:Bind Downvoted, Mode=OneWay}"
+                    Style="{StaticResource TransparentToggleButton}"
+                    Tag="{x:Bind}">
+                    <FontIcon Glyph="&#xE019;" />
+                </ToggleButton>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Orientation="Vertical">
+                <TextBlock TextWrapping="WrapWholeWords">
+                    <Run Text="By" /> <Hyperlink Click="UserHyperlink_Click">u/<Run Text="{x:Bind Author}" /></Hyperlink> - Posted <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Post.Created, x:True)}" />
+                </TextBlock>
+
+                <TextBlock
+                    x:Phase="2"
+                    PointerReleased="Title_PointerReleased"
+                    Style="{StaticResource SubtitleTextBlockStyle}"
+                    Tag="{x:Bind}"
+                    Text="{x:Bind Title}"
+                    TextWrapping="WrapWholeWords" />
+
+                <controls:MarkdownTextBlock
+                    Margin="0,5,0,0"
+                    x:Phase="1"
+                    Background="Transparent"
+                    Text="{x:Bind ShortDescription}"
+                    TextWrapping="WrapWholeWords"
+                    LinkClicked="MarkdownLinkClicked" />
+
+                <Image
+                    x:Phase="2"
+                    Source="{x:Bind Image}"
+                    Visibility="{x:Bind HasImage, Converter={StaticResource BoolToVis}}" />
+
+                <StackPanel Orientation="Horizontal" Spacing="4">
+                    <TextBlock Text="{x:Bind CommentsCountInUI}" Margin="0,10,0,3" />
+
+                    <HyperlinkButton Margin="0,0,0,-6" Padding="2">
+                        Share
+                    </HyperlinkButton>
+
+                    <HyperlinkButton Margin="0,0,0,-6" Padding="2">
+                        Save
+                    </HyperlinkButton>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
 </ResourceDictionary>
