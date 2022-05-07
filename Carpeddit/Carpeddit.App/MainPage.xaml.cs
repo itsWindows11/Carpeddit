@@ -25,6 +25,13 @@ namespace Carpeddit.App
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        /// <summary>
+        /// The current main page instance.
+        /// NOTE: should be used carefully or else this might
+        /// throw <see cref="NullReferenceException"/> when trying to access this.
+        /// </summary>
+        public static MainPage Current;
+
         private double NavViewCompactModeThresholdWidth { get => NavView.CompactModeThresholdWidth; }
 
         public MainPage()
@@ -32,6 +39,8 @@ namespace Carpeddit.App
             InitializeComponent();
 
             NavigationCacheMode = NavigationCacheMode.Enabled;
+
+            Current = this;
 
             var appViewTitleBar = ApplicationView.GetForCurrentView().TitleBar;
 

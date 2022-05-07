@@ -30,9 +30,9 @@
                         <Setter Property="Background" Value="Transparent" />
                         <Setter Property="BorderThickness" Value="0" />
                     </Style>
-
-                    <templates:PostTemplates x:Key="PostTemplatesDontUseAsResource" />
                 </ResourceDictionary>
+
+                <templates:PostTemplates />
             </controls:XamlControlsResources.MergedDictionaries>
         </controls:XamlControlsResources>
     </Application.Resources>

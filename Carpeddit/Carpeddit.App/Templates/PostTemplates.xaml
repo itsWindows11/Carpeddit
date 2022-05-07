@@ -2,11 +2,79 @@
     x:Class="Carpeddit.App.Templates.PostTemplates"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Carpeddit.App" xmlns:models="using:Carpeddit.App.Models">
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:helpers="using:Carpeddit.App.Helpers"
+    xmlns:local="using:Carpeddit.App"
+    xmlns:models="using:Carpeddit.App.Models">
 
-    <DataTemplate x:Key="DefaultPostTemplate" x:DataType="models:PostViewModel">
-        <StackPanel>
-            <!-- TODO: Put post template here -->
-        </StackPanel>
+    <DataTemplate x:Key="PlainPostTemplate" x:DataType="models:PostViewModel">
+        <Grid
+            MaxWidth="1200"
+            Margin="0,4"
+            Padding="6,10,8,10"
+            Background="{StaticResource LayerFillColorDefaultBrush}"
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            BorderThickness="1"
+            ColumnSpacing="10"
+            CornerRadius="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel
+                HorizontalAlignment="Center"
+                Orientation="Vertical"
+                Spacing="5">
+                <ToggleButton
+                    Padding="3"
+                    HorizontalAlignment="Center"
+                    x:Phase="3"
+                    Click="UpvoteButton_Click"
+                    IsChecked="{x:Bind Upvoted, Mode=OneWay}"
+                    Style="{StaticResource TransparentToggleButton}"
+                    Tag="{x:Bind}">
+                    <FontIcon Glyph="&#xE010;" />
+                </ToggleButton>
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    x:Phase="3"
+                    Text="{x:Bind VoteRatio, Mode=OneWay}" />
+                <ToggleButton
+                    Padding="3"
+                    HorizontalAlignment="Center"
+                    x:Phase="3"
+                    Click="DownvoteButton_Click"
+                    IsChecked="{x:Bind Downvoted, Mode=OneWay}"
+                    Style="{StaticResource TransparentToggleButton}"
+                    Tag="{x:Bind}">
+                    <FontIcon Glyph="&#xE019;" />
+                </ToggleButton>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Orientation="Vertical">
+                <TextBlock TextWrapping="WrapWholeWords">
+                    <Run Text="By" /> <Hyperlink Click="UserHyperlink_Click">u/<Run Text="{x:Bind Author}" /></Hyperlink> • Posted <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Post.Created, x:True)}" /> in <Hyperlink>r/<Run Text="{x:Bind Subreddit}" /></Hyperlink>
+                </TextBlock>
+                <TextBlock
+                    x:Phase="2"
+                    PointerReleased="Title_PointerReleased"
+                    Style="{StaticResource SubtitleTextBlockStyle}"
+                    Tag="{x:Bind}"
+                    Text="{x:Bind Title}"
+                    TextWrapping="WrapWholeWords" />
+
+                <controls:MarkdownTextBlock
+                    Margin="0,5,0,0"
+                    x:Phase="1"
+                    Background="Transparent"
+                    Text="{x:Bind ShortDescription}"
+                    TextWrapping="WrapWholeWords" />
+
+                <TextBlock Margin="0,10,0,3">
+                    <Run Text="{x:Bind CommentsCountInUI}" /> <Run Text="•" /> <Hyperlink>Share</Hyperlink> <Run Text="•" /> <Hyperlink>Save</Hyperlink> <Run Text="•" /> <Hyperlink>Report</Hyperlink>
+                </TextBlock>
+            </StackPanel>
+        </Grid>
     </DataTemplate>
 </ResourceDictionary>
