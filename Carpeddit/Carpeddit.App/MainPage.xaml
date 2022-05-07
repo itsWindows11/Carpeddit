@@ -95,8 +95,10 @@
                 <AutoSuggestBox x:Name="NavViewSearchBox" QuerySubmitted="NavViewSearchBox_QuerySubmitted" PlaceholderText="Search..." Width="288" QueryIcon="Find"/>
             </muxc:NavigationView.AutoSuggestBox>
 
-                <Frame x:Name="ContentFrame" Padding="56,0,56,0"
-               NavigationFailed="ContentFrame_NavigationFailed">
+                <Frame x:Name="ContentFrame"
+                       Padding="56,0,56,0"
+                       NavigationFailed="ContentFrame_NavigationFailed"
+                       x:FieldModifier="public">
                     <Frame.ContentTransitions>
                         <TransitionCollection>
                             <NavigationThemeTransition />
