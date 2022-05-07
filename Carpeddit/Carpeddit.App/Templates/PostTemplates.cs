@@ -1,6 +1,9 @@
 ﻿using Carpeddit.App.Models;
 using Carpeddit.App.Pages;
+using Microsoft.Toolkit.Uwp.UI.Controls;
+using System;
 using System.Linq;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -19,6 +22,14 @@ namespace Carpeddit.App.Templates
     // Event handlers
     public partial class PostTemplates
     {
+        private async void MarkdownLinkClicked(object sender, LinkClickedEventArgs e)
+        {
+            if (Uri.TryCreate(e.Link, UriKind.Absolute, out Uri link))
+            {
+                await Launcher.LaunchUriAsync(link);
+            }
+        }
+
         private async void UpvoteButton_Click(object sender, RoutedEventArgs e)
         {
             ToggleButton toggle = sender as ToggleButton;
