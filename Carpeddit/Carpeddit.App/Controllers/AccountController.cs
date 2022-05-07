@@ -39,7 +39,7 @@ namespace Carpeddit.App.Controllers
 
         public static Uri GetImageUrlForBind(Reddit.Things.User user)
         {
-            return new Uri(user.IconImg.Replace("&amp;", "&"));
+            return user.IconImg != null ? new Uri(user.IconImg.Replace("&amp;", "&")) : null;
         }
 
         public static async Task LogOutAsync()

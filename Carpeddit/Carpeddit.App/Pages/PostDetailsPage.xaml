@@ -22,6 +22,10 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
+        <Grid.Background>
+            <SolidColorBrush x:Name="ColorBrushBg" Opacity="0.1" />
+        </Grid.Background>
+
         <Border x:Name="AppTitleBar"
                 IsHitTestVisible="True"
                 Background="Transparent"
@@ -43,7 +47,7 @@
             </StackPanel>
         </Border>
 
-        <ScrollViewer Grid.Row="1" Padding="10,0">
+        <ScrollViewer Grid.Row="1" Padding="66,0" Margin="-56,0">
             <StackPanel>
                 <Grid Padding="6,10,8,10"
                       MaxWidth="1200"
@@ -94,7 +98,7 @@
 
                 <muxc:ProgressRing IsActive="True" x:Name="CommentProgress" />
 
-                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" FontSize="16" Text="{x:Bind Post.CommentsCountInUI}" TextWrapping="WrapWholeWords" Margin="0,5" />
+                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" MaxWidth="1200" FontSize="16" Text="{x:Bind Post.CommentsCountInUI}" TextWrapping="WrapWholeWords" Margin="0,5" />
 
                 <muxc:TreeView x:Name="CommentsTree" MaxWidth="1200" Margin="0,0,0,12">
                     <muxc:TreeView.ItemTemplate>

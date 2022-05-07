@@ -1,34 +1,14 @@
-﻿using Carpeddit.App.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.ApplicationModel.Core;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+﻿using Windows.ApplicationModel.Core;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Carpeddit.App.Pages
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
-    public sealed partial class PostDetailsPage : Page
+    public sealed partial class OfflinePage : Page
     {
-        PostViewModel Post;
-
-        public PostDetailsPage()
+        public OfflinePage()
         {
             InitializeComponent();
 
@@ -45,25 +25,6 @@ namespace Carpeddit.App.Pages
 
             coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
             coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged;
-            Loaded += PostDetailsPage_Loaded;
-        }
-
-        private void PostDetailsPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            switch (App.SViewModel.ColorMode)
-            {
-                case 0:
-                    ColorBrushBg.Color = Colors.Transparent;
-                    break;
-                case 1:
-                    ColorBrushBg.Color = (Color)Resources["SystemAccentColor"];
-                    break;
-                case 2:
-                    ColorBrushBg.Color = App.SViewModel.TintColorsList[App.SViewModel.TintColor];
-                    break;
-            }
-
-            CommentProgress.Visibility = Visibility.Visible;
         }
 
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
@@ -86,20 +47,34 @@ namespace Carpeddit.App.Pages
             AppTitleBar.Margin = new Thickness(currMargin.Left, currMargin.Top, coreTitleBar.SystemOverlayRightInset, currMargin.Bottom);
         }
 
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            Post = e.Parameter as PostViewModel;
-
-            CommentsTree.ItemsSource = await Post.GetCommentsAsync();
-            CommentProgress.Visibility = Visibility.Collapsed;
-        }
-
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             if (Window.Current.Content is Frame rootFrame && rootFrame.CanGoBack)
             {
                 rootFrame.GoBack();
+            }
+        }
+
+        private async void RefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            bool isOnline;
+
+            try
+            {
+                _ = App.RedditClient.Account.GetMe();
+                isOnline = true;
+            }
+            catch (Reddit.Exceptions.RedditNoResponseException e1)
+            {
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine(e1);
+#endif
+                isOnline = false;
+            }
+
+            if (isOnline)
+            {
+                (Window.Current.Content as Frame).Navigate((App.CurrentAccount != null && App.CurrentAccount.LoggedIn) ? typeof(MainPage) : typeof(LoginPage));
             }
         }
     }

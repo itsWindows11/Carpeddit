@@ -31,7 +31,7 @@ namespace Carpeddit.App
         {
             InitializeComponent();
 
-            NavigationCacheMode = NavigationCacheMode.Required;
+            NavigationCacheMode = NavigationCacheMode.Enabled;
 
             var appViewTitleBar = ApplicationView.GetForCurrentView().TitleBar;
 
@@ -53,6 +53,25 @@ namespace Carpeddit.App
                 Debug.WriteLine(AccountController.GetImageUrl(App.RedditClient.Account.Me.UserData));
                 Pfp.Source = new BitmapImage(new Uri(AccountController.GetImageUrl(App.RedditClient.Account.Me.UserData), UriKind.Absolute));
             }
+
+            App.SViewModel.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(App.SViewModel.TintColor) || e.PropertyName == nameof(App.SViewModel.ColorMode))
+                {
+                    switch (App.SViewModel.ColorMode)
+                    {
+                        case 0:
+                            ColorBrushBg.Color = Colors.Transparent;
+                            break;
+                        case 1:
+                            ColorBrushBg.Color = (Color)Resources["SystemAccentColor"];
+                            break;
+                        case 2:
+                            ColorBrushBg.Color = App.SViewModel.TintColorsList[App.SViewModel.TintColor];
+                            break;
+                    }
+                }
+            };
         }
 
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
@@ -110,6 +129,19 @@ namespace Carpeddit.App
             Window.Current.CoreWindow.PointerPressed += CoreWindow_PointerPressed;
 
             SystemNavigationManager.GetForCurrentView().BackRequested += System_BackRequested;
+
+            switch (App.SViewModel.ColorMode)
+            {
+                case 0:
+                    ColorBrushBg.Color = Colors.Transparent;
+                    break;
+                case 1:
+                    ColorBrushBg.Color = (Color)Resources["SystemAccentColor"];
+                    break;
+                case 2:
+                    ColorBrushBg.Color = App.SViewModel.TintColorsList[App.SViewModel.TintColor];
+                    break;
+            }
         }
 
         private void NavView_ItemInvoked(muxc.NavigationView sender,
@@ -230,26 +262,62 @@ namespace Carpeddit.App
             {
                 var item = _pages.FirstOrDefault(p => p.Page == e.SourcePageType);
 
-                try
+                if (ContentFrame.SourcePageType == typeof(YourProfilePage))
                 {
-                    NavView.SelectedItem = NavView.MenuItems
-                    .OfType<muxc.NavigationViewItem>()
-                    .First(n => n.Tag.Equals(item.Tag));
-                } catch (InvalidOperationException)
+                    if (e.Parameter == null)
+                    {
+                        try
+                        {
+                            NavView.SelectedItem = NavView.MenuItems
+                            .OfType<muxc.NavigationViewItem>()
+                            .First(n => n.Tag.Equals(item.Tag));
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            try
+                            {
+                                NavView.SelectedItem = NavView.FooterMenuItems
+                                .OfType<muxc.NavigationViewItem>()
+                                .First(n => n.Tag.Equals(item.Tag));
+                            }
+                            catch (InvalidOperationException)
+                            {
+                                Debug.WriteLine("Cannot navigate...");
+                            }
+                        }
+                    }
+                } else
                 {
                     try
                     {
-                        NavView.SelectedItem = NavView.FooterMenuItems
+                        NavView.SelectedItem = NavView.MenuItems
                         .OfType<muxc.NavigationViewItem>()
                         .First(n => n.Tag.Equals(item.Tag));
                     }
                     catch (InvalidOperationException)
                     {
-                        Debug.WriteLine("Cannot navigate...");
+                        try
+                        {
+                            NavView.SelectedItem = NavView.FooterMenuItems
+                            .OfType<muxc.NavigationViewItem>()
+                            .First(n => n.Tag.Equals(item.Tag));
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            Debug.WriteLine("Cannot navigate...");
+                        }
                     }
                 }
 
-                NavView.Header = (((muxc.NavigationViewItem)NavView.SelectedItem)?.Tag.ToString() == "your_profile") ? "Your profile" : ((muxc.NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
+                if (ContentFrame.SourcePageType == typeof(YourProfilePage)) {
+                    NavView.Header = e.Parameter == null ? "Your profile" : "Profile";
+                } else if (ContentFrame.SourcePageType == typeof(SearchResultsPage))
+                {
+                    NavView.Header = "Search results";
+                } else
+                {
+                    NavView.Header = ((muxc.NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
+                }
             }
         }
 
@@ -274,6 +342,11 @@ namespace Carpeddit.App
             {
                 rootFrame.Navigate(typeof(LoginPage));
             }
+        }
+
+        private void NavViewSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            ContentFrame.Navigate(typeof(SearchResultsPage), sender.Text);
         }
     }
 }
