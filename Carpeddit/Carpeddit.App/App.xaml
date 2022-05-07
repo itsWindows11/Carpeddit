@@ -31,7 +31,7 @@
                         <Setter Property="BorderThickness" Value="0" />
                     </Style>
 
-                    <templates:PostTemplates />
+                    <templates:PostTemplates x:Key="PostTemplatesDontUseAsResource" />
                 </ResourceDictionary>
             </controls:XamlControlsResources.MergedDictionaries>
         </controls:XamlControlsResources>
