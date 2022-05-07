@@ -75,8 +75,12 @@
 
                 <Image
                     x:Phase="2"
-                    Source="{x:Bind Image}"
-                    Visibility="{x:Bind HasImage, Converter={StaticResource BoolToVis}}" />
+                    Visibility="{x:Bind HasImage, Converter={StaticResource BoolToVis}}"
+                    MaxWidth="500">
+                    <Image.Source>
+                        <BitmapImage UriSource="{x:Bind ImageUri}" />
+                    </Image.Source>
+                </Image>
 
                 <StackPanel Orientation="Horizontal" Spacing="4">
                     <TextBlock Text="{x:Bind CommentsCountInUI}" Margin="0,10,0,3" />
@@ -165,8 +169,12 @@
 
                 <Image
                     x:Phase="2"
-                    Source="{x:Bind Image}"
-                    Visibility="{x:Bind HasImage, Converter={StaticResource BoolToVis}}" />
+                    Visibility="{x:Bind HasImage, Converter={StaticResource BoolToVis}}"
+                    MaxWidth="500">
+                    <Image.Source>
+                        <BitmapImage UriSource="{x:Bind ImageUri}" />
+                    </Image.Source>
+                </Image>
 
                 <StackPanel Orientation="Horizontal" Spacing="4">
                     <TextBlock Text="{x:Bind CommentsCountInUI}" Margin="0,10,0,3" />

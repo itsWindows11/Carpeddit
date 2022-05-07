@@ -51,6 +51,8 @@ namespace Carpeddit.App.Pages
                 SubredditName.FontSize = 20;
             }
 
+            ProgressR.Visibility = Visibility.Visible;
+
             var posts1 = await Task.Run(async () =>
             {
                 return await GetPostsAsync();
@@ -59,6 +61,8 @@ namespace Carpeddit.App.Pages
             posts.AddRange(posts1);
 
             MainList.ItemsSource = posts;
+
+            ProgressR.Visibility = Visibility.Collapsed;
         }
 
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)

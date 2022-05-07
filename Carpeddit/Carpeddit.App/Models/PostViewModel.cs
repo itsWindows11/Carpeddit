@@ -59,13 +59,13 @@ namespace Carpeddit.App.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
-        public BitmapImage Image
+        public Uri ImageUri
         {
             get
             {
                 if (HasImage)
                 {
-                    return new(new Uri(Description, UriKind.Absolute));
+                    return new Uri(Description, UriKind.Absolute);
                 }
                 return null;
             }
