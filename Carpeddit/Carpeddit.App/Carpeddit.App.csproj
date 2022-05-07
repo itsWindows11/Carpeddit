@@ -171,6 +171,7 @@
       <DependentUpon>YourProfilePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Templates\PostTemplates.cs" />
     <Compile Include="UserControls\SettingsBlockControl.xaml.cs">
       <DependentUpon>SettingsBlockControl.xaml</DependentUpon>
     </Compile>
@@ -245,6 +246,10 @@
     <Page Include="Pages\YourProfilePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Templates\PostTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserControls\SettingsBlockControl.xaml">
       <SubType>Designer</SubType>
