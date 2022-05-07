@@ -51,21 +51,6 @@ namespace Carpeddit.App.Models
                 return Description;
             }
         }
-        /*{
-            get
-            {
-                if (Post is LinkPost linkPost)
-                {
-                    return linkPost.URL;
-                }
-                else if (Post is SelfPost selfPost)
-                {
-                    return selfPost.SelfText;
-                }
-
-                return "No content";
-            }
-        }*/
 
         public event PropertyChangedEventHandler PropertyChanged;
 
