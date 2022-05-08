@@ -142,7 +142,7 @@
                         </ListView>
                     </StackPanel>
 
-                    <StackPanel Grid.Column="1">
+                    <StackPanel Spacing="4" Grid.Column="1">
                         <StackPanel.Resources>
                             <Style TargetType="muxc:Expander">
                                 <Setter Property="HorizontalAlignment" Value="Stretch" />
