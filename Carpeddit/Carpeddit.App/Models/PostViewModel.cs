@@ -39,6 +39,23 @@ namespace Carpeddit.App.Models
 
         public string Description { get; set; }
 
+        private Reddit.Things.FlairListResult _userFlair;
+
+        public Reddit.Things.FlairListResult UserFlair
+        {
+            get => _userFlair;
+            set
+            {
+                _userFlair = value;
+                OnPropertyChanged(nameof(UserFlair));
+            }
+        }
+
+        public bool ShouldDisplayUserFlair
+        {
+            get => !string.IsNullOrEmpty(UserFlair.FlairText);
+        }
+
         public string ShortDescription
         {
             get
