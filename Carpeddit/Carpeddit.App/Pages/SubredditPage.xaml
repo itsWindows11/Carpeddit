@@ -105,7 +105,7 @@
                 <Grid Padding="0,12,20,0" ColumnSpacing="4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
-                        <ColumnDefinition Width="0.4*" MinWidth="300" />
+                        <ColumnDefinition x:Name="SubredditSidebarColumn" Width="0.4*" />
                     </Grid.ColumnDefinitions>
 
                     <StackPanel>
@@ -117,7 +117,7 @@
 
                         <ListView
                             x:Name="MainList"
-                            Margin="0,-4,0,0"
+                            Margin="0,-4,0,12"
                             HorizontalAlignment="Center"
                             ItemTemplate="{StaticResource UserPostTemplate}"
                             SelectionMode="None"

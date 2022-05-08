@@ -47,6 +47,19 @@ namespace Carpeddit.App.Pages
             coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged;
 
             Loaded += SubredditPage_Loaded;
+            SizeChanged += SubredditPage_SizeChanged;
+        }
+
+        private void SubredditPage_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.NewSize.Width >= 750)
+            {
+                SubredditSidebarColumn.Width = new(0.4, GridUnitType.Star);
+            }
+            else if (e.NewSize.Width < 750)
+            {
+                SubredditSidebarColumn.Width = new(0);
+            }
         }
 
         private async void SubredditPage_Loaded(object sender, RoutedEventArgs e)
