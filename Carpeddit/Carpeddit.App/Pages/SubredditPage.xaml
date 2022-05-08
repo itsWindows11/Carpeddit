@@ -6,10 +6,12 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="using:Carpeddit.App.Helpers"
+    xmlns:local="using:Carpeddit.App"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:Carpeddit.App.Models"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    xmlns:pages="using:Carpeddit.App.Pages" xmlns:local="using:Carpeddit.App"
+    xmlns:pages="using:Carpeddit.App.Pages"
+    xmlns:reddit="using:Reddit.Things"
     d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
@@ -47,8 +49,7 @@
             </StackPanel>
         </Border>
 
-        <ScrollViewer
-            Grid.Row="1">
+        <ScrollViewer Grid.Row="1">
             <StackPanel>
                 <Border>
                     <StackPanel Orientation="Vertical">
@@ -59,7 +60,7 @@
                             <Border.Background>
                                 <SolidColorBrush Color="{x:Bind local:App.GetColorFromHex(Subreddit.BannerBackgroundColor)}" />
                             </Border.Background>
-                            
+
                             <Grid>
                                 <Image x:Name="SubredditHeaderImg" Stretch="UniformToFill" />
                                 <StackPanel Padding="20,0" VerticalAlignment="Bottom">
@@ -101,38 +102,100 @@
                     </StackPanel>
                 </Border>
 
-                <muxc:ProgressRing
-                    x:Name="ProgressR"
-                    Margin="0,12,0,5"
-                    HorizontalAlignment="Center"
-                    IsActive="True"
-                    Visibility="Collapsed" />
+                <Grid Padding="0,12,20,0" ColumnSpacing="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="0.4*" MinWidth="300" />
+                    </Grid.ColumnDefinitions>
 
-                <ListView
-                    x:Name="MainList"
-                    Margin="0,12,0,0"
-                    HorizontalAlignment="Left"
-                    ItemTemplate="{StaticResource UserPostTemplate}"
-                    SelectionMode="None"
-                    Visibility="Collapsed">
-                    <ListView.Footer>
-                        <Grid>
-                            <muxc:ProgressRing
-                                x:Name="FooterProgress"
-                                Margin="0,5"
-                                HorizontalAlignment="Center"
-                                IsActive="True"
-                                Visibility="Collapsed" />
-                            <Button
-                                x:Name="LoadMoreButton"
-                                Margin="0,5,0,0"
-                                HorizontalAlignment="Center"
-                                Click="Button_Click"
-                                Content="Load more"
-                                Style="{StaticResource AccentButtonStyle}" />
-                        </Grid>
-                    </ListView.Footer>
-                </ListView>
+                    <StackPanel>
+                        <muxc:ProgressRing
+                            x:Name="ProgressR"
+                            HorizontalAlignment="Center"
+                            IsActive="True"
+                            Visibility="Collapsed" />
+
+                        <ListView
+                            x:Name="MainList"
+                            Margin="0,-4,0,0"
+                            HorizontalAlignment="Center"
+                            ItemTemplate="{StaticResource UserPostTemplate}"
+                            SelectionMode="None"
+                            Visibility="Collapsed">
+                            <ListView.Footer>
+                                <Grid>
+                                    <muxc:ProgressRing
+                                        x:Name="FooterProgress"
+                                        Margin="0,5"
+                                        HorizontalAlignment="Center"
+                                        IsActive="True"
+                                        Visibility="Collapsed" />
+                                    <Button
+                                        x:Name="LoadMoreButton"
+                                        Margin="0,5,0,0"
+                                        HorizontalAlignment="Center"
+                                        Click="Button_Click"
+                                        Content="Load more"
+                                        Style="{StaticResource AccentButtonStyle}" />
+                                </Grid>
+                            </ListView.Footer>
+                        </ListView>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1">
+                        <StackPanel.Resources>
+                            <Style TargetType="muxc:Expander">
+                                <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            </Style>
+                        </StackPanel.Resources>
+                        <muxc:Expander Header="Rules" IsExpanded="True">
+                            <ListView
+                                x:Name="RulesList"
+                                Margin="0,-12,0,0"
+                                SelectionMode="None">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate x:DataType="reddit:Rule">
+                                        <Border
+                                            Margin="0,8,0,0"
+                                            Padding="0,0,0,4"
+                                            BorderBrush="{StaticResource AppBarSeparatorForegroundThemeBrush}"
+                                            BorderThickness="0,0,0,1">
+                                            <StackPanel Spacing="4">
+                                                <TextBlock
+                                                    FontWeight="SemiBold"
+                                                    IsTextSelectionEnabled="True"
+                                                    TextWrapping="Wrap">
+                                                    <Run Text="{x:Bind local:App.AddOne(Priority)}" />. <Run Text="{x:Bind ShortName}" />
+                                                </TextBlock>
+
+                                                <controls:MarkdownTextBlock Background="Transparent" Text="{x:Bind Description}" />
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </muxc:Expander>
+
+                        <muxc:Expander Header="Moderators">
+                            <ListView
+                                x:Name="ModsList"
+                                Margin="0,-12,0,0"
+                                SelectionMode="None">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock
+                                            FontWeight="SemiBold"
+                                            TextWrapping="Wrap">
+                                            u/<Run Text="{Binding Name, Mode=OneTime}" />
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </muxc:Expander>
+
+                    </StackPanel>
+                </Grid>
             </StackPanel>
         </ScrollViewer>
 

@@ -60,7 +60,17 @@ namespace Carpeddit.App.Pages
 
             ProgressR.Visibility = Visibility.Visible;
 
-            SubredditHeaderImg.Source = new BitmapImage(new(Subreddit.BannerBackgroundImage));
+            try
+            {
+                SubredditHeaderImg.Source = new BitmapImage(new(Subreddit.BannerBackgroundImage));
+            }
+            catch (UriFormatException)
+            {
+
+            }
+
+            RulesList.ItemsSource = Subreddit.GetRules().Rules;
+            ModsList.ItemsSource = Subreddit.GetModerators();
 
             var posts1 = await Task.Run(async () =>
             {
@@ -113,9 +123,9 @@ namespace Carpeddit.App.Pages
             }
         }
 
-        private async Task<ObservableCollection<PostViewModel>> GetPostsAsync(string after = "", int limit = 13, string before = "")
+        private async Task<ObservableCollection<PostViewModel>> GetPostsAsync(string after = "", int limit = 24, string before = "")
         {
-            List<Post> frontpage = Subreddit.Posts.GetHot(limit: 13, after: after, before: before);
+            List<Post> frontpage = Subreddit.Posts.GetHot(limit: limit, after: after, before: before);
             ObservableCollection<PostViewModel> postViews = new();
 
             foreach (Post post in frontpage)

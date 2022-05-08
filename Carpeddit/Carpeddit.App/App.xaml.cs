@@ -53,6 +53,11 @@ namespace Carpeddit.App
             return Color.FromArgb(255, r, g, b);
         }
 
+        public static int AddOne(int num)
+        {
+            return num + 1;
+        }
+
         public async Task InitDb()
         {
             SViewModel = new SettingsViewModel();
