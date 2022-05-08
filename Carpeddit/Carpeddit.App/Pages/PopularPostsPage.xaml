@@ -2,77 +2,22 @@
     x:Class="Carpeddit.App.Pages.PopularPostsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Carpeddit.App"
-    xmlns:reddit="using:Reddit.Controllers"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="using:Carpeddit.App.Models" xmlns:helpers="using:Carpeddit.App.Helpers" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     NavigationCacheMode="Required">
 
-    <Grid Margin="-56,0,-56,0" Padding="56,0,56,10">
-        <muxc:ProgressRing IsActive="True" Height="50" Width="50" Margin="-40,-50,0,0" Visibility="{x:Bind ArePostsLoaded, Mode=OneWay, Converter={StaticResource BoolToVis}}" />
-        <ListView Margin="-56,0,-56,0" Padding="56,0,76,10" x:Name="MainList" SelectionMode="None" Loaded="MainList_Loaded">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="models:PostViewModel">
-                    <Grid Padding="6,10,8,10"
-                          MaxWidth="1200"
-                          BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                          Background="{StaticResource LayerFillColorDefaultBrush}"
-                          BorderThickness="1"
-                          ColumnSpacing="10"
-                          CornerRadius="6"
-                          Margin="0,4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="40" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-
-                        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Spacing="5">
-                            <ToggleButton Style="{StaticResource TransparentToggleButton}"
-                                          Tag="{x:Bind}"
-                                          Click="UpvoteButton_Click"
-                                          IsChecked="{x:Bind Upvoted, Mode=OneWay}"
-                                          Padding="3"
-                                          HorizontalAlignment="Center">
-                                <FontIcon Glyph="&#xE010;" />
-                            </ToggleButton>
-                            <TextBlock Text="{x:Bind VoteRatio, Mode=OneWay}"
-                                       HorizontalAlignment="Center" />
-                            <ToggleButton Style="{StaticResource TransparentToggleButton}"
-                                          Tag="{x:Bind}"
-                                          Click="DownvoteButton_Click"
-                                          IsChecked="{x:Bind Downvoted, Mode=OneWay}"
-                                          Padding="3"
-                                          HorizontalAlignment="Center">
-                                <FontIcon Glyph="&#xE019;" />
-                            </ToggleButton>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Vertical" Grid.Column="1">
-                            <TextBlock TextWrapping="WrapWholeWords">
-                                <Run Text="By" /> <Hyperlink>u/<Run Text="{x:Bind Author}" /></Hyperlink> • Posted <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Post.Created, x:True)}" /> in <Hyperlink>r/<Run Text="{x:Bind Subreddit}" /></Hyperlink>
-                            </TextBlock>
-                            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" TextWrapping="WrapWholeWords">
-                                <Hyperlink UnderlineStyle="None"><Run Text="{x:Bind Title}" /></Hyperlink>
-                            </TextBlock>
-                            <TextBlock Text="{x:Bind Description}" x:Phase="1" TextWrapping="WrapWholeWords" Margin="0,5,0,0" MaxLines="5" TextTrimming="CharacterEllipsis" />
-
-                            <TextBlock Margin="0,10,0,3">
-                                <Run Text="{x:Bind CommentsCountInUI}" /> • <Hyperlink>Share</Hyperlink> • <Hyperlink>Save</Hyperlink>
-                            </TextBlock>
-                        </StackPanel>
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-
+    <Grid Margin="-56,0,-56,0" Padding="56,0">
+        <muxc:ProgressRing Width="50" Height="50" Margin="-56,0,-56,0" Visibility="Collapsed" x:Name="Progress" IsActive="True" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <ListView ItemTemplate="{StaticResource PlainPostTemplate}" Margin="-56,0,-56,0" Padding="56,0,56,10" x:Name="MainList" SelectionMode="None">
             <ListView.Footer>
-                <StackPanel Orientation="Vertical">
-                    <Button Content="Load more posts" HorizontalAlignment="Center" Margin="0,10" Style="{StaticResource AccentButtonStyle}" Click="Button_Click" />
-                    <muxc:ProgressRing x:Name="SampleProgress" IsActive="True" Visibility="Collapsed" Margin="0,10" />
-                </StackPanel>
+                <Grid>
+                    <muxc:ProgressRing IsActive="True" Margin="0,5" Visibility="Collapsed" HorizontalAlignment="Center" x:Name="FooterProgress" />
+                    <Button x:Name="LoadMoreButton" Click="Button_Click" Content="Load more" Style="{StaticResource AccentButtonStyle}" Margin="0,5,0,0" HorizontalAlignment="Center" />
+                </Grid>
             </ListView.Footer>
         </ListView>
     </Grid>
-    
+
 </Page>

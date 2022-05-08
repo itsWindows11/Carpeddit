@@ -1,14 +1,14 @@
 ﻿using Carpeddit.App.Collections;
+using Carpeddit.App.Helpers;
 using Carpeddit.App.Models;
+using Microsoft.Toolkit.Uwp;
 using Reddit.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -31,41 +31,54 @@ namespace Carpeddit.App.Pages
     {
         BulkConcurrentObservableCollection<PostViewModel> posts = new();
         int postsCount = 0;
-        bool ArePostsLoaded = false;
         string chosenFilter = "Hot";
-
         public PopularPostsPage()
         {
             InitializeComponent();
 
+            Loaded += Page_Loaded;
         }
 
-        private async Task GetPostsAsync(string after = "", int limit = 13, string before = "")
+        private async void UpvoteButton_Click(object sender, RoutedEventArgs e)
         {
-            List<Post> frontpage = App.RedditClient.Subreddit("all").Posts.GetHot(limit: 13, after: after, before: before);
+            ToggleButton toggle = sender as ToggleButton;
+            PostViewModel post = toggle.Tag as PostViewModel;
 
-            foreach (Post post in frontpage)
+            if (toggle.IsChecked.Value)
             {
-                posts.Add(new()
-                {
-                    Post = post
-                });
+                await post.Post.UpvoteAsync();
+                //post.RawVoteRatio = (post.Post.UpVotes - post.Post.DownVotes) + 1;
+                post.Upvoted = true;
+                post.Downvoted = false;
             }
-
-            for (postsCount = 0; postsCount < frontpage.Count; postsCount++) ;
-            ArePostsLoaded = true;
+            else
+            {
+                await post.Post.UnvoteAsync();
+                //post.RawVoteRatio = post.Post.UpVotes - post.Post.DownVotes;
+                post.Upvoted = false;
+                post.Downvoted = false;
+            }
         }
 
-        private void UpvoteButton_Click(object sender, RoutedEventArgs e)
+        private async void DownvoteButton_Click(object sender, RoutedEventArgs e)
         {
-            Post post = (sender as ToggleButton).Tag as Post;
-            post.UpvoteAsync();
-        }
+            ToggleButton toggle = sender as ToggleButton;
+            PostViewModel post = toggle.Tag as PostViewModel;
 
-        private void DownvoteButton_Click(object sender, RoutedEventArgs e)
-        {
-            Post post = (sender as ToggleButton).Tag as Post;
-            post.DownvoteAsync();
+            if (toggle.IsChecked.Value)
+            {
+                await post.Post.DownvoteAsync();
+                //post.RawVoteRatio = (post.Post.UpVotes - post.Post.DownVotes) - 1;
+                post.Upvoted = false;
+                post.Downvoted = true;
+            }
+            else
+            {
+                await post.Post.UnvoteAsync();
+                //post.RawVoteRatio = post.Post.UpVotes - post.Post.DownVotes;
+                post.Upvoted = false;
+                post.Downvoted = false;
+            }
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -73,19 +86,104 @@ namespace Carpeddit.App.Pages
             if (sender is Button button)
             {
                 button.Visibility = Visibility.Collapsed;
-                SampleProgress.Visibility = Visibility.Visible;
-                await Task.Delay(500);
-                await GetPostsAsync(after: posts[postsCount - 1].Post.Fullname).ConfigureAwait(false);
-                SampleProgress.Visibility = Visibility.Collapsed;
+                FooterProgress.Visibility = Visibility.Visible;
+
+                var posts1 = await Task.Run(async () =>
+                {
+                    return await GetPostsAsync(after: posts[posts.Count - 1].Post.Fullname);
+                });
+
+                posts.AddRange(posts1);
+
                 button.Visibility = Visibility.Visible;
+                FooterProgress.Visibility = Visibility.Collapsed;
             }
         }
 
-        private async void MainList_Loaded(object sender, RoutedEventArgs e)
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            await Task.Delay(500);
-            await GetPostsAsync().ConfigureAwait(false);
+            Loaded -= Page_Loaded;
+
+            LoadMoreButton.Visibility = Visibility.Collapsed;
+            Progress.Visibility = Visibility.Visible;
+
+            var posts1 = await Task.Run(async () =>
+            {
+                return await GetPostsAsync();
+            });
+
+            posts.AddRange(posts1);
+
             MainList.ItemsSource = posts;
+
+            Progress.Visibility = Visibility.Collapsed;
+            LoadMoreButton.Visibility = Visibility.Visible;
+        }
+
+        private async Task<ObservableCollection<PostViewModel>> GetPostsAsync(string after = "", int limit = 13, string before = "")
+        {
+            List<Post> frontpage = App.RedditClient.Subreddit("all").Posts.GetHot(limit: limit, after: after, before: before);
+            ObservableCollection<PostViewModel> postViews = new();
+
+            foreach (Post post in frontpage)
+            {
+                PostViewModel vm = new()
+                {
+                    Post = post,
+                    Title = post.Title,
+                    Description = GetPostDesc(post),
+                    Created = post.Created,
+                    Subreddit = post.Subreddit,
+                    Author = post.Author,
+                    CommentsCount = post.Comments.GetComments().Count
+                };
+
+                postViews.Add(vm);
+            }
+
+            //for (postsCount = 0; postsCount < posts.Count; postsCount++);
+
+            return postViews;
+        }
+
+        private string GetPostDesc(Post post)
+        {
+            if (post is LinkPost linkPost)
+            {
+                return linkPost.URL;
+            }
+            else if (post is SelfPost selfPost)
+            {
+                return selfPost.SelfText;
+            }
+
+            return "No content";
+        }
+
+        private void Title_PointerReleased(object sender, PointerRoutedEventArgs e)
+        {
+            if (Window.Current.Content is Frame rootFrame && sender is TextBlock text && text.Tag is PostViewModel post)
+            {
+                rootFrame.Navigate(typeof(PostDetailsPage), post);
+            }
+        }
+
+        private void UserHyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
+        {
+            string text = (sender.Inlines[1] as Windows.UI.Xaml.Documents.Run).Text;
+            if (!text.Contains("[deleted]"))
+            {
+                Frame.Navigate(typeof(YourProfilePage), App.RedditClient.SearchUsers(new Reddit.Inputs.Search.SearchGetSearchInput(text)).FirstOrDefault(u => u.Name.Contains(text)));
+            }
+        }
+
+        private void SubredditHyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
+        {
+            string text = (sender.Inlines[1] as Windows.UI.Xaml.Documents.Run).Text;
+            if (Window.Current.Content is Frame rootFrame)
+            {
+                rootFrame.Navigate(typeof(SubredditPage), App.RedditClient.SearchSubreddits(new Reddit.Inputs.Search.SearchGetSearchInput(text)).FirstOrDefault(s => s.Name.Contains(text)));
+            }
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
