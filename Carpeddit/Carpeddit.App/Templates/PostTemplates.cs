@@ -11,12 +11,19 @@ using Windows.UI.Xaml.Input;
 
 namespace Carpeddit.App.Templates
 {
+    // Constructor
     public partial class PostTemplates
     {
         public PostTemplates()
         {
             InitializeComponent();
         }
+    }
+
+    // Fields and props
+    public partial class PostTemplates
+    {
+        public static bool IsSubredditMod;
     }
 
     // Event handlers
@@ -91,6 +98,57 @@ namespace Carpeddit.App.Templates
             if (Window.Current.Content is Frame rootFrame)
             {
                 rootFrame.Navigate(typeof(SubredditPage), App.RedditClient.SearchSubreddits(new Reddit.Inputs.Search.SearchGetSearchInput(text)).FirstOrDefault(s => s.Name.Contains(text)));
+            }
+        }
+
+        private async void RemovePostButton_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement).DataContext is PostViewModel post)
+            {
+                await post.Post.RemoveAsync();
+
+                (sender as HyperlinkButton).Content = "Removed";
+                (sender as HyperlinkButton).IsEnabled = false;
+
+                (((sender as HyperlinkButton).Parent as StackPanel).Children[4] as HyperlinkButton).Content = "Approve";
+                (((sender as HyperlinkButton).Parent as StackPanel).Children[4] as HyperlinkButton).IsEnabled = true;
+
+                (((sender as HyperlinkButton).Parent as StackPanel).Children[4] as HyperlinkButton).Content = "Spam";
+                (((sender as HyperlinkButton).Parent as StackPanel).Children[4] as HyperlinkButton).IsEnabled = true;
+            }
+        }
+
+        private async void ApproveButton_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement).DataContext is PostViewModel post)
+            {
+                post.Post.Approve();
+
+                (sender as HyperlinkButton).Content = "Approved";
+                (sender as HyperlinkButton).IsEnabled = false;
+
+                (((sender as HyperlinkButton).Parent as StackPanel).Children[3] as HyperlinkButton).Content = "Remove";
+                (((sender as HyperlinkButton).Parent as StackPanel).Children[3] as HyperlinkButton).IsEnabled = true;
+
+                (((sender as HyperlinkButton).Parent as StackPanel).Children[5] as HyperlinkButton).Content = "Spam";
+                (((sender as HyperlinkButton).Parent as StackPanel).Children[5] as HyperlinkButton).IsEnabled = true;
+            }
+        }
+
+        private async void SpamButton_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement).DataContext is PostViewModel post)
+            {
+                await post.Post.RemoveAsync(true);
+
+                (sender as HyperlinkButton).Content = "Spammed";
+                (sender as HyperlinkButton).IsEnabled = false;
+
+                (((sender as HyperlinkButton).Parent as StackPanel).Children[3] as HyperlinkButton).Content = "Remove";
+                (((sender as HyperlinkButton).Parent as StackPanel).Children[3] as HyperlinkButton).IsEnabled = true;
+
+                (((sender as HyperlinkButton).Parent as StackPanel).Children[4] as HyperlinkButton).Content = "Approve";
+                (((sender as HyperlinkButton).Parent as StackPanel).Children[4] as HyperlinkButton).IsEnabled = true;
             }
         }
     }

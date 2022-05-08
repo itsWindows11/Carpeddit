@@ -95,8 +95,22 @@ namespace Carpeddit.App.Pages
 
             }
 
+            var modsList = Subreddit.GetModerators();
+
             RulesList.ItemsSource = Subreddit.GetRules().Rules;
-            ModsList.ItemsSource = Subreddit.GetModerators();
+            ModsList.ItemsSource = modsList;
+
+            foreach (var mod in modsList)
+            {
+                if (mod.Name == App.RedditClient.Account.Me.Name)
+                {
+                    Templates.PostTemplates.IsSubredditMod = true;
+                    break;
+                } else
+                {
+                    Templates.PostTemplates.IsSubredditMod = false;
+                }
+            }
 
             var posts1 = await Task.Run(async () =>
             {

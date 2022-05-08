@@ -5,7 +5,7 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:helpers="using:Carpeddit.App.Helpers"
     xmlns:local="using:Carpeddit.App"
-    xmlns:models="using:Carpeddit.App.Models">
+    xmlns:models="using:Carpeddit.App.Models" xmlns:templates="using:Carpeddit.App.Templates">
 
     <DataTemplate x:Key="PlainPostTemplate" x:DataType="models:PostViewModel">
         <Grid
@@ -283,6 +283,18 @@
 
                     <HyperlinkButton Margin="0,0,0,-6" Padding="2">
                         Save
+                    </HyperlinkButton>
+
+                    <HyperlinkButton IsEnabled="{x:Bind local:App.OppositeOf(Post.Listing.Removed)}" Visibility="{x:Bind templates:PostTemplates.IsSubredditMod, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="RemovePostButton_Click" Margin="0,0,0,-6" Padding="2">
+                        Remove
+                    </HyperlinkButton>
+
+                    <HyperlinkButton IsEnabled="{x:Bind local:App.OppositeOf(Post.Listing.Approved)}" Visibility="{x:Bind templates:PostTemplates.IsSubredditMod, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="ApproveButton_Click" Margin="0,0,0,-6" Padding="2">
+                        Approve
+                    </HyperlinkButton>
+
+                    <HyperlinkButton IsEnabled="{x:Bind local:App.OppositeOf(Post.Listing.Spam)}" Visibility="{x:Bind templates:PostTemplates.IsSubredditMod, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="SpamButton_Click" Margin="0,0,0,-6" Padding="2">
+                        Spam
                     </HyperlinkButton>
                 </StackPanel>
             </StackPanel>

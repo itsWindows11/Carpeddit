@@ -69,6 +69,11 @@ namespace Carpeddit.App
             return num + 1;
         }
 
+        public static bool OppositeOf(bool ean)
+        {
+            return !ean;
+        }
+
         public async Task InitDb()
         {
             SViewModel = new SettingsViewModel();
