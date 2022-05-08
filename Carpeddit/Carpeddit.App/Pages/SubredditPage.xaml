@@ -3,10 +3,13 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:Carpeddit.App.Helpers"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:Carpeddit.App.Models"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    xmlns:pages="using:Carpeddit.App.Pages" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:models="using:Carpeddit.App.Models" xmlns:helpers="using:Carpeddit.App.Helpers"
+    xmlns:pages="using:Carpeddit.App.Pages" xmlns:local="using:Carpeddit.App"
     d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
@@ -45,54 +48,88 @@
         </Border>
 
         <ScrollViewer
-            Grid.Row="1"
-            Margin="-56,0"
-            Padding="56,0">
+            Grid.Row="1">
             <StackPanel>
                 <Border>
                     <StackPanel Orientation="Vertical">
-                        <Border Margin="12,0" CornerRadius="4">
-                            <Border Height="200" Background="{StaticResource SystemAccentColorDark1}" />
-                        </Border>
                         <Border
-                            Width="60"
-                            Height="60"
-                            Margin="0,-35,0,0"
-                            BorderBrush="{StaticResource SystemAccentColorLight2}"
-                            BorderThickness="3"
-                            CornerRadius="60">
-                            <Image>
-                                <Image.Source>
-                                    <BitmapImage UriSource="{x:Bind Subreddit.CommunityIcon, Converter={StaticResource StringToUri}}" />
-                                </Image.Source>
-                            </Image>
+                            Height="300"
+                            Margin="12,0"
+                            CornerRadius="4">
+                            <Border.Background>
+                                <SolidColorBrush Color="{x:Bind local:App.GetColorFromHex(Subreddit.BannerBackgroundColor)}" />
+                            </Border.Background>
+                            
+                            <Grid>
+                                <Image x:Name="SubredditHeaderImg" Stretch="UniformToFill" />
+                                <StackPanel Padding="20,0" VerticalAlignment="Bottom">
+                                    <StackPanel.Background>
+                                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                            <GradientStop Offset="0" Color="#00000000" />
+                                            <GradientStop Offset="1" Color="#99000000" />
+                                        </LinearGradientBrush>
+                                    </StackPanel.Background>
+
+                                    <Border
+                                        Width="60"
+                                        Height="60"
+                                        HorizontalAlignment="Left"
+                                        BorderBrush="{StaticResource SystemAccentColorLight2}"
+                                        BorderThickness="3"
+                                        CornerRadius="60">
+                                        <Image>
+                                            <Image.Source>
+                                                <BitmapImage UriSource="{x:Bind Subreddit.CommunityIcon, Converter={StaticResource StringToUri}}" />
+                                            </Image.Source>
+                                        </Image>
+                                    </Border>
+
+                                    <StackPanel Padding="0,0,0,12" Spacing="8">
+                                        <TextBlock
+                                            x:Name="SubredditFriendlyName"
+                                            FontWeight="SemiBold"
+                                            Style="{StaticResource SubtitleTextBlockStyle}"
+                                            Text="{x:Bind Subreddit.HeaderTitle}" />
+
+                                        <TextBlock x:Name="SubredditName" FontSize="12">
+                                            r/<Run Text="{x:Bind Subreddit.Name}" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
                         </Border>
                     </StackPanel>
                 </Border>
 
-                <StackPanel Spacing="8">
-                    <TextBlock
-                        x:Name="SubredditFriendlyName"
-                        HorizontalAlignment="Center"
-                        FontWeight="SemiBold"
-                        Style="{StaticResource SubtitleTextBlockStyle}"
-                        Text="{x:Bind Subreddit.HeaderTitle}" />
+                <muxc:ProgressRing
+                    x:Name="ProgressR"
+                    Margin="0,12,0,5"
+                    HorizontalAlignment="Center"
+                    IsActive="True"
+                    Visibility="Collapsed" />
 
-                    <TextBlock
-                        x:Name="SubredditName"
-                        HorizontalAlignment="Center"
-                        FontSize="12">
-                        r/<Run Text="{x:Bind Subreddit.Name}" />
-                    </TextBlock>
-                </StackPanel>
-
-                <muxc:ProgressRing Visibility="Collapsed" IsActive="True" Margin="0,12,0,5" HorizontalAlignment="Center" x:Name="ProgressR" />
-
-                <ListView ItemTemplate="{StaticResource UserPostTemplate}" Margin="-56,0,-56,0" Padding="56,0,56,10" x:Name="MainList" SelectionMode="None">
+                <ListView
+                    x:Name="MainList"
+                    Margin="0,12,0,0"
+                    HorizontalAlignment="Left"
+                    ItemTemplate="{StaticResource UserPostTemplate}"
+                    SelectionMode="None"
+                    Visibility="Collapsed">
                     <ListView.Footer>
                         <Grid>
-                            <muxc:ProgressRing IsActive="True" Margin="0,5" Visibility="Collapsed" HorizontalAlignment="Center" x:Name="FooterProgress" />
-                            <Button x:Name="LoadMoreButton" Click="Button_Click" Content="Load more" Style="{StaticResource AccentButtonStyle}" Margin="0,5,0,0" HorizontalAlignment="Center" />
+                            <muxc:ProgressRing
+                                x:Name="FooterProgress"
+                                Margin="0,5"
+                                HorizontalAlignment="Center"
+                                IsActive="True"
+                                Visibility="Collapsed" />
+                            <Button
+                                x:Name="LoadMoreButton"
+                                Margin="0,5,0,0"
+                                HorizontalAlignment="Center"
+                                Click="Button_Click"
+                                Content="Load more"
+                                Style="{StaticResource AccentButtonStyle}" />
                         </Grid>
                     </ListView.Footer>
                 </ListView>

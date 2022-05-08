@@ -1,17 +1,24 @@
 ﻿using Carpeddit.App.Collections;
 using Carpeddit.App.Models;
 using Reddit.Controllers;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
+using Windows.Graphics.Imaging;
+using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 namespace Carpeddit.App.Pages
@@ -44,7 +51,7 @@ namespace Carpeddit.App.Pages
 
         private async void SubredditPage_Loaded(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(Subreddit.HeaderTitle) || Subreddit.HeaderTitle == Subreddit.Name)
+            if (string.IsNullOrWhiteSpace(Subreddit.HeaderTitle) || Subreddit.HeaderTitle.Equals(Subreddit.Name))
             {
                 SubredditFriendlyName.Visibility = Visibility.Collapsed;
                 SubredditName.Style = Resources["SubtitleTextBlockStyle"] as Style;
@@ -52,6 +59,8 @@ namespace Carpeddit.App.Pages
             }
 
             ProgressR.Visibility = Visibility.Visible;
+
+            SubredditHeaderImg.Source = new BitmapImage(new(Subreddit.BannerBackgroundImage));
 
             var posts1 = await Task.Run(async () =>
             {
@@ -61,6 +70,8 @@ namespace Carpeddit.App.Pages
             posts.AddRange(posts1);
 
             MainList.ItemsSource = posts;
+
+            MainList.Visibility = Visibility.Visible;
 
             ProgressR.Visibility = Visibility.Collapsed;
         }
@@ -91,7 +102,7 @@ namespace Carpeddit.App.Pages
 
             if (e.Parameter is Subreddit subreddit)
                 Subreddit = subreddit;
-            else throw new System.Exception("The parameter received must be a subreddit.");
+            else throw new Exception("The parameter received must be a subreddit.");
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)

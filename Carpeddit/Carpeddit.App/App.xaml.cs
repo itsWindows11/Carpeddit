@@ -16,6 +16,7 @@ using Carpeddit.App.Other;
 using System.Text;
 using Windows.Networking.Connectivity;
 using Carpeddit.App.Pages;
+using Windows.UI;
 
 namespace Carpeddit.App
 {
@@ -41,6 +42,15 @@ namespace Carpeddit.App
         {
             InitializeComponent();
             Suspending += OnSuspending;
+        }
+
+        public static Color GetColorFromHex(string hex)
+        {
+            hex = hex.Replace("#", string.Empty);
+            byte r = (byte)Convert.ToUInt32(hex.Substring(0, 2), 16);
+            byte g = (byte)Convert.ToUInt32(hex.Substring(2, 2), 16);
+            byte b = (byte)Convert.ToUInt32(hex.Substring(4, 2), 16);
+            return Color.FromArgb(255, r, g, b);
         }
 
         public async Task InitDb()
