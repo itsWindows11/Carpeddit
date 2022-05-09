@@ -59,7 +59,7 @@
                         </MenuFlyoutItem.Icon>
                     </MenuFlyoutItem>
 
-                    <MenuFlyoutItem Text="Profile">
+                    <MenuFlyoutItem Text="Profile" Click="ProfileFlyoutItem_Click">
                         <MenuFlyoutItem.Icon>
                             <FontIcon Glyph="&#xE13D;" />
                         </MenuFlyoutItem.Icon>

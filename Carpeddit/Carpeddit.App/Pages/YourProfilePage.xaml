@@ -64,7 +64,7 @@
                 <StackPanel Orientation="Vertical" Margin="0,10">
                     <muxc:ProgressRing IsActive="True" Margin="0,5" Visibility="Collapsed" HorizontalAlignment="Center" x:Name="ProgressR" />
 
-                    <ListView ItemTemplate="{StaticResource PlainPostTemplate}" Margin="-56,0,-56,0" Padding="56,0,56,10" x:Name="MainList" SelectionMode="None">
+                    <ListView ItemTemplate="{StaticResource UserPostTemplate}" Margin="-56,0,-56,0" Padding="56,0,56,10" x:Name="MainList" SelectionMode="None">
                         <ListView.Footer>
                             <Grid>
                                 <muxc:ProgressRing IsActive="True" Margin="0,5" Visibility="Collapsed" HorizontalAlignment="Center" x:Name="FooterProgress" />

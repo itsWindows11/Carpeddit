@@ -148,7 +148,7 @@
 
             <StackPanel Grid.Column="1" Orientation="Vertical">
                 <TextBlock TextWrapping="WrapWholeWords">
-                    <Run Text="By" /> <Hyperlink Click="UserHyperlink_Click">u/<Run Text="{x:Bind Author}" /></Hyperlink> - Posted <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Post.Created, x:True)}" />
+                    <Run Text="By" /> <Hyperlink Click="UserHyperlink_Click">u/<Run Text="{x:Bind Author}" /></Hyperlink> - Posted <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Post.Created, x:True)}" /> in <Hyperlink Click="SubredditHyperlink_Click">r/<Run Text="{x:Bind Subreddit}" /></Hyperlink>
                 </TextBlock>
 
                 <TextBlock
@@ -158,17 +158,6 @@
                     Tag="{x:Bind}"
                     Text="{x:Bind Title}"
                     TextWrapping="WrapWholeWords" />
-
-                <Border Visibility="{x:Bind ShouldDisplayPostFlair, Converter={StaticResource BoolToVis}}" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="-2,4,0,4">
-                    <Border.Background>
-                        <SolidColorBrush Color="{x:Bind local:App.GetColorFromHex(Post.Listing.LinkFlairBackgroundColor)}" />
-                    </Border.Background>
-                    <TextBlock Text="{x:Bind Post.Listing.LinkFlairText}">
-                        <TextBlock.Foreground>
-                            <SolidColorBrush Color="{x:Bind local:App.GetTextColorFromHex(Post.Listing.LinkFlairTextColor)}" />
-                        </TextBlock.Foreground>
-                    </TextBlock>
-                </Border>
 
                 <controls:MarkdownTextBlock
                     Margin="0,5,0,0"
@@ -196,6 +185,14 @@
 
                     <HyperlinkButton Margin="0,0,0,-6" Padding="2">
                         Save
+                    </HyperlinkButton>
+
+                    <HyperlinkButton Click="RemoveUserPostButton_Click" Margin="0,0,0,-6" Padding="2">
+                        Delete
+                    </HyperlinkButton>
+
+                    <HyperlinkButton Margin="0,0,0,-6" Padding="2">
+                        Report
                     </HyperlinkButton>
                 </StackPanel>
             </StackPanel>

@@ -113,8 +113,19 @@ namespace Carpeddit.App.Templates
                 (((sender as HyperlinkButton).Parent as StackPanel).Children[4] as HyperlinkButton).Content = "Approve";
                 (((sender as HyperlinkButton).Parent as StackPanel).Children[4] as HyperlinkButton).IsEnabled = true;
 
-                (((sender as HyperlinkButton).Parent as StackPanel).Children[4] as HyperlinkButton).Content = "Spam";
-                (((sender as HyperlinkButton).Parent as StackPanel).Children[4] as HyperlinkButton).IsEnabled = true;
+                (((sender as HyperlinkButton).Parent as StackPanel).Children[5] as HyperlinkButton).Content = "Spam";
+                (((sender as HyperlinkButton).Parent as StackPanel).Children[5] as HyperlinkButton).IsEnabled = true;
+            }
+        }
+
+        private async void RemoveUserPostButton_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement).DataContext is PostViewModel post)
+            {
+                await post.Post.DeleteAsync();
+
+                (sender as HyperlinkButton).Content = "Deleted";
+                (sender as HyperlinkButton).IsEnabled = false;
             }
         }
 

@@ -357,5 +357,10 @@ namespace Carpeddit.App
         {
             ContentFrame.Navigate(typeof(SearchResultsPage), sender.Text);
         }
+
+        private void ProfileFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
+            ContentFrame.Navigate(typeof(YourProfilePage));
+        }
     }
 }
