@@ -74,11 +74,12 @@
                     TextWrapping="WrapWholeWords" />
 
                 <Image
+                    x:Name="ImagePost"
                     MaxWidth="500"
                     x:Phase="2"
                     Visibility="{x:Bind HasImage, Converter={StaticResource BoolToVis}}">
                     <Image.Source>
-                        <BitmapImage UriSource="{x:Bind ImageUri}" />
+                        <BitmapImage DecodePixelType="Logical" UriSource="{x:Bind ImageUri}" />
                     </Image.Source>
                 </Image>
 
