@@ -99,6 +99,7 @@ namespace Carpeddit.App.Pages
 
             RulesList.ItemsSource = Subreddit.GetRules().Rules;
             ModsList.ItemsSource = modsList;
+            PostFlairsList.ItemsSource = Subreddit.Flairs.LinkFlairV2;
 
             foreach (var mod in modsList)
             {
@@ -178,8 +179,8 @@ namespace Carpeddit.App.Pages
                     Created = post.Created,
                     Subreddit = post.Subreddit,
                     Author = post.Author,
-                    CommentsCount = post.Comments.GetComments().Count,
-                    UserFlair = Subreddit.Flairs.GetFlairList(post.Author, limit: 1)[0]
+                    CommentsCount = post.Comments.GetComments().Count
+                    //UserFlair = Subreddit.Flairs.GetFlairList(post.Author, limit: 1)[0]
                 };
 
                 postViews.Add(vm);

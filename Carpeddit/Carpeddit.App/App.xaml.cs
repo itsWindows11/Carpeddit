@@ -17,6 +17,7 @@ using System.Text;
 using Windows.Networking.Connectivity;
 using Carpeddit.App.Pages;
 using Windows.UI;
+using Windows.Networking.Sockets;
 
 namespace Carpeddit.App
 {
@@ -61,7 +62,27 @@ namespace Carpeddit.App
 
             }
             
-            return Color.FromArgb(255, 255, 255, 255);
+            return Current.RequestedTheme == ApplicationTheme.Light ? Color.FromArgb(255, 255, 255, 255) : Color.FromArgb(255, 0, 0, 0);
+        }
+
+        public static Color GetTextColorFromHex(string hex)
+        {
+            hex = hex.Replace("#", string.Empty);
+
+            try
+            {
+                byte r = (byte)Convert.ToUInt32(hex.Substring(0, 2), 16);
+                byte g = (byte)Convert.ToUInt32(hex.Substring(2, 2), 16);
+                byte b = (byte)Convert.ToUInt32(hex.Substring(4, 2), 16);
+
+                return Color.FromArgb(255, r, g, b);
+            }
+            catch
+            {
+
+            }
+
+            return Current.RequestedTheme == ApplicationTheme.Light ? Color.FromArgb(255, 0, 0, 0) : Color.FromArgb(255, 255, 255, 255);
         }
 
         public static int AddOne(int num)
@@ -150,13 +171,19 @@ namespace Carpeddit.App
 
                     try
                     {
-                        _ = RedditClient.Account.GetMe();
+                        using var tcpClient = new StreamSocket();
+                        await tcpClient.ConnectAsync(
+                            new Windows.Networking.HostName("reddit.com"),
+                            "80",
+                            SocketProtectionLevel.PlainSocket);
+
                         isOnline = true;
-                    } catch (Reddit.Exceptions.RedditNoResponseException e1)
+
+                        tcpClient.Dispose();
+                    }
+                    catch (Exception ex)
                     {
-#if DEBUG
-                        Debug.WriteLine(e1);
-#endif
+                        Debug.WriteLine(ex);
                         isOnline = false;
                     }
 

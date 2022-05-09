@@ -242,8 +242,8 @@
                         <Run Text="By" /> <Hyperlink Click="UserHyperlink_Click">u/<Run Text="{x:Bind Author}" /></Hyperlink>
                     </TextBlock>
 
-                    <Border Visibility="{x:Bind ShouldDisplayUserFlair, Converter={StaticResource BoolToVis}}" Padding="2" CornerRadius="2" Background="{ThemeResource ExpanderHeaderBackground}">
-                        <TextBlock Text="{x:Bind UserFlair.FlairText}" />
+                    <Border Visibility="{x:Bind ShouldDisplayUserFlair, Converter={StaticResource BoolToVis}}" Padding="2" CornerRadius="2">
+                        <TextBlock Text="{x:Bind Post.Listing.AuthorFlairText}" />
                     </Border>
 
                     <TextBlock VerticalAlignment="Center" TextWrapping="WrapWholeWords">- Posted <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Post.Created, x:True)}" /></TextBlock>
@@ -257,6 +257,17 @@
                     Text="{x:Bind Title}"
                     TextWrapping="WrapWholeWords" />
 
+                <Border Visibility="{x:Bind ShouldDisplayPostFlair, Converter={StaticResource BoolToVis}}" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="-2,4,0,4">
+                    <Border.Background>
+                        <SolidColorBrush Color="{x:Bind local:App.GetColorFromHex(Post.Listing.LinkFlairBackgroundColor)}" />
+                    </Border.Background>
+                    <TextBlock Text="{x:Bind Post.Listing.LinkFlairText}">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{x:Bind local:App.GetTextColorFromHex(Post.Listing.LinkFlairTextColor)}" />
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                </Border>
+
                 <controls:MarkdownTextBlock
                     Margin="0,5,0,0"
                     x:Phase="1"
@@ -267,7 +278,7 @@
 
                 <Image
                     MaxWidth="500"
-                    x:Phase="2"
+                    x:Phase="4"
                     Visibility="{x:Bind HasImage, Converter={StaticResource BoolToVis}}">
                     <Image.Source>
                         <BitmapImage UriSource="{x:Bind ImageUri}" />
