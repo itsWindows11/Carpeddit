@@ -21,7 +21,6 @@ namespace Carpeddit.App.Pages
         {
             InitializeComponent();
         }
-
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             if (Window.Current.Content is Frame rootFrame && rootFrame.CanGoBack)

@@ -108,7 +108,11 @@ namespace Carpeddit.App.Pages
                     if (mod.Name == App.RedditClient.Account.Me.Name)
                     {
                         Templates.PostTemplates.IsSubredditMod = true;
-                        ModerationToolsButton.Visibility = Visibility.Visible;
+
+                        await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                        {
+                            ModerationToolsButton.Visibility = Visibility.Visible;
+                        });
                         break;
                     }
                     else
