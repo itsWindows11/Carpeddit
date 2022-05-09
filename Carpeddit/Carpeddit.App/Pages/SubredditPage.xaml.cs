@@ -101,17 +101,29 @@ namespace Carpeddit.App.Pages
             ModsList.ItemsSource = modsList;
             PostFlairsList.ItemsSource = Subreddit.Flairs.LinkFlairV2;
 
-            foreach (var mod in modsList)
+            await Task.Run(async () =>
             {
-                if (mod.Name == App.RedditClient.Account.Me.Name)
+                foreach (var mod in modsList)
                 {
-                    Templates.PostTemplates.IsSubredditMod = true;
-                    break;
-                } else
-                {
-                    Templates.PostTemplates.IsSubredditMod = false;
+                    if (mod.Name == App.RedditClient.Account.Me.Name)
+                    {
+                        Templates.PostTemplates.IsSubredditMod = true;
+                        break;
+                    }
+                    else
+                    {
+                        Templates.PostTemplates.IsSubredditMod = false;
+                    }
                 }
-            }
+
+                foreach (Subreddit subreddit in App.RedditClient.Account.MySubscribedSubreddits(limit: 100))
+                {
+                    if (subreddit.Name.Equals(Subreddit.Name))
+                    {
+                        await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => JoinButton.Content = "Leave");
+                    }
+                }
+            });
 
             var posts1 = await Task.Run(async () =>
             {
@@ -287,6 +299,20 @@ namespace Carpeddit.App.Pages
 
                 button.Visibility = Visibility.Visible;
                 FooterProgress.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private async void JoinButton_Click(object sender, RoutedEventArgs e)
+        {
+            if ((JoinButton.Content as string).Equals("Leave"))
+            {
+                await Subreddit.UnsubscribeAsync();
+                JoinButton.Content = "Join";
+            }
+            else
+            {
+                await Subreddit.SubscribeAsync();
+                JoinButton.Content = "Leave";
             }
         }
     }

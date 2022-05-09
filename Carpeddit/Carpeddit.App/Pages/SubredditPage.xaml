@@ -64,40 +64,44 @@
 
                             <Grid>
                                 <Image x:Name="SubredditHeaderImg" Stretch="UniformToFill" />
-                                <StackPanel Padding="20,0" VerticalAlignment="Bottom">
-                                    <StackPanel.Background>
-                                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                            <GradientStop Offset="0" Color="#00000000" />
-                                            <GradientStop Offset="1" Color="#99000000" />
-                                        </LinearGradientBrush>
-                                    </StackPanel.Background>
+                                <Grid VerticalAlignment="Bottom">
+                                    <StackPanel Padding="20,0">
+                                        <StackPanel.Background>
+                                            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                                <GradientStop Offset="0" Color="#00000000" />
+                                                <GradientStop Offset="1" Color="#99000000" />
+                                            </LinearGradientBrush>
+                                        </StackPanel.Background>
 
-                                    <Border
+                                        <Border
                                         Width="60"
                                         Height="60"
                                         HorizontalAlignment="Left"
                                         BorderBrush="{StaticResource SystemAccentColorLight2}"
                                         BorderThickness="3"
                                         CornerRadius="60">
-                                        <Image>
-                                            <Image.Source>
-                                                <BitmapImage UriSource="{x:Bind Subreddit.CommunityIcon, Converter={StaticResource StringToUri}}" />
-                                            </Image.Source>
-                                        </Image>
-                                    </Border>
+                                            <Image>
+                                                <Image.Source>
+                                                    <BitmapImage UriSource="{x:Bind Subreddit.CommunityIcon, Converter={StaticResource StringToUri}}" />
+                                                </Image.Source>
+                                            </Image>
+                                        </Border>
 
-                                    <StackPanel Padding="0,0,0,12" Spacing="8">
-                                        <TextBlock
+                                        <StackPanel Padding="0,0,0,12" Spacing="8">
+                                            <TextBlock
                                             x:Name="SubredditFriendlyName"
                                             FontWeight="SemiBold"
                                             Style="{StaticResource SubtitleTextBlockStyle}"
                                             Text="{x:Bind Subreddit.HeaderTitle}" />
 
-                                        <TextBlock x:Name="SubredditName" FontSize="12">
+                                            <TextBlock x:Name="SubredditName" FontSize="12">
                                             r/<Run Text="{x:Bind Subreddit.Name}" />
-                                        </TextBlock>
+                                            </TextBlock>
+                                        </StackPanel>
                                     </StackPanel>
-                                </StackPanel>
+
+                                    <Button x:Name="JoinButton" Click="JoinButton_Click" Content="Join" HorizontalAlignment="Right" Margin="0,0,20,0" />
+                                </Grid>
                             </Grid>
                         </Border>
                     </StackPanel>
@@ -157,6 +161,22 @@
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                             </Style>
                         </StackPanel.Resources>
+
+                        <Border HorizontalAlignment="Stretch" CornerRadius="4" BorderThickness="1" BorderBrush="{ThemeResource ExpanderBorderBrush}" Padding="12" Background="{ThemeResource ExpanderHeaderBackground}">
+                            <StackPanel Spacing="8">
+                                <AutoSuggestBox Text="Search" QueryIcon="Find" />
+
+                                <StackPanel Orientation="Horizontal">
+                                    <Button>
+                                        <StackPanel Spacing="8" Orientation="Horizontal">
+                                            <FontIcon Glyph="&#xE109;" FontSize="14" />
+                                            <TextBlock Text="Create a Post" />
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                        
                         <muxc:Expander Header="Rules" IsExpanded="True">
                             <ListView
                                 x:Name="RulesList"
