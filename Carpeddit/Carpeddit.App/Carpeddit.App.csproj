@@ -153,6 +153,12 @@
     <Compile Include="Pages\MailboxPage.xaml.cs">
       <DependentUpon>MailboxPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\ModToolsPage.xaml.cs">
+      <DependentUpon>ModToolsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ModTools\ModqueuePage.xaml.cs">
+      <DependentUpon>ModqueuePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\OfflinePage.xaml.cs">
       <DependentUpon>OfflinePage.xaml</DependentUpon>
     </Compile>
@@ -194,6 +200,7 @@
   <ItemGroup>
     <None Include="Package.StoreAssociation.xml" />
     <Content Include="Assets\DefaultSubredditIcon.png" />
+    <Content Include="Assets\ModeratorTools.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -225,6 +232,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\MailboxPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ModToolsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ModTools\ModqueuePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

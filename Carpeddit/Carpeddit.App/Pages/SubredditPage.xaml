@@ -166,13 +166,15 @@
                             <StackPanel Spacing="8">
                                 <AutoSuggestBox Text="Search" QueryIcon="Find" />
 
-                                <StackPanel Orientation="Horizontal">
+                                <StackPanel Spacing="8" Orientation="Horizontal">
                                     <Button>
                                         <StackPanel Spacing="8" Orientation="Horizontal">
                                             <FontIcon Glyph="&#xE109;" FontSize="14" />
                                             <TextBlock Text="Create a Post" />
                                         </StackPanel>
                                     </Button>
+
+                                    <Button x:Name="ModerationToolsButton" Visibility="Collapsed" Click="ModerationToolsButton_Click" Content="Moderation tools" />
                                 </StackPanel>
                             </StackPanel>
                         </Border>

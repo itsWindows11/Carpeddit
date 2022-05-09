@@ -108,6 +108,7 @@ namespace Carpeddit.App.Pages
                     if (mod.Name == App.RedditClient.Account.Me.Name)
                     {
                         Templates.PostTemplates.IsSubredditMod = true;
+                        ModerationToolsButton.Visibility = Visibility.Visible;
                         break;
                     }
                     else
@@ -120,7 +121,10 @@ namespace Carpeddit.App.Pages
                 {
                     if (subreddit.Name.Equals(Subreddit.Name))
                     {
-                        await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => JoinButton.Content = "Leave");
+                        await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                        {
+                            JoinButton.Content = "Leave";
+                        });
                     }
                 }
             });
@@ -192,7 +196,6 @@ namespace Carpeddit.App.Pages
                     Subreddit = post.Subreddit,
                     Author = post.Author,
                     CommentsCount = post.Comments.GetComments().Count
-                    //UserFlair = Subreddit.Flairs.GetFlairList(post.Author, limit: 1)[0]
                 };
 
                 postViews.Add(vm);
@@ -213,74 +216,6 @@ namespace Carpeddit.App.Pages
             }
 
             return "No content";
-        }
-
-        private void Title_PointerReleased(object sender, PointerRoutedEventArgs e)
-        {
-            if (Window.Current.Content is Frame rootFrame && sender is TextBlock text && text.Tag is PostViewModel post)
-            {
-                rootFrame.Navigate(typeof(PostDetailsPage), post);
-            }
-        }
-
-        private void UserHyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
-        {
-            string text = (sender.Inlines[1] as Windows.UI.Xaml.Documents.Run).Text;
-            if (!text.Contains("[deleted]"))
-            {
-                Frame.Navigate(typeof(YourProfilePage), App.RedditClient.SearchUsers(new Reddit.Inputs.Search.SearchGetSearchInput(text)).FirstOrDefault(u => u.Name.Contains(text)));
-            }
-        }
-
-        private void SubredditHyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
-        {
-            string text = (sender.Inlines[1] as Windows.UI.Xaml.Documents.Run).Text;
-            if (Window.Current.Content is Frame rootFrame)
-            {
-                rootFrame.Navigate(typeof(SubredditPage), App.RedditClient.SearchSubreddits(new Reddit.Inputs.Search.SearchGetSearchInput(text)).FirstOrDefault(s => s.Name.Contains(text)));
-            }
-        }
-
-        private async void UpvoteButton_Click(object sender, RoutedEventArgs e)
-        {
-            ToggleButton toggle = sender as ToggleButton;
-            PostViewModel post = toggle.Tag as PostViewModel;
-
-            if (toggle.IsChecked.Value)
-            {
-                await post.Post.UpvoteAsync();
-                //post.RawVoteRatio = (post.Post.UpVotes - post.Post.DownVotes) + 1;
-                post.Upvoted = true;
-                post.Downvoted = false;
-            }
-            else
-            {
-                await post.Post.UnvoteAsync();
-                //post.RawVoteRatio = post.Post.UpVotes - post.Post.DownVotes;
-                post.Upvoted = false;
-                post.Downvoted = false;
-            }
-        }
-
-        private async void DownvoteButton_Click(object sender, RoutedEventArgs e)
-        {
-            ToggleButton toggle = sender as ToggleButton;
-            PostViewModel post = toggle.Tag as PostViewModel;
-
-            if (toggle.IsChecked.Value)
-            {
-                await post.Post.DownvoteAsync();
-                //post.RawVoteRatio = (post.Post.UpVotes - post.Post.DownVotes) - 1;
-                post.Upvoted = false;
-                post.Downvoted = true;
-            }
-            else
-            {
-                await post.Post.UnvoteAsync();
-                //post.RawVoteRatio = post.Post.UpVotes - post.Post.DownVotes;
-                post.Upvoted = false;
-                post.Downvoted = false;
-            }
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -314,6 +249,11 @@ namespace Carpeddit.App.Pages
                 await Subreddit.SubscribeAsync();
                 JoinButton.Content = "Leave";
             }
+        }
+
+        private void ModerationToolsButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(ModToolsPage));
         }
     }
 }
