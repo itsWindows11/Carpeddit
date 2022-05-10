@@ -47,8 +47,11 @@ namespace Carpeddit.App.Pages.ModTools
 
         private async void ModqueuePage_Loaded(object sender, RoutedEventArgs e)
         {
+            Progress.Visibility = Visibility.Visible;
             _posts.AddRange(await Task.Run(() => GetPosts(type: type)));
             MainList.ItemsSource = _posts;
+            MainList.Visibility = Visibility.Visible;
+            Progress.Visibility = Visibility.Collapsed;
 
             if (_posts.Count == 0)
             {

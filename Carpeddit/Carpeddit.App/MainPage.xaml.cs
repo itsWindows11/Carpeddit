@@ -59,7 +59,6 @@ namespace Carpeddit.App
             if (App.RedditClient != null)
             {
                 YourProfileItem.Content = App.RedditClient.Account.GetMe().UserData.Name;
-                Debug.WriteLine(AccountController.GetImageUrl(App.RedditClient.Account.Me.UserData));
                 Pfp.Source = new BitmapImage(new Uri(AccountController.GetImageUrl(App.RedditClient.Account.Me.UserData), UriKind.Absolute));
             }
 

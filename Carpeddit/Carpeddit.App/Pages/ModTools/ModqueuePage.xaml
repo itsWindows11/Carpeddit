@@ -10,7 +10,7 @@
 
     <Grid>
         <muxc:ProgressRing Width="50" Height="50" Margin="-56,0,-56,0" Visibility="Collapsed" x:Name="Progress" IsActive="True" HorizontalAlignment="Center" VerticalAlignment="Center" />
-        <ListView ItemTemplate="{StaticResource SubredditPostTemplate}" Margin="-56,0,-56,0" Padding="56,0,56,10" x:Name="MainList" SelectionMode="None">
+        <ListView Visibility="Collapsed" ItemTemplate="{StaticResource SubredditPostTemplate}" Margin="-56,0,-56,0" Padding="56,0,56,10" x:Name="MainList" SelectionMode="None">
             <ListView.Footer>
                 <Grid>
                     <muxc:ProgressRing IsActive="True" Margin="0,5" Visibility="Collapsed" HorizontalAlignment="Center" x:Name="FooterProgress" />
