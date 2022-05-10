@@ -18,5 +18,12 @@
                 </Grid>
             </ListView.Footer>
         </ListView>
+
+        <Grid x:Name="NoModQueueItems" Visibility="Collapsed" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel Spacing="12">
+                <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="No items" />
+                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="This queue is empty. Try again later." />
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>

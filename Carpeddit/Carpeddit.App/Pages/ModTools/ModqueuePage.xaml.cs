@@ -25,7 +25,10 @@ namespace Carpeddit.App.Pages.ModTools
     public sealed partial class ModqueuePage : Page
     {
         private BulkConcurrentObservableCollection<PostViewModel> _posts;
+
         private Subreddit subreddit => ModToolsPage.Subreddit;
+
+        ModQueueType type;
 
         public ModqueuePage()
         {
@@ -35,10 +38,23 @@ namespace Carpeddit.App.Pages.ModTools
             Loaded += ModqueuePage_Loaded;
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            type = (ModQueueType)e.Parameter;
+        }
+
         private async void ModqueuePage_Loaded(object sender, RoutedEventArgs e)
         {
-            _posts.AddRange(await Task.Run(() => GetPosts()));
+            _posts.AddRange(await Task.Run(() => GetPosts(type: type)));
             MainList.ItemsSource = _posts;
+
+            if (_posts.Count == 0)
+            {
+                NoModQueueItems.Visibility = Visibility.Visible;
+                MainList.Visibility = Visibility.Collapsed;
+            }
         }
 
         public List<PostViewModel> GetPosts(string before = "", string after = "", int limit = 24, ModQueueType type = ModQueueType.Default)
@@ -87,7 +103,7 @@ namespace Carpeddit.App.Pages.ModTools
 
         private async void LoadMoreButton_Click(object sender, RoutedEventArgs e)
         {
-            _posts.AddRange(await Task.Run(() => GetPosts(after: _posts[_posts.Count - 1].Post.Fullname)));
+            _posts.AddRange(await Task.Run(() => GetPosts(after: _posts[_posts.Count - 1].Post.Fullname, type: type)));
         }
     }
 }

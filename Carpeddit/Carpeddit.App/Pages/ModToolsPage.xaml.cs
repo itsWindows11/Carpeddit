@@ -1,4 +1,5 @@
 ﻿using Carpeddit.App.Pages.ModTools;
+using Carpeddit.Common.Enums;
 using Reddit.Controllers;
 using System;
 using System.Collections.Generic;
@@ -114,11 +115,7 @@ namespace Carpeddit.App.Pages
         private void NavView_ItemInvoked(muxc.NavigationView sender,
                                          muxc.NavigationViewItemInvokedEventArgs args)
         {
-            if (args.IsSettingsInvoked)
-            {
-                NavView_Navigate("settings", args.RecommendedNavigationTransitionInfo);
-            }
-            else if (args.InvokedItemContainer != null)
+            if (args.InvokedItemContainer != null)
             {
                 var navItemTag = args.InvokedItemContainer.Tag.ToString();
                 NavView_Navigate(navItemTag, args.RecommendedNavigationTransitionInfo);
@@ -138,10 +135,28 @@ namespace Carpeddit.App.Pages
             // entries in the backstack.
             var preNavPageType = ContentFrame.CurrentSourcePageType;
 
-            // Only navigate if the selected page isn't currently loaded.
-            if (_page is not null && !Equals(preNavPageType, _page))
+            ModQueueType type = ModQueueType.Default;
+
+            switch (navItemTag)
             {
-                ContentFrame.Navigate(_page, null, transitionInfo);
+                case "reports":
+                    type = ModQueueType.Reports;
+                    break;
+                case "spam":
+                    type = ModQueueType.Spam;
+                    break;
+                case "edited":
+                    type = ModQueueType.Edited;
+                    break;
+                case "unmoderated":
+                    type = ModQueueType.Unmoderated;
+                    break;
+            }
+
+            // Only navigate if the selected page isn't currently loaded.
+            if (_page is not null)
+            {
+                ContentFrame.Navigate(_page, _page == typeof(ModqueuePage) ? type : null, transitionInfo);
             }
         }
 
@@ -172,66 +187,7 @@ namespace Carpeddit.App.Pages
             {
                 var item = _pages.FirstOrDefault(p => p.Page == e.SourcePageType);
 
-                if (ContentFrame.SourcePageType == typeof(YourProfilePage))
-                {
-                    if (e.Parameter == null)
-                    {
-                        try
-                        {
-                            NavView.SelectedItem = NavView.MenuItems
-                            .OfType<muxc.NavigationViewItem>()
-                            .First(n => n.Tag.Equals(item.Tag));
-                        }
-                        catch (InvalidOperationException)
-                        {
-                            try
-                            {
-                                NavView.SelectedItem = NavView.FooterMenuItems
-                                .OfType<muxc.NavigationViewItem>()
-                                .First(n => n.Tag.Equals(item.Tag));
-                            }
-                            catch (InvalidOperationException)
-                            {
-                                Debug.WriteLine("Cannot navigate...");
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        NavView.SelectedItem = NavView.MenuItems
-                        .OfType<muxc.NavigationViewItem>()
-                        .First(n => n.Tag.Equals(item.Tag));
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        try
-                        {
-                            NavView.SelectedItem = NavView.FooterMenuItems
-                            .OfType<muxc.NavigationViewItem>()
-                            .First(n => n.Tag.Equals(item.Tag));
-                        }
-                        catch (InvalidOperationException)
-                        {
-                            Debug.WriteLine("Cannot navigate...");
-                        }
-                    }
-                }
-
-                if (ContentFrame.SourcePageType == typeof(YourProfilePage))
-                {
-                    NavView.Header = e.Parameter == null ? "Your profile" : "Profile";
-                }
-                else if (ContentFrame.SourcePageType == typeof(SearchResultsPage))
-                {
-                    NavView.Header = "Search results";
-                }
-                else
-                {
-                    NavView.Header = ((muxc.NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
-                }
+                NavView.Header = ((muxc.NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
             }
         }
     }
