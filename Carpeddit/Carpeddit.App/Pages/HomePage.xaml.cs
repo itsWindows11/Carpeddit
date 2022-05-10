@@ -121,7 +121,7 @@ namespace Carpeddit.App.Pages
 
         private async Task<ObservableCollection<PostViewModel>> GetPostsAsync(string after = "", int limit = 13, string before = "")
         {
-            List<Post> frontpage = App.RedditClient.GetFrontPage(limit: 13, after: after, before: before);
+            List<Post> frontpage = App.RedditClient.GetFrontPage(limit: limit, after: after, before: before);
             ObservableCollection<PostViewModel> postViews = new();
 
             foreach (Post post in frontpage)

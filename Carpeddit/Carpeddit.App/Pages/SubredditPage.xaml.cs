@@ -257,7 +257,7 @@ namespace Carpeddit.App.Pages
 
         private void ModerationToolsButton_Click(object sender, RoutedEventArgs e)
         {
-            Frame.Navigate(typeof(ModToolsPage));
+            Frame.Navigate(typeof(ModToolsPage), Subreddit);
         }
     }
 }
