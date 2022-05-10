@@ -76,8 +76,7 @@
                 <Image
                     x:Name="ImagePost"
                     MaxWidth="500"
-                    x:Phase="2"
-                    Visibility="{x:Bind HasImage, Converter={StaticResource BoolToVis}}">
+                    x:Load="{x:Bind HasImage}">
                     <Image.Source>
                         <BitmapImage DecodePixelType="Logical" UriSource="{x:Bind ImageUri}" />
                     </Image.Source>
@@ -169,11 +168,11 @@
                     TextWrapping="WrapWholeWords" />
 
                 <Image
+                    x:Name="ImagePost"
                     MaxWidth="500"
-                    x:Phase="2"
-                    Visibility="{x:Bind HasImage, Converter={StaticResource BoolToVis}}">
+                    x:Load="{x:Bind HasImage}">
                     <Image.Source>
-                        <BitmapImage UriSource="{x:Bind ImageUri}" />
+                        <BitmapImage DecodePixelType="Logical" UriSource="{x:Bind ImageUri}" />
                     </Image.Source>
                 </Image>
 
@@ -286,11 +285,11 @@
                     TextWrapping="WrapWholeWords" />
 
                 <Image
+                    x:Name="ImagePost"
                     MaxWidth="500"
-                    x:Phase="4"
-                    Visibility="{x:Bind HasImage, Converter={StaticResource BoolToVis}}">
+                    x:Load="{x:Bind HasImage}">
                     <Image.Source>
-                        <BitmapImage UriSource="{x:Bind ImageUri}" />
+                        <BitmapImage DecodePixelType="Logical" UriSource="{x:Bind ImageUri}" />
                     </Image.Source>
                 </Image>
 

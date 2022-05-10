@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Reddit.Controllers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,14 +18,13 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Carpeddit.App.Pages.ModTools
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class ModqueuePage : Page
     {
+        private Subreddit subreddit => ModToolsPage.Subreddit;
+
         public ModqueuePage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

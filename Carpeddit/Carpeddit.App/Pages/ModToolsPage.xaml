@@ -25,20 +25,57 @@
             <StackPanel Orientation="Horizontal">
                 <Image
                     x:Name="AppFontIcon"
-                    Width="24"
-                    Height="24"
                     Margin="30,2,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    Source="ms-appx:///Assets/ModeratorTools.png" />
+                    Width="16"
+                    Height="16">
+                    <Image.Source>
+                        <BitmapImage DecodePixelHeight="48" DecodePixelWidth="48" UriSource="ms-appx:///Assets/ModeratorTools.png" />
+                    </Image.Source>
+                </Image>
                 <TextBlock
                     x:Name="AppTitle"
                     Margin="10,2,0,0"
                     VerticalAlignment="Center"
                     Style="{StaticResource CaptionTextBlockStyle}"
-                    Text="Moderator tools" />
+                    Text="Moderation tools" />
             </StackPanel>
         </Border>
+
+        <muxc:NavigationView x:Name="NavView"
+                             Loaded="NavView_Loaded"
+                             ItemInvoked="NavView_ItemInvoked"
+                             BackRequested="NavView_BackRequested"
+                             Grid.Row="1"
+                             IsSettingsVisible="False"
+                             IsBackButtonVisible="Collapsed">
+            <muxc:NavigationView.MenuItems>
+                <muxc:NavigationViewItem Tag="queue" Icon="Filter" Content="Queue"/>
+                <muxc:NavigationViewItem Tag="reports" Content="Reports">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE11B;"/>
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Tag="spam" Content="Spam">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE16F;"/>
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Tag="edited" Icon="Edit" Content="Edited"/>
+                <muxc:NavigationViewItem Tag="unmoderated" Icon="Mail" Content="Unmoderated"/>
+            </muxc:NavigationView.MenuItems>
+
+            <Frame 
+                x:Name="ContentFrame"
+                Padding="56,0,56,0">
+                <Frame.ContentTransitions>
+                    <TransitionCollection>
+                        <NavigationThemeTransition />
+                    </TransitionCollection>
+                </Frame.ContentTransitions>
+            </Frame>
+        </muxc:NavigationView>
 
         <Button
             x:Name="BackButton"

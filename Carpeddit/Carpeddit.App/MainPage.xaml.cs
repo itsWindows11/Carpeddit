@@ -167,23 +167,6 @@ namespace Carpeddit.App
             }
         }
 
-        // NavView_SelectionChanged is not used in this example, but is shown for completeness.
-        // You will typically handle either ItemInvoked or SelectionChanged to perform navigation,
-        // but not both.
-        private void NavView_SelectionChanged(muxc.NavigationView sender,
-                                              muxc.NavigationViewSelectionChangedEventArgs args)
-        {
-            if (args.IsSettingsSelected)
-            {
-                NavView_Navigate("settings", args.RecommendedNavigationTransitionInfo);
-            }
-            else if (args.SelectedItemContainer != null)
-            {
-                var navItemTag = args.SelectedItemContainer.Tag.ToString();
-                NavView_Navigate(navItemTag, args.RecommendedNavigationTransitionInfo);
-            }
-        }
-
         private void NavView_Navigate(
             string navItemTag,
             Windows.UI.Xaml.Media.Animation.NavigationTransitionInfo transitionInfo)
