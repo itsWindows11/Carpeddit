@@ -93,6 +93,10 @@
                         Save
                     </HyperlinkButton>
 
+                    <HyperlinkButton Visibility="{x:Bind IsCurrentUserOP, Converter={StaticResource BoolToVis}}" Click="RemoveUserPostButton_Click" Margin="0,0,0,-6" Padding="2">
+                        Delete
+                    </HyperlinkButton>
+
                     <HyperlinkButton Margin="0,0,0,-6" Padding="2">
                         Report
                     </HyperlinkButton>
@@ -187,7 +191,7 @@
                         Save
                     </HyperlinkButton>
 
-                    <HyperlinkButton Click="RemoveUserPostButton_Click" Margin="0,0,0,-6" Padding="2">
+                    <HyperlinkButton Visibility="{x:Bind IsCurrentUserOP, Converter={StaticResource BoolToVis}}" Click="RemoveUserPostButton_Click" Margin="0,0,0,-6" Padding="2">
                         Delete
                     </HyperlinkButton>
 
@@ -304,6 +308,10 @@
                         Save
                     </HyperlinkButton>
 
+                    <HyperlinkButton Visibility="{x:Bind IsCurrentUserOP, Converter={StaticResource BoolToVis}}" Click="RemoveUserPostButton_Click" Margin="0,0,0,-6" Padding="2">
+                        Delete
+                    </HyperlinkButton>
+
                     <HyperlinkButton IsEnabled="{x:Bind local:App.OppositeOf(Post.Listing.Removed)}" Visibility="{x:Bind templates:PostTemplates.IsSubredditMod, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="RemovePostButton_Click" Margin="0,0,0,-6" Padding="2">
                         Remove
                     </HyperlinkButton>
@@ -314,6 +322,10 @@
 
                     <HyperlinkButton IsEnabled="{x:Bind local:App.OppositeOf(Post.Listing.Spam)}" Visibility="{x:Bind templates:PostTemplates.IsSubredditMod, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="SpamButton_Click" Margin="0,0,0,-6" Padding="2">
                         Spam
+                    </HyperlinkButton>
+
+                    <HyperlinkButton Margin="0,0,0,-6" Padding="2">
+                        Report
                     </HyperlinkButton>
                 </StackPanel>
             </StackPanel>

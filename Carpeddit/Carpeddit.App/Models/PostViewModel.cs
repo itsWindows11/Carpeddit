@@ -39,15 +39,11 @@ namespace Carpeddit.App.Models
 
         public string Description { get; set; }
 
-        public bool ShouldDisplayUserFlair
-        {
-            get => !string.IsNullOrEmpty(Post.Listing.AuthorFlairText);
-        }
+        public bool ShouldDisplayUserFlair => !string.IsNullOrEmpty(Post.Listing.AuthorFlairText);
 
-        public bool ShouldDisplayPostFlair
-        {
-            get => !string.IsNullOrEmpty(Post.Listing.LinkFlairText);
-        }
+        public bool ShouldDisplayPostFlair => !string.IsNullOrEmpty(Post.Listing.LinkFlairText);
+
+        public bool IsCurrentUserOP => App.RedditClient.Account.Me.Name == Author;
 
         public string ShortDescription
         {

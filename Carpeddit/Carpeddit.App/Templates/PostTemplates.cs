@@ -110,11 +110,11 @@ namespace Carpeddit.App.Templates
                 (sender as HyperlinkButton).Content = "Removed";
                 (sender as HyperlinkButton).IsEnabled = false;
 
-                (((sender as HyperlinkButton).Parent as StackPanel).Children[4] as HyperlinkButton).Content = "Approve";
-                (((sender as HyperlinkButton).Parent as StackPanel).Children[4] as HyperlinkButton).IsEnabled = true;
-
-                (((sender as HyperlinkButton).Parent as StackPanel).Children[5] as HyperlinkButton).Content = "Spam";
+                (((sender as HyperlinkButton).Parent as StackPanel).Children[5] as HyperlinkButton).Content = "Approve";
                 (((sender as HyperlinkButton).Parent as StackPanel).Children[5] as HyperlinkButton).IsEnabled = true;
+
+                (((sender as HyperlinkButton).Parent as StackPanel).Children[6] as HyperlinkButton).Content = "Spam";
+                (((sender as HyperlinkButton).Parent as StackPanel).Children[6] as HyperlinkButton).IsEnabled = true;
             }
         }
 
@@ -138,11 +138,11 @@ namespace Carpeddit.App.Templates
                 (sender as HyperlinkButton).Content = "Approved";
                 (sender as HyperlinkButton).IsEnabled = false;
 
-                (((sender as HyperlinkButton).Parent as StackPanel).Children[3] as HyperlinkButton).Content = "Remove";
-                (((sender as HyperlinkButton).Parent as StackPanel).Children[3] as HyperlinkButton).IsEnabled = true;
+                (((sender as HyperlinkButton).Parent as StackPanel).Children[4] as HyperlinkButton).Content = "Remove";
+                (((sender as HyperlinkButton).Parent as StackPanel).Children[4] as HyperlinkButton).IsEnabled = true;
 
-                (((sender as HyperlinkButton).Parent as StackPanel).Children[5] as HyperlinkButton).Content = "Spam";
-                (((sender as HyperlinkButton).Parent as StackPanel).Children[5] as HyperlinkButton).IsEnabled = true;
+                (((sender as HyperlinkButton).Parent as StackPanel).Children[6] as HyperlinkButton).Content = "Spam";
+                (((sender as HyperlinkButton).Parent as StackPanel).Children[6] as HyperlinkButton).IsEnabled = true;
             }
         }
 
@@ -155,11 +155,11 @@ namespace Carpeddit.App.Templates
                 (sender as HyperlinkButton).Content = "Spammed";
                 (sender as HyperlinkButton).IsEnabled = false;
 
-                (((sender as HyperlinkButton).Parent as StackPanel).Children[3] as HyperlinkButton).Content = "Remove";
-                (((sender as HyperlinkButton).Parent as StackPanel).Children[3] as HyperlinkButton).IsEnabled = true;
-
-                (((sender as HyperlinkButton).Parent as StackPanel).Children[4] as HyperlinkButton).Content = "Approve";
+                (((sender as HyperlinkButton).Parent as StackPanel).Children[4] as HyperlinkButton).Content = "Remove";
                 (((sender as HyperlinkButton).Parent as StackPanel).Children[4] as HyperlinkButton).IsEnabled = true;
+
+                (((sender as HyperlinkButton).Parent as StackPanel).Children[5] as HyperlinkButton).Content = "Approve";
+                (((sender as HyperlinkButton).Parent as StackPanel).Children[5] as HyperlinkButton).IsEnabled = true;
             }
         }
     }
