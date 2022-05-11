@@ -1,5 +1,6 @@
 ﻿using Carpeddit.App.Collections;
 using Carpeddit.App.Models;
+using Carpeddit.Common.Enums;
 using Reddit.Controllers;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,8 @@ namespace Carpeddit.App.Pages
     {
         public Subreddit Subreddit;
         BulkConcurrentObservableCollection<PostViewModel> posts = new();
+        Sort currentSort;
+        bool initialPostsLoaded;
 
         public SubredditPage()
         {
@@ -129,6 +132,7 @@ namespace Carpeddit.App.Pages
                         {
                             JoinButton.Content = "Leave";
                         });
+                        break;
                     }
                 }
             });
@@ -145,6 +149,8 @@ namespace Carpeddit.App.Pages
             MainList.Visibility = Visibility.Visible;
 
             ProgressR.Visibility = Visibility.Collapsed;
+
+            initialPostsLoaded = true;
         }
 
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
@@ -184,9 +190,17 @@ namespace Carpeddit.App.Pages
             }
         }
 
-        private async Task<ObservableCollection<PostViewModel>> GetPostsAsync(string after = "", int limit = 24, string before = "")
+        private async Task<ObservableCollection<PostViewModel>> GetPostsAsync(string after = "", int limit = 24, string before = "", Sort sortType = Sort.Hot)
         {
-            List<Post> frontpage = Subreddit.Posts.GetHot(limit: limit, after: after, before: before);
+            List<Post> frontpage = sortType switch
+            {
+                Sort.Best => Subreddit.Posts.GetBest(limit: limit, after: after, before: before),
+                Sort.Controversial => Subreddit.Posts.GetControversial(limit: limit, after: after, before: before),
+                Sort.New => Subreddit.Posts.GetNew(limit: limit, after: after, before: before),
+                Sort.Rising => Subreddit.Posts.GetRising(limit: limit, after: after, before: before),
+                _ => Subreddit.Posts.GetHot(limit: limit, after: after, before: before),
+            };
+
             ObservableCollection<PostViewModel> postViews = new();
 
             foreach (Post post in frontpage)
@@ -258,6 +272,34 @@ namespace Carpeddit.App.Pages
         private void ModerationToolsButton_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(ModToolsPage), Subreddit);
+        }
+
+        private async void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (initialPostsLoaded)
+            {
+                ProgressR.Visibility = Visibility.Visible;
+                MainList.Visibility = Visibility.Collapsed;
+
+                currentSort = e.AddedItems[0] as string switch
+                {
+                    "Best" => Sort.Best,
+                    "Controversial" => Sort.Controversial,
+                    "New" => Sort.New,
+                    "Rising" => Sort.Rising,
+                    _ => Sort.Hot,
+                };
+
+                posts.Clear();
+
+                posts.AddRange(await Task.Run(async () =>
+                {
+                    return await GetPostsAsync(sortType: currentSort);
+                }));
+
+                ProgressR.Visibility = Visibility.Collapsed;
+                MainList.Visibility = Visibility.Visible;
+            }
         }
     }
 }
