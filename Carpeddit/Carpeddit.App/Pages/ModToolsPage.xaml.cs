@@ -29,6 +29,10 @@ namespace Carpeddit.App.Pages
             ("edited", typeof(ModqueuePage)),
             ("unmoderated", typeof(ModqueuePage)),
             ("modlog", typeof(ModLogPage)),
+            ("banned", typeof(BannedUsersPage)),
+            ("muted", typeof(MutedUsersPage)),
+            ("approved", typeof(ApprovedUsersPage)),
+            ("moderators", typeof(ModeratorsListPage)),
         };
 
         public ModToolsPage()
@@ -111,19 +115,6 @@ namespace Carpeddit.App.Pages
             // Because we use ItemInvoked to navigate, we need to call Navigate
             // here to load the home page.
             NavView_Navigate("queue", new Windows.UI.Xaml.Media.Animation.EntranceNavigationTransitionInfo());
-
-            /*switch (App.SViewModel.ColorMode)
-            {
-                case 0:
-                    ColorBrushBg.Color = Colors.Transparent;
-                    break;
-                case 1:
-                    ColorBrushBg.Color = (Color)Resources["SystemAccentColor"];
-                    break;
-                case 2:
-                    ColorBrushBg.Color = App.SViewModel.TintColorsList[App.SViewModel.TintColor];
-                    break;
-            }*/
         }
 
         private void NavView_ItemInvoked(muxc.NavigationView sender,

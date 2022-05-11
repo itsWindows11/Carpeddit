@@ -156,11 +156,23 @@
     <Compile Include="Pages\ModToolsPage.xaml.cs">
       <DependentUpon>ModToolsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\ModTools\ApprovedUsersPage.xaml.cs">
+      <DependentUpon>ApprovedUsersPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ModTools\BannedUsersPage.xaml.cs">
+      <DependentUpon>BannedUsersPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ModTools\ModeratorsListPage.xaml.cs">
+      <DependentUpon>ModeratorsListPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\ModTools\ModLogPage.xaml.cs">
       <DependentUpon>ModLogPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\ModTools\ModqueuePage.xaml.cs">
       <DependentUpon>ModqueuePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ModTools\MutedUsersPage.xaml.cs">
+      <DependentUpon>MutedUsersPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\OfflinePage.xaml.cs">
       <DependentUpon>OfflinePage.xaml</DependentUpon>
@@ -242,11 +254,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\ModTools\ApprovedUsersPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ModTools\BannedUsersPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ModTools\ModeratorsListPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\ModTools\ModLogPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\ModTools\ModqueuePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ModTools\MutedUsersPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

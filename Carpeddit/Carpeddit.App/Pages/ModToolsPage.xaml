@@ -69,6 +69,32 @@
                 <muxc:NavigationViewItem Tag="edited" Icon="Edit" Content="Edited"/>
                 <muxc:NavigationViewItem Tag="unmoderated" Icon="Mail" Content="Unmoderated"/>
 
+                <muxc:NavigationViewItemHeader Content="User management" />
+
+                <muxc:NavigationViewItem Tag="banned" Content="Banned">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE10A;"/>
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+
+                <muxc:NavigationViewItem Tag="muted" Content="Muted">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE198;"/>
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+
+                <muxc:NavigationViewItem Tag="approved" Content="Approved">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE001;"/>
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+
+                <muxc:NavigationViewItem Tag="moderators" Content="Moderators">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xEA18;"/>
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+
                 <muxc:NavigationViewItemHeader Content="Logs" />
                 
                 <muxc:NavigationViewItem Tag="modlog" Icon="Mail" Content="Moderation log"/>

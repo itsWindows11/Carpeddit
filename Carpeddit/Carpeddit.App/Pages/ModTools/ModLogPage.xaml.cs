@@ -47,7 +47,7 @@ namespace Carpeddit.App.Pages.ModTools
 
         private async void LoadMoreButton_Click(object sender, RoutedEventArgs e)
         {
-            _modActions.AddRange(await Task.Run(() => ModToolsPage.Subreddit.GetLog(after: _modActions[_modActions.Count - 1].Data.TargetFullname).Data.Children));
+            _modActions.AddRange(await Task.Run(() => ModToolsPage.Subreddit.GetLog(after: _modActions[_modActions.Count - 1].Data.Id).Data.Children));
         }
     }
 }
