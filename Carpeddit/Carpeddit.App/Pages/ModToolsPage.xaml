@@ -16,6 +16,10 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
+        <Grid.Background>
+            <SolidColorBrush x:Name="ColorBrushBg" Opacity="0.1" />
+        </Grid.Background>
+
         <Border
             x:Name="AppTitleBar"
             Padding="20,0,0,0"
@@ -64,6 +68,11 @@
                 </muxc:NavigationViewItem>
                 <muxc:NavigationViewItem Tag="edited" Icon="Edit" Content="Edited"/>
                 <muxc:NavigationViewItem Tag="unmoderated" Icon="Mail" Content="Unmoderated"/>
+
+                <muxc:NavigationViewItemHeader Content="Logs" />
+                
+                <muxc:NavigationViewItem Tag="modlog" Icon="Mail" Content="Moderation log"/>
+
             </muxc:NavigationView.MenuItems>
 
             <Frame 

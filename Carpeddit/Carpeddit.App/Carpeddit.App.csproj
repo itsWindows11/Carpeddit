@@ -156,6 +156,9 @@
     <Compile Include="Pages\ModToolsPage.xaml.cs">
       <DependentUpon>ModToolsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\ModTools\ModLogPage.xaml.cs">
+      <DependentUpon>ModLogPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\ModTools\ModqueuePage.xaml.cs">
       <DependentUpon>ModqueuePage.xaml</DependentUpon>
     </Compile>
@@ -236,6 +239,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\ModToolsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ModTools\ModLogPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

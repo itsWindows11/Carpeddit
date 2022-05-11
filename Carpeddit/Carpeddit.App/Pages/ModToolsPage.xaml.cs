@@ -28,6 +28,7 @@ namespace Carpeddit.App.Pages
             ("spam", typeof(ModqueuePage)),
             ("edited", typeof(ModqueuePage)),
             ("unmoderated", typeof(ModqueuePage)),
+            ("modlog", typeof(ModLogPage)),
         };
 
         public ModToolsPage()
@@ -47,6 +48,19 @@ namespace Carpeddit.App.Pages
 
             coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
             coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged;
+
+            switch (App.SViewModel.ColorMode)
+            {
+                case 0:
+                    ColorBrushBg.Color = Colors.Transparent;
+                    break;
+                case 1:
+                    ColorBrushBg.Color = (Color)Resources["SystemAccentColor"];
+                    break;
+                case 2:
+                    ColorBrushBg.Color = App.SViewModel.TintColorsList[App.SViewModel.TintColor];
+                    break;
+            }
         }
 
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
