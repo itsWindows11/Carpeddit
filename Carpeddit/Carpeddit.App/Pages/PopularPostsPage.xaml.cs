@@ -30,55 +30,12 @@ namespace Carpeddit.App.Pages
     public sealed partial class PopularPostsPage : Page
     {
         BulkConcurrentObservableCollection<PostViewModel> posts = new();
-        int postsCount = 0;
-        string chosenFilter = "Hot";
+
         public PopularPostsPage()
         {
             InitializeComponent();
 
             Loaded += Page_Loaded;
-        }
-
-        private async void UpvoteButton_Click(object sender, RoutedEventArgs e)
-        {
-            ToggleButton toggle = sender as ToggleButton;
-            PostViewModel post = toggle.Tag as PostViewModel;
-
-            if (toggle.IsChecked.Value)
-            {
-                await post.Post.UpvoteAsync();
-                //post.RawVoteRatio = (post.Post.UpVotes - post.Post.DownVotes) + 1;
-                post.Upvoted = true;
-                post.Downvoted = false;
-            }
-            else
-            {
-                await post.Post.UnvoteAsync();
-                //post.RawVoteRatio = post.Post.UpVotes - post.Post.DownVotes;
-                post.Upvoted = false;
-                post.Downvoted = false;
-            }
-        }
-
-        private async void DownvoteButton_Click(object sender, RoutedEventArgs e)
-        {
-            ToggleButton toggle = sender as ToggleButton;
-            PostViewModel post = toggle.Tag as PostViewModel;
-
-            if (toggle.IsChecked.Value)
-            {
-                await post.Post.DownvoteAsync();
-                //post.RawVoteRatio = (post.Post.UpVotes - post.Post.DownVotes) - 1;
-                post.Upvoted = false;
-                post.Downvoted = true;
-            }
-            else
-            {
-                await post.Post.UnvoteAsync();
-                //post.RawVoteRatio = post.Post.UpVotes - post.Post.DownVotes;
-                post.Upvoted = false;
-                post.Downvoted = false;
-            }
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -141,8 +98,6 @@ namespace Carpeddit.App.Pages
                 postViews.Add(vm);
             }
 
-            //for (postsCount = 0; postsCount < posts.Count; postsCount++);
-
             return postViews;
         }
 
@@ -158,60 +113,6 @@ namespace Carpeddit.App.Pages
             }
 
             return "No content";
-        }
-
-        private void Title_PointerReleased(object sender, PointerRoutedEventArgs e)
-        {
-            if (Window.Current.Content is Frame rootFrame && sender is TextBlock text && text.Tag is PostViewModel post)
-            {
-                rootFrame.Navigate(typeof(PostDetailsPage), post);
-            }
-        }
-
-        private void UserHyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
-        {
-            string text = (sender.Inlines[1] as Windows.UI.Xaml.Documents.Run).Text;
-            if (!text.Contains("[deleted]"))
-            {
-                Frame.Navigate(typeof(YourProfilePage), App.RedditClient.SearchUsers(new Reddit.Inputs.Search.SearchGetSearchInput(text)).FirstOrDefault(u => u.Name.Contains(text)));
-            }
-        }
-
-        private void SubredditHyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
-        {
-            string text = (sender.Inlines[1] as Windows.UI.Xaml.Documents.Run).Text;
-            if (Window.Current.Content is Frame rootFrame)
-            {
-                rootFrame.Navigate(typeof(SubredditPage), App.RedditClient.SearchSubreddits(new Reddit.Inputs.Search.SearchGetSearchInput(text)).FirstOrDefault(s => s.Name.Contains(text)));
-            }
-        }
-
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            posts.Clear();
-            switch ((sender as ComboBox).SelectedIndex)
-            {
-                case 0:
-                    // New
-                    chosenFilter = "New";
-                    break;
-                case 1:
-                    // Hot
-                    chosenFilter = "Hot";
-                    break;
-                case 2:
-                    // Top
-                    chosenFilter = "Top";
-                    break;
-                case 3:
-                    // Rising
-                    chosenFilter = "Rising"; // fun fact: this string once used to hold a value of "Rising Media Player"
-                    break;
-                case 4:
-                    // Controversial
-                    chosenFilter = "Controversial";
-                    break;
-            }
         }
     }
 }

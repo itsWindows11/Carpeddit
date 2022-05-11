@@ -38,48 +38,6 @@ namespace Carpeddit.App.Pages
             }
         }
 
-        private async void UpvoteButton_Click(object sender, RoutedEventArgs e)
-        {
-            ToggleButton toggle = sender as ToggleButton;
-            PostViewModel post = toggle.Tag as PostViewModel;
-
-            if (toggle?.IsChecked ?? false)
-            {
-                await post.Post.UpvoteAsync();
-                //post.RawVoteRatio = (post.Post.UpVotes - post.Post.DownVotes) + 1;
-                post.Upvoted = true;
-                post.Downvoted = false;
-            }
-            else
-            {
-                await post.Post.UnvoteAsync();
-                //post.RawVoteRatio = post.Post.UpVotes - post.Post.DownVotes;
-                post.Upvoted = false;
-                post.Downvoted = false;
-            }
-        }
-
-        private async void DownvoteButton_Click(object sender, RoutedEventArgs e)
-        {
-            ToggleButton toggle = sender as ToggleButton;
-            PostViewModel post = toggle.Tag as PostViewModel;
-
-            if (toggle?.IsChecked ?? false)
-            {
-                await post.Post.DownvoteAsync();
-                //post.RawVoteRatio = (post.Post.UpVotes - post.Post.DownVotes) - 1;
-                post.Upvoted = false;
-                post.Downvoted = true;
-            }
-            else
-            {
-                await post.Post.UnvoteAsync();
-                //post.RawVoteRatio = post.Post.UpVotes - post.Post.DownVotes;
-                post.Upvoted = false;
-                post.Downvoted = false;
-            }
-        }
-
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button button)
@@ -148,8 +106,6 @@ namespace Carpeddit.App.Pages
                 postViews.Add(vm);
             }
 
-            //for (postsCount = 0; postsCount < posts.Count; postsCount++);
-
             return postViews;
         }
 
@@ -165,14 +121,6 @@ namespace Carpeddit.App.Pages
             }
 
             return "No content";
-        }
-
-        private void Title_PointerReleased(object sender, PointerRoutedEventArgs e)
-        {
-            if (Window.Current.Content is Frame rootFrame && sender is TextBlock text && text.Tag is PostViewModel post)
-            {
-                rootFrame.Navigate(typeof(PostDetailsPage), post);
-            }
         }
     }
 }
