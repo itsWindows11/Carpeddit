@@ -1,0 +1,46 @@
+﻿<Page
+    x:Class="Carpeddit.App.Pages.ModTools.UserFlairPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Carpeddit.App.Pages.ModTools"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:reddit="using:Reddit.Things" xmlns:pages="using:Carpeddit.App.Pages" xmlns:local1="using:Carpeddit.App"
+    mc:Ignorable="d"
+    d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <ListView
+            x:Name="UserFlairsList"
+            SelectionMode="Extended"
+            Margin="-56,0"
+            Padding="56,0"
+            ItemsSource="{x:Bind pages:ModToolsPage.Subreddit.Flairs.UserFlairV2}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="reddit:FlairV2">
+                    <RelativePanel Padding="0,8">
+                        <StackPanel Orientation="Horizontal" RelativePanel.AlignVerticalCenterWithPanel="True">
+                            <Border HorizontalAlignment="Left" CornerRadius="10" Padding="8,2">
+                                <Border.Background>
+                                    <SolidColorBrush Color="{x:Bind local1:App.GetColorFromHex(BackgroundColor)}" />
+                                </Border.Background>
+                                <TextBlock Text="{x:Bind Text}">
+                                    <TextBlock.Foreground>
+                                        <SolidColorBrush Color="{x:Bind local1:App.GetTextColorFromHex(TextColor)}" />
+                                    </TextBlock.Foreground>
+                                </TextBlock>
+                            </Border>
+
+                            <TextBlock Opacity="0.6" Visibility="{x:Bind ModOnly, Converter={StaticResource BoolToVis}}" Margin="12,0,0,0" Text="Mod only" />
+                        </StackPanel>
+
+                        <Button Click="RemoveFlairButton_Click" Tag="{x:Bind}" Content="Remove" RelativePanel.AlignRightWithPanel="True" />
+                    </RelativePanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Button ToolTipService.ToolTip="Create flair" Click="CreateFlairButton_Click" Margin="24" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+            <FontIcon Glyph="&#xE109;" />
+        </Button>
+    </Grid>
+</Page>

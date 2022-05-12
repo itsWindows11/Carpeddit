@@ -95,6 +95,14 @@
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
 
+                <muxc:NavigationViewItemHeader Content="Flairs" />
+
+                <muxc:NavigationViewItem Tag="grantflair" Icon="Contact" Content="Grant user flair" />
+
+                <muxc:NavigationViewItem Tag="postflair" Icon="Tag" Content="Post flair" />
+
+                <muxc:NavigationViewItem Tag="userflair" Icon="Tag" Content="User flair" />
+
                 <muxc:NavigationViewItemHeader Content="Logs" />
                 
                 <muxc:NavigationViewItem Tag="modlog" Icon="Mail" Content="Moderation log"/>

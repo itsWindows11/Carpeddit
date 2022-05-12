@@ -133,6 +133,9 @@
     <Compile Include="Converters\DecimalPointToPercentageConverter.cs" />
     <Compile Include="Converters\SettingsConverters.cs" />
     <Compile Include="Converters\StringToUriConverter.cs" />
+    <Compile Include="Dialogs\CreateFlairDialog.xaml.cs">
+      <DependentUpon>CreateFlairDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\PostHelpers.cs" />
     <Compile Include="LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
@@ -162,6 +165,9 @@
     <Compile Include="Pages\ModTools\BannedUsersPage.xaml.cs">
       <DependentUpon>BannedUsersPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\ModTools\GrantUserFlairPage.xaml.cs">
+      <DependentUpon>GrantUserFlairPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\ModTools\ModeratorsListPage.xaml.cs">
       <DependentUpon>ModeratorsListPage.xaml</DependentUpon>
     </Compile>
@@ -173,6 +179,12 @@
     </Compile>
     <Compile Include="Pages\ModTools\MutedUsersPage.xaml.cs">
       <DependentUpon>MutedUsersPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ModTools\PostFlairPage.xaml.cs">
+      <DependentUpon>PostFlairPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\ModTools\UserFlairPage.xaml.cs">
+      <DependentUpon>UserFlairPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\OfflinePage.xaml.cs">
       <DependentUpon>OfflinePage.xaml</DependentUpon>
@@ -230,6 +242,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Dialogs\CreateFlairDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -262,6 +278,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\ModTools\GrantUserFlairPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Pages\ModTools\ModeratorsListPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -275,6 +295,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\ModTools\MutedUsersPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ModTools\PostFlairPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\ModTools\UserFlairPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

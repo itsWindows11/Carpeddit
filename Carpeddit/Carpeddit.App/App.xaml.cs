@@ -43,6 +43,19 @@ namespace Carpeddit.App
         {
             InitializeComponent();
             Suspending += OnSuspending;
+
+            //UnhandledException += App_UnhandledException;
+            //AppDomain.CurrentDomain.UnhandledException += AppDomain_UnhandledException;
+        }
+
+        private void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
+        {
+            
+        }
+
+        private void AppDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
+        {
+            
         }
 
         public static Color GetColorFromHex(string hex)

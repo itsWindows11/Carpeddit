@@ -33,6 +33,9 @@ namespace Carpeddit.App.Pages
             ("muted", typeof(MutedUsersPage)),
             ("approved", typeof(ApprovedUsersPage)),
             ("moderators", typeof(ModeratorsListPage)),
+            ("grantflair", typeof(GrantUserFlairPage)),
+            ("userflair", typeof(UserFlairPage)),
+            ("postflair", typeof(PostFlairPage)),
         };
 
         public ModToolsPage()
