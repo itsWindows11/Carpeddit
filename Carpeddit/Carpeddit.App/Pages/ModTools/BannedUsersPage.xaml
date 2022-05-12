@@ -21,9 +21,12 @@
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="reddit:BannedUser">
                     <StackPanel
-                       Background="{ThemeResource ExpanderContentBackground}"
-                       BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                       BorderThickness="1">
+                        Background="{ThemeResource ExpanderContentBackground}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        Padding="8"
+                        CornerRadius="4"
+                        Margin="0,8,0,0">
                         <TextBlock>
                             u/<Run Text="{x:Bind Name}" />
                         </TextBlock>

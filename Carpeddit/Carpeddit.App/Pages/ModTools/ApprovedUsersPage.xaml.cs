@@ -57,7 +57,13 @@ namespace Carpeddit.App.Pages.ModTools
 
         private async void LoadMoreButton_Click(object sender, RoutedEventArgs e)
         {
+            FooterProgress.Visibility = Visibility.Visible;
+            LoadMoreButton.Visibility = Visibility.Collapsed;
+
             _users.AddRange(await Task.Run(() => ModToolsPage.Subreddit.GetMutedUsers(after: _users[_users.Count - 1].Id)));
+
+            FooterProgress.Visibility = Visibility.Collapsed;
+            LoadMoreButton.Visibility = Visibility.Visible;
         }
     }
 }
