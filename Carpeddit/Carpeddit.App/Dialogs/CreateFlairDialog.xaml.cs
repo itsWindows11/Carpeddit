@@ -1,20 +1,5 @@
 ﻿using Carpeddit.App.Pages;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-
-// The Content Dialog item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Carpeddit.App.Dialogs
 {
@@ -25,17 +10,40 @@ namespace Carpeddit.App.Dialogs
         public CreateFlairDialog()
         {
             InitializeComponent();
+
+            Loaded += CreateFlairDialog_Loaded;
         }
 
-        private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
+        private void CreateFlairDialog_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            Loaded -= CreateFlairDialog_Loaded;
+
+            TextColorToggle.Content = "Light";
+            TextColorToggle.Checked += TextColorToggle_Checked;
+            TextColorToggle.Unchecked += TextColorToggle_Unchecked;
+        }
+
+        private void TextColorToggle_Unchecked(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            TextColorToggle.Content = "Light";
+        }
+
+        private void TextColorToggle_Checked(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            TextColorToggle.Content = "Dark";
+        }
+
+        private async void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
             if (IsUserFlair)
             {
-                ModToolsPage.Subreddit.Flairs.CreateUserFlairTemplateV2Async(NameText.Text, CanUserEditToggle.IsOn, TextPicker.Color.ToString(), BackPicker.Color.ToString(), ModOnlyToggle.IsOn);
+                await ModToolsPage.Subreddit.Flairs.CreateUserFlairTemplateV2Async(NameText.Text, CanUserEditToggle.IsOn, (TextColorToggle.IsChecked ?? false) ? "dark" : "light", $"#{BackPicker.Color.ToString().Substring(3)}", ModOnlyToggle.IsOn);
             } else
             {
-                ModToolsPage.Subreddit.Flairs.CreateLinkFlairTemplateV2Async(NameText.Text, CanUserEditToggle.IsOn, TextPicker.Color.ToString(), BackPicker.Color.ToString(), ModOnlyToggle.IsOn);
+                await ModToolsPage.Subreddit.Flairs.CreateLinkFlairTemplateV2Async(NameText.Text, CanUserEditToggle.IsOn, (TextColorToggle.IsChecked ?? false) ? "dark" : "light", $"#{BackPicker.Color.ToString().Substring(3)}", ModOnlyToggle.IsOn);
             }
+
+            Hide();
         }
 
         private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)

@@ -26,9 +26,11 @@
 
             <TextBox x:Name="NameText" Header="Name" />
 
-            <muxc:Expander Header="Text color">
-                <muxc:ColorPicker x:Name="TextPicker" />
-            </muxc:Expander>
+            <controls:SettingsBlockControl Title="Text color">
+                <controls:SettingsBlockControl.SettingsActionableElement>
+                    <ToggleButton x:Name="TextColorToggle" />
+                </controls:SettingsBlockControl.SettingsActionableElement>
+            </controls:SettingsBlockControl>
 
             <muxc:Expander Header="Background color">
                 <muxc:ColorPicker x:Name="BackPicker" />
