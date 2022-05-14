@@ -1,4 +1,5 @@
-﻿using Carpeddit.App.Pages.ModTools;
+﻿using Carpeddit.App.Dialogs;
+using Carpeddit.App.Pages.ModTools;
 using Carpeddit.Common.Enums;
 using Reddit.Controllers;
 using System;
@@ -33,7 +34,7 @@ namespace Carpeddit.App.Pages
             ("muted", typeof(MutedUsersPage)),
             ("approved", typeof(ApprovedUsersPage)),
             ("moderators", typeof(ModeratorsListPage)),
-            ("grantflair", typeof(GrantUserFlairPage)),
+            ("grantflair", null),
             ("userflair", typeof(UserFlairPage)),
             ("postflair", typeof(PostFlairPage)),
         };
@@ -159,6 +160,9 @@ namespace Carpeddit.App.Pages
                 case "unmoderated":
                     type = ModQueueType.Unmoderated;
                     break;
+                case "grantflair":
+                    _ = new GrantUserFlairDialog().ShowAsync();
+                    return;
             }
 
             // Only navigate if the selected page isn't currently loaded.

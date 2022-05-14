@@ -136,6 +136,9 @@
     <Compile Include="Dialogs\CreateFlairDialog.xaml.cs">
       <DependentUpon>CreateFlairDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\GrantUserFlairDialog.xaml.cs">
+      <DependentUpon>GrantUserFlairDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\PostHelpers.cs" />
     <Compile Include="LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
@@ -164,9 +167,6 @@
     </Compile>
     <Compile Include="Pages\ModTools\BannedUsersPage.xaml.cs">
       <DependentUpon>BannedUsersPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\ModTools\GrantUserFlairPage.xaml.cs">
-      <DependentUpon>GrantUserFlairPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\ModTools\ModeratorsListPage.xaml.cs">
       <DependentUpon>ModeratorsListPage.xaml</DependentUpon>
@@ -246,6 +246,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Dialogs\GrantUserFlairDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -275,10 +279,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\ModTools\BannedUsersPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Pages\ModTools\GrantUserFlairPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
