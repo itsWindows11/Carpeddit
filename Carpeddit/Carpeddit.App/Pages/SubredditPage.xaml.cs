@@ -91,7 +91,16 @@ namespace Carpeddit.App.Pages
 
             try
             {
-                SubredditHeaderImg.Source = new BitmapImage(new(Subreddit.BannerBackgroundImage));
+                SubredditHeaderImg.Source = new BitmapImage(new(Subreddit.About().BannerBackgroundImage));
+            }
+            catch (UriFormatException)
+            {
+
+            }
+
+            try
+            {
+                SubredditProfileImg.UriSource = new(Subreddit.About().CommunityIcon);
             }
             catch (UriFormatException)
             {
@@ -213,7 +222,7 @@ namespace Carpeddit.App.Pages
                     Created = post.Created,
                     Subreddit = post.Subreddit,
                     Author = post.Author,
-                    CommentsCount = post.Comments.GetComments().Count
+                    CommentsCount = post.Listing.NumComments
                 };
 
                 postViews.Add(vm);

@@ -337,7 +337,10 @@ namespace Carpeddit.App
 
         private void NavViewSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            ContentFrame.Navigate(typeof(SearchResultsPage), sender.Text);
+            if (!string.IsNullOrWhiteSpace(sender.Text))
+            {
+                ContentFrame.Navigate(typeof(SearchResultsPage), sender.Text);
+            }
         }
 
         private void ProfileFlyoutItem_Click(object sender, RoutedEventArgs e)

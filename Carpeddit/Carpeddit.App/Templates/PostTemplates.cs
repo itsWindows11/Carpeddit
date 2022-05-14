@@ -88,7 +88,7 @@ namespace Carpeddit.App.Templates
             string text = (sender.Inlines[1] as Windows.UI.Xaml.Documents.Run).Text;
             if (!text.Contains("[deleted]"))
             {
-                MainPage.Current.ContentFrame.Navigate(typeof(YourProfilePage), App.RedditClient.SearchUsers(new Reddit.Inputs.Search.SearchGetSearchInput(text)).FirstOrDefault(u => u.Name.Contains(text)));
+                MainPage.Current.ContentFrame.Navigate(typeof(YourProfilePage), App.RedditClient.User(text).About());
             }
         }
 
@@ -97,7 +97,7 @@ namespace Carpeddit.App.Templates
             string text = (sender.Inlines[1] as Windows.UI.Xaml.Documents.Run).Text;
             if (Window.Current.Content is Frame rootFrame)
             {
-                rootFrame.Navigate(typeof(SubredditPage), App.RedditClient.SearchSubreddits(new Reddit.Inputs.Search.SearchGetSearchInput(text)).FirstOrDefault(s => s.Name.Contains(text)));
+                rootFrame.Navigate(typeof(SubredditPage), App.RedditClient.Subreddit(text).About());
             }
         }
 
@@ -129,7 +129,7 @@ namespace Carpeddit.App.Templates
             }
         }
 
-        private async void ApproveButton_Click(object sender, RoutedEventArgs e)
+        private void ApproveButton_Click(object sender, RoutedEventArgs e)
         {
             if ((sender as FrameworkElement).DataContext is PostViewModel post)
             {

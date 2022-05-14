@@ -82,7 +82,7 @@
                                         CornerRadius="60">
                                             <Image>
                                                 <Image.Source>
-                                                    <BitmapImage UriSource="{x:Bind Subreddit.CommunityIcon, Converter={StaticResource StringToUri}}" />
+                                                    <BitmapImage x:Name="SubredditProfileImg" DecodePixelType="Logical" />
                                                 </Image.Source>
                                             </Image>
                                         </Border>
@@ -176,7 +176,7 @@
 
                         <Border HorizontalAlignment="Stretch" CornerRadius="4" BorderThickness="1" BorderBrush="{ThemeResource ExpanderBorderBrush}" Padding="12" Background="{ThemeResource ExpanderHeaderBackground}">
                             <StackPanel Spacing="8">
-                                <AutoSuggestBox Text="Search" QueryIcon="Find" />
+                                <AutoSuggestBox PlaceholderText="Search" QueryIcon="Find" />
 
                                 <StackPanel Spacing="8" Orientation="Horizontal">
                                     <Button>

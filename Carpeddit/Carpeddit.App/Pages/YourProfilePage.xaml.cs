@@ -100,7 +100,7 @@ namespace Carpeddit.App.Pages
                     Created = post.Created,
                     Subreddit = post.Subreddit,
                     Author = post.Author,
-                    CommentsCount = post.Comments.GetComments().Count
+                    CommentsCount = post.Listing.NumComments
                 };
 
                 postViews.Add(vm);
