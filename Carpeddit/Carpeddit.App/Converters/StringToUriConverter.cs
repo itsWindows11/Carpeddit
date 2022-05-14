@@ -11,7 +11,7 @@ namespace Carpeddit.App.Converters
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            bool successful = Uri.TryCreate(value as string, UriKind.Absolute, out Uri result);
+            bool successful = Uri.TryCreate((value as string).Replace("&amp;", "&"), UriKind.Absolute, out Uri result);
 
             if (successful)
                 return result;

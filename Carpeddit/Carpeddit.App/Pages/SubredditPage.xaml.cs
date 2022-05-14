@@ -91,16 +91,7 @@ namespace Carpeddit.App.Pages
 
             try
             {
-                SubredditHeaderImg.Source = new BitmapImage(new(Subreddit.About().BannerBackgroundImage));
-            }
-            catch (UriFormatException)
-            {
-
-            }
-
-            try
-            {
-                SubredditProfileImg.UriSource = new(Subreddit.About().CommunityIcon);
+                SubredditHeaderImg.Source = new BitmapImage(new(Subreddit.SubredditData.BannerBackgroundImage.Replace("&amp;", "&")));
             }
             catch (UriFormatException)
             {

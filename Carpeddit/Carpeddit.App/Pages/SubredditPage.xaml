@@ -63,7 +63,7 @@
                             </Border.Background>
 
                             <Grid>
-                                <Image x:Name="SubredditHeaderImg" Stretch="UniformToFill" />
+                                <Image x:Name="SubredditHeaderImg" Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center" />
                                 <Grid VerticalAlignment="Bottom">
                                     <StackPanel Padding="20,0">
                                         <StackPanel.Background>
@@ -82,7 +82,7 @@
                                         CornerRadius="60">
                                             <Image>
                                                 <Image.Source>
-                                                    <BitmapImage x:Name="SubredditProfileImg" DecodePixelType="Logical" />
+                                                    <BitmapImage UriSource="{x:Bind Subreddit.SubredditData.CommunityIcon, Converter={StaticResource StringToUri}}" />
                                                 </Image.Source>
                                             </Image>
                                         </Border>
