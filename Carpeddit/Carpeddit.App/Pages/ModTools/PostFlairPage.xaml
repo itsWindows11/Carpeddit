@@ -39,7 +39,7 @@
             </ListView.ItemTemplate>
         </ListView>
 
-        <Button ToolTipService.ToolTip="Create flair" Click="CreateFlairButton_Click" Margin="24" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+        <Button Style="{ThemeResource AccentButtonStyle}" ToolTipService.ToolTip="Create flair" Click="CreateFlairButton_Click" Margin="24" VerticalAlignment="Bottom" HorizontalAlignment="Right">
             <FontIcon Glyph="&#xE109;" />
         </Button>
     </Grid>
