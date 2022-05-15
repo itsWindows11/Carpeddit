@@ -330,6 +330,10 @@
                         Spam
                     </HyperlinkButton>
 
+                    <HyperlinkButton IsEnabled="{x:Bind local:App.OppositeOf(Post.Listing.Stickied)}" Visibility="{x:Bind templates:PostTemplates.IsSubredditMod, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="PinButton_Click" Margin="4,0,0,-6" Padding="2">
+                        Pin
+                    </HyperlinkButton>
+
                     <HyperlinkButton Margin="4,0,0,-6" Padding="2">
                         Report
                     </HyperlinkButton>

@@ -162,5 +162,13 @@ namespace Carpeddit.App.Templates
                 (((sender as HyperlinkButton).Parent as StackPanel).Children[5] as HyperlinkButton).IsEnabled = true;
             }
         }
+
+        private async void PinButton_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement).DataContext is PostViewModel post)
+            {
+                await post.Post.SetSubredditStickyAsync(1, false);
+            }
+        }
     }
 }
