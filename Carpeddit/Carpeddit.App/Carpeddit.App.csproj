@@ -136,6 +136,9 @@
     <Compile Include="Dialogs\CreateFlairDialog.xaml.cs">
       <DependentUpon>CreateFlairDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\CreatePostDialog.xaml.cs">
+      <DependentUpon>CreatePostDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\GrantUserFlairDialog.xaml.cs">
       <DependentUpon>GrantUserFlairDialog.xaml</DependentUpon>
     </Compile>
@@ -243,6 +246,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Dialogs\CreateFlairDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\CreatePostDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
