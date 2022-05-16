@@ -1,6 +1,7 @@
 ﻿using Carpeddit.Common.Enums;
 using Reddit.Controllers;
 using System;
+using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
 namespace Carpeddit.App.Dialogs
@@ -20,8 +21,10 @@ namespace Carpeddit.App.Dialogs
             Loaded += CreatePostDialog_Loaded;
         }
 
-        private void CreatePostDialog_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private async void CreatePostDialog_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
+            SubredditComboBox.ItemsSource = await Task.Run(() => App.RedditClient.Account.MySubscribedSubreddits(limit: 100));
+            _subreddit = SubredditComboBox.Items[0] as Subreddit;
 
             _fullyLoaded = true;
         }
@@ -59,6 +62,11 @@ namespace Carpeddit.App.Dialogs
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _postType = (sender as ComboBox).SelectedIndex == 0 ? PostType.Self : PostType.Link;
+        }
+
+        private void SubredditComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            _subreddit = e.AddedItems[0] as Subreddit;
         }
     }
 }

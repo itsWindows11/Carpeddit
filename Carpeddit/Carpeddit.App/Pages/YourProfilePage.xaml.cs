@@ -1,6 +1,8 @@
 ﻿using Carpeddit.App.Collections;
+using Carpeddit.App.Dialogs;
 using Carpeddit.App.Models;
 using Reddit.Controllers;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -121,6 +123,11 @@ namespace Carpeddit.App.Pages
             }
 
             return "No content";
+        }
+
+        private async void CreatePostItem_Click(object sender, RoutedEventArgs e)
+        {
+            _ = await new CreatePostDialog().ShowAsync();
         }
     }
 }

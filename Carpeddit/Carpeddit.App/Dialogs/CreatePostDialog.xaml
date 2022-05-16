@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Carpeddit.App.Dialogs"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:Carpeddit.App.UserControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:Carpeddit.App.UserControls" xmlns:reddit="using:Reddit.Controllers"
     mc:Ignorable="d"
     Title="Create a Post"
     PrimaryButtonText="Create"
@@ -28,10 +28,22 @@
                     </ComboBox>
                 </controls:SettingsBlockControl.SettingsActionableElement>
             </controls:SettingsBlockControl>
-            
+
+            <controls:SettingsBlockControl Title="Subreddit">
+                <controls:SettingsBlockControl.SettingsActionableElement>
+                    <ComboBox x:Name="SubredditComboBox" SelectedIndex="0" SelectionChanged="SubredditComboBox_SelectionChanged">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate x:DataType="reddit:Subreddit">
+                                <TextBlock Text="{x:Bind SubredditData.DisplayNamePrefixed}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </controls:SettingsBlockControl.SettingsActionableElement>
+            </controls:SettingsBlockControl>
+
             <TextBox x:Name="TitleText" Header="Title" />
 
-            <TextBox x:Name="ContentText" Header="Text" AcceptsReturn="True" MaxHeight="400" />
+            <TextBox x:Name="ContentText" Header="Text" AcceptsReturn="True" />
         </StackPanel>
     </ScrollViewer>
 </ContentDialog>

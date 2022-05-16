@@ -168,6 +168,9 @@ namespace Carpeddit.App.Templates
             if ((sender as FrameworkElement).DataContext is PostViewModel post)
             {
                 await post.Post.SetSubredditStickyAsync(1, false);
+
+                (sender as HyperlinkButton).Content = "Pinned";
+                (sender as HyperlinkButton).IsEnabled = false;
             }
         }
     }
