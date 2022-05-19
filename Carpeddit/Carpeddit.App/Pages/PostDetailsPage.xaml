@@ -100,7 +100,12 @@
 
                 <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" MaxWidth="1200" FontSize="16" Text="{x:Bind Post.CommentsCountInUI}" TextWrapping="WrapWholeWords" Margin="0,5" />
 
-                <muxc:TreeView x:Name="CommentsTree" MaxWidth="1200" Margin="0,0,0,12">
+                <StackPanel Spacing="8" MaxWidth="1200">
+                    <RichEditBox SelectionFlyout="{x:Null}" Height="100" AcceptsReturn="True" MaxHeight="600" Margin="0,12,0,0" PlaceholderText="Add a comment..." x:Name="CommentEditBox" />
+                    <Button Click="AddCommentButton_Click" Style="{ThemeResource AccentButtonStyle}" Content="Add" />
+                </StackPanel>
+
+                <muxc:TreeView AllowDrop="False" CanDragItems="False" CanReorderItems="False" x:Name="CommentsTree" MaxWidth="1200" Margin="0,12">
                     <muxc:TreeView.ItemTemplate>
                         <DataTemplate x:DataType="viewmodels:CommentViewModel">
                             <muxc:TreeViewItem IsExpanded="{x:Bind Collapsed, Mode=TwoWay, Converter={StaticResource InvertBoolConv}}" ItemsSource="{x:Bind Replies}">

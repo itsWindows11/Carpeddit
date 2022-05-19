@@ -1,13 +1,19 @@
-﻿using Carpeddit.App.Models;
+﻿using BracketPipe;
+using Carpeddit.App.Collections;
+using Carpeddit.App.Models;
+using Reddit.Controllers;
+using RtfPipe;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
+using Windows.UI.Text;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -27,6 +33,8 @@ namespace Carpeddit.App.Pages
     public sealed partial class PostDetailsPage : Page
     {
         PostViewModel Post;
+
+        BulkConcurrentObservableCollection<CommentViewModel> commentsObservable = new();
 
         public PostDetailsPage()
         {
@@ -91,7 +99,9 @@ namespace Carpeddit.App.Pages
             base.OnNavigatedTo(e);
             Post = e.Parameter as PostViewModel;
 
-            CommentsTree.ItemsSource = await Post.GetCommentsAsync();
+            commentsObservable.AddRange(await Post.GetCommentsAsync());
+
+            CommentsTree.ItemsSource = commentsObservable;
             CommentProgress.Visibility = Visibility.Collapsed;
         }
 
@@ -101,6 +111,32 @@ namespace Carpeddit.App.Pages
             {
                 rootFrame.GoBack();
             }
+        }
+
+        private async void AddCommentButton_Click(object sender, RoutedEventArgs e)
+        {
+            CommentEditBox.Document.GetText(TextGetOptions.FormatRtf, out string rtfText);
+            
+            Comment submittedComment = await Post.Post.Comment(RtfToMarkdown(rtfText)).SubmitAsync();
+
+            commentsObservable.Add(new CommentViewModel()
+            {
+                OriginalComment = submittedComment
+            });
+
+            CommentEditBox.Document.SetText(TextSetOptions.None, "");
+        }
+
+        private string RtfToMarkdown(string source)
+        {
+            using var w = new StringWriter();
+            using var md = new MarkdownWriter(w);
+
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+            Rtf.ToHtml(source, md);
+            md.Flush();
+            return w.ToString();
         }
     }
 }
