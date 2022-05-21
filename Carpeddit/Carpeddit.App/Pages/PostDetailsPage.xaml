@@ -147,6 +147,10 @@
                                                 </TextBlock>
 
                                                 <Button Visibility="{x:Bind OriginalComment.Listing.IsSubmitter, Converter={StaticResource BoolToVis}}" Style="{StaticResource AccentButtonStyle}" Content="OP" Padding="4,2" Margin="4,0,0,0" IsHitTestVisible="False" />
+
+                                                <Border Visibility="{x:Bind ShouldDisplayUserFlair, Converter={StaticResource BoolToVis}}" Padding="4,2" CornerRadius="2">
+                                                    <TextBlock Text="{x:Bind OriginalComment.Listing.AuthorFlairText}" />
+                                                </Border>
                                             </StackPanel>
                                             
                                             <controls:MarkdownTextBlock Background="Transparent" Text="{x:Bind OriginalComment.Body}" />

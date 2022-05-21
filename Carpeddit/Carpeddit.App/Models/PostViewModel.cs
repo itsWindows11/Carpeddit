@@ -103,28 +103,7 @@ namespace Carpeddit.App.Models
             });
         }
 
-        public bool HasImage
-        {
-            get
-            {
-                if (Uri.IsWellFormedUriString(Description, UriKind.Absolute) && (Description.StartsWith("https://", StringComparison.OrdinalIgnoreCase) || Description.StartsWith("http://", StringComparison.OrdinalIgnoreCase)))
-                {
-                    try
-                    {
-                        HttpWebRequest req = (HttpWebRequest)WebRequest.Create(Description);
-                        req.Method = "HEAD";
-                        using var resp = req.GetResponse();
-                        return resp.ContentType.ToLower(CultureInfo.InvariantCulture)
-                                   .StartsWith("image/", StringComparison.OrdinalIgnoreCase);
-                    }
-                    catch (Exception)
-                    {
-
-                    }
-                }
-                return false;
-            }
-        }
+        public bool HasImage => (Uri.IsWellFormedUriString(Description, UriKind.Absolute) && (Description.StartsWith("https://", StringComparison.OrdinalIgnoreCase) || Description.StartsWith("http://", StringComparison.OrdinalIgnoreCase)) && Description.Contains("i.redd.it"));
 
         private bool _upvoted;
 

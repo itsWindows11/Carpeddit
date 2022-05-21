@@ -47,6 +47,8 @@ namespace Carpeddit.App.Models
             }
         }
 
+        public bool ShouldDisplayUserFlair => !string.IsNullOrEmpty(OriginalComment.Listing.AuthorFlairText);
+
         private bool _collapsed = false;
 
         public bool Collapsed
