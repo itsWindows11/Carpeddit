@@ -96,14 +96,14 @@
                     </StackPanel>
                 </Grid>
 
-                <muxc:ProgressRing IsActive="True" x:Name="CommentProgress" />
-
                 <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" MaxWidth="1200" FontSize="16" Text="{x:Bind Post.CommentsCountInUI}" TextWrapping="WrapWholeWords" Margin="0,5" />
 
                 <StackPanel Spacing="8" MaxWidth="1200">
                     <RichEditBox SelectionFlyout="{x:Null}" Height="100" AcceptsReturn="True" MaxHeight="600" Margin="0,12,0,0" PlaceholderText="Add a comment..." x:Name="CommentEditBox" />
                     <Button Click="AddCommentButton_Click" Style="{ThemeResource AccentButtonStyle}" Content="Add" />
                 </StackPanel>
+
+                <muxc:ProgressRing IsActive="True" x:Name="CommentProgress" />
 
                 <muxc:TreeView AllowDrop="False" CanDragItems="False" CanReorderItems="False" x:Name="CommentsTree" MaxWidth="1200" Margin="0,12">
                     <muxc:TreeView.ItemTemplate>
@@ -122,22 +122,33 @@
                                         <StackPanel HorizontalAlignment="Center"
                                                     Grid.Column="1"
                                                     Spacing="3">
-                                            <Button Padding="3"
-                                                    Style="{StaticResource TransparentButton}">
+                                            <ToggleButton 
+                                                Padding="3"
+                                                Style="{StaticResource TransparentToggleButton}"
+                                                Click="UpvoteButton_Click"
+                                                IsChecked="{x:Bind Upvoted, Mode=OneWay}">
                                                 <FontIcon Glyph="&#xE010;" />
-                                            </Button>
-                                            <TextBlock HorizontalAlignment="Center" Text="{x:Bind VoteRatio}" />
-                                            <Button Padding="3"
-                                                    Style="{StaticResource TransparentButton}">
+                                            </ToggleButton>
+                                            <TextBlock HorizontalAlignment="Center" Text="{x:Bind VoteRatio, Mode=OneWay}" />
+                                            <ToggleButton
+                                                Padding="3"
+                                                Style="{StaticResource TransparentToggleButton}"
+                                                Click="DownvoteButton_Click"
+                                                IsChecked="{x:Bind Downvoted, Mode=OneWay}">
                                                 <FontIcon Glyph="&#xE011;" />
-                                            </Button>
+                                            </ToggleButton>
                                         </StackPanel>
 
                                         <StackPanel Grid.Column="2" Spacing="5">
-                                            <TextBlock>
-                                                By <Hyperlink>u/<Run Text="{x:Bind OriginalComment.Author}" /></Hyperlink>
-                                            </TextBlock>
 
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center">
+                                                    By <Hyperlink>u/<Run Text="{x:Bind OriginalComment.Author}" /></Hyperlink>
+                                                </TextBlock>
+
+                                                <Button Visibility="{x:Bind OriginalComment.Listing.IsSubmitter, Converter={StaticResource BoolToVis}}" Style="{StaticResource AccentButtonStyle}" Content="OP" Padding="4,2" Margin="4,0,0,0" IsHitTestVisible="False" />
+                                            </StackPanel>
+                                            
                                             <controls:MarkdownTextBlock Background="Transparent" Text="{x:Bind OriginalComment.Body}" />
                                         </StackPanel>
                                     </Grid>

@@ -87,7 +87,7 @@ namespace Carpeddit.App.Models
             {
                 ObservableCollection<CommentViewModel> comments = new();
 
-                foreach (Comment comment in Post.Comments.GetComments(limit: 100))
+                foreach (Comment comment in Post.Comments.GetComments())
                 {
                     CommentViewModel comment1 = new()
                     {

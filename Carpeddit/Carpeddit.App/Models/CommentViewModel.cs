@@ -25,7 +25,12 @@ namespace Carpeddit.App.Models
             set
             {
                 _originalComment = value;
-                _collapsed = OriginalComment.Collapsed;
+                _collapsed = _originalComment.Collapsed;
+                _voteRatio = FormatNumber(_originalComment.UpVotes - _originalComment.DownVotes);
+                _rawVoteRatio = _originalComment.UpVotes - _originalComment.DownVotes;
+                _upvoted = _originalComment.IsUpvoted;
+                _downvoted = _originalComment.IsDownvoted;
+
                 OnPropertyChanged(nameof(OriginalComment));
             }
         }
@@ -67,28 +72,55 @@ namespace Carpeddit.App.Models
 
         public Thickness Thickn => Replies.Count > 0 ? new(-10, 0, 0, 0) : (IsTopLevel ? new(-30, 0, 0, 0) : new(-10, 0, 0, 0));
 
+        private string _voteRatio;
+
         public string VoteRatio
         {
-            get
-            {
-                return FormatNumber(OriginalComment.UpVotes - OriginalComment.DownVotes);
-            }
+            get => _voteRatio;
             private set
             {
+                _voteRatio = value;
                 OnPropertyChanged(nameof(VoteRatio));
             }
         }
 
+        private int _rawVoteRatio;
+
         public int RawVoteRatio
         {
-            get
-            {
-                return OriginalComment.UpVotes - OriginalComment.DownVotes;
-            }
+            get => _rawVoteRatio;
             set
             {
+                _rawVoteRatio = value;
                 VoteRatio = FormatNumber(value);
+                OnPropertyChanged(nameof(VoteRatio));
                 OnPropertyChanged(nameof(RawVoteRatio));
+            }
+        }
+
+        private bool _upvoted;
+
+        public bool Upvoted
+        {
+            get => _upvoted;
+            set
+            {
+                _upvoted = value;
+
+                OnPropertyChanged(nameof(Upvoted));
+            }
+        }
+
+        private bool _downvoted;
+
+        public bool Downvoted
+        {
+            get => _downvoted;
+            set
+            {
+                _downvoted = value;
+
+                OnPropertyChanged(nameof(Downvoted));
             }
         }
 

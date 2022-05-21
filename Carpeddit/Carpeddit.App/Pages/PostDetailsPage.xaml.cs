@@ -119,7 +119,7 @@ namespace Carpeddit.App.Pages
             
             Comment submittedComment = await Post.Post.Comment(RtfToMarkdown(rtfText)).SubmitAsync();
 
-            commentsObservable.Add(new CommentViewModel()
+            commentsObservable.Add(new()
             {
                 OriginalComment = submittedComment
             });
@@ -137,6 +137,48 @@ namespace Carpeddit.App.Pages
             Rtf.ToHtml(source, md);
             md.Flush();
             return w.ToString();
+        }
+
+        private async void UpvoteButton_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleButton toggle = sender as ToggleButton;
+            CommentViewModel comment = (e.OriginalSource as FrameworkElement).DataContext as CommentViewModel;
+
+            if (toggle.IsChecked ?? false)
+            {
+                await comment.OriginalComment.UpvoteAsync();
+                comment.Upvoted = true;
+                comment.Downvoted = false;
+                comment.RawVoteRatio += 1;
+            }
+            else
+            {
+                await comment.OriginalComment.UnvoteAsync();
+                comment.Upvoted = false;
+                comment.Downvoted = false;
+                comment.RawVoteRatio -= 1;
+            }
+        }
+
+        private async void DownvoteButton_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleButton toggle = sender as ToggleButton;
+            CommentViewModel comment = (e.OriginalSource as FrameworkElement).DataContext as CommentViewModel;
+
+            if (toggle.IsChecked ?? false)
+            {
+                await comment.OriginalComment.DownvoteAsync();
+                comment.Upvoted = false;
+                comment.Downvoted = true;
+                comment.RawVoteRatio -= 1;
+            }
+            else
+            {
+                await comment.OriginalComment.UnvoteAsync();
+                comment.Upvoted = false;
+                comment.Downvoted = false;
+                comment.RawVoteRatio += 1;
+            }
         }
     }
 }
