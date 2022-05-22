@@ -35,6 +35,18 @@ namespace Carpeddit.App.Models
             }
         }
 
+        private CommentViewModel _parentComment;
+
+        public CommentViewModel ParentComment
+        {
+            get => _parentComment;
+            set
+            {
+                _parentComment = value;
+                OnPropertyChanged(nameof(OriginalComment));
+            }
+        }
+
         private ObservableCollection<CommentViewModel> _replies;
 
         public ObservableCollection<CommentViewModel> Replies
@@ -157,12 +169,12 @@ namespace Carpeddit.App.Models
                 currentCommentVm.IsTopLevel = true;
 
                 // Loop to find the replies.
-                // NOTE: I don't really understand how this just... works, really strange.
                 foreach (Comment comment1 in currentCommentVm.OriginalComment.Replies)
                 {
                     CommentViewModel commentVm = new()
                     {
-                        OriginalComment = comment1
+                        OriginalComment = comment1,
+                        ParentComment = currentCommentVm
                     };
 
                     if (addToRepliesList)

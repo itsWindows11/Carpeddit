@@ -156,7 +156,6 @@ namespace Carpeddit.App.Pages
                 await comment.OriginalComment.UnvoteAsync();
                 comment.Upvoted = false;
                 comment.Downvoted = false;
-                comment.RawVoteRatio -= 1;
             }
         }
 
@@ -177,7 +176,25 @@ namespace Carpeddit.App.Pages
                 await comment.OriginalComment.UnvoteAsync();
                 comment.Upvoted = false;
                 comment.Downvoted = false;
-                comment.RawVoteRatio += 1;
+            }
+        }
+
+        private async void RemoveCommentButton_Click(object sender, RoutedEventArgs e)
+            => await ((e.OriginalSource as FrameworkElement).DataContext as CommentViewModel).OriginalComment.RemoveAsync();
+
+        private async void DeleteCommentButton_Click(object sender, RoutedEventArgs e)
+        {
+            CommentViewModel comment = (e.OriginalSource as FrameworkElement).DataContext as CommentViewModel;
+
+            // Delete the comment and remove it from the list.
+            await comment.OriginalComment.DeleteAsync();
+
+            if (comment.IsTopLevel)
+            {
+                commentsObservable.Remove(comment);
+            } else
+            {
+                comment.ParentComment.Replies.Remove(comment);
             }
         }
     }

@@ -154,6 +154,11 @@
                                             </StackPanel>
                                             
                                             <controls:MarkdownTextBlock Background="Transparent" Text="{x:Bind OriginalComment.Body}" />
+
+                                            <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                                <HyperlinkButton Click="DeleteCommentButton_Click" Padding="2" Content="Delete" />
+                                                <HyperlinkButton Click="RemoveCommentButton_Click" Margin="4,0,0,0" Padding="2" Content="Remove" />
+                                            </StackPanel>
                                         </StackPanel>
                                     </Grid>
                                 </muxc:TreeViewItem.Content>
