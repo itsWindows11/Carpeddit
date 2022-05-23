@@ -17,6 +17,8 @@ namespace Carpeddit.App.Models
             _replies = new();
         }
 
+        public bool IsCurrentUserOP => App.RedditClient.Account.Me.Name == OriginalComment.Author;
+
         private Comment _originalComment;
 
         public Comment OriginalComment
