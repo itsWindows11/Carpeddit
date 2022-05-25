@@ -3,6 +3,7 @@ using Carpeddit.App.Pages;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -33,7 +34,32 @@ namespace Carpeddit.App.Templates
         {
             if (Uri.TryCreate(e.Link, UriKind.Absolute, out Uri link))
             {
-                await Launcher.LaunchUriAsync(link);
+                _ = await Launcher.LaunchUriAsync(link);
+                return;
+            }
+
+            if (e.Link.StartsWith("/r/"))
+            {
+                (Window.Current.Content as Frame).Navigate(typeof(SubredditPage), App.RedditClient.Subreddit(name: e.Link.Substring(3)).About());
+                return;
+            }
+
+            if (e.Link.StartsWith("r/"))
+            {
+                (Window.Current.Content as Frame).Navigate(typeof(SubredditPage), App.RedditClient.Subreddit(name: e.Link.Substring(2)).About());
+                return;
+            }
+
+            if (e.Link.StartsWith("/u/"))
+            {
+                MainPage.Current.ContentFrame.Navigate(typeof(YourProfilePage), App.RedditClient.User(name: e.Link.Substring(3)).About());
+                return;
+            }
+
+            if (e.Link.StartsWith("u/"))
+            {
+                MainPage.Current.ContentFrame.Navigate(typeof(YourProfilePage), App.RedditClient.User(name: e.Link.Substring(2)).About());
+                return;
             }
         }
 
@@ -167,7 +193,22 @@ namespace Carpeddit.App.Templates
         {
             if ((sender as FrameworkElement).DataContext is PostViewModel post)
             {
-                await post.Post.SetSubredditStickyAsync(1, false);
+                // Retrieve first 3 posts of the subreddit, the first 2 are pinned (if not then there's at least one empty slot).
+                var pinned = await Task.Run(() => App.RedditClient.Subreddit(name: post.Post.Subreddit).Posts.GetHot(limit: 3));
+                int indexToInsert = 1;
+
+                if (!pinned[0].Listing.Stickied || (pinned[0].Listing.Stickied && pinned[1].Listing.Stickied))
+                {
+                    indexToInsert = 1;
+                } else if (!pinned[1].Listing.Stickied || pinned[0].Listing.Stickied)
+                {
+                    indexToInsert = 2;
+                }
+
+                // Sticky the post, finally.
+                // This function has misleading documentation and I have no idea how to fix it, so the above
+                // if statements are used here as a workaround.
+                await post.Post.SetSubredditStickyAsync(indexToInsert, false);
 
                 (sender as HyperlinkButton).Content = "Pinned";
                 (sender as HyperlinkButton).IsEnabled = false;
