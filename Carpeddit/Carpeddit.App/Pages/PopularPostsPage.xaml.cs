@@ -1,14 +1,14 @@
 ﻿using Carpeddit.App.Collections;
+using Carpeddit.App.Helpers;
 using Carpeddit.App.Models;
+using Microsoft.Toolkit.Uwp;
 using Reddit.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -30,42 +30,12 @@ namespace Carpeddit.App.Pages
     public sealed partial class PopularPostsPage : Page
     {
         BulkConcurrentObservableCollection<PostViewModel> posts = new();
-        int postsCount = 0;
-        bool ArePostsLoaded = false;
-        string chosenFilter = "Hot";
 
         public PopularPostsPage()
         {
             InitializeComponent();
 
-        }
-
-        private async Task GetPostsAsync(string after = "", int limit = 13, string before = "")
-        {
-            List<Post> frontpage = App.RedditClient.Subreddit("all").Posts.GetHot(limit: 13, after: after, before: before);
-
-            foreach (Post post in frontpage)
-            {
-                posts.Add(new()
-                {
-                    Post = post
-                });
-            }
-
-            for (postsCount = 0; postsCount < frontpage.Count; postsCount++) ;
-            ArePostsLoaded = true;
-        }
-
-        private void UpvoteButton_Click(object sender, RoutedEventArgs e)
-        {
-            Post post = (sender as ToggleButton).Tag as Post;
-            post.UpvoteAsync();
-        }
-
-        private void DownvoteButton_Click(object sender, RoutedEventArgs e)
-        {
-            Post post = (sender as ToggleButton).Tag as Post;
-            post.DownvoteAsync();
+            Loaded += Page_Loaded;
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -73,47 +43,76 @@ namespace Carpeddit.App.Pages
             if (sender is Button button)
             {
                 button.Visibility = Visibility.Collapsed;
-                SampleProgress.Visibility = Visibility.Visible;
-                await Task.Delay(500);
-                await GetPostsAsync(after: posts[postsCount - 1].Post.Fullname).ConfigureAwait(false);
-                SampleProgress.Visibility = Visibility.Collapsed;
+                FooterProgress.Visibility = Visibility.Visible;
+
+                var posts1 = await Task.Run(async () =>
+                {
+                    return await GetPostsAsync(after: posts[posts.Count - 1].Post.Fullname);
+                });
+
+                posts.AddRange(posts1);
+
                 button.Visibility = Visibility.Visible;
+                FooterProgress.Visibility = Visibility.Collapsed;
             }
         }
 
-        private async void MainList_Loaded(object sender, RoutedEventArgs e)
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            await Task.Delay(500);
-            await GetPostsAsync().ConfigureAwait(false);
-            MainList.ItemsSource = posts;
-        }
+            Loaded -= Page_Loaded;
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            posts.Clear();
-            switch ((sender as ComboBox).SelectedIndex)
+            LoadMoreButton.Visibility = Visibility.Collapsed;
+            Progress.Visibility = Visibility.Visible;
+
+            var posts1 = await Task.Run(async () =>
             {
-                case 0:
-                    // New
-                    chosenFilter = "New";
-                    break;
-                case 1:
-                    // Hot
-                    chosenFilter = "Hot";
-                    break;
-                case 2:
-                    // Top
-                    chosenFilter = "Top";
-                    break;
-                case 3:
-                    // Rising
-                    chosenFilter = "Rising"; // fun fact: this string once used to hold a value of "Rising Media Player"
-                    break;
-                case 4:
-                    // Controversial
-                    chosenFilter = "Controversial";
-                    break;
+                return await GetPostsAsync();
+            });
+
+            posts.AddRange(posts1);
+
+            MainList.ItemsSource = posts;
+
+            Progress.Visibility = Visibility.Collapsed;
+            LoadMoreButton.Visibility = Visibility.Visible;
+        }
+
+        private async Task<ObservableCollection<PostViewModel>> GetPostsAsync(string after = "", int limit = 13, string before = "")
+        {
+            List<Post> frontpage = App.RedditClient.Subreddit("all").Posts.GetHot(limit: limit, after: after, before: before);
+            ObservableCollection<PostViewModel> postViews = new();
+
+            foreach (Post post in frontpage)
+            {
+                PostViewModel vm = new()
+                {
+                    Post = post,
+                    Title = post.Title,
+                    Description = GetPostDesc(post),
+                    Created = post.Created,
+                    Subreddit = post.Subreddit,
+                    Author = post.Author,
+                    CommentsCount = post.Listing.NumComments
+                };
+
+                postViews.Add(vm);
             }
+
+            return postViews;
+        }
+
+        private string GetPostDesc(Post post)
+        {
+            if (post is LinkPost linkPost)
+            {
+                return linkPost.URL;
+            }
+            else if (post is SelfPost selfPost)
+            {
+                return selfPost.SelfText;
+            }
+
+            return "No content";
         }
     }
 }

@@ -123,6 +123,9 @@
   <ItemGroup>
     <Compile Include="Collections\BulkConcurrentObservableCollection.cs" />
     <Compile Include="Collections\GroupedCollection.cs" />
+    <Compile Include="Enums\ModQueueType.cs" />
+    <Compile Include="Enums\PostType.cs" />
+    <Compile Include="Enums\Sort.cs" />
     <Compile Include="Other\Constants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Carpeddit.Common.rd.xml" />

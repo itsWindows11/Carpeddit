@@ -1,6 +1,8 @@
 ﻿using Carpeddit.App.Collections;
+using Carpeddit.App.Dialogs;
 using Carpeddit.App.Models;
 using Reddit.Controllers;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -35,48 +37,6 @@ namespace Carpeddit.App.Pages
             } else if (e.Parameter is User _user)
             {
                 user = _user;
-            }
-        }
-
-        private async void UpvoteButton_Click(object sender, RoutedEventArgs e)
-        {
-            ToggleButton toggle = sender as ToggleButton;
-            PostViewModel post = toggle.Tag as PostViewModel;
-
-            if (toggle?.IsChecked ?? false)
-            {
-                await post.Post.UpvoteAsync();
-                //post.RawVoteRatio = (post.Post.UpVotes - post.Post.DownVotes) + 1;
-                post.Upvoted = true;
-                post.Downvoted = false;
-            }
-            else
-            {
-                await post.Post.UnvoteAsync();
-                //post.RawVoteRatio = post.Post.UpVotes - post.Post.DownVotes;
-                post.Upvoted = false;
-                post.Downvoted = false;
-            }
-        }
-
-        private async void DownvoteButton_Click(object sender, RoutedEventArgs e)
-        {
-            ToggleButton toggle = sender as ToggleButton;
-            PostViewModel post = toggle.Tag as PostViewModel;
-
-            if (toggle?.IsChecked ?? false)
-            {
-                await post.Post.DownvoteAsync();
-                //post.RawVoteRatio = (post.Post.UpVotes - post.Post.DownVotes) - 1;
-                post.Upvoted = false;
-                post.Downvoted = true;
-            }
-            else
-            {
-                await post.Post.UnvoteAsync();
-                //post.RawVoteRatio = post.Post.UpVotes - post.Post.DownVotes;
-                post.Upvoted = false;
-                post.Downvoted = false;
             }
         }
 
@@ -142,13 +102,11 @@ namespace Carpeddit.App.Pages
                     Created = post.Created,
                     Subreddit = post.Subreddit,
                     Author = post.Author,
-                    CommentsCount = post.Comments.GetComments().Count
+                    CommentsCount = post.Listing.NumComments
                 };
 
                 postViews.Add(vm);
             }
-
-            //for (postsCount = 0; postsCount < posts.Count; postsCount++);
 
             return postViews;
         }
@@ -167,12 +125,9 @@ namespace Carpeddit.App.Pages
             return "No content";
         }
 
-        private void Title_PointerReleased(object sender, PointerRoutedEventArgs e)
+        private async void CreatePostItem_Click(object sender, RoutedEventArgs e)
         {
-            if (Window.Current.Content is Frame rootFrame && sender is TextBlock text && text.Tag is PostViewModel post)
-            {
-                rootFrame.Navigate(typeof(PostDetailsPage), post);
-            }
+            _ = await new CreatePostDialog().ShowAsync();
         }
     }
 }

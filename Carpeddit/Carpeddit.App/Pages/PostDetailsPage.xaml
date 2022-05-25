@@ -9,7 +9,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:controllers="using:Carpeddit.App.Controllers"
     xmlns:converters="using:Carpeddit.App.Converters"
-    xmlns:helpers="using:Carpeddit.App.Helpers" xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals" xmlns:viewmodels="using:Carpeddit.App.Models" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:helpers="using:Carpeddit.App.Helpers" xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals" xmlns:viewmodels="using:Carpeddit.App.Models" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:templates="using:Carpeddit.App.Templates"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
 
     <Page.Resources>
@@ -47,7 +47,7 @@
             </StackPanel>
         </Border>
 
-        <ScrollViewer Grid.Row="1" Padding="66,0" Margin="-56,0">
+        <ScrollViewer Grid.Row="1" Padding="66,0">
             <StackPanel>
                 <Grid Padding="6,10,8,10"
                       MaxWidth="1200"
@@ -96,11 +96,16 @@
                     </StackPanel>
                 </Grid>
 
-                <muxc:ProgressRing IsActive="True" x:Name="CommentProgress" />
-
                 <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" MaxWidth="1200" FontSize="16" Text="{x:Bind Post.CommentsCountInUI}" TextWrapping="WrapWholeWords" Margin="0,5" />
 
-                <muxc:TreeView x:Name="CommentsTree" MaxWidth="1200" Margin="0,0,0,12">
+                <StackPanel Spacing="8" MaxWidth="1200">
+                    <RichEditBox SelectionFlyout="{x:Null}" Height="100" AcceptsReturn="True" MaxHeight="600" Margin="0,12,0,0" PlaceholderText="Add a comment..." x:Name="CommentEditBox" />
+                    <Button Click="AddCommentButton_Click" Style="{ThemeResource AccentButtonStyle}" Content="Add" />
+                </StackPanel>
+
+                <muxc:ProgressRing IsActive="True" x:Name="CommentProgress" />
+
+                <muxc:TreeView AllowDrop="False" CanDragItems="False" CanReorderItems="False" x:Name="CommentsTree" MaxWidth="1200" Margin="0,12">
                     <muxc:TreeView.ItemTemplate>
                         <DataTemplate x:DataType="viewmodels:CommentViewModel">
                             <muxc:TreeViewItem IsExpanded="{x:Bind Collapsed, Mode=TwoWay, Converter={StaticResource InvertBoolConv}}" ItemsSource="{x:Bind Replies}">
@@ -117,23 +122,43 @@
                                         <StackPanel HorizontalAlignment="Center"
                                                     Grid.Column="1"
                                                     Spacing="3">
-                                            <Button Padding="3"
-                                                    Style="{StaticResource TransparentButton}">
+                                            <ToggleButton 
+                                                Padding="3"
+                                                Style="{StaticResource TransparentToggleButton}"
+                                                Click="UpvoteButton_Click"
+                                                IsChecked="{x:Bind Upvoted, Mode=OneWay}">
                                                 <FontIcon Glyph="&#xE010;" />
-                                            </Button>
-                                            <TextBlock HorizontalAlignment="Center" Text="{x:Bind VoteRatio}" />
-                                            <Button Padding="3"
-                                                    Style="{StaticResource TransparentButton}">
+                                            </ToggleButton>
+                                            <TextBlock HorizontalAlignment="Center" Text="{x:Bind VoteRatio, Mode=OneWay}" />
+                                            <ToggleButton
+                                                Padding="3"
+                                                Style="{StaticResource TransparentToggleButton}"
+                                                Click="DownvoteButton_Click"
+                                                IsChecked="{x:Bind Downvoted, Mode=OneWay}">
                                                 <FontIcon Glyph="&#xE011;" />
-                                            </Button>
+                                            </ToggleButton>
                                         </StackPanel>
 
                                         <StackPanel Grid.Column="2" Spacing="5">
-                                            <TextBlock>
-                                                By <Hyperlink>u/<Run Text="{x:Bind OriginalComment.Author}" /></Hyperlink>
-                                            </TextBlock>
 
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center">
+                                                    By <Hyperlink>u/<Run Text="{x:Bind OriginalComment.Author}" /></Hyperlink>
+                                                </TextBlock>
+
+                                                <Button Visibility="{x:Bind OriginalComment.Listing.IsSubmitter, Converter={StaticResource BoolToVis}}" Style="{StaticResource AccentButtonStyle}" Content="OP" Padding="4,2" Margin="4,0,0,0" IsHitTestVisible="False" />
+
+                                                <Border Visibility="{x:Bind ShouldDisplayUserFlair, Converter={StaticResource BoolToVis}}" Padding="4,2" CornerRadius="2">
+                                                    <TextBlock Text="{x:Bind OriginalComment.Listing.AuthorFlairText}" />
+                                                </Border>
+                                            </StackPanel>
+                                            
                                             <controls:MarkdownTextBlock Background="Transparent" Text="{x:Bind OriginalComment.Body}" />
+
+                                            <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                                <HyperlinkButton Visibility="{x:Bind IsCurrentUserOP, Converter={StaticResource BoolToVis}}" Click="DeleteCommentButton_Click" Padding="2" Content="Delete" />
+                                                <HyperlinkButton Visibility="{x:Bind templates:PostTemplates.IsSubredditMod, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="RemoveCommentButton_Click" Margin="4,0,0,0" Padding="2" Content="Remove" />
+                                            </StackPanel>
                                         </StackPanel>
                                     </Grid>
                                 </muxc:TreeViewItem.Content>

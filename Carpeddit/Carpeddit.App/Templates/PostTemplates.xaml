@@ -5,14 +5,14 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:helpers="using:Carpeddit.App.Helpers"
     xmlns:local="using:Carpeddit.App"
-    xmlns:models="using:Carpeddit.App.Models">
+    xmlns:models="using:Carpeddit.App.Models" xmlns:templates="using:Carpeddit.App.Templates">
 
     <DataTemplate x:Key="PlainPostTemplate" x:DataType="models:PostViewModel">
         <Grid
             MaxWidth="1200"
             Margin="0,4"
             Padding="6,10,8,10"
-            Background="{StaticResource LayerFillColorDefaultBrush}"
+            Background="{ThemeResource ExpanderContentBackground}"
             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
             BorderThickness="1"
             ColumnSpacing="10"
@@ -54,9 +54,9 @@
 
             <StackPanel Grid.Column="1" Orientation="Vertical">
                 <TextBlock TextWrapping="WrapWholeWords">
-                    <Run Text="By" /> <Hyperlink Click="UserHyperlink_Click">u/<Run Text="{x:Bind Author}" /></Hyperlink> - Posted <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Post.Created, x:True)}" /> in <Hyperlink>r/<Run Text="{x:Bind Subreddit}" /></Hyperlink>
+                    <Run Text="By" /> <Hyperlink Click="UserHyperlink_Click">u/<Run Text="{x:Bind Author}" /></Hyperlink> - Posted <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Post.Created, x:True)}" /> in <Hyperlink Click="SubredditHyperlink_Click">r/<Run Text="{x:Bind Subreddit}" /></Hyperlink>
                 </TextBlock>
-                
+
                 <TextBlock
                     x:Phase="2"
                     PointerReleased="Title_PointerReleased"
@@ -69,27 +69,35 @@
                     Margin="0,5,0,0"
                     x:Phase="1"
                     Background="Transparent"
+                    LinkClicked="MarkdownLinkClicked"
                     Text="{x:Bind ShortDescription}"
-                    TextWrapping="WrapWholeWords"
-                    LinkClicked="MarkdownLinkClicked" />
+                    TextWrapping="WrapWholeWords" />
 
                 <Image
-                    x:Phase="2"
-                    Source="{x:Bind Image}"
-                    Visibility="{x:Bind HasImage, Converter={StaticResource BoolToVis}}" />
+                    x:Name="ImagePost"
+                    MaxWidth="500"
+                    x:Load="{x:Bind HasImage}">
+                    <Image.Source>
+                        <BitmapImage DecodePixelType="Logical" UriSource="{x:Bind ImageUri}" />
+                    </Image.Source>
+                </Image>
 
-                <StackPanel Orientation="Horizontal" Spacing="4">
-                    <TextBlock Text="{x:Bind CommentsCountInUI}" Margin="0,10,0,3" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="0,10,0,3" Text="{x:Bind CommentsCountInUI}" />
 
-                    <HyperlinkButton Margin="0,0,0,-6" Padding="2">
+                    <HyperlinkButton Margin="4,0,0,-6" Padding="2">
                         Share
                     </HyperlinkButton>
 
-                    <HyperlinkButton Margin="0,0,0,-6" Padding="2">
+                    <HyperlinkButton Margin="4,0,0,-6" Padding="2">
                         Save
                     </HyperlinkButton>
 
-                    <HyperlinkButton Margin="0,0,0,-6" Padding="2">
+                    <HyperlinkButton Visibility="{x:Bind IsCurrentUserOP, Converter={StaticResource BoolToVis}}" Click="RemoveUserPostButton_Click" Margin="4,0,0,-6" Padding="2">
+                        Delete
+                    </HyperlinkButton>
+
+                    <HyperlinkButton Margin="4,0,0,-6" Padding="2">
                         Report
                     </HyperlinkButton>
                 </StackPanel>
@@ -102,7 +110,7 @@
             MaxWidth="1200"
             Margin="0,4"
             Padding="6,10,8,10"
-            Background="{StaticResource LayerFillColorDefaultBrush}"
+            Background="{ThemeResource ExpanderContentBackground}"
             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
             BorderThickness="1"
             ColumnSpacing="10"
@@ -144,7 +152,7 @@
 
             <StackPanel Grid.Column="1" Orientation="Vertical">
                 <TextBlock TextWrapping="WrapWholeWords">
-                    <Run Text="By" /> <Hyperlink Click="UserHyperlink_Click">u/<Run Text="{x:Bind Author}" /></Hyperlink> - Posted <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Post.Created, x:True)}" />
+                    <Run Text="By" /> <Hyperlink Click="UserHyperlink_Click">u/<Run Text="{x:Bind Author}" /></Hyperlink> - Posted <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Post.Created, x:True)}" /> in <Hyperlink Click="SubredditHyperlink_Click">r/<Run Text="{x:Bind Subreddit}" /></Hyperlink>
                 </TextBlock>
 
                 <TextBlock
@@ -159,24 +167,175 @@
                     Margin="0,5,0,0"
                     x:Phase="1"
                     Background="Transparent"
+                    LinkClicked="MarkdownLinkClicked"
                     Text="{x:Bind ShortDescription}"
-                    TextWrapping="WrapWholeWords"
-                    LinkClicked="MarkdownLinkClicked" />
+                    TextWrapping="WrapWholeWords" />
 
                 <Image
-                    x:Phase="2"
-                    Source="{x:Bind Image}"
-                    Visibility="{x:Bind HasImage, Converter={StaticResource BoolToVis}}" />
+                    x:Name="ImagePost"
+                    MaxWidth="500"
+                    x:Load="{x:Bind HasImage}">
+                    <Image.Source>
+                        <BitmapImage DecodePixelType="Logical" UriSource="{x:Bind ImageUri}" />
+                    </Image.Source>
+                </Image>
 
-                <StackPanel Orientation="Horizontal" Spacing="4">
-                    <TextBlock Text="{x:Bind CommentsCountInUI}" Margin="0,10,0,3" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="0,10,0,3" Text="{x:Bind CommentsCountInUI}" />
 
-                    <HyperlinkButton Margin="0,0,0,-6" Padding="2">
+                    <HyperlinkButton Margin="4,0,0,-6" Padding="2">
                         Share
                     </HyperlinkButton>
 
-                    <HyperlinkButton Margin="0,0,0,-6" Padding="2">
+                    <HyperlinkButton Margin="4,0,0,-6" Padding="2">
                         Save
+                    </HyperlinkButton>
+
+                    <HyperlinkButton Visibility="{x:Bind IsCurrentUserOP, Converter={StaticResource BoolToVis}}" Click="RemoveUserPostButton_Click" Margin="4,0,0,-6" Padding="2">
+                        Delete
+                    </HyperlinkButton>
+
+                    <HyperlinkButton Margin="4,0,0,-6" Padding="2">
+                        Report
+                    </HyperlinkButton>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="SubredditPostTemplate" x:DataType="models:PostViewModel">
+        <Grid
+            MaxWidth="1200"
+            Margin="0,4"
+            Padding="6,10,8,10"
+            Background="{ThemeResource ExpanderContentBackground}"
+            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+            BorderThickness="1"
+            ColumnSpacing="10"
+            CornerRadius="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel
+                HorizontalAlignment="Center"
+                Orientation="Vertical"
+                Spacing="5">
+                <ToggleButton
+                    Padding="3"
+                    HorizontalAlignment="Center"
+                    x:Phase="3"
+                    Click="UpvoteButton_Click"
+                    IsChecked="{x:Bind Upvoted, Mode=OneWay}"
+                    Style="{StaticResource TransparentToggleButton}"
+                    Tag="{x:Bind}">
+                    <FontIcon Glyph="&#xE010;" />
+                </ToggleButton>
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    x:Phase="3"
+                    Text="{x:Bind VoteRatio, Mode=OneWay}" />
+                <ToggleButton
+                    Padding="3"
+                    HorizontalAlignment="Center"
+                    x:Phase="3"
+                    Click="DownvoteButton_Click"
+                    IsChecked="{x:Bind Downvoted, Mode=OneWay}"
+                    Style="{StaticResource TransparentToggleButton}"
+                    Tag="{x:Bind}">
+                    <FontIcon Glyph="&#xE019;" />
+                </ToggleButton>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" Orientation="Vertical">
+                <StackPanel Margin="0,0,0,8" Visibility="{x:Bind Post.Listing.Stickied, Converter={StaticResource BoolToVis}}" Orientation="Horizontal" Spacing="8">
+                    <FontIcon Glyph="&#xE141;" FontSize="12" />
+
+                    <TextBlock Text="Pinned by moderators" />
+                </StackPanel>
+                
+                <StackPanel Spacing="2" Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" TextWrapping="WrapWholeWords">
+                        <Run Text="By" /> <Hyperlink Click="UserHyperlink_Click">u/<Run Text="{x:Bind Author}" /></Hyperlink>
+                    </TextBlock>
+
+                    <Border Visibility="{x:Bind ShouldDisplayUserFlair, Converter={StaticResource BoolToVis}}" Padding="2" CornerRadius="2">
+                        <TextBlock Text="{x:Bind Post.Listing.AuthorFlairText}" />
+                    </Border>
+
+                    <TextBlock VerticalAlignment="Center" TextWrapping="WrapWholeWords">- Posted <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Post.Created, x:True)}" /></TextBlock>
+                </StackPanel>
+
+                <TextBlock
+                    x:Phase="2"
+                    PointerReleased="Title_PointerReleased"
+                    Style="{StaticResource SubtitleTextBlockStyle}"
+                    Tag="{x:Bind}"
+                    Text="{x:Bind Title}"
+                    TextWrapping="WrapWholeWords" />
+
+                <Border Visibility="{x:Bind ShouldDisplayPostFlair, Converter={StaticResource BoolToVis}}" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="-2,4,0,4">
+                    <Border.Background>
+                        <SolidColorBrush Color="{x:Bind local:App.GetColorFromHex(Post.Listing.LinkFlairBackgroundColor)}" />
+                    </Border.Background>
+                    <TextBlock Text="{x:Bind Post.Listing.LinkFlairText}">
+                        <TextBlock.Foreground>
+                            <SolidColorBrush Color="{x:Bind local:App.GetTextColorFromHex(Post.Listing.LinkFlairTextColor)}" />
+                        </TextBlock.Foreground>
+                    </TextBlock>
+                </Border>
+
+                <controls:MarkdownTextBlock
+                    Margin="0,5,0,0"
+                    x:Phase="1"
+                    Background="Transparent"
+                    LinkClicked="MarkdownLinkClicked"
+                    Text="{x:Bind ShortDescription}"
+                    TextWrapping="WrapWholeWords" />
+
+                <Image
+                    x:Name="ImagePost"
+                    MaxWidth="500"
+                    x:Load="{x:Bind HasImage}">
+                    <Image.Source>
+                        <BitmapImage DecodePixelType="Logical" UriSource="{x:Bind ImageUri}" />
+                    </Image.Source>
+                </Image>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="0,10,0,3" Text="{x:Bind CommentsCountInUI}" />
+
+                    <HyperlinkButton Margin="4,0,0,-6" Padding="2">
+                        Share
+                    </HyperlinkButton>
+
+                    <HyperlinkButton Margin="4,0,0,-6" Padding="2">
+                        Save
+                    </HyperlinkButton>
+
+                    <HyperlinkButton Visibility="{x:Bind IsCurrentUserOP, Converter={StaticResource BoolToVis}}" Click="RemoveUserPostButton_Click" Margin="4,0,0,-6" Padding="2">
+                        Delete
+                    </HyperlinkButton>
+
+                    <HyperlinkButton IsEnabled="{x:Bind local:App.OppositeOf(Post.Listing.Removed)}" Visibility="{x:Bind templates:PostTemplates.IsSubredditMod, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="RemovePostButton_Click" Margin="4,0,0,-6" Padding="2">
+                        Remove
+                    </HyperlinkButton>
+
+                    <HyperlinkButton IsEnabled="{x:Bind local:App.OppositeOf(Post.Listing.Approved)}" Visibility="{x:Bind templates:PostTemplates.IsSubredditMod, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="ApproveButton_Click" Margin="4,0,0,-6" Padding="2">
+                        Approve
+                    </HyperlinkButton>
+
+                    <HyperlinkButton IsEnabled="{x:Bind local:App.OppositeOf(Post.Listing.Spam)}" Visibility="{x:Bind templates:PostTemplates.IsSubredditMod, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="SpamButton_Click" Margin="4,0,0,-6" Padding="2">
+                        Spam
+                    </HyperlinkButton>
+
+                    <HyperlinkButton IsEnabled="{x:Bind local:App.OppositeOf(Post.Listing.Stickied)}" Visibility="{x:Bind templates:PostTemplates.IsSubredditMod, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="PinButton_Click" Margin="4,0,0,-6" Padding="2">
+                        Pin
+                    </HyperlinkButton>
+
+                    <HyperlinkButton Margin="4,0,0,-6" Padding="2">
+                        Report
                     </HyperlinkButton>
                 </StackPanel>
             </StackPanel>

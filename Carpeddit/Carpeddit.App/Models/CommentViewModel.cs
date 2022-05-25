@@ -17,6 +17,8 @@ namespace Carpeddit.App.Models
             _replies = new();
         }
 
+        public bool IsCurrentUserOP => App.RedditClient.Account.Me.Name == OriginalComment.Author;
+
         private Comment _originalComment;
 
         public Comment OriginalComment
@@ -25,7 +27,24 @@ namespace Carpeddit.App.Models
             set
             {
                 _originalComment = value;
-                _collapsed = OriginalComment.Collapsed;
+                _collapsed = _originalComment.Collapsed;
+                _voteRatio = FormatNumber(_originalComment.UpVotes - _originalComment.DownVotes);
+                _rawVoteRatio = _originalComment.UpVotes - _originalComment.DownVotes;
+                _upvoted = _originalComment.IsUpvoted;
+                _downvoted = _originalComment.IsDownvoted;
+
+                OnPropertyChanged(nameof(OriginalComment));
+            }
+        }
+
+        private CommentViewModel _parentComment;
+
+        public CommentViewModel ParentComment
+        {
+            get => _parentComment;
+            set
+            {
+                _parentComment = value;
                 OnPropertyChanged(nameof(OriginalComment));
             }
         }
@@ -41,6 +60,8 @@ namespace Carpeddit.App.Models
                 OnPropertyChanged(nameof(Replies));
             }
         }
+
+        public bool ShouldDisplayUserFlair => !string.IsNullOrEmpty(OriginalComment.Listing.AuthorFlairText);
 
         private bool _collapsed = false;
 
@@ -67,28 +88,55 @@ namespace Carpeddit.App.Models
 
         public Thickness Thickn => Replies.Count > 0 ? new(-10, 0, 0, 0) : (IsTopLevel ? new(-30, 0, 0, 0) : new(-10, 0, 0, 0));
 
+        private string _voteRatio;
+
         public string VoteRatio
         {
-            get
-            {
-                return FormatNumber(OriginalComment.UpVotes - OriginalComment.DownVotes);
-            }
+            get => _voteRatio;
             private set
             {
+                _voteRatio = value;
                 OnPropertyChanged(nameof(VoteRatio));
             }
         }
 
+        private int _rawVoteRatio;
+
         public int RawVoteRatio
         {
-            get
-            {
-                return OriginalComment.UpVotes - OriginalComment.DownVotes;
-            }
+            get => _rawVoteRatio;
             set
             {
+                _rawVoteRatio = value;
                 VoteRatio = FormatNumber(value);
+                OnPropertyChanged(nameof(VoteRatio));
                 OnPropertyChanged(nameof(RawVoteRatio));
+            }
+        }
+
+        private bool _upvoted;
+
+        public bool Upvoted
+        {
+            get => _upvoted;
+            set
+            {
+                _upvoted = value;
+
+                OnPropertyChanged(nameof(Upvoted));
+            }
+        }
+
+        private bool _downvoted;
+
+        public bool Downvoted
+        {
+            get => _downvoted;
+            set
+            {
+                _downvoted = value;
+
+                OnPropertyChanged(nameof(Downvoted));
             }
         }
 
@@ -123,12 +171,12 @@ namespace Carpeddit.App.Models
                 currentCommentVm.IsTopLevel = true;
 
                 // Loop to find the replies.
-                // NOTE: I don't really understand how this just... works, really strange.
                 foreach (Comment comment1 in currentCommentVm.OriginalComment.Replies)
                 {
                     CommentViewModel commentVm = new()
                     {
-                        OriginalComment = comment1
+                        OriginalComment = comment1,
+                        ParentComment = currentCommentVm
                     };
 
                     if (addToRepliesList)

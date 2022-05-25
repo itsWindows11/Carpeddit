@@ -14,6 +14,7 @@
                     <converters:DecimalPointToPercentageConverter x:Key="DecimalPointToPercentage" WithPercentage="False" />
                     <converters:DecimalPointToPercentageConverter x:Key="DecimalPointToPercentageWithPercent" WithPercentage="True" />
                     <converters:DecimalPointConverter x:Key="DecimalPoint" />
+                    <converters:StringToUriConverter x:Key="StringToUri" />
 
                     <Style
                 x:Key="TransparentButton"

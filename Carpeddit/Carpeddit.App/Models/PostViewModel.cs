@@ -39,6 +39,12 @@ namespace Carpeddit.App.Models
 
         public string Description { get; set; }
 
+        public bool ShouldDisplayUserFlair => !string.IsNullOrEmpty(Post.Listing.AuthorFlairText);
+
+        public bool ShouldDisplayPostFlair => !string.IsNullOrEmpty(Post.Listing.LinkFlairText);
+
+        public bool IsCurrentUserOP => App.RedditClient.Account.Me.Name == Author;
+
         public string ShortDescription
         {
             get
@@ -51,21 +57,6 @@ namespace Carpeddit.App.Models
                 return Description;
             }
         }
-        /*{
-            get
-            {
-                if (Post is LinkPost linkPost)
-                {
-                    return linkPost.URL;
-                }
-                else if (Post is SelfPost selfPost)
-                {
-                    return selfPost.SelfText;
-                }
-
-                return "No content";
-            }
-        }*/
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -74,13 +65,13 @@ namespace Carpeddit.App.Models
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
-        public BitmapImage Image
+        public Uri ImageUri
         {
             get
             {
                 if (HasImage)
                 {
-                    return new(new Uri(Description, UriKind.Absolute));
+                    return new Uri(Description, UriKind.Absolute);
                 }
                 return null;
             }
@@ -96,7 +87,7 @@ namespace Carpeddit.App.Models
             {
                 ObservableCollection<CommentViewModel> comments = new();
 
-                foreach (Comment comment in Post.Comments.GetComments(limit: 100))
+                foreach (Comment comment in Post.Comments.GetComments())
                 {
                     CommentViewModel comment1 = new()
                     {
@@ -112,28 +103,7 @@ namespace Carpeddit.App.Models
             });
         }
 
-        public bool HasImage
-        {
-            get
-            {
-                if (Uri.IsWellFormedUriString(Description, UriKind.Absolute) && (Description.StartsWith("https://", StringComparison.OrdinalIgnoreCase) || Description.StartsWith("http://", StringComparison.OrdinalIgnoreCase)))
-                {
-                    try
-                    {
-                        HttpWebRequest req = (HttpWebRequest)WebRequest.Create(Description);
-                        req.Method = "HEAD";
-                        using var resp = req.GetResponse();
-                        return resp.ContentType.ToLower(CultureInfo.InvariantCulture)
-                                   .StartsWith("image/", StringComparison.OrdinalIgnoreCase);
-                    }
-                    catch (Exception)
-                    {
-
-                    }
-                }
-                return false;
-            }
-        }
+        public bool HasImage => (Uri.IsWellFormedUriString(Description, UriKind.Absolute) && (Description.StartsWith("https://", StringComparison.OrdinalIgnoreCase) || Description.StartsWith("http://", StringComparison.OrdinalIgnoreCase)) && Description.Contains("i.redd.it"));
 
         private bool _upvoted;
 

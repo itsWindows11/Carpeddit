@@ -1,0 +1,52 @@
+﻿<ContentDialog
+    x:Class="Carpeddit.App.Dialogs.CreateFlairDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Carpeddit.App.Dialogs"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:controls="using:Carpeddit.App.UserControls"
+    mc:Ignorable="d"
+    Title="Create flair"
+    PrimaryButtonText="Create"
+    SecondaryButtonText="Cancel"
+    PrimaryButtonStyle="{ThemeResource AccentButtonStyle}"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick"
+    Style="{ThemeResource DefaultContentDialogStyle}">
+
+    <ScrollViewer MinWidth="400" MaxHeight="500">
+        <StackPanel Spacing="8">
+            <StackPanel.Resources>
+                <Style TargetType="muxc:Expander">
+                    <Setter Property="HorizontalAlignment" Value="Stretch" />
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </StackPanel.Resources>
+
+            <TextBox x:Name="NameText" Header="Name" />
+
+            <controls:SettingsBlockControl Title="Text color">
+                <controls:SettingsBlockControl.SettingsActionableElement>
+                    <ToggleButton x:Name="TextColorToggle" />
+                </controls:SettingsBlockControl.SettingsActionableElement>
+            </controls:SettingsBlockControl>
+
+            <muxc:Expander Header="Background color">
+                <muxc:ColorPicker x:Name="BackPicker" />
+            </muxc:Expander>
+
+            <controls:SettingsBlockControl Title="Mod only">
+                <controls:SettingsBlockControl.SettingsActionableElement>
+                    <ToggleSwitch x:Name="ModOnlyToggle" Margin="0,0,-72,0" />
+                </controls:SettingsBlockControl.SettingsActionableElement>
+            </controls:SettingsBlockControl>
+
+            <controls:SettingsBlockControl Title="Allow user edits">
+                <controls:SettingsBlockControl.SettingsActionableElement>
+                    <ToggleSwitch x:Name="CanUserEditToggle" Margin="0,0,-72,0" />
+                </controls:SettingsBlockControl.SettingsActionableElement>
+            </controls:SettingsBlockControl>
+        </StackPanel>
+    </ScrollViewer>
+</ContentDialog>

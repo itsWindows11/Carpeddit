@@ -59,7 +59,6 @@ namespace Carpeddit.App
             if (App.RedditClient != null)
             {
                 YourProfileItem.Content = App.RedditClient.Account.GetMe().UserData.Name;
-                Debug.WriteLine(AccountController.GetImageUrl(App.RedditClient.Account.Me.UserData));
                 Pfp.Source = new BitmapImage(new Uri(AccountController.GetImageUrl(App.RedditClient.Account.Me.UserData), UriKind.Absolute));
             }
 
@@ -163,23 +162,6 @@ namespace Carpeddit.App
             else if (args.InvokedItemContainer != null)
             {
                 var navItemTag = args.InvokedItemContainer.Tag.ToString();
-                NavView_Navigate(navItemTag, args.RecommendedNavigationTransitionInfo);
-            }
-        }
-
-        // NavView_SelectionChanged is not used in this example, but is shown for completeness.
-        // You will typically handle either ItemInvoked or SelectionChanged to perform navigation,
-        // but not both.
-        private void NavView_SelectionChanged(muxc.NavigationView sender,
-                                              muxc.NavigationViewSelectionChangedEventArgs args)
-        {
-            if (args.IsSettingsSelected)
-            {
-                NavView_Navigate("settings", args.RecommendedNavigationTransitionInfo);
-            }
-            else if (args.SelectedItemContainer != null)
-            {
-                var navItemTag = args.SelectedItemContainer.Tag.ToString();
                 NavView_Navigate(navItemTag, args.RecommendedNavigationTransitionInfo);
             }
         }
@@ -355,7 +337,15 @@ namespace Carpeddit.App
 
         private void NavViewSearchBox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            ContentFrame.Navigate(typeof(SearchResultsPage), sender.Text);
+            if (!string.IsNullOrWhiteSpace(sender.Text))
+            {
+                ContentFrame.Navigate(typeof(SearchResultsPage), sender.Text);
+            }
+        }
+
+        private void ProfileFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
+            ContentFrame.Navigate(typeof(YourProfilePage));
         }
     }
 }

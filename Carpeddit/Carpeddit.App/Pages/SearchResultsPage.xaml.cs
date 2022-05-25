@@ -1,19 +1,11 @@
 ﻿using Carpeddit.App.Models;
 using Reddit.Controllers;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace Carpeddit.App.Pages
@@ -59,7 +51,7 @@ namespace Carpeddit.App.Pages
                     Created = post.Created,
                     Subreddit = post.Subreddit,
                     Author = post.Author,
-                    CommentsCount = post.Comments.GetComments().Count
+                    CommentsCount = post.Listing.NumComments
                 };
 
                 posts2.Add(post1);

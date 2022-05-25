@@ -16,7 +16,7 @@
                           x:Name="FloatingSplit">
             <muxc:SplitButton.Flyout>
                 <MenuFlyout>
-                    <MenuFlyoutItem Text="Create a post">
+                    <MenuFlyoutItem Click="CreatePostItem_Click" Text="Create a post">
                         <MenuFlyoutItem.Icon>
                             <FontIcon Glyph="&#xE109;" />
                         </MenuFlyoutItem.Icon>
@@ -33,7 +33,9 @@
                       RelativePanel.AlignLeftWithPanel="True"
                       RelativePanel.AlignBottomWithPanel="True"
                       RelativePanel.AlignTopWithPanel="True"
-                      x:Name="Scroll">
+                      x:Name="Scroll"
+                      Margin="-56,0"
+                      Padding="56,0">
             <StackPanel Orientation="Vertical" Spacing="10">
                 <Border>
                     <StackPanel Orientation="Vertical">
