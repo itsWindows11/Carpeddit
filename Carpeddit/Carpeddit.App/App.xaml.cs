@@ -108,15 +108,15 @@ namespace Carpeddit.App
             return !ean;
         }
 
-        public async Task InitDb()
+        public static async Task InitDb()
         {
-            SViewModel = new SettingsViewModel();
-            GlobalClient = new HttpClient();
-            AccDBController = await AccountDatabaseController.Init();
-            CurrentAccount = await AccDBController.GetAsync() ?? new CustomAccountModel();
+            SViewModel ??= new SettingsViewModel();
+            GlobalClient ??= new HttpClient();
+            AccDBController ??= await AccountDatabaseController.Init();
+            CurrentAccount ??= await AccDBController.GetAsync() ?? new CustomAccountModel();
             if (CurrentAccount.RefreshToken != null)
             {
-                RedditClient = new RedditClient(Constants.ClientId, CurrentAccount.RefreshToken, Constants.ClientSecret);
+                RedditClient ??= new RedditClient(Constants.ClientId, CurrentAccount.RefreshToken, Constants.ClientSecret);
             }
         }
 
@@ -155,8 +155,6 @@ namespace Carpeddit.App
             // just ensure that the window is active
             if (Window.Current.Content is not Frame rootFrame)
             {
-                await InitDb();
-
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
 
@@ -180,27 +178,7 @@ namespace Carpeddit.App
                     // configuring the new page by passing required information as a navigation
                     // parameter
 
-                    bool isOnline;
-
-                    try
-                    {
-                        using var tcpClient = new StreamSocket();
-                        await tcpClient.ConnectAsync(
-                            new Windows.Networking.HostName("reddit.com"),
-                            "80",
-                            SocketProtectionLevel.PlainSocket);
-
-                        isOnline = true;
-
-                        tcpClient.Dispose();
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine(ex);
-                        isOnline = false;
-                    }
-
-                    rootFrame.Navigate(isOnline ? ((CurrentAccount != null && CurrentAccount.LoggedIn) ? typeof(MainPage) : typeof(LoginPage)) : typeof(OfflinePage), e.Arguments);
+                    rootFrame.Navigate(typeof(LoadingPage), e.Arguments);
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();

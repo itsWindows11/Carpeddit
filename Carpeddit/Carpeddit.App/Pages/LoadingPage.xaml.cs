@@ -1,18 +1,34 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel.Core;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
 using Windows.Networking.Connectivity;
 using Windows.Networking.Sockets;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Navigation;
+
+// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Carpeddit.App.Pages
 {
-    public sealed partial class OfflinePage : Page
+    /// <summary>
+    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class LoadingPage : Page
     {
-        public OfflinePage()
+        public LoadingPage()
         {
             InitializeComponent();
 
@@ -29,6 +45,29 @@ namespace Carpeddit.App.Pages
 
             coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
             coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged;
+
+            Loaded += LoadingPage_Loaded;
+        }
+
+        private async void LoadingPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Init database
+            await App.InitDb();
+
+            if (NetworkInformation.GetInternetConnectionProfile().GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess)
+            {
+                if (App.CurrentAccount != null && App.CurrentAccount.LoggedIn)
+                {
+                    Frame.Navigate(typeof(MainPage), null, new Windows.UI.Xaml.Media.Animation.SuppressNavigationTransitionInfo());
+                }
+                else
+                {
+                    Frame.Navigate(typeof(LoginPage), null, new Windows.UI.Xaml.Media.Animation.SuppressNavigationTransitionInfo());
+                }
+            } else
+            {
+                Frame.Navigate(typeof(OfflinePage), null, new Windows.UI.Xaml.Media.Animation.SuppressNavigationTransitionInfo());
+            }
         }
 
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
@@ -49,14 +88,6 @@ namespace Carpeddit.App.Pages
             // Ensure the custom title bar does not overlap window caption controls
             Thickness currMargin = AppTitleBar.Margin;
             AppTitleBar.Margin = new Thickness(currMargin.Left, currMargin.Top, coreTitleBar.SystemOverlayRightInset, currMargin.Bottom);
-        }
-
-        private async void RefreshButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (NetworkInformation.GetInternetConnectionProfile().GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess)
-            {
-                Frame.Navigate((App.CurrentAccount != null && App.CurrentAccount.LoggedIn) ? typeof(MainPage) : typeof(LoginPage));
-            }
         }
     }
 }

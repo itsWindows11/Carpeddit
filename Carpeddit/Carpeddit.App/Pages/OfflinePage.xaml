@@ -25,8 +25,8 @@
         <Grid Grid.Row="1">
             <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                 <StackPanel Spacing="12">
-                    <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="You're offline!" />
-                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Check your internet connection, cables, or adapters." />
+                    <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="An error occurred" />
+                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="We can't reach the internet right now, check your internet connection, cables, or adapters." />
 
                     <Button Click="RefreshButton_Click" HorizontalAlignment="Center">
                         <StackPanel Orientation="Horizontal" Spacing="12">
