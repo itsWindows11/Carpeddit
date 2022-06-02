@@ -2,18 +2,25 @@
     x:Class="Carpeddit.App.Pages.YourProfilePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Carpeddit.App"
+    xmlns:controllers="using:Carpeddit.App.Controllers"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controllers="using:Carpeddit.App.Controllers" xmlns:reddit="using:Reddit.Controllers" xmlns:helpers="using:Carpeddit.App.Helpers" xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:models="using:Carpeddit.App.Models"
+    xmlns:helpers="using:Carpeddit.App.Helpers"
+    xmlns:local="using:Carpeddit.App"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:Carpeddit.App.Models"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:reddit="using:Reddit.Controllers"
     mc:Ignorable="d">
 
-    <RelativePanel Padding="56,10,56,0" Margin="-56,0">
-        <muxc:SplitButton RelativePanel.AlignBottomWithPanel="True"
-                          RelativePanel.AlignRightWithPanel="True"
-                          Margin="24"
-                          ToolTipService.ToolTip="Edit profile"
-                          Canvas.ZIndex="1"
-                          x:Name="FloatingSplit">
+    <RelativePanel Margin="-56,0" Padding="56,10,56,0">
+        <muxc:SplitButton
+            x:Name="FloatingSplit"
+            Margin="24"
+            Canvas.ZIndex="1"
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.AlignRightWithPanel="True"
+            ToolTipService.ToolTip="Edit profile">
             <muxc:SplitButton.Flyout>
                 <MenuFlyout>
                     <MenuFlyoutItem Click="CreatePostItem_Click" Text="Create a post">
@@ -29,26 +36,28 @@
             </muxc:SplitButton.Content>
         </muxc:SplitButton>
 
-        <ScrollViewer RelativePanel.AlignRightWithPanel="True"
-                      RelativePanel.AlignLeftWithPanel="True"
-                      RelativePanel.AlignBottomWithPanel="True"
-                      RelativePanel.AlignTopWithPanel="True"
-                      x:Name="Scroll"
-                      Margin="-56,0"
-                      Padding="56,0">
+        <ScrollViewer
+            x:Name="Scroll"
+            Margin="-56,0"
+            Padding="56,0"
+            RelativePanel.AlignBottomWithPanel="True"
+            RelativePanel.AlignLeftWithPanel="True"
+            RelativePanel.AlignRightWithPanel="True"
+            RelativePanel.AlignTopWithPanel="True">
             <StackPanel Orientation="Vertical" Spacing="10">
                 <Border>
                     <StackPanel Orientation="Vertical">
                         <Border CornerRadius="5">
-                            <Border Background="{StaticResource SystemAccentColorDark1}" Height="200" />
+                            <Border Height="200" Background="{StaticResource SystemAccentColorDark1}" />
                         </Border>
-                        <Border Margin="0,-35,0,0"
+                        <Border
                             Width="60"
                             Height="60"
-                            CornerRadius="60"
+                            Margin="0,-35,0,0"
+                            Padding="5"
                             BorderBrush="{StaticResource SystemAccentColorLight2}"
                             BorderThickness="3"
-                            Padding="5">
+                            CornerRadius="60">
                             <Image>
                                 <Image.Source>
                                     <BitmapImage UriSource="{x:Bind controllers:AccountController.GetImageUrlForBind(user.UserData), Mode=OneWay}" />
@@ -58,21 +67,163 @@
                     </StackPanel>
                 </Border>
 
-                <TextBlock Text="{x:Bind user.Name, Mode=OneWay}"
-                       Style="{StaticResource SubtitleTextBlockStyle}"
-                       FontWeight="SemiBold"
-                       HorizontalAlignment="Center" />
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    FontWeight="SemiBold"
+                    Style="{StaticResource SubtitleTextBlockStyle}"
+                    Text="{x:Bind user.Name, Mode=OneWay}" />
 
-                <StackPanel Orientation="Vertical" Margin="0,10">
-                    <muxc:ProgressRing IsActive="True" Margin="0,5" Visibility="Collapsed" HorizontalAlignment="Center" x:Name="ProgressR" />
+                <StackPanel Margin="0,10" Orientation="Vertical">
+                    <muxc:NavigationView
+                        Height="48"
+                        IsBackButtonVisible="Collapsed"
+                        IsSettingsVisible="False"
+                        ItemInvoked="NavigationView_ItemInvoked"
+                        PaneDisplayMode="Top">
+                        <muxc:NavigationView.MenuItems>
+                            <muxc:NavigationViewItem
+                                Content="Posts"
+                                IsSelected="True"
+                                Tag="posts" />
+                            <muxc:NavigationViewItem Content="Comments" Tag="comments" />
+                            <muxc:NavigationViewItem Content="Moderating subreddits" Tag="modSubreddits" />
+                        </muxc:NavigationView.MenuItems>
+                    </muxc:NavigationView>
 
-                    <ListView ItemTemplate="{StaticResource UserPostTemplate}" Margin="-56,0,-56,0" Padding="56,0,56,10" x:Name="MainList" SelectionMode="None">
+                    <muxc:ProgressRing
+                        x:Name="ProgressR"
+                        Margin="0,5"
+                        HorizontalAlignment="Center"
+                        IsActive="True"
+                        Visibility="Collapsed" />
+
+                    <ListView
+                        x:Name="MainList"
+                        Margin="-56,0,-56,0"
+                        Padding="56,0,56,10"
+                        ItemTemplate="{StaticResource UserPostTemplate}"
+                        SelectionMode="None">
                         <ListView.Footer>
                             <Grid>
-                                <muxc:ProgressRing IsActive="True" Margin="0,5" Visibility="Collapsed" HorizontalAlignment="Center" x:Name="FooterProgress" />
-                                <Button x:Name="LoadMoreButton" Click="Button_Click" Content="Load more" Style="{StaticResource AccentButtonStyle}" Margin="0,5,0,0" HorizontalAlignment="Center" />
+                                <muxc:ProgressRing
+                                    x:Name="FooterProgress"
+                                    Margin="0,5"
+                                    HorizontalAlignment="Center"
+                                    IsActive="True"
+                                    Visibility="Collapsed" />
+                                <Button
+                                    x:Name="LoadMoreButton"
+                                    Margin="0,5,0,0"
+                                    HorizontalAlignment="Center"
+                                    Click="Button_Click"
+                                    Content="Load more"
+                                    Style="{StaticResource AccentButtonStyle}" />
                             </Grid>
                         </ListView.Footer>
+                    </ListView>
+
+                    <ListView
+                        x:Name="CommentsList"
+                        Margin="-56,0,-56,0"
+                        Padding="56,0,56,10"
+                        SelectionMode="None"
+                        Visibility="Collapsed">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="models:CommentViewModel">
+                                <Grid Margin="{x:Bind Thickn}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="30" />
+                                        <ColumnDefinition Width="40" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Width="1" Padding="0,0,30,0" Background="{StaticResource AppBarSeparatorForegroundThemeBrush}" />
+
+                                    <StackPanel HorizontalAlignment="Center"
+                                                    Grid.Column="1"
+                                                    Spacing="3">
+                                        <ToggleButton 
+                                                Padding="3"
+                                                Style="{StaticResource TransparentToggleButton}"
+                                                Click="UpvoteButton_Click"
+                                                IsChecked="{x:Bind Upvoted, Mode=OneWay}">
+                                            <FontIcon Glyph="&#xE010;" />
+                                        </ToggleButton>
+                                        <TextBlock HorizontalAlignment="Center" Text="{x:Bind VoteRatio, Mode=OneWay}" />
+                                        <ToggleButton
+                                                Padding="3"
+                                                Style="{StaticResource TransparentToggleButton}"
+                                                Click="DownvoteButton_Click"
+                                                IsChecked="{x:Bind Downvoted, Mode=OneWay}">
+                                            <FontIcon Glyph="&#xE011;" />
+                                        </ToggleButton>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2" Spacing="5">
+
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock VerticalAlignment="Center">
+                                                    By <Hyperlink>u/<Run Text="{x:Bind OriginalComment.Author}" /></Hyperlink>
+                                            </TextBlock>
+
+                                            <Button Visibility="{x:Bind OriginalComment.Listing.IsSubmitter, Converter={StaticResource BoolToVis}}" Style="{StaticResource AccentButtonStyle}" Content="OP" Padding="4,2" Margin="4,0,0,0" IsHitTestVisible="False" />
+
+                                            <Border Visibility="{x:Bind ShouldDisplayUserFlair, Converter={StaticResource BoolToVis}}" Padding="4,2" CornerRadius="2">
+                                                <TextBlock Text="{x:Bind OriginalComment.Listing.AuthorFlairText}" />
+                                            </Border>
+                                        </StackPanel>
+
+                                        <controls:MarkdownTextBlock Background="Transparent" Text="{x:Bind OriginalComment.Body}" />
+
+                                        <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                            <HyperlinkButton Visibility="{x:Bind IsCurrentUserOP, Converter={StaticResource BoolToVis}}" Click="DeleteCommentButton_Click" Padding="2" Content="Delete" />
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        
+                        <ListView.Footer>
+                            <Grid>
+                                <muxc:ProgressRing
+                                    x:Name="FooterProgress1"
+                                    Margin="0,5"
+                                    HorizontalAlignment="Center"
+                                    IsActive="True"
+                                    Visibility="Collapsed" />
+                                <Button
+                                    x:Name="LoadMoreButton1"
+                                    Margin="0,5,0,0"
+                                    HorizontalAlignment="Center"
+                                    Click="LoadMoreButton1_Click"
+                                    Content="Load more"
+                                    Style="{StaticResource AccentButtonStyle}" />
+                            </Grid>
+                        </ListView.Footer>
+                    </ListView>
+
+                    <ListView
+                        x:Name="MyModeratingSubredditsList"
+                        Margin="-56,0,-56,0"
+                        Padding="56,0,56,10"
+                        SelectionMode="None"
+                        Visibility="Collapsed">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <RelativePanel
+                                    MaxWidth="1200"
+                                    Margin="0,4"
+                                    Padding="8,10"
+                                    Background="{StaticResource LayerFillColorDefaultBrush}"
+                                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                    BorderThickness="1"
+                                    CornerRadius="6">
+                                    <TextBlock RelativePanel.AlignVerticalCenterWithPanel="True">
+                                        <Hyperlink>r/<Run Text="{Binding Name}" /></Hyperlink>
+                                    </TextBlock>
+                                </RelativePanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
                     </ListView>
                 </StackPanel>
             </StackPanel>

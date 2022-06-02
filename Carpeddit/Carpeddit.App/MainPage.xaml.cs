@@ -38,8 +38,6 @@ namespace Carpeddit.App
         {
             InitializeComponent();
 
-            NavigationCacheMode = NavigationCacheMode.Enabled;
-
             Current = this;
 
             var appViewTitleBar = ApplicationView.GetForCurrentView().TitleBar;

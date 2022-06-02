@@ -364,6 +364,7 @@
   <ItemGroup>
     <PackageReference Include="BracketPipe">
       <Version>0.7.7232.28997</Version>
+	<NoWarn>NU1603</NoWarn>
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm">
       <Version>7.1.2</Version>
