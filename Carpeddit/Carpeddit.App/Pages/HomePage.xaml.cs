@@ -78,7 +78,7 @@ namespace Carpeddit.App.Pages
             LoadMoreButton.Visibility = Visibility.Visible;
         }
 
-        private async Task<ObservableCollection<PostViewModel>> GetPostsAsync(string after = "", int limit = 13, string before = "")
+        private async Task<ObservableCollection<PostViewModel>> GetPostsAsync(string after = "", int limit = 100, string before = "")
         {
             List<Post> frontpage = App.RedditClient.GetFrontPage(limit: limit, after: after, before: before);
             ObservableCollection<PostViewModel> postViews = new();

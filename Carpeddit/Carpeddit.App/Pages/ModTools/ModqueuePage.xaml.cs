@@ -60,7 +60,7 @@ namespace Carpeddit.App.Pages.ModTools
             }
         }
 
-        public List<PostViewModel> GetPosts(string before = "", string after = "", int limit = 24, ModQueueType type = ModQueueType.Default)
+        public List<PostViewModel> GetPosts(string before = "", string after = "", int limit = 100, ModQueueType type = ModQueueType.Default)
         {
             List<Post> list = type switch
             {

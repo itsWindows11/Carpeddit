@@ -89,9 +89,9 @@ namespace Carpeddit.App.Pages
             LoadMoreButton.Visibility = Visibility.Visible;
         }
 
-        private IEnumerable<PostViewModel> GetPosts(string after = "", int limit = 13, string before = "")
+        private IEnumerable<PostViewModel> GetPosts(string after = "", int limit = 100, string before = "")
         {
-            List<Reddit.Controllers.Post> frontpage = user.GetPostHistory(limit: 13, after: after, before: before);
+            List<Reddit.Controllers.Post> frontpage = user.GetPostHistory(limit: limit, after: after, before: before);
 
             List<PostViewModel> posts1 = new();
 
@@ -112,9 +112,9 @@ namespace Carpeddit.App.Pages
             return posts1;
         }
 
-        private IEnumerable<CommentViewModel> GetComments(string after = "", int limit = 13, string before = "")
+        private IEnumerable<CommentViewModel> GetComments(string after = "", int limit = 100, string before = "")
         {
-            List<Reddit.Controllers.Comment> frontpage = user.GetCommentHistory(limit: 13, after: after, before: before);
+            List<Reddit.Controllers.Comment> frontpage = user.GetCommentHistory(limit: limit, after: after, before: before);
 
             List<CommentViewModel> comments1 = new();
 
