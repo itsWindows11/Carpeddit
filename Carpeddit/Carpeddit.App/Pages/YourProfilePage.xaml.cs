@@ -1,5 +1,6 @@
 ﻿using Carpeddit.App.Collections;
 using Carpeddit.App.Dialogs;
+using Carpeddit.App.Helpers;
 using Carpeddit.App.Models;
 using Reddit.Controllers;
 using Reddit.Things;
@@ -92,7 +93,6 @@ namespace Carpeddit.App.Pages
         private IEnumerable<PostViewModel> GetPosts(string after = "", int limit = 100, string before = "")
         {
             List<Reddit.Controllers.Post> frontpage = user.GetPostHistory(limit: limit, after: after, before: before);
-
             List<PostViewModel> posts1 = new();
 
             foreach (Reddit.Controllers.Post post in frontpage)
@@ -101,7 +101,7 @@ namespace Carpeddit.App.Pages
                 {
                     Post = post,
                     Title = post.Title,
-                    Description = GetPostDesc(post),
+                    Description = post.GetDescription(),
                     Created = post.Created,
                     Subreddit = post.Subreddit,
                     Author = post.Author,
@@ -127,20 +127,6 @@ namespace Carpeddit.App.Pages
             }
 
             return comments1;
-        }
-
-        private string GetPostDesc(Reddit.Controllers.Post post)
-        {
-            if (post is LinkPost linkPost)
-            {
-                return linkPost.URL;
-            }
-            else if (post is SelfPost selfPost)
-            {
-                return selfPost.SelfText;
-            }
-
-            return "No content";
         }
 
         private async void CreatePostItem_Click(object sender, RoutedEventArgs e)

@@ -67,7 +67,7 @@ namespace Carpeddit.App.Helpers
             return num.ToString("#,0");
         }
 
-        public static string GetRelativeDate(DateTime time, bool approximate)
+        public static string GetRelativeDate(DateTime time, bool approximate = true)
         {
             StringBuilder sb = new();
 
@@ -105,7 +105,7 @@ namespace Carpeddit.App.Helpers
             return sb.ToString();
         }
 
-        public static string GetPostDescription(Post post)
+        public static string GetDescription(this Post post)
         {
             if (post is SelfPost selfPost) return selfPost.SelfText;
             if (post is LinkPost linkPost) return linkPost.URL;
@@ -114,7 +114,7 @@ namespace Carpeddit.App.Helpers
 
         public static Visibility GetDescVisibility(Post post)
         {
-            if (string.IsNullOrWhiteSpace(GetPostDescription(post)))
+            if (string.IsNullOrWhiteSpace(post.GetDescription()))
             {
                 return Visibility.Collapsed;
             }
@@ -125,18 +125,18 @@ namespace Carpeddit.App.Helpers
         {
             if (HasImage(post))
             {
-                return new(new Uri(GetPostDescription(post), UriKind.Absolute));
+                return new(new Uri(post.GetDescription(), UriKind.Absolute));
             }
             return null;
         }
 
         public static bool HasImage(Post post)
         {
-            if (Uri.IsWellFormedUriString(GetPostDescription(post), UriKind.Absolute) && (GetPostDescription(post).StartsWith("https://", StringComparison.OrdinalIgnoreCase) || GetPostDescription(post).StartsWith("http://", StringComparison.OrdinalIgnoreCase)))
+            if (Uri.IsWellFormedUriString(post.GetDescription(), UriKind.Absolute) && (post.GetDescription().StartsWith("https://", StringComparison.OrdinalIgnoreCase) || post.GetDescription().StartsWith("http://", StringComparison.OrdinalIgnoreCase)))
             {
                 try
                 {
-                    HttpWebRequest req = (HttpWebRequest)WebRequest.Create(GetPostDescription(post));
+                    HttpWebRequest req = (HttpWebRequest)WebRequest.Create(post.GetDescription());
                     req.Method = "HEAD";
                     using var resp = req.GetResponse();
                     return resp.ContentType.ToLower(CultureInfo.InvariantCulture)
@@ -152,11 +152,11 @@ namespace Carpeddit.App.Helpers
 
         public static Visibility HasImageUI(Post post)
         {
-            if (Uri.IsWellFormedUriString(GetPostDescription(post), UriKind.Absolute) && (GetPostDescription(post).StartsWith("https://", StringComparison.OrdinalIgnoreCase) || GetPostDescription(post).StartsWith("http://", StringComparison.OrdinalIgnoreCase)))
+            if (Uri.IsWellFormedUriString(post.GetDescription(), UriKind.Absolute) && (post.GetDescription().StartsWith("https://", StringComparison.OrdinalIgnoreCase) || post.GetDescription().StartsWith("http://", StringComparison.OrdinalIgnoreCase)))
             {
                 try
                 {
-                    HttpWebRequest req = (HttpWebRequest)WebRequest.Create(GetPostDescription(post));
+                    HttpWebRequest req = (HttpWebRequest)WebRequest.Create(post.GetDescription());
                     req.Method = "HEAD";
                     using var resp = req.GetResponse();
                     return resp.ContentType.ToLower(CultureInfo.InvariantCulture)

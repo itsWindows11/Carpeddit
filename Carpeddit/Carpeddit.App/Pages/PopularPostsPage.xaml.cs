@@ -45,10 +45,7 @@ namespace Carpeddit.App.Pages
                 button.Visibility = Visibility.Collapsed;
                 FooterProgress.Visibility = Visibility.Visible;
 
-                var posts1 = await Task.Run(async () =>
-                {
-                    return await GetPostsAsync(after: posts[posts.Count - 1].Post.Fullname);
-                });
+                var posts1 = await Task.Run(() => GetPosts(after: posts[posts.Count - 1].Post.Fullname));
 
                 posts.AddRange(posts1);
 
@@ -64,10 +61,7 @@ namespace Carpeddit.App.Pages
             LoadMoreButton.Visibility = Visibility.Collapsed;
             Progress.Visibility = Visibility.Visible;
 
-            var posts1 = await Task.Run(async () =>
-            {
-                return await GetPostsAsync();
-            });
+            var posts1 = await Task.Run(() => GetPosts());
 
             posts.AddRange(posts1);
 
@@ -77,10 +71,10 @@ namespace Carpeddit.App.Pages
             LoadMoreButton.Visibility = Visibility.Visible;
         }
 
-        private async Task<ObservableCollection<PostViewModel>> GetPostsAsync(string after = "", int limit = 100, string before = "")
+        private IEnumerable<PostViewModel> GetPosts(string after = "", int limit = 100, string before = "")
         {
             List<Post> frontpage = App.RedditClient.Subreddit("all").Posts.GetHot(limit: limit, after: after, before: before);
-            ObservableCollection<PostViewModel> postViews = new();
+            List<PostViewModel> postViews = new();
 
             foreach (Post post in frontpage)
             {
@@ -88,7 +82,7 @@ namespace Carpeddit.App.Pages
                 {
                     Post = post,
                     Title = post.Title,
-                    Description = GetPostDesc(post),
+                    Description = post.GetDescription(),
                     Created = post.Created,
                     Subreddit = post.Subreddit,
                     Author = post.Author,
@@ -99,20 +93,6 @@ namespace Carpeddit.App.Pages
             }
 
             return postViews;
-        }
-
-        private string GetPostDesc(Post post)
-        {
-            if (post is LinkPost linkPost)
-            {
-                return linkPost.URL;
-            }
-            else if (post is SelfPost selfPost)
-            {
-                return selfPost.SelfText;
-            }
-
-            return "No content";
         }
     }
 }

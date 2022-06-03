@@ -1,4 +1,5 @@
 ﻿using Carpeddit.App.Collections;
+using Carpeddit.App.Helpers;
 using Carpeddit.App.Models;
 using Carpeddit.Common.Enums;
 using Reddit.Controllers;
@@ -79,7 +80,7 @@ namespace Carpeddit.App.Pages.ModTools
                 {
                     Post = post,
                     Title = post.Title,
-                    Description = GetPostDesc(post),
+                    Description = post.GetDescription(),
                     Created = post.Created,
                     Subreddit = post.Subreddit,
                     Author = post.Author,
@@ -88,20 +89,6 @@ namespace Carpeddit.App.Pages.ModTools
             }
 
             return postViews;
-        }
-
-        private string GetPostDesc(Post post)
-        {
-            if (post is LinkPost linkPost)
-            {
-                return linkPost.URL;
-            }
-            else if (post is SelfPost selfPost)
-            {
-                return selfPost.SelfText;
-            }
-
-            return "No content";
         }
 
         private async void LoadMoreButton_Click(object sender, RoutedEventArgs e)

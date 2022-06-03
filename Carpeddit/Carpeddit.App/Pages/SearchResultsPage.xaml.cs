@@ -1,4 +1,5 @@
-﻿using Carpeddit.App.Models;
+﻿using Carpeddit.App.Helpers;
+using Carpeddit.App.Models;
 using Reddit.Controllers;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -47,7 +48,7 @@ namespace Carpeddit.App.Pages
                 {
                     Post = post,
                     Title = post.Title,
-                    Description = GetPostDesc(post),
+                    Description = post.GetDescription(),
                     Created = post.Created,
                     Subreddit = post.Subreddit,
                     Author = post.Author,
@@ -135,20 +136,6 @@ namespace Carpeddit.App.Pages
                         break;
                 }
             }
-        }
-
-        private string GetPostDesc(Post post)
-        {
-            if (post is LinkPost linkPost)
-            {
-                return linkPost.URL;
-            }
-            else if (post is SelfPost selfPost)
-            {
-                return selfPost.SelfText;
-            }
-
-            return "No content";
         }
     }
 }

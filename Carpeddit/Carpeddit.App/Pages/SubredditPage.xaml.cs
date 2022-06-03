@@ -1,4 +1,5 @@
 ﻿using Carpeddit.App.Collections;
+using Carpeddit.App.Helpers;
 using Carpeddit.App.Models;
 using Carpeddit.Common.Enums;
 using Reddit.Controllers;
@@ -137,10 +138,7 @@ namespace Carpeddit.App.Pages
                 }
             });
 
-            var posts1 = await Task.Run(async () =>
-            {
-                return await GetPostsAsync();
-            });
+            var posts1 = await Task.Run(() => GetPosts());
 
             posts.AddRange(posts1);
 
@@ -190,7 +188,7 @@ namespace Carpeddit.App.Pages
             }
         }
 
-        private async Task<ObservableCollection<PostViewModel>> GetPostsAsync(string after = "", int limit = 24, string before = "", Sort sortType = Sort.Hot)
+        private IEnumerable<PostViewModel> GetPosts(string after = "", int limit = 100, string before = "", Sort sortType = Sort.Hot)
         {
             List<Post> frontpage = sortType switch
             {
@@ -201,7 +199,7 @@ namespace Carpeddit.App.Pages
                 _ => Subreddit.Posts.GetHot(limit: limit, after: after, before: before),
             };
 
-            ObservableCollection<PostViewModel> postViews = new();
+            List<PostViewModel> postViews = new();
 
             foreach (Post post in frontpage)
             {
@@ -209,7 +207,7 @@ namespace Carpeddit.App.Pages
                 {
                     Post = post,
                     Title = post.Title,
-                    Description = GetPostDesc(post),
+                    Description = post.GetDescription(),
                     Created = post.Created,
                     Subreddit = post.Subreddit,
                     Author = post.Author,
@@ -222,20 +220,6 @@ namespace Carpeddit.App.Pages
             return postViews;
         }
 
-        private string GetPostDesc(Post post)
-        {
-            if (post is LinkPost linkPost)
-            {
-                return linkPost.URL;
-            }
-            else if (post is SelfPost selfPost)
-            {
-                return selfPost.SelfText;
-            }
-
-            return "No content";
-        }
-
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button button)
@@ -243,10 +227,7 @@ namespace Carpeddit.App.Pages
                 button.Visibility = Visibility.Collapsed;
                 FooterProgress.Visibility = Visibility.Visible;
 
-                var posts1 = await Task.Run(async () =>
-                {
-                    return await GetPostsAsync(after: posts[posts.Count - 1].Post.Fullname);
-                });
+                var posts1 = await Task.Run(() => GetPosts(after: posts[posts.Count - 1].Post.Fullname));
 
                 posts.AddRange(posts1);
 
@@ -292,10 +273,7 @@ namespace Carpeddit.App.Pages
 
                 posts.Clear();
 
-                posts.AddRange(await Task.Run(async () =>
-                {
-                    return await GetPostsAsync(sortType: currentSort);
-                }));
+                posts.AddRange(await Task.Run(() => GetPosts(sortType: currentSort)));
 
                 ProgressR.Visibility = Visibility.Collapsed;
                 MainList.Visibility = Visibility.Visible;
