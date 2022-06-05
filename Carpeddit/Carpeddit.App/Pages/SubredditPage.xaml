@@ -75,9 +75,10 @@
                                                 x:Name="SubredditFriendlyName"
                                                 FontWeight="SemiBold"
                                                 Style="{StaticResource SubtitleTextBlockStyle}"
-                                                Text="{x:Bind Subreddit.HeaderTitle}" />
+                                                Text="{x:Bind Subreddit.HeaderTitle}"
+                                                Foreground="WhiteSmoke" />
 
-                                            <TextBlock x:Name="SubredditName" FontSize="12">
+                                            <TextBlock x:Name="SubredditName" Foreground="WhiteSmoke" FontSize="12">
                                                 r/<Run Text="{x:Bind Subreddit.Name}" />
                                             </TextBlock>
                                         </StackPanel>
