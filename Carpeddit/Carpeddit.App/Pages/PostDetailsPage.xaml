@@ -9,7 +9,12 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:controllers="using:Carpeddit.App.Controllers"
     xmlns:converters="using:Carpeddit.App.Converters"
-    xmlns:helpers="using:Carpeddit.App.Helpers" xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals" xmlns:viewmodels="using:Carpeddit.App.Models" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls" xmlns:templates="using:Carpeddit.App.Templates"
+    xmlns:helpers="using:Carpeddit.App.Helpers"
+    xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
+    xmlns:viewmodels="using:Carpeddit.App.Models"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:templates="using:Carpeddit.App.Templates"
+    xmlns:uc="using:Carpeddit.App.UserControls"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
 
     <Page.Resources>
@@ -26,26 +31,7 @@
             <SolidColorBrush x:Name="ColorBrushBg" Opacity="0.1" />
         </Grid.Background>
 
-        <Border x:Name="AppTitleBar"
-                IsHitTestVisible="True"
-                Background="Transparent"
-                Canvas.ZIndex="1" 
-                Padding="20,0,0,0">
-            <StackPanel Orientation="Horizontal">
-                <Image x:Name="AppFontIcon"
-                         HorizontalAlignment="Left" 
-                         VerticalAlignment="Center"
-                         Source="ms-appx:///Assets/Square44x44Logo.png" 
-                         Width="24" 
-                         Height="24"
-                         Margin="30,2,0,0" />
-                <TextBlock x:Name="AppTitle"
-                           Text="Post details"
-                           VerticalAlignment="Center"
-                           Margin="10,2,0,0"
-                           Style="{StaticResource CaptionTextBlockStyle}" />
-            </StackPanel>
-        </Border>
+        <uc:CustomTitleBar Title="Post details" />
 
         <ScrollViewer Grid.Row="1" Padding="66,0">
             <StackPanel>
