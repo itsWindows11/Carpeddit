@@ -215,6 +215,9 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Templates\PostTemplates.cs" />
+    <Compile Include="UserControls\CustomTitleBar.xaml.cs">
+      <DependentUpon>CustomTitleBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\SettingsBlockControl.xaml.cs">
       <DependentUpon>SettingsBlockControl.xaml</DependentUpon>
     </Compile>
@@ -352,6 +355,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="UserControls\CustomTitleBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\SettingsBlockControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -364,7 +371,7 @@
   <ItemGroup>
     <PackageReference Include="BracketPipe">
       <Version>0.7.7232.28997</Version>
-	<NoWarn>NU1603</NoWarn>
+      <NoWarn>NU1603</NoWarn>
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm">
       <Version>7.1.2</Version>
