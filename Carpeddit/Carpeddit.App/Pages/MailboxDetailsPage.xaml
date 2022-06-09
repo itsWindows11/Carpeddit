@@ -1,0 +1,67 @@
+﻿<Page
+    x:Class="Carpeddit.App.Pages.MailboxDetailsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Carpeddit.App.Pages"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:helpers="using:Carpeddit.App.Helpers"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:uc="using:Carpeddit.App.UserControls"
+    xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
+    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
+    d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid.Background>
+            <SolidColorBrush x:Name="ColorBrushBg" Opacity="0.1" />
+        </Grid.Background>
+
+        <uc:CustomTitleBar Title="Message details" />
+
+        <ScrollViewer Grid.Row="1">
+            <StackPanel MaxWidth="1200" Spacing="4" Padding="8" Margin="8" CornerRadius="4" Background="{ThemeResource ExpanderContentBackground}">
+                <TextBlock>
+                    By u/<Run Text="{x:Bind Message.Author}" /> - Sent in <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Message.Created, x:True)}" />
+                </TextBlock>
+
+                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind Message.Subject}" />
+
+                <controls:MarkdownTextBlock Background="Transparent" Text="{x:Bind Message.Body}" />
+            </StackPanel>
+        </ScrollViewer>
+
+        <Button
+            x:Name="BackButton"
+            Width="40"
+            Height="28"
+            Margin="6,6,0,0"
+            VerticalAlignment="Top"
+            AutomationProperties.AutomationId="BackButton"
+            AutomationProperties.ItemType="Navigation Button"
+            AutomationProperties.Name="Back"
+            Canvas.ZIndex="2"
+            Click="BackButton_Click"
+            CornerRadius="4"
+            Style="{StaticResource TransparentButton}">
+            <muxc:AnimatedIcon
+                x:Name="BackAnimatedIcon"
+                Width="16"
+                Height="16">
+                <muxc:AnimatedIcon.Source>
+                    <animatedvisuals:AnimatedBackVisualSource />
+                </muxc:AnimatedIcon.Source>
+                <muxc:AnimatedIcon.FallbackIconSource>
+                    <muxc:SymbolIconSource Symbol="Back" />
+                </muxc:AnimatedIcon.FallbackIconSource>
+            </muxc:AnimatedIcon>
+        </Button>
+    </Grid>
+</Page>

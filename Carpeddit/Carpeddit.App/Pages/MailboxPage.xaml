@@ -7,9 +7,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:reddit1="using:Reddit.Things" xmlns:helpers="using:Carpeddit.App.Helpers" xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     mc:Ignorable="d">
 
-    <Grid Margin="-56,0,-56,0" Padding="56,0">
+    <Grid Margin="-56,0" Padding="56,0">
         <muxc:ProgressRing Width="50" Height="50" Margin="-56,0,-56,0" Visibility="Collapsed" x:Name="Progress" IsActive="True" HorizontalAlignment="Center" VerticalAlignment="Center" />
-        <ListView Margin="-56,0,-56,0" Padding="56,0,56,10" x:Name="MainList" SelectionMode="None">
+        <ListView Margin="-56,0" Padding="56,0,56,10" x:Name="MainList" SelectionMode="None">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="reddit1:Message">
                     <StackPanel Spacing="4" Padding="8" Margin="8" CornerRadius="4" Background="{ThemeResource ExpanderContentBackground}">
@@ -17,7 +17,9 @@
                             By u/<Run Text="{x:Bind Author}" /> - Sent in <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Created, x:True)}" />
                         </TextBlock>
 
-                        <controls:MarkdownTextBlock Background="Transparent" Text="{x:Bind Body}" />
+                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" PointerReleased="TextBlock_PointerReleased" Text="{x:Bind Subject}" />
+
+                        <controls:MarkdownTextBlock Background="Transparent" Text="{x:Bind helpers:PostHelpers.Substring(Body)}" />
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

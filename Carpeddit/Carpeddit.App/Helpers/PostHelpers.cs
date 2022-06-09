@@ -174,5 +174,10 @@ namespace Carpeddit.App.Helpers
         {
             return !boolean;
         }
+
+        public static string Substring(string str)
+        {
+            return str.Substring(0, str.Length > 256 ? 256 : str.Length);
+        }
     }
 }
