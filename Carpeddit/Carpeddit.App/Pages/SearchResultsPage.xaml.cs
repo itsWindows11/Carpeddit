@@ -137,5 +137,23 @@ namespace Carpeddit.App.Pages
                 }
             }
         }
+
+        private void UserHyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
+        {
+            string text = (sender.Inlines[1] as Windows.UI.Xaml.Documents.Run).Text;
+            if (!text.Contains("[deleted]"))
+            {
+                MainPage.Current.ContentFrame.Navigate(typeof(YourProfilePage), App.RedditClient.User(text).About());
+            }
+        }
+
+        private void SubredditHyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
+        {
+            string text = (sender.Inlines[1] as Windows.UI.Xaml.Documents.Run).Text;
+            if (Window.Current.Content is Frame rootFrame)
+            {
+                rootFrame.Navigate(typeof(SubredditPage), App.RedditClient.Subreddit(text).About());
+            }
+        }
     }
 }

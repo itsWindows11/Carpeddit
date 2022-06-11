@@ -6,6 +6,7 @@ using Reddit.Controllers;
 using Reddit.Things;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -52,7 +53,7 @@ namespace Carpeddit.App.Pages
                 button.Visibility = Visibility.Collapsed;
                 FooterProgress.Visibility = Visibility.Visible;
 
-                posts.AddRange(await Task.Run(() => GetPosts(after: posts[posts.Count - 1].Post.Fullname)));
+                posts.AddRange(await Task.Run(() => GetPosts(after: posts[posts.Count - 1].Post.Fullname) ?? new List<PostViewModel>()));
 
                 button.Visibility = Visibility.Visible;
                 FooterProgress.Visibility = Visibility.Collapsed;
@@ -73,14 +74,10 @@ namespace Carpeddit.App.Pages
 
             LoadMoreButton.Visibility = Visibility.Collapsed;
             ProgressR.Visibility = Visibility.Visible;
-
-            var posts1 = await Task.Run(() => GetPosts());
-            var comments1 = await Task.Run(() => GetComments());
-            var mod = await Task.Run(() => user.GetModeratedSubreddits(100));
-
-            posts.AddRange(posts1);
-            comments.AddRange(comments1);
-            myModSubreddits.AddRange(mod);
+            
+            posts.AddRange(await Task.Run(() => GetPosts() ?? new List<PostViewModel>()));
+            comments.AddRange(await Task.Run(() => GetComments() ?? new List<CommentViewModel>()));
+            myModSubreddits.AddRange(await Task.Run(() => user.GetModeratedSubreddits(100) ?? new List<ModeratedListItem>()));
 
             MainList.ItemsSource = posts;
             CommentsList.ItemsSource = comments;

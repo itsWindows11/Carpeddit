@@ -35,5 +35,14 @@ namespace Carpeddit.App.Pages
                 (Window.Current.Content as Frame).Navigate(typeof(MailboxDetailsPage), message);
             }
         }
+
+        private void UserHyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
+        {
+            string text = (sender.Inlines[1] as Windows.UI.Xaml.Documents.Run).Text;
+            if (!text.Contains("[deleted]"))
+            {
+                MainPage.Current.ContentFrame.Navigate(typeof(YourProfilePage), App.RedditClient.User(text).About());
+            }
+        }
     }
 }

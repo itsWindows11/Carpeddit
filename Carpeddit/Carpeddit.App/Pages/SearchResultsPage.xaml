@@ -47,7 +47,7 @@
                           CornerRadius="6"
                           Margin="0,4">
                             <TextBlock RelativePanel.AlignVerticalCenterWithPanel="True">
-                                <Hyperlink>r/<Run Text="{x:Bind Name}" /></Hyperlink>
+                                <Hyperlink Click="SubredditHyperlink_Click">r/<Run Text="{x:Bind Name}" /></Hyperlink>
                             </TextBlock>
 
                             <Button RelativePanel.AlignRightWithPanel="True">Join</Button>
@@ -67,7 +67,7 @@
                           CornerRadius="6"
                           Margin="0,4">
                             <TextBlock RelativePanel.AlignVerticalCenterWithPanel="True">
-                                <Hyperlink>u/<Run Text="{x:Bind Name}" /></Hyperlink>
+                                <Hyperlink Click="UserHyperlink_Click">u/<Run Text="{x:Bind Name}" /></Hyperlink>
                             </TextBlock>
 
                             <Button RelativePanel.AlignRightWithPanel="True">Follow</Button>

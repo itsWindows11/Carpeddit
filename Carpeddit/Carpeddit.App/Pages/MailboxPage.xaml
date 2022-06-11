@@ -12,9 +12,9 @@
         <ListView Margin="-56,0" Padding="56,0,56,10" x:Name="MainList" SelectionMode="None">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="reddit1:Message">
-                    <StackPanel Spacing="4" Padding="8" Margin="8" CornerRadius="4" Background="{ThemeResource ExpanderContentBackground}">
+                    <StackPanel BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" Spacing="4" Padding="8" Margin="4" CornerRadius="4" Background="{ThemeResource ExpanderContentBackground}">
                         <TextBlock>
-                            By u/<Run Text="{x:Bind Author}" /> - Sent in <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Created, x:True)}" />
+                            By <Hyperlink Click="UserHyperlink_Click">u/<Run Text="{x:Bind Author}" /></Hyperlink> - Sent in <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Created, x:True)}" />
                         </TextBlock>
 
                         <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" PointerReleased="TextBlock_PointerReleased" Text="{x:Bind Subject}" />
