@@ -24,7 +24,12 @@ namespace Carpeddit.App.Dialogs
         private async void CreatePostDialog_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             SubredditComboBox.ItemsSource = await Task.Run(() => App.RedditClient.Account.MySubscribedSubreddits(limit: 100));
-            _subreddit = SubredditComboBox.Items[0] as Subreddit;
+            _subreddit ??= SubredditComboBox.Items[0] as Subreddit;
+
+            if (_subreddit.SubredditData.UserIsModerator ?? false)
+            {
+                DistingushCheckBox.Visibility = Windows.UI.Xaml.Visibility.Visible;
+            }
 
             _fullyLoaded = true;
         }
@@ -38,11 +43,25 @@ namespace Carpeddit.App.Dialogs
                     switch (_postType)
                     {
                         case PostType.Self:
-                            _ = await _subreddit.SelfPost(title: TitleText.Text, selfText: ContentText.Text).SubmitAsync();
+                            Post submittedPost = await _subreddit.SelfPost(title: TitleText.Text, selfText: ContentText.Text).SubmitAsync();
+
+                            if (NSFWMarkCheck.IsChecked ?? false)
+                                await submittedPost.MarkNSFWAsync();
+
+                            if (DistingushCheckBox.IsChecked ?? false)
+                                await submittedPost.DistinguishAsync("yes");
                             break;
                         case PostType.Link:
                             if (Uri.TryCreate(ContentText.Text, UriKind.Absolute, out _))
-                                _ = await _subreddit.LinkPost(title: TitleText.Text, url: ContentText.Text).SubmitAsync();
+                            {
+                                Post submittedPost1 = await _subreddit.LinkPost(title: TitleText.Text, url: ContentText.Text).SubmitAsync();
+                                
+                                if (NSFWMarkCheck.IsChecked ?? false)
+                                    await submittedPost1.MarkNSFWAsync();
+
+                                if (DistingushCheckBox.IsChecked ?? false)
+                                    await submittedPost1.DistinguishAsync("yes");
+                            }
                             break;
                     }
                     Hide();

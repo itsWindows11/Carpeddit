@@ -60,39 +60,46 @@ namespace Carpeddit.App
 
         public static Color GetColorFromHex(string hex)
         {
-            hex = hex.Replace("#", string.Empty);
-
-            try
+            if (hex != null)
             {
-                byte r = (byte)Convert.ToUInt32(hex.Substring(0, 2), 16);
-                byte g = (byte)Convert.ToUInt32(hex.Substring(2, 2), 16);
-                byte b = (byte)Convert.ToUInt32(hex.Substring(4, 2), 16);
+                hex = hex.Replace("#", string.Empty);
 
-                return Color.FromArgb(255, r, g, b);
-            }
-            catch
-            {
+                try
+                {
+                    byte r = (byte)Convert.ToUInt32(hex.Substring(0, 2), 16);
+                    byte g = (byte)Convert.ToUInt32(hex.Substring(2, 2), 16);
+                    byte b = (byte)Convert.ToUInt32(hex.Substring(4, 2), 16);
 
+                    return Color.FromArgb(255, r, g, b);
+                }
+                catch
+                {
+
+                }
             }
+            
             
             return Current.RequestedTheme == ApplicationTheme.Light ? Color.FromArgb(255, 255, 255, 255) : Color.FromArgb(255, 0, 0, 0);
         }
 
         public static Color GetTextColorFromHex(string hex)
         {
-            hex = hex.Replace("#", string.Empty);
-
-            try
+            if (hex != null)
             {
-                byte r = (byte)Convert.ToUInt32(hex.Substring(0, 2), 16);
-                byte g = (byte)Convert.ToUInt32(hex.Substring(2, 2), 16);
-                byte b = (byte)Convert.ToUInt32(hex.Substring(4, 2), 16);
+                hex = hex.Replace("#", string.Empty);
 
-                return Color.FromArgb(255, r, g, b);
-            }
-            catch
-            {
+                try
+                {
+                    byte r = (byte)Convert.ToUInt32(hex.Substring(0, 2), 16);
+                    byte g = (byte)Convert.ToUInt32(hex.Substring(2, 2), 16);
+                    byte b = (byte)Convert.ToUInt32(hex.Substring(4, 2), 16);
 
+                    return Color.FromArgb(255, r, g, b);
+                }
+                catch
+                {
+
+                }
             }
 
             return Current.RequestedTheme == ApplicationTheme.Light ? Color.FromArgb(255, 0, 0, 0) : Color.FromArgb(255, 255, 255, 255);

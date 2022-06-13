@@ -2,20 +2,22 @@
     x:Class="Carpeddit.App.Dialogs.CreatePostDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Carpeddit.App.Dialogs"
+    xmlns:controls="using:Carpeddit.App.UserControls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:controls="using:Carpeddit.App.UserControls" xmlns:reddit="using:Reddit.Controllers"
-    mc:Ignorable="d"
+    xmlns:local="using:Carpeddit.App.Dialogs"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:reddit="using:Reddit.Controllers"
     Title="Create a Post"
-    PrimaryButtonText="Create"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
     PrimaryButtonStyle="{ThemeResource AccentButtonStyle}"
+    PrimaryButtonText="Create"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick"
     SecondaryButtonText="Cancel"
     Style="{ThemeResource DefaultContentDialogStyle}"
-    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
-    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+    mc:Ignorable="d">
 
     <ContentDialog.Resources>
-        <x:Double x:Key="ContentDialogMinWidth">800</x:Double>
+        <x:Double x:Key="ContentDialogMinWidth">700</x:Double>
     </ContentDialog.Resources>
 
     <ScrollViewer>
@@ -31,7 +33,10 @@
 
             <controls:SettingsBlockControl Title="Subreddit">
                 <controls:SettingsBlockControl.SettingsActionableElement>
-                    <ComboBox x:Name="SubredditComboBox" SelectedIndex="0" SelectionChanged="SubredditComboBox_SelectionChanged">
+                    <ComboBox
+                        x:Name="SubredditComboBox"
+                        SelectedIndex="0"
+                        SelectionChanged="SubredditComboBox_SelectionChanged">
                         <ComboBox.ItemTemplate>
                             <DataTemplate x:DataType="reddit:Subreddit">
                                 <TextBlock Text="{x:Bind SubredditData.DisplayNamePrefixed}" />
@@ -43,7 +48,17 @@
 
             <TextBox x:Name="TitleText" Header="Title" />
 
-            <TextBox x:Name="ContentText" Header="Text" AcceptsReturn="True" />
+            <TextBox
+                x:Name="ContentText"
+                AcceptsReturn="True"
+                Header="Text" />
+
+            <CheckBox x:Name="NSFWMarkCheck" Content="Mark as NSFW" />
+            <CheckBox
+                x:Name="DistingushCheckBox"
+                d:Visibility="Visible"
+                Content="Distingush post as moderator"
+                Visibility="Collapsed" />
         </StackPanel>
     </ScrollViewer>
 </ContentDialog>
