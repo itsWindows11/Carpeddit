@@ -30,12 +30,14 @@ namespace Carpeddit.App.Pages
     public sealed partial class HomePage : Page
     {
         BulkConcurrentObservableCollection<PostViewModel> posts;
+        BulkConcurrentObservableCollection<Subreddit> subreddits;
 
         public HomePage()
         {
             InitializeComponent();
 
             posts = new();
+            subreddits = new();
             Loaded += Page_Loaded;
         }
 
@@ -63,9 +65,12 @@ namespace Carpeddit.App.Pages
             Progress.Visibility = Visibility.Visible;
 
             var posts1 = await Task.Run(() => GetPosts());
+            var subreddits1 = await Task.Run(() => App.RedditClient.Account.MySubscribedSubreddits(limit: 100));
 
             posts.AddRange(posts1);
+            subreddits.AddRange(subreddits1);
 
+            SubredditsList.ItemsSource = subreddits1;
             MainList.ItemsSource = posts;
 
             Progress.Visibility = Visibility.Collapsed;
@@ -94,6 +99,11 @@ namespace Carpeddit.App.Pages
             }
 
             return postViews;
+        }
+
+        private void Border_PointerReleased(object sender, PointerRoutedEventArgs e)
+        {
+            (Window.Current.Content as Frame).Navigate(typeof(SubredditPage), (e.OriginalSource as FrameworkElement).DataContext);
         }
     }
 }
