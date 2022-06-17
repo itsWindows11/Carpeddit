@@ -18,8 +18,8 @@
         <StackPanel Orientation="Horizontal">
             <Image
                 x:Name="AppFontIcon"
-                Width="24"
-                Height="24"
+                Width="16"
+                Height="16"
                 Margin="30,2,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
