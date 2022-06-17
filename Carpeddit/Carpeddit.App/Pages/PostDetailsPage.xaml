@@ -14,7 +14,7 @@
     xmlns:viewmodels="using:Carpeddit.App.Models"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:templates="using:Carpeddit.App.Templates"
-    xmlns:uc="using:Carpeddit.App.UserControls"
+    xmlns:uc="using:Carpeddit.App.UserControls" xmlns:local1="using:Carpeddit.App"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
 
     <Page.Resources>
@@ -35,50 +35,113 @@
 
         <ScrollViewer Grid.Row="1" Padding="66,0">
             <StackPanel>
-                <Grid Padding="6,10,8,10"
-                      MaxWidth="1200"
-                      BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                      Background="{StaticResource LayerFillColorDefaultBrush}"
-                      BorderThickness="1"
-                      ColumnSpacing="10"
-                      CornerRadius="6"
-                      Margin="0,4">
+                <Grid
+                    MaxWidth="1200"
+                    Margin="0,4"
+                    Padding="6,10,8,10"
+                    Background="{ThemeResource ExpanderContentBackground}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    ColumnSpacing="10"
+                    CornerRadius="6">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="40" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Spacing="5">
-                        <ToggleButton Style="{StaticResource TransparentToggleButton}"
-                                          Tag="{x:Bind}"
-                                          IsChecked="{x:Bind Post.Upvoted, Mode=OneWay}"
-                                          Padding="3"
-                                          HorizontalAlignment="Center">
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        Orientation="Vertical"
+                        Spacing="5">
+                        <ToggleButton
+                            Padding="3"
+                            HorizontalAlignment="Center"
+                            Click="UpvoteButton_Click"
+                            IsChecked="{x:Bind Post.Upvoted, Mode=OneWay}"
+                            Style="{StaticResource TransparentToggleButton}"
+                            Tag="{x:Bind Post}">
                             <FontIcon Glyph="&#xE010;" />
                         </ToggleButton>
-                        <TextBlock Text="{x:Bind Post.VoteRatio, Mode=OneWay}"
-                                       HorizontalAlignment="Center" />
-                        <ToggleButton Style="{StaticResource TransparentToggleButton}"
-                                          Tag="{x:Bind}"
-                                          IsChecked="{x:Bind Post.Downvoted, Mode=OneWay}"
-                                          Padding="3"
-                                          HorizontalAlignment="Center">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            Text="{x:Bind Post.VoteRatio, Mode=OneWay}" />
+                        <ToggleButton
+                            Padding="3"
+                            HorizontalAlignment="Center"
+                            Click="DownvoteButton_Click"
+                            IsChecked="{x:Bind Post.Downvoted, Mode=OneWay}"
+                            Style="{StaticResource TransparentToggleButton}"
+                            Tag="{x:Bind Post}">
                             <FontIcon Glyph="&#xE019;" />
                         </ToggleButton>
                     </StackPanel>
 
-                    <StackPanel Orientation="Vertical" Grid.Column="1">
+                    <StackPanel Grid.Column="1" Orientation="Vertical">
                         <TextBlock TextWrapping="WrapWholeWords">
-                                <Run Text="By" /> <Hyperlink>u/<Run Text="{x:Bind Post.Author}" /></Hyperlink> • Posted <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Post.Post.Created, x:True)}" /> in <Hyperlink>r/<Run Text="{x:Bind Post.Subreddit}" /></Hyperlink>
+                            <Run Text="By" /> <Hyperlink Click="UserHyperlink_Click">u/<Run Text="{x:Bind Post.Author}" /></Hyperlink> - Posted <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Post.Created, x:True)}" /> in <Hyperlink Click="SubredditHyperlink_Click">r/<Run Text="{x:Bind Post.Subreddit}" /></Hyperlink>
                         </TextBlock>
-                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" TextWrapping="WrapWholeWords">
-                                <Hyperlink UnderlineStyle="None"><Run Text="{x:Bind Post.Title}" /></Hyperlink>
-                        </TextBlock>
-                        <controls:MarkdownTextBlock Background="Transparent" Text="{x:Bind Post.Description}" TextWrapping="WrapWholeWords" Margin="0,5,0,0" />
 
-                        <TextBlock Margin="0,10,0,3">
-                                <Hyperlink>Share</Hyperlink> • <Hyperlink>Save</Hyperlink>
-                        </TextBlock>
+                        <TextBlock
+                            PointerReleased="Title_PointerReleased"
+                            Style="{StaticResource SubtitleTextBlockStyle}"
+                            Tag="{x:Bind Post}"
+                            Text="{x:Bind Post.Title}"
+                            TextWrapping="WrapWholeWords" />
+
+                        <StackPanel Spacing="8" Orientation="Horizontal">
+                            <Border Visibility="{x:Bind Post.ShouldDisplayPostFlair, Converter={StaticResource BoolToVis}}" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="-2,4,0,4">
+                                <Border.Background>
+                                    <SolidColorBrush Color="{x:Bind local1:App.GetColorFromHex(Post.Post.Listing.LinkFlairBackgroundColor)}" />
+                                </Border.Background>
+                                <TextBlock Text="{x:Bind Post.Post.Listing.LinkFlairText}">
+                                    <TextBlock.Foreground>
+                                        <SolidColorBrush Color="{x:Bind local1:App.GetTextColorFromHex(Post.Post.Listing.LinkFlairTextColor)}" />
+                                    </TextBlock.Foreground>
+                                </TextBlock>
+                            </Border>
+
+                            <Border Visibility="{x:Bind Post.IsDistingushed, Converter={StaticResource BoolToVis}}" Background="ForestGreen" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="0,4">
+                                <TextBlock Text="MOD" Foreground="White" />
+                            </Border>
+
+                            <Border Visibility="{x:Bind Post.Post.NSFW, Converter={StaticResource BoolToVis}}" Background="IndianRed" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="-2,4,0,4">
+                                <TextBlock Text="NSFW" Foreground="White" />
+                            </Border>
+                        </StackPanel>
+
+                        <controls:MarkdownTextBlock
+                            Margin="0,5,0,0"
+                            Background="Transparent"
+                            LinkClicked="MarkdownLinkClicked"
+                            Text="{x:Bind Post.Description}"
+                            TextWrapping="WrapWholeWords" />
+
+                        <Image
+                            x:Name="ImagePost"
+                            MaxWidth="500"
+                            x:Load="{x:Bind Post.HasImage}">
+                            <Image.Source>
+                                <BitmapImage DecodePixelType="Logical" UriSource="{x:Bind Post.ImageUri}" />
+                            </Image.Source>
+                        </Image>
+
+                        <StackPanel Orientation="Horizontal">
+                            <HyperlinkButton Margin="0,0,0,-6" Padding="2">
+                                Share
+                            </HyperlinkButton>
+
+                            <HyperlinkButton Margin="4,0,0,-6" Padding="2">
+                                Save
+                            </HyperlinkButton>
+
+                            <HyperlinkButton Visibility="{x:Bind Post.IsCurrentUserOP, Converter={StaticResource BoolToVis}}" Click="RemoveUserPostButton_Click" Margin="4,0,0,-6" Padding="2">
+                                Delete
+                            </HyperlinkButton>
+
+                            <HyperlinkButton Margin="4,0,0,-6" Padding="2">
+                                Report
+                            </HyperlinkButton>
+                        </StackPanel>
                     </StackPanel>
                 </Grid>
 
