@@ -214,8 +214,7 @@
                                                     FontWeight="SemiBold"
                                                     IsTextSelectionEnabled="True"
                                                     TextWrapping="Wrap">
-                                                    <Run Text="{x:Bind local:App.AddOne(Priority)}" />
-                                                    .<Run Text="{x:Bind ShortName}" />
+                                                    <Run Text="{x:Bind local:App.AddOne(Priority)}" />. <Run Text="{x:Bind ShortName}" />
                                                 </TextBlock>
 
                                                 <controls:MarkdownTextBlock Background="Transparent" Text="{x:Bind Description}" />

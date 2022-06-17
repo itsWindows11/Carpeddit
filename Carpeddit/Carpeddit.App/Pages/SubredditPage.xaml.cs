@@ -3,23 +3,14 @@ using Carpeddit.App.Helpers;
 using Carpeddit.App.Models;
 using Carpeddit.Common.Enums;
 using Reddit.Controllers;
+using Reddit.Things;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Core;
-using Windows.Graphics.Imaging;
-using Windows.Storage.Streams;
 using Windows.UI;
-using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
@@ -27,7 +18,7 @@ namespace Carpeddit.App.Pages
 {
     public sealed partial class SubredditPage : Page
     {
-        public Subreddit Subreddit;
+        public Reddit.Controllers.Subreddit Subreddit;
         BulkConcurrentObservableCollection<PostViewModel> posts = new();
         Sort currentSort;
         bool initialPostsLoaded;
@@ -85,44 +76,41 @@ namespace Carpeddit.App.Pages
 
             }
 
-            var modsList = Subreddit.GetModerators();
+            var modsList = await Task.Run(() => Subreddit.GetModerators());
 
-            RulesList.ItemsSource = Subreddit.GetRules().Rules;
+            RulesList.ItemsSource = await Task.Run(() => Subreddit.GetRules().Rules);
             ModsList.ItemsSource = modsList;
-            PostFlairsList.ItemsSource = Subreddit.Flairs.LinkFlairV2;
 
-            await Task.Run(async () =>
+            try
             {
-                foreach (var mod in modsList)
+                PostFlairsList.ItemsSource = await Task.Run(() =>
                 {
-                    if (mod.Name == App.RedditClient.Account.Me.Name)
+                    try
                     {
-                        Templates.PostTemplates.IsSubredditMod = true;
-
-                        await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                        {
-                            ModerationToolsButton.Visibility = Visibility.Visible;
-                        });
-                        break;
-                    }
-                    else
+                        return Subreddit.Flairs.LinkFlairV2;
+                    } catch
                     {
-                        Templates.PostTemplates.IsSubredditMod = false;
+                        return Enumerable.Empty<FlairV2>();
                     }
-                }
+                });
+            }
+            catch
+            {
 
-                foreach (Subreddit subreddit in App.RedditClient.Account.MySubscribedSubreddits(limit: 100))
+            }
+
+            Templates.PostTemplates.IsSubredditMod = Subreddit.SubredditData.UserIsModerator ?? false;
+
+            if (Subreddit.SubredditData.UserIsModerator ?? false)
+            {
+                await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
                 {
-                    if (subreddit.Name.Equals(Subreddit.Name))
-                    {
-                        await Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-                        {
-                            JoinButton.Content = "Leave";
-                        });
-                        break;
-                    }
-                }
-            });
+                    ModerationToolsButton.Visibility = Visibility.Visible;
+                });
+            }
+
+            if (Subreddit.SubredditData.UserIsSubscriber ?? false)
+                JoinButton.Content = "Leave";
 
             var posts1 = await Task.Run(() => GetPosts());
 
@@ -141,7 +129,7 @@ namespace Carpeddit.App.Pages
         {
             base.OnNavigatedTo(e);
 
-            if (e.Parameter is Subreddit subreddit)
+            if (e.Parameter is Reddit.Controllers.Subreddit subreddit)
                 Subreddit = subreddit;
             else throw new Exception("The parameter received must be a subreddit.");
         }
@@ -156,7 +144,7 @@ namespace Carpeddit.App.Pages
 
         private IEnumerable<PostViewModel> GetPosts(string after = "", int limit = 100, string before = "", Sort sortType = Sort.Hot)
         {
-            List<Post> frontpage = sortType switch
+            List<Reddit.Controllers.Post> frontpage = sortType switch
             {
                 Sort.Best => Subreddit.Posts.GetBest(limit: limit, after: after, before: before),
                 Sort.Controversial => Subreddit.Posts.GetControversial(limit: limit, after: after, before: before),
@@ -167,7 +155,7 @@ namespace Carpeddit.App.Pages
 
             List<PostViewModel> postViews = new();
 
-            foreach (Post post in frontpage)
+            foreach (Reddit.Controllers.Post post in frontpage)
             {
                 PostViewModel vm = new()
                 {
