@@ -77,8 +77,12 @@
                         </TextBlock>
                     </Border>
 
-                    <Border Visibility="{x:Bind IsDistingushed, Converter={StaticResource BoolToVis}}" Background="ForestGreen" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="0,4">
+                    <Border Visibility="{x:Bind IsModDistinguished, Converter={StaticResource BoolToVis}}" Background="ForestGreen" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="0,4">
                         <TextBlock Text="MOD" Foreground="White" />
+                    </Border>
+
+                    <Border Visibility="{x:Bind IsAdminDistinguished, Converter={StaticResource BoolToVis}}" Background="OrangeRed" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="0,4">
+                        <TextBlock Text="A" Foreground="White" />
                     </Border>
 
                     <Border Visibility="{x:Bind Post.NSFW, Converter={StaticResource BoolToVis}}" Background="IndianRed" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="-2,4,0,4">
@@ -177,8 +181,12 @@
                         <Run Text="By" /> <Hyperlink Click="UserHyperlink_Click">u/<Run Text="{x:Bind Author}" /></Hyperlink>
                     </TextBlock>
 
-                    <Border Visibility="{x:Bind IsDistingushed, Converter={StaticResource BoolToVis}}" Background="ForestGreen" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="4,0">
+                    <Border Visibility="{x:Bind IsModDistinguished, Converter={StaticResource BoolToVis}}" Background="ForestGreen" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="0,4">
                         <TextBlock Text="MOD" Foreground="White" />
+                    </Border>
+
+                    <Border Visibility="{x:Bind IsAdminDistinguished, Converter={StaticResource BoolToVis}}" Background="OrangeRed" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="0,4">
+                        <TextBlock Text="A" Foreground="White" />
                     </Border>
 
                     <TextBlock>
@@ -308,8 +316,12 @@
                         <Run Text="By" /> <Hyperlink Click="UserHyperlink_Click">u/<Run Text="{x:Bind Author}" /></Hyperlink>
                     </TextBlock>
 
-                    <Border Visibility="{x:Bind IsDistingushed, Converter={StaticResource BoolToVis}}" Background="ForestGreen" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="0,4">
+                    <Border Visibility="{x:Bind IsModDistinguished, Converter={StaticResource BoolToVis}}" Background="ForestGreen" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="0,4">
                         <TextBlock Text="MOD" Foreground="White" />
+                    </Border>
+
+                    <Border Visibility="{x:Bind IsAdminDistinguished, Converter={StaticResource BoolToVis}}" Background="OrangeRed" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="0,4">
+                        <TextBlock Text="A" Foreground="White" />
                     </Border>
 
                     <Border Visibility="{x:Bind ShouldDisplayUserFlair, Converter={StaticResource BoolToVis}}" Padding="2" CornerRadius="2">

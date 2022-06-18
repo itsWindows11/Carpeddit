@@ -19,6 +19,10 @@ namespace Carpeddit.App.Models
 
         public bool IsCurrentUserOP => App.RedditClient.Account.Me.Name == OriginalComment.Author;
 
+        public bool IsModDistinguished => OriginalComment.Listing.Distinguished == "moderator";
+
+        public bool IsAdminDistinguished => OriginalComment.Listing.Distinguished == "admin";
+
         private Comment _originalComment;
 
         public Comment OriginalComment

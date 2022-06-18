@@ -45,7 +45,9 @@ namespace Carpeddit.App.Models
 
         public bool IsCurrentUserOP => App.RedditClient.Account.Me.Name == Author;
 
-        public bool IsDistingushed => Post.Listing.Distinguished == "moderator";
+        public bool IsModDistinguished => Post.Listing.Distinguished == "moderator";
+
+        public bool IsAdminDistinguished => Post.Listing.Distinguished == "admin";
 
         public string ShortDescription
         {
