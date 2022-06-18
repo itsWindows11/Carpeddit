@@ -37,6 +37,8 @@ namespace Carpeddit.App.Pages
     {
         PostViewModel Post;
 
+        Subreddit Subreddit;
+
         BulkConcurrentObservableCollection<CommentViewModel> commentsObservable = new();
 
         public PostDetailsPage()
@@ -68,6 +70,9 @@ namespace Carpeddit.App.Pages
         {
             base.OnNavigatedTo(e);
             Post = e.Parameter as PostViewModel;
+            Subreddit = App.RedditClient.Subreddit(Post?.Subreddit).About();
+
+            System.Diagnostics.Debug.WriteLine(Subreddit.SubredditData.UserIsModerator);
 
             commentsObservable.AddRange(await Post.GetCommentsAsync());
 
@@ -349,6 +354,30 @@ namespace Carpeddit.App.Pages
             ((e.OriginalSource as FrameworkElement).DataContext as CommentViewModel).ShowReplyUI = false;
 
             editBox.Document.SetText(TextSetOptions.None, "");
+        }
+
+        private async void DistinguishAsModerator_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement).DataContext is CommentViewModel comment)
+            {
+                _ = await comment.OriginalComment.DistinguishAsync("yes", false);
+
+                // Refresh comments by setting items source
+                // TreeView doesn't have a Refresh function so we have to do this.
+                CommentsTree.ItemsSource = commentsObservable;
+            }
+        }
+
+        private async void RemoveDistinguish_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement).DataContext is CommentViewModel comment)
+            {
+                _ = await comment.OriginalComment.DistinguishAsync("no", false);
+
+                // Refresh comments by setting items source
+                // TreeView doesn't have a Refresh function so we have to do this.
+                CommentsTree.ItemsSource = commentsObservable;
+            }
         }
     }
 }

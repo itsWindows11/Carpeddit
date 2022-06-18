@@ -15,7 +15,8 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:templates="using:Carpeddit.App.Templates"
     xmlns:uc="using:Carpeddit.App.UserControls" xmlns:local1="using:Carpeddit.App"
-    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True">
+    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
+    x:Name="RootPage">
 
     <Page.Resources>
         <converters:InvertBoolConverter x:Key="InvertBoolConv" />
@@ -225,8 +226,38 @@
                                             <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
                                                 <HyperlinkButton Visibility="{x:Bind ShowReplyUI, Mode=OneWay, Converter={StaticResource BoolToVisReverse}}" Click="ReplyButton_Click" Padding="2" Content="Reply" />
                                                 <HyperlinkButton Visibility="{x:Bind IsCurrentUserOP, Converter={StaticResource BoolToVis}}" Click="DeleteCommentButton_Click" Padding="2" Content="Delete" />
-                                                <HyperlinkButton Visibility="{x:Bind templates:PostTemplates.IsSubredditMod, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="RemoveCommentButton_Click" Margin="4,0,0,0" Padding="2" Content="Remove" />
-                                                <HyperlinkButton Visibility="Visible" Click="PinCommentButton_Click" Padding="2" Content="Pin" />
+                                                <HyperlinkButton Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}" Click="RemoveCommentButton_Click" Margin="4,0,0,0" Padding="2" Content="Remove" />
+                                                <Button Padding="5,2">
+                                                    <FontIcon Glyph="&#xE10C;" />
+
+                                                    <Button.Flyout>
+                                                        <MenuFlyout>
+                                                            <MenuFlyoutSubItem Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}" Text="Distinguish">
+                                                                <MenuFlyoutSubItem.Icon>
+                                                                    <FontIcon Glyph="&#xEA18;" />
+                                                                </MenuFlyoutSubItem.Icon>
+
+                                                                <MenuFlyoutSubItem.Items>
+                                                                    <MenuFlyoutItem Text="Nothing" Click="RemoveDistinguish_Click">
+                                                                        <MenuFlyoutItem.Icon>
+                                                                            <FontIcon Glyph="&#xE10A;" />
+                                                                        </MenuFlyoutItem.Icon>
+                                                                    </MenuFlyoutItem>
+                                                                    <MenuFlyoutItem Text="Distinguish as moderator" Click="DistinguishAsModerator_Click">
+                                                                        <MenuFlyoutItem.Icon>
+                                                                            <FontIcon Glyph="&#xEA18;" />
+                                                                        </MenuFlyoutItem.Icon>
+                                                                    </MenuFlyoutItem>
+                                                                    <MenuFlyoutItem IsEnabled="{x:Bind IsTopLevel, Mode=OneWay}" Text="Distinguish as moderator and pin" Click="PinCommentButton_Click">
+                                                                        <MenuFlyoutItem.Icon>
+                                                                            <FontIcon Glyph="&#xE141;" />
+                                                                        </MenuFlyoutItem.Icon>
+                                                                    </MenuFlyoutItem>
+                                                                </MenuFlyoutSubItem.Items>
+                                                            </MenuFlyoutSubItem>
+                                                        </MenuFlyout>
+                                                    </Button.Flyout>
+                                                </Button>
                                             </StackPanel>
                                         </StackPanel>
                                     </Grid>

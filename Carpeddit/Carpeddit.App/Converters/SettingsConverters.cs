@@ -227,11 +227,22 @@ namespace Carpeddit.App.Converters
 
         object IValueConverter.Convert(object value, Type targetType, object parameter, string language)
         {
-            if (Reverse)
+            if (value is bool) {
+                if (Reverse)
+                {
+                    return (bool)value ? Visibility.Collapsed : Visibility.Visible;
+                }
+                return (bool)value ? Visibility.Visible : Visibility.Collapsed;
+            } else if (value is bool?)
             {
-                return (bool)value ? Visibility.Collapsed : Visibility.Visible;
+                if (Reverse)
+                {
+                    return (bool?)value ?? false ? Visibility.Collapsed : Visibility.Visible;
+                }
+                return (bool?)value ?? false ? Visibility.Visible : Visibility.Collapsed;
             }
-            return (bool)value ? Visibility.Visible : Visibility.Collapsed;
+
+            return false;
         }
 
         object IValueConverter.ConvertBack(object value, Type targetType, object parameter, string language)
