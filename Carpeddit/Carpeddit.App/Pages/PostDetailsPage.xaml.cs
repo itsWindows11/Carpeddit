@@ -324,7 +324,7 @@ namespace Carpeddit.App.Pages
         {
             if ((sender as FrameworkElement).DataContext is CommentViewModel comment && comment.IsTopLevel)
             {
-                _ = await comment.OriginalComment.DistinguishAsync("no", true);
+                _ = await comment.OriginalComment.DistinguishAsync("yes", true);
                 (sender as HyperlinkButton).Content = "Pinned";
                 (sender as HyperlinkButton).IsEnabled = false;
 

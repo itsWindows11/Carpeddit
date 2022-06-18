@@ -193,6 +193,11 @@
                                         </StackPanel>
 
                                         <StackPanel Grid.Column="2" Spacing="5">
+                                            <StackPanel Visibility="{x:Bind OriginalComment.Listing.Stickied, Converter={StaticResource BoolToVis}}" Orientation="Horizontal" Spacing="8">
+                                                <FontIcon Glyph="&#xE141;" FontSize="12" />
+
+                                                <TextBlock Text="Pinned by moderators" />
+                                            </StackPanel>
 
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock VerticalAlignment="Center">
@@ -218,10 +223,10 @@
                                             </StackPanel>
 
                                             <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                                <HyperlinkButton Click="ReplyButton_Click" Padding="2" Content="Reply" />
+                                                <HyperlinkButton Visibility="{x:Bind ShowReplyUI, Mode=OneWay, Converter={StaticResource BoolToVisReverse}}" Click="ReplyButton_Click" Padding="2" Content="Reply" />
                                                 <HyperlinkButton Visibility="{x:Bind IsCurrentUserOP, Converter={StaticResource BoolToVis}}" Click="DeleteCommentButton_Click" Padding="2" Content="Delete" />
                                                 <HyperlinkButton Visibility="{x:Bind templates:PostTemplates.IsSubredditMod, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="RemoveCommentButton_Click" Margin="4,0,0,0" Padding="2" Content="Remove" />
-                                                <HyperlinkButton Visibility="{x:Bind templates:PostTemplates.IsSubredditMod, Converter={StaticResource BoolToVis}}" Click="PinCommentButton_Click" Padding="2" Content="Pin" />
+                                                <HyperlinkButton Visibility="Visible" Click="PinCommentButton_Click" Padding="2" Content="Pin" />
                                             </StackPanel>
                                         </StackPanel>
                                     </Grid>
