@@ -131,9 +131,29 @@
                         </Image>
 
                         <StackPanel Orientation="Horizontal">
-                            <HyperlinkButton Margin="0,0,0,-6" Padding="2">
-                                Share
-                            </HyperlinkButton>
+                            <Button Style="{StaticResource TransparentButton}" Foreground="{StaticResource SystemAccentColor}" Content="Share" Margin="4,0,0,-6" Padding="2">
+                                <Button.Flyout>
+                                    <MenuFlyout>
+                                        <MenuFlyoutItem Text="Share to">
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon Glyph="&#xE72D;" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+
+                                        <MenuFlyoutItem Text="Crosspost">
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon Glyph="&#xE72A;" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+
+                                        <MenuFlyoutItem Text="Copy link" Click="CopyLinkButton1_Click">
+                                            <MenuFlyoutItem.Icon>
+                                                <FontIcon Glyph="&#xE16F;" />
+                                            </MenuFlyoutItem.Icon>
+                                        </MenuFlyoutItem>
+                                    </MenuFlyout>
+                                </Button.Flyout>
+                            </Button>
 
                             <HyperlinkButton Margin="4,0,0,-6" Padding="2">
                                 Save
@@ -232,6 +252,12 @@
 
                                                     <Button.Flyout>
                                                         <MenuFlyout>
+                                                            <MenuFlyoutItem Text="Copy link" Click="CopyLinkButton_Click">
+                                                                <MenuFlyoutItem.Icon>
+                                                                    <FontIcon Glyph="&#xE16F;" />
+                                                                </MenuFlyoutItem.Icon>
+                                                            </MenuFlyoutItem>
+
                                                             <MenuFlyoutSubItem Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}" Text="Distinguish">
                                                                 <MenuFlyoutSubItem.Icon>
                                                                     <FontIcon Glyph="&#xEA18;" />

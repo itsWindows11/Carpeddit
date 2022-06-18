@@ -4,6 +4,7 @@ using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -213,6 +214,18 @@ namespace Carpeddit.App.Templates
                 (sender as HyperlinkButton).Content = "Pinned";
                 (sender as HyperlinkButton).IsEnabled = false;
             }
+        }
+
+        private void CopyLinkButton_Click(object sender, RoutedEventArgs e)
+        {
+            DataPackage package = new()
+            {
+                RequestedOperation = DataPackageOperation.Copy,
+            };
+
+            package.SetText("https://www.reddit.com" + ((sender as FrameworkElement).DataContext as PostViewModel).Post.Permalink);
+
+            Clipboard.SetContent(package);
         }
     }
 }

@@ -12,6 +12,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.System;
@@ -378,6 +379,30 @@ namespace Carpeddit.App.Pages
                 // TreeView doesn't have a Refresh function so we have to do this.
                 CommentsTree.ItemsSource = commentsObservable;
             }
+        }
+
+        private void CopyLinkButton_Click(object sender, RoutedEventArgs e)
+        {
+            DataPackage package = new()
+            {
+                RequestedOperation = DataPackageOperation.Copy,
+            };
+
+            package.SetText("https://www.reddit.com" + ((sender as FrameworkElement).DataContext as CommentViewModel).OriginalComment.Permalink);
+
+            Clipboard.SetContent(package);
+        }
+
+        private void CopyLinkButton1_Click(object sender, RoutedEventArgs e)
+        {
+            DataPackage package = new()
+            {
+                RequestedOperation = DataPackageOperation.Copy,
+            };
+
+            package.SetText("https://www.reddit.com" + Post.Post.Permalink);
+
+            Clipboard.SetContent(package);
         }
     }
 }
