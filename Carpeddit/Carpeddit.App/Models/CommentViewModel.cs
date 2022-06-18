@@ -186,25 +186,30 @@ namespace Carpeddit.App.Models
                 CommentViewModel currentCommentVm = this;
                 currentCommentVm.IsTopLevel = true;
 
+                List<Comment> replies = currentCommentVm.OriginalComment.Replies;
+
                 // Loop to find the replies.
-                foreach (Comment comment1 in currentCommentVm.OriginalComment.Replies)
+                while (replies.Count > 0)
                 {
-                    CommentViewModel commentVm = new()
+                    foreach (Comment comment1 in replies)
                     {
-                        OriginalComment = comment1,
-                        ParentComment = currentCommentVm
-                    };
+                        CommentViewModel commentVm = new()
+                        {
+                            OriginalComment = comment1,
+                            ParentComment = currentCommentVm
+                        };
 
-                    if (addToRepliesList)
-                    {
-                        Replies.Add(commentVm);
-                    }
-                    else
-                    {
-                        comments.Add(commentVm);
-                    }
+                        if (addToRepliesList)
+                        {
+                            Replies.Add(commentVm);
+                        }
+                        else
+                        {
+                            comments.Add(commentVm);
+                        }
 
-                    currentCommentVm = commentVm;
+                        replies = comment1.Replies;
+                    }
                 }
 
                 return comments;
