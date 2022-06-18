@@ -204,6 +204,10 @@
                                                 <Border Visibility="{x:Bind ShouldDisplayUserFlair, Converter={StaticResource BoolToVis}}" Padding="4,2" CornerRadius="2">
                                                     <TextBlock Text="{x:Bind OriginalComment.Listing.AuthorFlairText}" />
                                                 </Border>
+
+                                                <Border Visibility="{x:Bind IsAdminDistinguished, Converter={StaticResource BoolToVis}}" Background="OrangeRed" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="4">
+                                                    <TextBlock Text="A" Foreground="White" />
+                                                </Border>
                                             </StackPanel>
                                             
                                             <controls:MarkdownTextBlock Background="Transparent" Text="{x:Bind OriginalComment.Body}" />
