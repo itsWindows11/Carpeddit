@@ -212,9 +212,16 @@
                                             
                                             <controls:MarkdownTextBlock Background="Transparent" Text="{x:Bind OriginalComment.Body}" />
 
+                                            <StackPanel Spacing="8" MaxWidth="1200" Visibility="{x:Bind ShowReplyUI, Mode=OneWay, Converter={StaticResource BoolToVis}}">
+                                                <RichEditBox SelectionFlyout="{x:Null}" Height="100" AcceptsReturn="True" MaxHeight="600" Margin="0,12,0,0" PlaceholderText="Add a reply..." x:Name="CommentEditBox" />
+                                                <Button Click="ReplyCommentButton_Click" Style="{ThemeResource AccentButtonStyle}" Content="Send" />
+                                            </StackPanel>
+
                                             <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                                <HyperlinkButton Click="ReplyButton_Click" Padding="2" Content="Reply" />
                                                 <HyperlinkButton Visibility="{x:Bind IsCurrentUserOP, Converter={StaticResource BoolToVis}}" Click="DeleteCommentButton_Click" Padding="2" Content="Delete" />
                                                 <HyperlinkButton Visibility="{x:Bind templates:PostTemplates.IsSubredditMod, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="RemoveCommentButton_Click" Margin="4,0,0,0" Padding="2" Content="Remove" />
+                                                <HyperlinkButton Visibility="{x:Bind templates:PostTemplates.IsSubredditMod, Converter={StaticResource BoolToVis}}" Click="PinCommentButton_Click" Padding="2" Content="Pin" />
                                             </StackPanel>
                                         </StackPanel>
                                     </Grid>

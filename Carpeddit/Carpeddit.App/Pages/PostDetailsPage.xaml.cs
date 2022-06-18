@@ -314,5 +314,41 @@ namespace Carpeddit.App.Pages
                 (sender as HyperlinkButton).IsEnabled = false;
             }
         }
+
+        private void ReplyButton_Click(object sender, RoutedEventArgs e)
+        {
+            ((e.OriginalSource as FrameworkElement).DataContext as CommentViewModel).ShowReplyUI = true;
+        }
+
+        private async void PinCommentButton_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as FrameworkElement).DataContext is CommentViewModel comment && comment.IsTopLevel)
+            {
+                _ = await comment.OriginalComment.DistinguishAsync("no", true);
+                (sender as HyperlinkButton).Content = "Pinned";
+                (sender as HyperlinkButton).IsEnabled = false;
+
+                // Refresh comments by setting items source
+                // TreeView doesn't have a Refresh function so we have to do this.
+                CommentsTree.ItemsSource = commentsObservable;
+            }
+        }
+
+        private async void ReplyCommentButton_Click(object sender, RoutedEventArgs e)
+        {
+            RichEditBox editBox = ((sender as Button).Parent as StackPanel).Children.First() as RichEditBox;
+            editBox.Document.GetText(TextGetOptions.FormatRtf, out string rtfText);
+
+            Comment submittedComment = await ((e.OriginalSource as FrameworkElement).DataContext as CommentViewModel).OriginalComment.ReplyAsync(RtfToMarkdown(rtfText));
+
+            ((e.OriginalSource as FrameworkElement).DataContext as CommentViewModel).Replies.Add(new()
+            {
+                OriginalComment = submittedComment
+            });
+
+            ((e.OriginalSource as FrameworkElement).DataContext as CommentViewModel).ShowReplyUI = false;
+
+            editBox.Document.SetText(TextSetOptions.None, "");
+        }
     }
 }

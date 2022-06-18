@@ -41,6 +41,18 @@ namespace Carpeddit.App.Models
             }
         }
 
+        private bool _showReplyUI;
+
+        public bool ShowReplyUI
+        {
+            get => _showReplyUI;
+            set
+            {
+                _showReplyUI = value;
+                OnPropertyChanged(nameof(ShowReplyUI));
+            }
+        }
+
         private CommentViewModel _parentComment;
 
         public CommentViewModel ParentComment
