@@ -9,6 +9,7 @@ using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Media.Core;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace Carpeddit.App.Models
@@ -107,7 +108,20 @@ namespace Carpeddit.App.Models
             });
         }
 
-        public bool HasImage => (Uri.IsWellFormedUriString(Description, UriKind.Absolute) && (Description.StartsWith("https://", StringComparison.OrdinalIgnoreCase) || Description.StartsWith("http://", StringComparison.OrdinalIgnoreCase)) && Description.Contains("i.redd.it"));
+        public bool HasImage => Uri.IsWellFormedUriString(Description, UriKind.Absolute) && (Description.StartsWith("https://", StringComparison.OrdinalIgnoreCase) || Description.StartsWith("http://", StringComparison.OrdinalIgnoreCase)) && (Description.Contains("i.redd.it") || Description.Contains("i.imgur"));
+
+        public MediaSource VideoSource
+        {
+            get
+            {
+                if (Post is LinkPost post && Uri.TryCreate(post.URL + "/DASHPlaylist.mpd", UriKind.Absolute, out Uri uri))
+                {
+                    return MediaSource.CreateFromUri(uri);
+                }
+                
+                return null;
+            }
+        }
 
         private bool _upvoted;
 
