@@ -180,42 +180,32 @@ namespace Carpeddit.App.Models
             return num.ToString("#,0");
         }
 
-        public Task<ObservableCollection<CommentViewModel>> GetRepliesAsync(bool addToRepliesList = false)
+        public ObservableCollection<CommentViewModel> GetReplies(bool addToRepliesList = false)
         {
-            return Task.Run(() =>
+            ObservableCollection<CommentViewModel> comments = new();
+
+            // Loop to find the replies.
+            foreach (Comment comment1 in OriginalComment.Replies)
             {
-                ObservableCollection<CommentViewModel> comments = new();
-                CommentViewModel currentCommentVm = this;
-                currentCommentVm.IsTopLevel = true;
-
-                List<Comment> replies = currentCommentVm.OriginalComment.Replies;
-
-                // Loop to find the replies.
-                while (replies.Count > 0)
+                CommentViewModel commentVm = new()
                 {
-                    foreach (Comment comment1 in replies)
-                    {
-                        CommentViewModel commentVm = new()
-                        {
-                            OriginalComment = comment1,
-                            ParentComment = currentCommentVm
-                        };
+                    OriginalComment = comment1,
+                    ParentComment = this
+                };
 
-                        if (addToRepliesList)
-                        {
-                            Replies.Add(commentVm);
-                        }
-                        else
-                        {
-                            comments.Add(commentVm);
-                        }
-
-                        replies = comment1.Replies;
-                    }
+                if (addToRepliesList)
+                {
+                    Replies.Add(commentVm);
+                }
+                else
+                {
+                    comments.Add(commentVm);
                 }
 
-                return comments;
-            });
+                _ = commentVm.GetReplies(true);
+            }
+
+            return comments;
         }
     }
 }

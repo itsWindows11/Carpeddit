@@ -88,18 +88,19 @@ namespace Carpeddit.App.Models
 
         public Task<ObservableCollection<CommentViewModel>> GetCommentsAsync()
         {
-            return Task.Run(async () =>
+            return Task.Run(() =>
             {
                 ObservableCollection<CommentViewModel> comments = new();
 
-                foreach (Comment comment in Post.Comments.GetComments())
+                foreach (Comment comment in Post.Comments.GetComments(limit: 500))
                 {
                     CommentViewModel comment1 = new()
                     {
-                        OriginalComment = comment
+                        OriginalComment = comment,
+                        IsTopLevel = true
                     };
 
-                    _ = await comment1.GetRepliesAsync(true);
+                    _ = comment1.GetReplies(true);
 
                     comments.Add(comment1);
                 }
