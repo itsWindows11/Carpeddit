@@ -114,7 +114,7 @@ namespace Carpeddit.App.Models
             set => _isTopLevel = value;
         }
 
-        public Thickness Thickn => Replies.Count > 0 ? new(-8, -2, 0, -4) : (IsTopLevel ? new(-32, -2, 0, -4) : new(-8, -2, 0, -4));
+        public Thickness Thickn => Replies.Count > 0 ? new(-12, -2, 0, -4) : (IsTopLevel ? new(-32, -2, 0, -4) : new(-12, -2, 0, -4));
 
         private string _voteRatio;
 
@@ -213,7 +213,7 @@ namespace Carpeddit.App.Models
                     comments.Add(commentVm);
                 }
 
-                _ = commentVm.GetReplies(true);
+                _ = commentVm.GetReplies(true, isCurrentUserMod);
             }
 
             return comments;

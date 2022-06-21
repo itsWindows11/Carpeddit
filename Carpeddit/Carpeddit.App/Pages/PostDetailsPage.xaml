@@ -179,7 +179,7 @@
 
                 <muxc:ProgressRing IsActive="True" x:Name="CommentProgress" />
 
-                <muxc:TreeView AllowDrop="False" CanDragItems="False" CanReorderItems="False" x:Name="CommentsTree" MaxWidth="1200" Margin="0,12">
+                <muxc:TreeView SelectionMode="None" AllowDrop="False" CanDragItems="False" CanReorderItems="False" x:Name="CommentsTree" MaxWidth="1200" Margin="0,12">
                     <muxc:TreeView.ItemTemplate>
                         <DataTemplate x:DataType="viewmodels:CommentViewModel">
                             <muxc:TreeViewItem IsExpanded="{x:Bind Collapsed, Mode=TwoWay, Converter={StaticResource InvertBoolConv}}" ItemsSource="{x:Bind Replies}">
@@ -189,7 +189,8 @@
                                         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                                         BorderThickness="1"
                                         CornerRadius="4"
-                                        Margin="{x:Bind Thickn}">
+                                        Margin="{x:Bind Thickn}"
+                                        Padding="4">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="30" />
                                             <ColumnDefinition Width="40" />
@@ -200,11 +201,13 @@
 
                                         <StackPanel HorizontalAlignment="Center"
                                                     Grid.Column="1"
-                                                    Spacing="3">
+                                                    Spacing="4"
+                                                    Margin="0,8,0,0">
                                             <ToggleButton 
                                                 Padding="3"
                                                 Style="{StaticResource TransparentToggleButton}"
-                                                Click="UpvoteButton_Click"
+                                                Click="CommentUpvoteButton_Click"
+                                                Tag="{x:Bind}"
                                                 IsChecked="{x:Bind Upvoted, Mode=OneWay}">
                                                 <FontIcon Glyph="&#xE010;" />
                                             </ToggleButton>
@@ -212,7 +215,8 @@
                                             <ToggleButton
                                                 Padding="3"
                                                 Style="{StaticResource TransparentToggleButton}"
-                                                Click="DownvoteButton_Click"
+                                                Click="CommentDownvoteButton_Click"
+                                                Tag="{x:Bind}"
                                                 IsChecked="{x:Bind Downvoted, Mode=OneWay}">
                                                 <FontIcon Glyph="&#xE011;" />
                                             </ToggleButton>
@@ -252,7 +256,7 @@
                                                 <HyperlinkButton Visibility="{x:Bind ShowReplyUI, Mode=OneWay, Converter={StaticResource BoolToVisReverse}}" Click="ReplyButton_Click" Padding="2" Content="Reply" />
                                                 <HyperlinkButton Visibility="{x:Bind IsCurrentUserOP, Converter={StaticResource BoolToVis}}" Click="DeleteCommentButton_Click" Padding="2" Content="Delete" />
                                                 <HyperlinkButton Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}" Click="RemoveCommentButton_Click" Margin="4,0,0,0" Padding="2" Content="Remove" />
-                                                <Button Padding="5,2">
+                                                <Button Style="{StaticResource TransparentButton}" Padding="5,2">
                                                     <FontIcon Glyph="&#xE10C;" />
 
                                                     <Button.Flyout>
@@ -263,7 +267,7 @@
                                                                 </MenuFlyoutItem.Icon>
                                                             </MenuFlyoutItem>
 
-                                                            <MenuFlyoutSubItem Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}" Text="Distinguish">
+                                                            <MenuFlyoutSubItem IsEnabled="{x:Bind IsCurrentUserOP}" Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}" Text="Distinguish">
                                                                 <MenuFlyoutSubItem.Icon>
                                                                     <FontIcon Glyph="&#xEA18;" />
                                                                 </MenuFlyoutSubItem.Icon>

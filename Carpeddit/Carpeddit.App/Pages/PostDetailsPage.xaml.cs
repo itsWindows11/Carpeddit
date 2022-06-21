@@ -205,11 +205,49 @@ namespace Carpeddit.App.Pages
             }
         }
 
+        private async void CommentUpvoteButton_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleButton toggle = sender as ToggleButton;
+            CommentViewModel comment = toggle.Tag as CommentViewModel;
+
+            if (toggle.IsChecked ?? false)
+            {
+                await comment.OriginalComment.UpvoteAsync();
+                comment.Upvoted = true;
+                comment.Downvoted = false;
+            }
+            else
+            {
+                await comment.OriginalComment.UnvoteAsync();
+                comment.Upvoted = false;
+                comment.Downvoted = false;
+            }
+        }
+
+        private async void CommentDownvoteButton_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleButton toggle = sender as ToggleButton;
+            CommentViewModel comment = toggle.Tag as CommentViewModel;
+
+            if (toggle.IsChecked ?? false)
+            {
+                await comment.OriginalComment.DownvoteAsync();
+                comment.Upvoted = false;
+                comment.Downvoted = true;
+            }
+            else
+            {
+                await comment.OriginalComment.UnvoteAsync();
+                comment.Upvoted = false;
+                comment.Downvoted = false;
+            }
+        }
+
         private void Title_PointerReleased(object sender, PointerRoutedEventArgs e)
         {
             if (Window.Current.Content is Frame rootFrame && sender is TextBlock text && text.Tag is PostViewModel post)
             {
-                rootFrame.Navigate(typeof(PostDetailsPage), post);
+                //rootFrame.Navigate(typeof(PostDetailsPage), post);
             }
         }
 
