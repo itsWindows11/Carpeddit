@@ -83,7 +83,6 @@
                         </TextBlock>
 
                         <TextBlock
-                            PointerReleased="Title_PointerReleased"
                             Style="{StaticResource SubtitleTextBlockStyle}"
                             Tag="{x:Bind Post}"
                             Text="{x:Bind Post.Title}"

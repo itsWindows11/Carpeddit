@@ -243,14 +243,6 @@ namespace Carpeddit.App.Pages
             }
         }
 
-        private void Title_PointerReleased(object sender, PointerRoutedEventArgs e)
-        {
-            if (Window.Current.Content is Frame rootFrame && sender is TextBlock text && text.Tag is PostViewModel post)
-            {
-                //rootFrame.Navigate(typeof(PostDetailsPage), post);
-            }
-        }
-
         private void UserHyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
         {
             string text = (sender.Inlines[1] as Windows.UI.Xaml.Documents.Run).Text;
