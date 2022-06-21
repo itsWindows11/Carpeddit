@@ -53,15 +53,15 @@
             </Button.Content>
             <Button.Flyout>
                 <MenuFlyout Placement="Bottom">
-                    <MenuFlyoutItem Text="Log out" Click="LogoutFlyoutItem_Click">
-                        <MenuFlyoutItem.Icon>
-                            <FontIcon Glyph="&#xF3B1;" />
-                        </MenuFlyoutItem.Icon>
-                    </MenuFlyoutItem>
-
                     <MenuFlyoutItem Text="Profile" Click="ProfileFlyoutItem_Click">
                         <MenuFlyoutItem.Icon>
                             <FontIcon Glyph="&#xE13D;" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
+                    
+                    <MenuFlyoutItem Text="Log out" Click="LogoutFlyoutItem_Click">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon Glyph="&#xF3B1;" />
                         </MenuFlyoutItem.Icon>
                     </MenuFlyoutItem>
                 </MenuFlyout>
