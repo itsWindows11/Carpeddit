@@ -32,7 +32,7 @@
             <SolidColorBrush x:Name="ColorBrushBg" Opacity="0.1" />
         </Grid.Background>
 
-        <uc:CustomTitleBar Title="Post details" />
+        <uc:CustomTitleBar Title="Post details" Visibility="{x:Bind _isNotSeparate, Mode=OneWay, Converter={StaticResource BoolToVis}}" />
 
         <ScrollViewer Grid.Row="1" Padding="66,0">
             <StackPanel>
@@ -311,6 +311,7 @@
                 Click="BackButton_Click"
                 Style="{StaticResource TransparentButton}"
                 Width="40"
+                Visibility="{x:Bind _isNotSeparate, Mode=OneWay, Converter={StaticResource BoolToVis}}"
                 AutomationProperties.Name="Back"
                 AutomationProperties.AutomationId="BackButton"
                 AutomationProperties.ItemType="Navigation Button">

@@ -42,6 +42,8 @@ namespace Carpeddit.App.Pages
 
         BulkConcurrentObservableCollection<CommentViewModel> commentsObservable = new();
 
+        bool _isNotSeparate;
+
         public PostDetailsPage()
         {
             InitializeComponent();
@@ -51,17 +53,20 @@ namespace Carpeddit.App.Pages
 
         private void PostDetailsPage_Loaded(object sender, RoutedEventArgs e)
         {
-            switch (App.SViewModel.ColorMode)
+            if (_isNotSeparate)
             {
-                case 0:
-                    ColorBrushBg.Color = Colors.Transparent;
-                    break;
-                case 1:
-                    ColorBrushBg.Color = (Color)Resources["SystemAccentColor"];
-                    break;
-                case 2:
-                    ColorBrushBg.Color = App.SViewModel.TintColorsList[App.SViewModel.TintColor];
-                    break;
+                switch (App.SViewModel.ColorMode)
+                {
+                    case 0:
+                        ColorBrushBg.Color = Colors.Transparent;
+                        break;
+                    case 1:
+                        ColorBrushBg.Color = (Color)Resources["SystemAccentColor"];
+                        break;
+                    case 2:
+                        ColorBrushBg.Color = App.SViewModel.TintColorsList[App.SViewModel.TintColor];
+                        break;
+                }
             }
 
             CommentProgress.Visibility = Visibility.Visible;
@@ -70,8 +75,10 @@ namespace Carpeddit.App.Pages
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            Post = e.Parameter as PostViewModel;
-            Subreddit = App.RedditClient.Subreddit(Post?.Subreddit).About();
+            Post = e.Parameter is PostViewModel ? e.Parameter as PostViewModel : (((PostViewModel, bool))e.Parameter).Item1;
+            Subreddit = App.RedditClient.Subreddit(Post.Subreddit).About();
+
+            _isNotSeparate = e.Parameter is (PostViewModel, bool) ? (((PostViewModel, bool))e.Parameter).Item2 : true;
 
             System.Diagnostics.Debug.WriteLine(Subreddit.SubredditData.UserIsModerator);
 
