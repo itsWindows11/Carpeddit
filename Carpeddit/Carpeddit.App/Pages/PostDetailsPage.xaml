@@ -241,7 +241,7 @@
                                                 </Border>
                                             </StackPanel>
                                             
-                                            <controls:MarkdownTextBlock Background="Transparent" Text="{x:Bind OriginalComment.Body}" />
+                                            <controls:MarkdownTextBlock Background="Transparent" Text="{x:Bind OriginalComment.Body}" LinkClicked="MarkdownLinkClicked" />
 
                                             <StackPanel Spacing="8" MaxWidth="1200" Visibility="{x:Bind ShowReplyUI, Mode=OneWay, Converter={StaticResource BoolToVis}}">
                                                 <RichEditBox SelectionFlyout="{x:Null}" Height="100" AcceptsReturn="True" MaxHeight="600" Margin="0,12,0,0" PlaceholderText="Add a reply..." x:Name="CommentEditBox" />
