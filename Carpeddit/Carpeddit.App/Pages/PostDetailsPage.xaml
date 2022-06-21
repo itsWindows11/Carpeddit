@@ -184,14 +184,19 @@
                         <DataTemplate x:DataType="viewmodels:CommentViewModel">
                             <muxc:TreeViewItem IsExpanded="{x:Bind Collapsed, Mode=TwoWay, Converter={StaticResource InvertBoolConv}}" ItemsSource="{x:Bind Replies}">
                                 <muxc:TreeViewItem.Content>
-                                    <Grid Margin="{x:Bind Thickn}">
+                                    <Grid 
+                                        Background="{ThemeResource ExpanderContentBackground}"
+                                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="4"
+                                        Margin="{x:Bind Thickn}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="30" />
                                             <ColumnDefinition Width="40" />
                                             <ColumnDefinition />
                                         </Grid.ColumnDefinitions>
 
-                                        <Border Width="1" Padding="0,0,30,0" Background="{StaticResource AppBarSeparatorForegroundThemeBrush}" />
+                                        <Border Width="1" Padding="0,0,30,0" Margin="0,12" Background="{StaticResource AppBarSeparatorForegroundThemeBrush}" />
 
                                         <StackPanel HorizontalAlignment="Center"
                                                     Grid.Column="1"
