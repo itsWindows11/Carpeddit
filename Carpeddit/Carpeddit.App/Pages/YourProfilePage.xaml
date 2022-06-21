@@ -219,7 +219,7 @@
                                     BorderThickness="1"
                                     CornerRadius="6">
                                     <TextBlock RelativePanel.AlignVerticalCenterWithPanel="True">
-                                        <Hyperlink>r/<Run Text="{Binding Name}" /></Hyperlink>
+                                        <Hyperlink><Run Text="{Binding SRDisplayNamePrefixed}" /></Hyperlink>
                                     </TextBlock>
                                 </RelativePanel>
                             </DataTemplate>
