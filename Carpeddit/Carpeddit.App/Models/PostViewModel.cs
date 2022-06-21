@@ -92,15 +92,18 @@ namespace Carpeddit.App.Models
             {
                 ObservableCollection<CommentViewModel> comments = new();
 
+                bool isCurrentUserMod = App.RedditClient.Subreddit(Post.Subreddit).About().SubredditData.UserIsModerator ?? false;
+
                 foreach (Comment comment in Post.Comments.GetComments(limit: 500))
                 {
                     CommentViewModel comment1 = new()
                     {
                         OriginalComment = comment,
-                        IsTopLevel = true
+                        IsTopLevel = true,
+                        IsCurrentUserMod = isCurrentUserMod
                     };
 
-                    _ = comment1.GetReplies(true);
+                    _ = comment1.GetReplies(true, isCurrentUserMod);
 
                     comments.Add(comment1);
                 }

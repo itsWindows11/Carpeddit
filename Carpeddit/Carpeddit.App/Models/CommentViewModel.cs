@@ -19,7 +19,17 @@ namespace Carpeddit.App.Models
 
         public bool IsCurrentUserOP => App.RedditClient.Account.Me.Name == OriginalComment.Author;
 
-        public bool IsCurrentUserMod => App.RedditClient.Subreddit(OriginalComment.Subreddit).About().SubredditData.UserIsModerator ?? false;
+        private bool _isCurrentUserMod;
+
+        public bool IsCurrentUserMod
+        {
+            get => _isCurrentUserMod;
+            set
+            {
+                _isCurrentUserMod = value;
+                OnPropertyChanged(nameof(IsCurrentUserMod));
+            }
+        }
 
         public bool IsModDistinguished => OriginalComment.Listing.Distinguished == "moderator";
 
@@ -180,7 +190,7 @@ namespace Carpeddit.App.Models
             return num.ToString("#,0");
         }
 
-        public ObservableCollection<CommentViewModel> GetReplies(bool addToRepliesList = false)
+        public ObservableCollection<CommentViewModel> GetReplies(bool addToRepliesList = false, bool isCurrentUserMod = false)
         {
             ObservableCollection<CommentViewModel> comments = new();
 
@@ -190,7 +200,8 @@ namespace Carpeddit.App.Models
                 CommentViewModel commentVm = new()
                 {
                     OriginalComment = comment1,
-                    ParentComment = this
+                    ParentComment = this,
+                    IsCurrentUserMod = isCurrentUserMod
                 };
 
                 if (addToRepliesList)
