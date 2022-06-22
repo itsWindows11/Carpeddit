@@ -15,7 +15,7 @@
 
     <Grid x:Name="MainGrid" Margin="-56,0">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition MaxWidth="1200" />
+            <ColumnDefinition />
             <ColumnDefinition d:Width="1.3*" />
         </Grid.ColumnDefinitions>
         <muxc:ProgressRing
@@ -34,7 +34,6 @@
             Padding="56,0,56,12"
             ItemTemplate="{StaticResource PlainPostTemplate}"
             SelectionMode="None"
-            MaxWidth="1200"
             SelectionChanged="MainList_SelectionChanged"
             Canvas.ZIndex="1">
             <ListView.Header>
