@@ -2,12 +2,42 @@
     x:Class="Carpeddit.App.Pages.CollectionsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Carpeddit.App.Pages"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Carpeddit.App.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid>
-        <TextBlock Text="Collections" />
-    </Grid>
+    <StackPanel
+        d:Padding="12"
+        d:Margin="0"
+        Margin="0,12,0,0"
+        d:Spacing="0"
+        Spacing="12">
+        <Button
+            Padding="0"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Stretch"
+            Click="SavedPostsButton_Click">
+            <Grid
+                Padding="12"
+                d:Margin="16"
+                ColumnSpacing="24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <Border
+                    Height="64"
+                    Background="{StaticResource LayerFillColorDefaultBrush}"
+                    CornerRadius="8" />
+
+                <TextBlock
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource SubtitleTextBlockStyle}"
+                    Text="Saved posts" />
+            </Grid>
+        </Button>
+    </StackPanel>
 </Page>

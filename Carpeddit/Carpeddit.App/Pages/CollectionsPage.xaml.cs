@@ -26,5 +26,10 @@ namespace Carpeddit.App.Pages
         {
             this.InitializeComponent();
         }
+
+        private void SavedPostsButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
