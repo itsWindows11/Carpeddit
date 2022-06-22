@@ -381,7 +381,7 @@
       <NoWarn>NU1603</NoWarn>
     </PackageReference>
     <PackageReference Include="CarpedditPkg">
-      <Version>1.5.0</Version>
+      <Version>1.5.2</Version>
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm">
       <Version>7.1.2</Version>
