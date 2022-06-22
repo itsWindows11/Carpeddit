@@ -94,7 +94,7 @@ namespace Carpeddit.App.Models
 
                 bool isCurrentUserMod = App.RedditClient.Subreddit(Post.Subreddit).About().SubredditData.UserIsModerator ?? false;
 
-                foreach (Comment comment in Post.Comments.GetComments(limit: 500))
+                foreach (Comment comment in Post.Comments.GetComments())
                 {
                     CommentViewModel comment1 = new()
                     {
