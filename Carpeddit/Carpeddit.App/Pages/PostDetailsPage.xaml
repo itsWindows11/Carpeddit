@@ -246,6 +246,10 @@
                                                 <Button Visibility="{x:Bind OriginalComment.Listing.Edited, Converter={StaticResource BoolToVis}}" Style="{StaticResource AccentButtonStyle}" Padding="4,2" Margin="4,0,0,0" ToolTipService.ToolTip="Edited">
                                                     <FontIcon FontSize="12" Glyph="&#xE104;" />
                                                 </Button>
+
+                                                <Button Visibility="{x:Bind OriginalComment.Listing.Locked, Converter={StaticResource BoolToVis}}" Style="{StaticResource AccentButtonStyle}" Padding="4,2" Margin="4,0,0,0" ToolTipService.ToolTip="Locked">
+                                                    <FontIcon FontSize="12" Glyph="&#xE72E;" />
+                                                </Button>
                                             </StackPanel>
                                             
                                             <controls:MarkdownTextBlock Background="Transparent" Text="{x:Bind OriginalComment.Body}" LinkClicked="MarkdownLinkClicked" />
@@ -269,6 +273,18 @@
                                                                     <FontIcon Glyph="&#xE16F;" />
                                                                 </MenuFlyoutItem.Icon>
                                                             </MenuFlyoutItem>
+
+                                                            <MenuFlyoutItem Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}" Text="Approve comment" Click="ApproveCommentItem_Click">
+                                                                <MenuFlyoutItem.Icon>
+                                                                    <FontIcon Glyph="&#xF16C;" />
+                                                                </MenuFlyoutItem.Icon>
+                                                            </MenuFlyoutItem>
+
+                                                            <ToggleMenuFlyoutItem Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}" IsChecked="{x:Bind OriginalComment.Listing.Locked}" Text="Lock comment" Click="LockCommentItem_Click">
+                                                                <ToggleMenuFlyoutItem.Icon>
+                                                                    <FontIcon Glyph="&#xE72E;" />
+                                                                </ToggleMenuFlyoutItem.Icon>
+                                                            </ToggleMenuFlyoutItem>
 
                                                             <MenuFlyoutSubItem IsEnabled="{x:Bind IsCurrentUserOP}" Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}" Text="Distinguish">
                                                                 <MenuFlyoutSubItem.Icon>

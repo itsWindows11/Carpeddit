@@ -3,6 +3,7 @@ using Carpeddit.App.Collections;
 using Carpeddit.App.Models;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Reddit.Controllers;
+using Reddit.Models;
 using RtfPipe;
 using System;
 using System.Collections.Generic;
@@ -433,6 +434,22 @@ namespace Carpeddit.App.Pages
             package.SetText("https://www.reddit.com" + Post.Post.Permalink);
 
             Clipboard.SetContent(package);
+        }
+
+        private async void LockCommentItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (((sender as FrameworkElement).DataContext as CommentViewModel).OriginalComment.Listing.Locked)
+            {
+                await App.RedditClient.Account.Dispatch.LinksAndComments.UnlockAsync(((sender as FrameworkElement).DataContext as CommentViewModel).OriginalComment.Fullname);
+            } else
+            {
+                await App.RedditClient.Account.Dispatch.LinksAndComments.LockAsync(((sender as FrameworkElement).DataContext as CommentViewModel).OriginalComment.Fullname);
+            }
+        }
+
+        private async void ApproveCommentItem_Click(object sender, RoutedEventArgs e)
+        {
+            //_ = await App.RedditClient.Account.Dispatch.LinksAndComments.ExecuteRequestAsync(App.RedditClient.Account.Dispatch.LinksAndComments.PrepareIDRequest("/api/approve", ((sender as FrameworkElement).DataContext as CommentViewModel).OriginalComment.Listing.Id));
         }
     }
 }
