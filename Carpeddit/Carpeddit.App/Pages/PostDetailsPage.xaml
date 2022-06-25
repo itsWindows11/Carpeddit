@@ -235,9 +235,9 @@
 
                                                 <Button Visibility="{x:Bind OriginalComment.Listing.IsSubmitter, Converter={StaticResource BoolToVis}}" Style="{StaticResource AccentButtonStyle}" Content="OP" Padding="4,2" Margin="4,0,0,0" IsHitTestVisible="False" />
                                                 
-                                                <Border Visibility="{x:Bind ShouldDisplayUserFlair, Converter={StaticResource BoolToVis}}" Padding="4,2" CornerRadius="2">
+                                                <Button Visibility="{x:Bind ShouldDisplayUserFlair, Converter={StaticResource BoolToVis}}" Padding="4,2" Margin="4,0,0,0" CornerRadius="2">
                                                     <TextBlock Text="{x:Bind OriginalComment.Listing.AuthorFlairText}" />
-                                                </Border>
+                                                </Button>
 
                                                 <Border Visibility="{x:Bind IsAdminDistinguished, Converter={StaticResource BoolToVis}}" Background="OrangeRed" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="4">
                                                     <TextBlock Text="A" Foreground="White" />
@@ -249,6 +249,14 @@
 
                                                 <Button Visibility="{x:Bind OriginalComment.Listing.Approved, Converter={StaticResource BoolToVis}}" Style="{StaticResource AccentButtonStyle}" Padding="4,2" Margin="4,0,0,0" ToolTipService.ToolTip="Approved">
                                                     <FontIcon FontSize="12" Glyph="&#xE73E;" />
+                                                </Button>
+
+                                                <Button Visibility="{x:Bind OriginalComment.Listing.Spam, Converter={StaticResource BoolToVis}}" Style="{StaticResource AccentButtonStyle}" Padding="4,2" Margin="4,0,0,0" ToolTipService.ToolTip="Marked as spam">
+                                                    <FontIcon FontSize="12" Glyph="&#xE73C;" />
+                                                </Button>
+
+                                                <Button Visibility="{x:Bind OriginalComment.Listing.Removed, Converter={StaticResource BoolToVis}}" Style="{StaticResource AccentButtonStyle}" Padding="4,2" Margin="4,0,0,0" ToolTipService.ToolTip="Removed">
+                                                    <FontIcon FontSize="12" Glyph="&#xE10A;" />
                                                 </Button>
 
                                                 <Button Visibility="{x:Bind OriginalComment.Listing.Locked, Converter={StaticResource BoolToVis}}" Style="{StaticResource AccentButtonStyle}" Padding="4,2" Margin="4,0,0,0" ToolTipService.ToolTip="Locked">
@@ -283,6 +291,12 @@
                                                                     <FontIcon Glyph="&#xF16C;" />
                                                                 </MenuFlyoutItem.Icon>
                                                             </MenuFlyoutItem>
+
+                                                            <ToggleMenuFlyoutItem Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}" IsChecked="{x:Bind OriginalComment.Listing.Spam}" Text="Mark comment as spam" Click="SpamComment_Click">
+                                                                <ToggleMenuFlyoutItem.Icon>
+                                                                    <FontIcon Glyph="&#xE73C;" />
+                                                                </ToggleMenuFlyoutItem.Icon>
+                                                            </ToggleMenuFlyoutItem>
 
                                                             <ToggleMenuFlyoutItem Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}" IsChecked="{x:Bind OriginalComment.Listing.Locked}" Text="Lock comment" Click="LockCommentItem_Click">
                                                                 <ToggleMenuFlyoutItem.Icon>

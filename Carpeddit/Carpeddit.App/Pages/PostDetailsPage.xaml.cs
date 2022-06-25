@@ -458,5 +458,10 @@ namespace Carpeddit.App.Pages
         {
             await App.RedditClient.Account.Dispatch.Moderation.ApproveAsync(((sender as FrameworkElement).DataContext as CommentViewModel).OriginalComment.Fullname);
         }
+
+        private async void SpamComment_Click(object sender, RoutedEventArgs e)
+        {
+            await ((sender as FrameworkElement).DataContext as CommentViewModel).OriginalComment.RemoveAsync(true);
+        }
     }
 }
