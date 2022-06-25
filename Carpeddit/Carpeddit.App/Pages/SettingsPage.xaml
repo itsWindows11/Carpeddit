@@ -44,7 +44,7 @@
 
             <StackPanel Orientation="Horizontal" Spacing="8">
                 <TextBlock x:Name="VersionTextBlock" d:Text="Carpeddit, version 0.0.0.0" />
-                <TextBlock Text="(Alpha 3)" FontWeight="SemiBold" />
+                <TextBlock Text="(Alpha 4)" FontWeight="SemiBold" />
             </StackPanel>
 
             <TextBlock Text="© 2022 itsWindows11." />
