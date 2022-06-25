@@ -13,7 +13,11 @@
     NavigationCacheMode="Required"
     mc:Ignorable="d">
 
-    <Grid Margin="-56,0,-56,0" Padding="56,0">
+    <Grid x:Name="MainGrid" Margin="-56,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition d:Width="1.3*" />
+        </Grid.ColumnDefinitions>
         <muxc:ProgressRing
             x:Name="Progress"
             Width="50"
@@ -21,14 +25,17 @@
             Margin="-56,0,-56,0"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
+            Grid.ColumnSpan="2"
             IsActive="True"
-            Visibility="Collapsed" />
+            Visibility="Collapsed"
+            d:Visibility="Visible" />
         <ListView
             x:Name="MainList"
-            Margin="-56,0,-56,0"
-            Padding="56,0,56,10"
+            Padding="56,0,56,12"
             ItemTemplate="{StaticResource PlainPostTemplate}"
-            SelectionMode="None">
+            SelectionMode="None"
+            SelectionChanged="MainList_SelectionChanged"
+            Canvas.ZIndex="1">
             <ListView.Header>
                 <ListView
                     x:Name="SubredditsList"
@@ -76,6 +83,38 @@
                 </Grid>
             </ListView.Footer>
         </ListView>
+
+        <Frame x:Name="SecondPageFrame" Margin="-56,-56,0,0" Grid.Column="1" />
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="MasterDetailEnabled">
+                <VisualState x:Name="WideState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1400" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="MainList.SelectionMode" Value="Single" />
+                        <Setter Target="MainList.Padding" Value="56,0,12,12" />
+                        <Setter Target="MainGrid.ColumnDefinitions[1].Width" Value="1.3*" />
+                        <Setter Target="SecondPageFrame.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState x:Name="NormalState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+
+                    <VisualState.Setters>
+                        <Setter Target="MainList.SelectionMode" Value="None" />
+                        <Setter Target="MainList.Padding" Value="56,0,56,12" />
+                        <Setter Target="MainGrid.ColumnDefinitions[1].Width" Value="0" />
+                        <Setter Target="SecondPageFrame.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
     </Grid>
 
 </Page>
