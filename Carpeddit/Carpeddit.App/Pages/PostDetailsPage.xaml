@@ -247,6 +247,10 @@
                                                     <FontIcon FontSize="12" Glyph="&#xE104;" />
                                                 </Button>
 
+                                                <Button Visibility="{x:Bind OriginalComment.Listing.Approved, Converter={StaticResource BoolToVis}}" Style="{StaticResource AccentButtonStyle}" Padding="4,2" Margin="4,0,0,0" ToolTipService.ToolTip="Approved">
+                                                    <FontIcon FontSize="12" Glyph="&#xE73E;" />
+                                                </Button>
+
                                                 <Button Visibility="{x:Bind OriginalComment.Listing.Locked, Converter={StaticResource BoolToVis}}" Style="{StaticResource AccentButtonStyle}" Padding="4,2" Margin="4,0,0,0" ToolTipService.ToolTip="Locked">
                                                     <FontIcon FontSize="12" Glyph="&#xE72E;" />
                                                 </Button>

@@ -449,7 +449,7 @@ namespace Carpeddit.App.Pages
 
         private async void ApproveCommentItem_Click(object sender, RoutedEventArgs e)
         {
-            //_ = await App.RedditClient.Account.Dispatch.LinksAndComments.ExecuteRequestAsync(App.RedditClient.Account.Dispatch.LinksAndComments.PrepareIDRequest("/api/approve", ((sender as FrameworkElement).DataContext as CommentViewModel).OriginalComment.Listing.Id));
+            await App.RedditClient.Account.Dispatch.Moderation.ApproveAsync(((sender as FrameworkElement).DataContext as CommentViewModel).OriginalComment.Fullname);
         }
     }
 }
