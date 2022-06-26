@@ -2,12 +2,13 @@
     x:Class="Carpeddit.App.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Microsoft.UI.Xaml.Controls"
     xmlns:converters="using:Carpeddit.App.Converters"
-    xmlns:controls="using:Microsoft.UI.Xaml.Controls" xmlns:templates="using:Carpeddit.App.Templates">
+    xmlns:templates="using:Carpeddit.App.Templates">
     <Application.Resources>
         <controls:XamlControlsResources>
             <controls:XamlControlsResources.MergedDictionaries>
-                <!-- Other app resources here -->
+                <!--  Other app resources here  -->
                 <ResourceDictionary>
                     <converters:BoolToVisibilityConverter x:Key="BoolToVis" />
                     <converters:BoolToVisibilityConverter x:Key="BoolToVisReverse" Reverse="True" />
@@ -17,22 +18,21 @@
                     <converters:StringToUriConverter x:Key="StringToUri" />
 
                     <Style
-                x:Key="TransparentButton"
-                BasedOn="{StaticResource DefaultButtonStyle}"
-                TargetType="Button">
+                        x:Key="TransparentButton"
+                        BasedOn="{StaticResource DefaultButtonStyle}"
+                        TargetType="Button">
                         <Setter Property="Background" Value="Transparent" />
                         <Setter Property="BorderThickness" Value="0" />
                     </Style>
 
                     <Style
-                x:Key="TransparentToggleButton"
-                BasedOn="{StaticResource DefaultToggleButtonStyle}"
-                TargetType="ToggleButton">
+                        x:Key="TransparentToggleButton"
+                        BasedOn="{StaticResource DefaultToggleButtonStyle}"
+                        TargetType="ToggleButton">
                         <Setter Property="Background" Value="Transparent" />
                         <Setter Property="BorderThickness" Value="0" />
                     </Style>
                 </ResourceDictionary>
-
                 <templates:PostTemplates />
             </controls:XamlControlsResources.MergedDictionaries>
         </controls:XamlControlsResources>

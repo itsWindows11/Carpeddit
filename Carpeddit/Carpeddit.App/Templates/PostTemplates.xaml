@@ -35,6 +35,14 @@
                     Style="{StaticResource TransparentToggleButton}"
                     Tag="{x:Bind}">
                     <FontIcon Glyph="&#xE010;" />
+
+                    <ToggleButton.Resources>
+                        <ResourceDictionary>
+                            <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="#ff4500" />
+                            <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="#ff6e38" />
+                            <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="#f77d4f" />
+                        </ResourceDictionary>
+                    </ToggleButton.Resources>
                 </ToggleButton>
                 <TextBlock
                     HorizontalAlignment="Center"
@@ -49,6 +57,14 @@
                     Style="{StaticResource TransparentToggleButton}"
                     Tag="{x:Bind}">
                     <FontIcon Glyph="&#xE019;" />
+
+                    <ToggleButton.Resources>
+                        <ResourceDictionary>
+                            <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="#7193ff" />
+                            <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="#96afff" />
+                            <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="#b6c7fc" />
+                        </ResourceDictionary>
+                    </ToggleButton.Resources>
                 </ToggleButton>
             </StackPanel>
 
@@ -186,6 +202,14 @@
                     Style="{StaticResource TransparentToggleButton}"
                     Tag="{x:Bind}">
                     <FontIcon Glyph="&#xE010;" />
+
+                    <ToggleButton.Resources>
+                        <ResourceDictionary>
+                            <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="#ff4500" />
+                            <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="#ff6e38" />
+                            <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="#f77d4f" />
+                        </ResourceDictionary>
+                    </ToggleButton.Resources>
                 </ToggleButton>
                 <TextBlock
                     HorizontalAlignment="Center"
@@ -200,6 +224,14 @@
                     Style="{StaticResource TransparentToggleButton}"
                     Tag="{x:Bind}">
                     <FontIcon Glyph="&#xE019;" />
+
+                    <ToggleButton.Resources>
+                        <ResourceDictionary>
+                            <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="#7193ff" />
+                            <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="#96afff" />
+                            <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="#b6c7fc" />
+                        </ResourceDictionary>
+                    </ToggleButton.Resources>
                 </ToggleButton>
             </StackPanel>
 
@@ -276,7 +308,7 @@
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
 
-                                <MenuFlyoutItem Text="Crosspost">
+                                <MenuFlyoutItem Text="Crosspost" Click="CrossPostButton_Click">
                                     <MenuFlyoutItem.Icon>
                                         <FontIcon Glyph="&#xE72A;" />
                                     </MenuFlyoutItem.Icon>
@@ -335,6 +367,14 @@
                     Style="{StaticResource TransparentToggleButton}"
                     Tag="{x:Bind}">
                     <FontIcon Glyph="&#xE010;" />
+
+                    <ToggleButton.Resources>
+                        <ResourceDictionary>
+                            <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="#ff4500" />
+                            <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="#ff6e38" />
+                            <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="#f77d4f" />
+                        </ResourceDictionary>
+                    </ToggleButton.Resources>
                 </ToggleButton>
                 <TextBlock
                     HorizontalAlignment="Center"
@@ -349,6 +389,14 @@
                     Style="{StaticResource TransparentToggleButton}"
                     Tag="{x:Bind}">
                     <FontIcon Glyph="&#xE019;" />
+
+                    <ToggleButton.Resources>
+                        <ResourceDictionary>
+                            <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="#7193ff" />
+                            <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="#96afff" />
+                            <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="#b6c7fc" />
+                        </ResourceDictionary>
+                    </ToggleButton.Resources>
                 </ToggleButton>
             </StackPanel>
 
@@ -433,7 +481,7 @@
                                     </MenuFlyoutItem.Icon>
                                 </MenuFlyoutItem>
 
-                                <MenuFlyoutItem Text="Crosspost">
+                                <MenuFlyoutItem Text="Crosspost" Click="CrossPostButton_Click">
                                     <MenuFlyoutItem.Icon>
                                         <FontIcon Glyph="&#xE72A;" />
                                     </MenuFlyoutItem.Icon>
