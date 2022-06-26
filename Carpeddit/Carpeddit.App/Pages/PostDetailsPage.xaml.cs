@@ -1,5 +1,6 @@
 ﻿using BracketPipe;
 using Carpeddit.App.Collections;
+using Carpeddit.App.Dialogs;
 using Carpeddit.App.Models;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Reddit.Controllers;
@@ -462,6 +463,11 @@ namespace Carpeddit.App.Pages
         private async void SpamComment_Click(object sender, RoutedEventArgs e)
         {
             await ((sender as FrameworkElement).DataContext as CommentViewModel).OriginalComment.RemoveAsync(true);
+        }
+
+        private async void CrossPostButton_Click(object sender, RoutedEventArgs e)
+        {
+            _ = await new CrossPostDialog(((sender as FrameworkElement).DataContext as PostViewModel).Post).ShowAsync();
         }
     }
 }

@@ -139,6 +139,9 @@
     <Compile Include="Dialogs\CreatePostDialog.xaml.cs">
       <DependentUpon>CreatePostDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\CrossPostDialog.xaml.cs">
+      <DependentUpon>CrossPostDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\GrantUserFlairDialog.xaml.cs">
       <DependentUpon>GrantUserFlairDialog.xaml</DependentUpon>
     </Compile>
@@ -262,6 +265,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\CreatePostDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\CrossPostDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

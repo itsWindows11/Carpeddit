@@ -1,0 +1,34 @@
+﻿<ContentDialog
+    x:Class="Carpeddit.App.Dialogs.CrossPostDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Carpeddit.App.UserControls"
+    xmlns:reddit="using:Reddit.Things"
+    mc:Ignorable="d"
+    Style="{StaticResource DefaultContentDialogStyle}"
+    Title="Crosspost"
+    PrimaryButtonText="Crosspost"
+    SecondaryButtonText="Cancel"
+    PrimaryButtonStyle="{StaticResource AccentButtonStyle}"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+
+    <StackPanel Spacing="12">
+        <controls:SettingsBlockControl Title="Subreddit">
+            <controls:SettingsBlockControl.SettingsActionableElement>
+                <ComboBox
+                        x:Name="SubredditComboBox"
+                        SelectedIndex="0"
+                        SelectionChanged="SubredditComboBox_SelectionChanged">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="reddit:Subreddit">
+                            <TextBlock Text="{x:Bind SubredditData.DisplayNamePrefixed}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </controls:SettingsBlockControl.SettingsActionableElement>
+        </controls:SettingsBlockControl>
+    </StackPanel>
+</ContentDialog>

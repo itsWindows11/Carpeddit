@@ -1,4 +1,5 @@
-﻿using Carpeddit.App.Models;
+﻿using Carpeddit.App.Dialogs;
+using Carpeddit.App.Models;
 using Carpeddit.App.Pages;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
@@ -226,6 +227,11 @@ namespace Carpeddit.App.Templates
             package.SetText("https://www.reddit.com" + ((sender as FrameworkElement).DataContext as PostViewModel).Post.Permalink);
 
             Clipboard.SetContent(package);
+        }
+
+        private async void CrossPostButton_Click(object sender, RoutedEventArgs e)
+        {
+            _ = await new CrossPostDialog(((sender as FrameworkElement).DataContext as PostViewModel).Post).ShowAsync();
         }
     }
 }
