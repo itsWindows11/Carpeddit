@@ -81,8 +81,8 @@
                     Text="{x:Bind Title}"
                     TextWrapping="WrapWholeWords" />
 
-                <StackPanel Spacing="8" Orientation="Horizontal">
-                    <Border Visibility="{x:Bind ShouldDisplayPostFlair, Converter={StaticResource BoolToVis}}" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="-2,4,0,4">
+                <controls:WrapPanel HorizontalSpacing="8">
+                    <Border Visibility="{x:Bind ShouldDisplayPostFlair, Converter={StaticResource BoolToVis}}" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="0,4">
                         <Border.Background>
                             <SolidColorBrush Color="{x:Bind local:App.GetColorFromHex(Post.Listing.LinkFlairBackgroundColor)}" />
                         </Border.Background>
@@ -93,6 +93,10 @@
                         </TextBlock>
                     </Border>
 
+                    <Border Visibility="{x:Bind Post.Listing.IsOriginalContent, Converter={StaticResource BoolToVis}}" Background="CornflowerBlue" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="0,4">
+                        <TextBlock Text="OC" Foreground="White" />
+                    </Border>
+
                     <Border Visibility="{x:Bind IsModDistinguished, Converter={StaticResource BoolToVis}}" Background="ForestGreen" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="0,4">
                         <TextBlock Text="MOD" Foreground="White" />
                     </Border>
@@ -101,13 +105,13 @@
                         <TextBlock Text="A" Foreground="White" />
                     </Border>
 
-                    <Border Visibility="{x:Bind Post.NSFW, Converter={StaticResource BoolToVis}}" Background="IndianRed" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="-2,4,0,4">
+                    <Border Visibility="{x:Bind Post.NSFW, Converter={StaticResource BoolToVis}}" Background="IndianRed" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="0,4">
                         <TextBlock Text="NSFW" Foreground="White" />
                     </Border>
-                </StackPanel>
+                </controls:WrapPanel>
 
                 <controls:MarkdownTextBlock
-                    Margin="0,5,0,0"
+                    Margin="0,4,0,0"
                     x:Phase="1"
                     Background="Transparent"
                     Visibility="{x:Bind Post.Listing.IsSelf}"
@@ -118,6 +122,7 @@
                 <Image
                     x:Name="ImagePost"
                     MaxWidth="500"
+                    Margin="0,4,0,0"
                     x:Load="{x:Bind HasImage}">
                     <Image.Source>
                         <BitmapImage DecodePixelType="Logical" UriSource="{x:Bind ImageUri}" />
@@ -129,6 +134,7 @@
                     x:Load="{x:Bind Post.Listing.IsVideo}"
                     Source="{x:Bind VideoSource}"
                     AutoPlay="False"
+                    Margin="0,4,0,0"
                     AreTransportControlsEnabled="True" />
 
                 <StackPanel Orientation="Horizontal">
@@ -236,23 +242,23 @@
             </StackPanel>
 
             <StackPanel Grid.Column="1" Orientation="Vertical">
-                <StackPanel Orientation="Horizontal">
+                <controls:WrapPanel HorizontalSpacing="8">
                     <TextBlock TextWrapping="WrapWholeWords">
                         <Run Text="By" /> <Hyperlink Click="UserHyperlink_Click">u/<Run Text="{x:Bind Author}" /></Hyperlink>
                     </TextBlock>
 
-                    <Border Visibility="{x:Bind IsModDistinguished, Converter={StaticResource BoolToVis}}" Background="ForestGreen" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="4,0">
+                    <Border Visibility="{x:Bind IsModDistinguished, Converter={StaticResource BoolToVis}}" Background="ForestGreen" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2">
                         <TextBlock Text="MOD" Foreground="White" />
                     </Border>
 
-                    <Border Visibility="{x:Bind IsAdminDistinguished, Converter={StaticResource BoolToVis}}" Background="OrangeRed" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="4,0">
+                    <Border Visibility="{x:Bind IsAdminDistinguished, Converter={StaticResource BoolToVis}}" Background="OrangeRed" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2">
                         <TextBlock Text="A" Foreground="White" />
                     </Border>
 
                     <TextBlock>
                         - Posted <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Post.Created, x:True)}" /> in <Hyperlink Click="SubredditHyperlink_Click">r/<Run Text="{x:Bind Subreddit}" /></Hyperlink>
                     </TextBlock>
-                </StackPanel>
+                </controls:WrapPanel>
 
                 <TextBlock
                     x:Phase="2"
@@ -406,7 +412,7 @@
 
                     <TextBlock Text="Pinned by moderators" />
                 </StackPanel>
-                
+
                 <StackPanel Spacing="2" Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center" TextWrapping="WrapWholeWords">
                         <Run Text="By" /> <Hyperlink Click="UserHyperlink_Click">u/<Run Text="{x:Bind Author}" /></Hyperlink>
@@ -435,7 +441,15 @@
                     Text="{x:Bind Title}"
                     TextWrapping="WrapWholeWords" />
 
-                <StackPanel Spacing="8" Orientation="Horizontal">
+                <controls:WrapPanel HorizontalSpacing="8" Orientation="Horizontal">
+                    <Border Visibility="{x:Bind Post.Listing.IsOriginalContent, Converter={StaticResource BoolToVis}}" Background="CornflowerBlue" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="0,4">
+                        <TextBlock Text="OC" Foreground="White" />
+                    </Border>
+
+                    <Border Visibility="{x:Bind Post.NSFW, Converter={StaticResource BoolToVis}}" Background="IndianRed" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="-2,4,0,4">
+                        <TextBlock Text="NSFW" Foreground="White" />
+                    </Border>
+                    
                     <Border Visibility="{x:Bind ShouldDisplayPostFlair, Converter={StaticResource BoolToVis}}" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="-2,4,0,4">
                         <Border.Background>
                             <SolidColorBrush Color="{x:Bind local:App.GetColorFromHex(Post.Listing.LinkFlairBackgroundColor)}" />
@@ -446,11 +460,7 @@
                             </TextBlock.Foreground>
                         </TextBlock>
                     </Border>
-
-                    <Border Visibility="{x:Bind Post.NSFW, Converter={StaticResource BoolToVis}}" Background="IndianRed" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="-2,4,0,4">
-                        <TextBlock Text="NSFW" Foreground="White" />
-                    </Border>
-                </StackPanel>
+                </controls:WrapPanel>
 
                 <controls:MarkdownTextBlock
                     Margin="0,5,0,0"

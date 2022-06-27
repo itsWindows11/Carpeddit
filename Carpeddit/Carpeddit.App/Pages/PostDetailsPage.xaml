@@ -104,8 +104,8 @@
                             Text="{x:Bind Post.Title}"
                             TextWrapping="WrapWholeWords" />
 
-                        <StackPanel Spacing="8" Orientation="Horizontal">
-                            <Border Visibility="{x:Bind Post.ShouldDisplayPostFlair, Converter={StaticResource BoolToVis}}" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="-2,4,0,4">
+                        <controls:WrapPanel HorizontalSpacing="8">
+                            <Border Visibility="{x:Bind Post.ShouldDisplayPostFlair, Converter={StaticResource BoolToVis}}" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="0,4">
                                 <Border.Background>
                                     <SolidColorBrush Color="{x:Bind local1:App.GetColorFromHex(Post.Post.Listing.LinkFlairBackgroundColor)}" />
                                 </Border.Background>
@@ -116,6 +116,10 @@
                                 </TextBlock>
                             </Border>
 
+                            <Border Visibility="{x:Bind Post.Post.Listing.IsOriginalContent, Converter={StaticResource BoolToVis}}" Background="CornflowerBlue" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="0,4">
+                                <TextBlock Text="OC" Foreground="White" />
+                            </Border>
+
                             <Border Visibility="{x:Bind Post.IsModDistinguished, Converter={StaticResource BoolToVis}}" Background="ForestGreen" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="0,4">
                                 <TextBlock Text="MOD" Foreground="White" />
                             </Border>
@@ -124,10 +128,10 @@
                                 <TextBlock Text="A" Foreground="White" />
                             </Border>
 
-                            <Border Visibility="{x:Bind Post.Post.NSFW, Converter={StaticResource BoolToVis}}" Background="IndianRed" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="-2,4,0,4">
+                            <Border Visibility="{x:Bind Post.Post.NSFW, Converter={StaticResource BoolToVis}}" Background="IndianRed" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="0,4">
                                 <TextBlock Text="NSFW" Foreground="White" />
                             </Border>
-                        </StackPanel>
+                        </controls:WrapPanel>
 
                         <controls:MarkdownTextBlock
                             Margin="0,5,0,0"
