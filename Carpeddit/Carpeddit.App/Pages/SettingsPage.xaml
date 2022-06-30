@@ -44,9 +44,18 @@
 
             <StackPanel Orientation="Horizontal" Spacing="8">
                 <TextBlock x:Name="VersionTextBlock" d:Text="Carpeddit, version 0.0.0.0" />
-                <TextBlock Text="(Alpha 4)" FontWeight="SemiBold" />
+                <TextBlock Text="(Beta 1)" FontWeight="SemiBold" />
             </StackPanel>
 
+            <TextBlock Text="Libraries used" FontWeight="SemiBold" />
+
+            <HyperlinkButton Content="WinUI" NavigateUri="https://github.com/microsoft/microsoft-ui-xaml" />
+            <HyperlinkButton Content="Windows Community Toolkit" NavigateUri="https://github.com/CommunityToolkit/WindowsCommunityToolkit" />
+            <HyperlinkButton Content="BracketPipe" NavigateUri="https://github.com/erdomke/BracketPipe" />
+            <HyperlinkButton Content="RtfPipe" NavigateUri="https://github.com/erdomke/RtfPipe" />
+            <HyperlinkButton Content="Json.NET" NavigateUri="https://www.newtonsoft.com/json" />
+            <HyperlinkButton Content="Reddit.NET" NavigateUri="https://github.com/microsoft/microsoft-ui-xaml" />
+            
             <TextBlock Text="© 2022 itsWindows11." />
         </StackPanel>
     </ScrollViewer>
