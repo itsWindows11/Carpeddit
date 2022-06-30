@@ -43,6 +43,40 @@ namespace Carpeddit.App.Pages
         private void SettingsPageLoaded(object sender, RoutedEventArgs e)
         {
             VersionTextBlock.Text = $"Carpeddit, version {string.Format("{0}.{1}.{2}.{3}", Package.Current.Id.Version.Major, Package.Current.Id.Version.Minor, Package.Current.Id.Version.Build, Package.Current.Id.Version.Revision)}";
+
+            var prefs = App.RedditClient.Account.Prefs();
+
+            NSFWResultsToggleSwitch.IsOn = prefs.SearchIncludeOver18;
+            CompactLinkToggleSwitch.IsOn = prefs.Compress;
+            ClickTrackingToggleSwitch.IsOn = prefs.AllowClickTracking;
+
+            NSFWResultsToggleSwitch.Toggled += NSFWResultsToggleSwitch_Toggled;
+            CompactLinkToggleSwitch.Toggled += CompactLinkToggleSwitch_Toggled;
+            ClickTrackingToggleSwitch.Toggled += ClickTrackingToggleSwitch_Toggled;
+        }
+
+        private async void NSFWResultsToggleSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            var prefs = App.RedditClient.Account.Prefs();
+            prefs.SearchIncludeOver18 = (sender as ToggleSwitch).IsOn;
+
+            _ = await App.RedditClient.Account.UpdatePrefsAsync(new Reddit.Things.AccountPrefsSubmit(prefs, null, prefs.Beta, null));
+        }
+
+        private async void CompactLinkToggleSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            var prefs = App.RedditClient.Account.Prefs();
+            prefs.Compress = (sender as ToggleSwitch).IsOn;
+
+            _ = await App.RedditClient.Account.UpdatePrefsAsync(new Reddit.Things.AccountPrefsSubmit(prefs, null, prefs.Beta, null));
+        }
+
+        private async void ClickTrackingToggleSwitch_Toggled(object sender, RoutedEventArgs e)
+        {
+            var prefs = App.RedditClient.Account.Prefs();
+            prefs.AllowClickTracking = (sender as ToggleSwitch).IsOn;
+
+            _ = await App.RedditClient.Account.UpdatePrefsAsync(new Reddit.Things.AccountPrefsSubmit(prefs, null, prefs.Beta, null));
         }
     }
 }
