@@ -326,10 +326,21 @@ namespace Carpeddit.App
 
         private async void LogoutFlyoutItem_Click(object sender, RoutedEventArgs e)
         {
-            await AccountController.LogOutAsync();
-            if (Window.Current.Content is Frame rootFrame)
+            ContentDialog dialog = new()
             {
-                rootFrame.Navigate(typeof(LoginPage));
+                Title = "Log out",
+                Content = "Are you sure that you want to log out?",
+                SecondaryButtonStyle = Resources["AccentButtonStyle"] as Style,
+                SecondaryButtonText = "Cancel",
+                PrimaryButtonText = "Log out"
+            };
+
+            var result = await dialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
+                await AccountController.LogOutAsync();
+                (Window.Current.Content as Frame).Navigate(typeof(LoginPage));
             }
         }
 
