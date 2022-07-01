@@ -51,6 +51,10 @@ namespace Carpeddit.App.Models
 
         public bool IsAdminDistinguished => Post.Listing.Distinguished == "admin";
 
+        public bool ArchivedOrLocked => Post.Listing.Archived || Post.Listing.Locked;
+
+        public bool NotArchivedOrLocked => !ArchivedOrLocked;
+
         public string ShortDescription
         {
             get
@@ -97,9 +101,12 @@ namespace Carpeddit.App.Models
                     {
                         var image1 = image.Value.OriginalImage;
 
-                        image1.Url = image1.Url.Replace("preview.redd.it", "i.redd.it");
+                        if (image1 != null)
+                        {
+                            image1.Url = image1.Url.Replace("preview.redd.it", "i.redd.it");
 
-                        images.Add(image1);
+                            images.Add(image1);
+                        }
                     }
                 }
 

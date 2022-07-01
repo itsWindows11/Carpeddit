@@ -36,6 +36,10 @@
 
         <ScrollViewer Grid.Row="1" Padding="66,0">
             <StackPanel>
+                <muxc:InfoBar MaxWidth="1200" IsOpen="{x:Bind Post.Post.Listing.Archived}" IsClosable="False" Title="This post has been archived" Severity="Warning" Message="You cannot submit new comments, vote or reply to this post." />
+
+                <muxc:InfoBar MaxWidth="1200" IsOpen="{x:Bind Post.Post.Listing.Locked}" IsClosable="False" Title="This post has been locked" Severity="Warning" Message="The moderators of this subreddit has locked this post, you cannot submit new comments, vote or reply to this post." />
+
                 <Grid
                     MaxWidth="1200"
                     Margin="0,4"
@@ -105,7 +109,7 @@
                             TextWrapping="WrapWholeWords" />
 
                         <controls:WrapPanel HorizontalSpacing="8">
-                            <Border Visibility="{x:Bind Post.ShouldDisplayPostFlair, Converter={StaticResource BoolToVis}}" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="0,4">
+                            <Border d:Visibility="Collapsed" Visibility="{x:Bind Post.ShouldDisplayPostFlair, Converter={StaticResource BoolToVis}}" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="0,4">
                                 <Border.Background>
                                     <SolidColorBrush Color="{x:Bind local1:App.GetColorFromHex(Post.Post.Listing.LinkFlairBackgroundColor)}" />
                                 </Border.Background>
@@ -192,10 +196,10 @@
                 <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" MaxWidth="1200" FontSize="16" Text="{x:Bind Post.CommentsCountInUI}" TextWrapping="WrapWholeWords" Margin="0,5" />
 
                 <StackPanel Spacing="8" MaxWidth="1200">
-                    <RichEditBox SelectionFlyout="{x:Null}" Height="100" AcceptsReturn="True" MaxHeight="600" Margin="0,12,0,0" PlaceholderText="Add a comment..." x:Name="CommentEditBox" />
-                    <Button Click="AddCommentButton_Click" Style="{ThemeResource AccentButtonStyle}" Content="Add" />
+                    <RichEditBox IsEnabled="{x:Bind Post.NotArchivedOrLocked}" SelectionFlyout="{x:Null}" Height="100" AcceptsReturn="True" MaxHeight="600" Margin="0,12,0,0" PlaceholderText="Add a comment..." x:Name="CommentEditBox" />
+                    <Button IsEnabled="{x:Bind Post.NotArchivedOrLocked}" Click="AddCommentButton_Click" Style="{ThemeResource AccentButtonStyle}" Content="Add" />
                 </StackPanel>
-
+                
                 <muxc:ProgressRing IsActive="True" x:Name="CommentProgress" />
 
                 <muxc:TreeView SelectionMode="None" AllowDrop="False" CanDragItems="False" CanReorderItems="False" x:Name="CommentsTree" MaxWidth="1200" Margin="0,12">
@@ -308,7 +312,7 @@
                                             </StackPanel>
 
                                             <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                                <HyperlinkButton Visibility="{x:Bind ShowReplyUI, Mode=OneWay, Converter={StaticResource BoolToVisReverse}}" Click="ReplyButton_Click" Padding="2" Content="Reply" />
+                                                <HyperlinkButton Visibility="{x:Bind ShowReplyUI, Mode=OneWay, Converter={StaticResource BoolToVisReverse}}" IsEnabled="{x:Bind NotArchivedOrLocked}" Click="ReplyButton_Click" Padding="2" Content="Reply" />
                                                 <HyperlinkButton Visibility="{x:Bind IsCurrentUserOP, Converter={StaticResource BoolToVis}}" Click="DeleteCommentButton_Click" Padding="2" Content="Delete" />
                                                 <HyperlinkButton Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}" Click="RemoveCommentButton_Click" Margin="4,0,0,0" Padding="2" Content="Remove" />
                                                 <Button Style="{StaticResource TransparentButton}" Padding="5,2">

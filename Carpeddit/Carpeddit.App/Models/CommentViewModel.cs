@@ -65,6 +65,11 @@ namespace Carpeddit.App.Models
             }
         }
 
+        public bool ArchivedOrLocked => OriginalComment.Listing.Archived || OriginalComment.Listing.Locked;
+
+        public bool NotArchivedOrLocked => !ArchivedOrLocked;
+        
+
         private CommentViewModel _parentComment;
 
         public CommentViewModel ParentComment
