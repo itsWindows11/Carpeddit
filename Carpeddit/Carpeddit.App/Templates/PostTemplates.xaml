@@ -5,7 +5,9 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:helpers="using:Carpeddit.App.Helpers"
     xmlns:local="using:Carpeddit.App"
-    xmlns:models="using:Carpeddit.App.Models" xmlns:templates="using:Carpeddit.App.Templates">
+    xmlns:models="using:Carpeddit.App.Models"
+    xmlns:templates="using:Carpeddit.App.Templates"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:redditthings="using:Reddit.Things">
 
     <DataTemplate x:Key="PlainPostTemplate" x:DataType="models:PostViewModel">
         <Grid
@@ -136,6 +138,18 @@
                     AutoPlay="False"
                     Margin="0,4,0,0"
                     AreTransportControlsEnabled="True" />
+
+                <FlipView 
+                    x:Name="Flip"
+                    Margin="0,4,0,0"
+                    x:Load="{x:Bind IsGallery}"
+                    ItemsSource="{x:Bind Images}">
+                    <FlipView.ItemTemplate>
+                        <DataTemplate x:DataType="redditthings:Image">
+                            <Image Source="{x:Bind Url}" />
+                        </DataTemplate>
+                    </FlipView.ItemTemplate>
+                </FlipView>
 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Margin="0,10,0,3" Text="{x:Bind CommentsCountInUI}" />
@@ -301,6 +315,18 @@
                         <BitmapImage DecodePixelType="Logical" UriSource="{x:Bind ImageUri}" />
                     </Image.Source>
                 </Image>
+
+                <FlipView 
+                    x:Name="Flip"
+                    Margin="0,4,0,0"
+                    x:Load="{x:Bind IsGallery}"
+                    ItemsSource="{x:Bind Images}">
+                    <FlipView.ItemTemplate>
+                        <DataTemplate x:DataType="redditthings:Image">
+                            <Image Source="{x:Bind Url}" />
+                        </DataTemplate>
+                    </FlipView.ItemTemplate>
+                </FlipView>
 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Margin="0,10,0,3" Text="{x:Bind CommentsCountInUI}" />
@@ -478,6 +504,18 @@
                         <BitmapImage DecodePixelType="Logical" UriSource="{x:Bind ImageUri}" />
                     </Image.Source>
                 </Image>
+
+                <FlipView 
+                    x:Name="Flip"
+                    Margin="0,4,0,0"
+                    x:Load="{x:Bind IsGallery}"
+                    ItemsSource="{x:Bind Images}">
+                    <FlipView.ItemTemplate>
+                        <DataTemplate x:DataType="redditthings:Image">
+                            <Image Source="{x:Bind Url}" />
+                        </DataTemplate>
+                    </FlipView.ItemTemplate>
+                </FlipView>
 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Margin="0,10,0,3" Text="{x:Bind CommentsCountInUI}" />

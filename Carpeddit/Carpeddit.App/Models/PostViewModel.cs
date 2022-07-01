@@ -1,4 +1,5 @@
 ﻿using Reddit.Controllers;
+using Reddit.Things;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,9 +17,9 @@ namespace Carpeddit.App.Models
 {
     public class PostViewModel : INotifyPropertyChanged
     {
-        private Post _post;
+        private Reddit.Controllers.Post _post;
 
-        public Post Post
+        public Reddit.Controllers.Post Post
         {
             get => _post;
             set
@@ -82,6 +83,30 @@ namespace Carpeddit.App.Models
             }
         }
 
+        public bool IsGallery => Post.Listing.IsGallery ?? false;
+
+        public List<Image> Images
+        {
+            get
+            {
+                List<Image> images = new();
+
+                if (Post.Listing.MediaMetadata != null)
+                {
+                    foreach (var image in Post.Listing.MediaMetadata)
+                    {
+                        var image1 = image.Value.OriginalImage;
+
+                        image1.Url = image1.Url.Replace("preview.redd.it", "i.redd.it");
+
+                        images.Add(image1);
+                    }
+                }
+
+                return images;
+            }
+        }
+
         public int CommentsCount { get; set; }
 
         public string CommentsCountInUI => $"{CommentsCount} comment(s)";
@@ -94,7 +119,7 @@ namespace Carpeddit.App.Models
 
                 bool isCurrentUserMod = App.RedditClient.Subreddit(Post.Subreddit).About().SubredditData.UserIsModerator ?? false;
 
-                foreach (Comment comment in Post.Comments.GetComments())
+                foreach (Reddit.Controllers.Comment comment in Post.Comments.GetComments())
                 {
                     CommentViewModel comment1 = new()
                     {
