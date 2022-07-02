@@ -32,7 +32,7 @@
             <SolidColorBrush x:Name="ColorBrushBg" Opacity="0.1" />
         </Grid.Background>
 
-        <!--<uc:CustomTitleBar Title="Post details" Visibility="{x:Bind _isNotSeparate, Mode=OneWay, Converter={StaticResource BoolToVis}}" />-->
+        <uc:CustomTitleBar Title="Post details" Visibility="{x:Bind _isNotSeparate, Mode=OneWay, Converter={StaticResource BoolToVis}}" />
 
         <ScrollViewer Grid.Row="1" Padding="66,0">
             <StackPanel>
