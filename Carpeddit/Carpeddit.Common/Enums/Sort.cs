@@ -13,6 +13,10 @@ namespace Carpeddit.Common.Enums
         Controversial,
         Hot,
         Rising,
-        Top
+        Top,
+        // Comments only
+        Random,
+        Old,
+        QA
     }
 }

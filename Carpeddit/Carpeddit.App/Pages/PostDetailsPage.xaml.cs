@@ -2,6 +2,7 @@
 using Carpeddit.App.Collections;
 using Carpeddit.App.Dialogs;
 using Carpeddit.App.Models;
+using Carpeddit.Common.Enums;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Reddit.Controllers;
 using Reddit.Models;
@@ -46,6 +47,14 @@ namespace Carpeddit.App.Pages
 
         bool _isNotSeparate;
 
+        Sort currentSort;
+        
+        SubSort currentSubSort;
+        
+        bool initialCommentsLoaded;
+        
+        bool sortQueued;
+
         public PostDetailsPage()
         {
             InitializeComponent();
@@ -53,7 +62,7 @@ namespace Carpeddit.App.Pages
             Loaded += PostDetailsPage_Loaded;
         }
 
-        private void PostDetailsPage_Loaded(object sender, RoutedEventArgs e)
+        private async void PostDetailsPage_Loaded(object sender, RoutedEventArgs e)
         {
             if (_isNotSeparate)
             {
@@ -72,22 +81,58 @@ namespace Carpeddit.App.Pages
             }
 
             CommentProgress.Visibility = Visibility.Visible;
+
+            commentsObservable.AddRange(await Post.GetCommentsAsync());
+
+            CommentsTree.ItemsSource = commentsObservable;
+            CommentProgress.Visibility = Visibility.Collapsed;
+
+            initialCommentsLoaded = true;
+
+            if (sortQueued)
+            {
+                sortQueued = false;
+                CommentProgress.Visibility = Visibility.Visible;
+                CommentsTree.Visibility = Visibility.Collapsed;
+
+                currentSort = SortCombo.SelectedItem as string switch
+                {
+                    "Best" => Sort.Best,
+                    "New" => Sort.New,
+                    "Rising" => Sort.Rising,
+                    "Top" => Sort.Top,
+                    "Controversial" => Sort.Controversial,
+                    "Old" => Sort.Old,
+                    "Random" => Sort.Random,
+                    "QA" => Sort.QA,
+                    _ => Sort.Hot,
+                };
+
+                if ((SortCombo.SelectedItem as string).Contains("Top"))
+                {
+                    currentSort = Sort.Top;
+                }
+                else if ((SortCombo.SelectedItem as string).Contains("Controversial"))
+                {
+                    currentSort = Sort.Controversial;
+                }
+
+                commentsObservable.Clear();
+
+                commentsObservable.AddRange(await Task.Run(async () => await Post.GetCommentsAsync(sortType: currentSort.ToString().ToLower())));
+
+                CommentProgress.Visibility = Visibility.Collapsed;
+                CommentsTree.Visibility = Visibility.Visible;
+            }
         }
 
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             Post = e.Parameter is PostViewModel ? e.Parameter as PostViewModel : (((PostViewModel, bool))e.Parameter).Item1;
             Subreddit = App.RedditClient.Subreddit(Post.Subreddit).About();
 
             _isNotSeparate = e.Parameter is (PostViewModel, bool) ? (((PostViewModel, bool))e.Parameter).Item2 : true;
-
-            System.Diagnostics.Debug.WriteLine(Subreddit.SubredditData.UserIsModerator);
-
-            commentsObservable.AddRange(await Post.GetCommentsAsync());
-
-            CommentsTree.ItemsSource = commentsObservable;
-            CommentProgress.Visibility = Visibility.Collapsed;
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -468,6 +513,60 @@ namespace Carpeddit.App.Pages
         private async void CrossPostButton_Click(object sender, RoutedEventArgs e)
         {
             _ = await new CrossPostDialog(((sender as FrameworkElement).DataContext as PostViewModel).Post).ShowAsync();
+        }
+
+        private async void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (initialCommentsLoaded)
+            {
+                sortQueued = false;
+                CommentProgress.Visibility = Visibility.Visible;
+                CommentsTree.Visibility = Visibility.Collapsed;
+
+                currentSort = e.AddedItems[0] as string switch
+                {
+                    "Best" => Sort.Best,
+                    "New" => Sort.New,
+                    "Rising" => Sort.Rising,
+                    "Top" => Sort.Top,
+                    "Controversial" => Sort.Controversial,
+                    "Old" => Sort.Old,
+                    "Random" => Sort.Random,
+                    "QA" => Sort.QA,
+                    _ => Sort.Hot,
+                };
+
+                if ((e.AddedItems[0] as string).Contains("Top"))
+                {
+                    currentSort = Sort.Top;
+                }
+                else if ((e.AddedItems[0] as string).Contains("Controversial"))
+                {
+                    currentSort = Sort.Controversial;
+                }
+
+                commentsObservable.Clear();
+
+                commentsObservable.AddRange(await Task.Run(async () => await Post.GetCommentsAsync(sortType: currentSort.ToString().ToLower())));
+
+                CommentProgress.Visibility = Visibility.Collapsed;
+                CommentsTree.Visibility = Visibility.Visible;
+            }
+            else sortQueued = true;
+        }
+
+        private async void RefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            CommentsTree.Visibility = Visibility.Collapsed;
+            CommentProgress.Visibility = Visibility.Visible;
+
+            commentsObservable.Clear();
+
+            commentsObservable.AddRange(await Post.GetCommentsAsync(sortType: currentSort.ToString().ToLower()));
+
+            CommentsTree.ItemsSource = commentsObservable;
+            CommentsTree.Visibility = Visibility.Visible;
+            CommentProgress.Visibility = Visibility.Collapsed;
         }
     }
 }

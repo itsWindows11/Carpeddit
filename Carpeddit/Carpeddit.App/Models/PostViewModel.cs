@@ -118,7 +118,7 @@ namespace Carpeddit.App.Models
 
         public string CommentsCountInUI => $"{CommentsCount} comment(s)";
 
-        public Task<ObservableCollection<CommentViewModel>> GetCommentsAsync()
+        public Task<ObservableCollection<CommentViewModel>> GetCommentsAsync(string sortType = "top")
         {
             return Task.Run(() =>
             {
@@ -126,7 +126,7 @@ namespace Carpeddit.App.Models
 
                 bool isCurrentUserMod = App.RedditClient.Subreddit(Post.Subreddit).About().SubredditData.UserIsModerator ?? false;
 
-                foreach (Reddit.Controllers.Comment comment in Post.Comments.GetComments())
+                foreach (Reddit.Controllers.Comment comment in Post.Comments.GetComments(sort: sortType))
                 {
                     CommentViewModel comment1 = new()
                     {

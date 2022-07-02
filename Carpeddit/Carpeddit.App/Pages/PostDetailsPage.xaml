@@ -32,7 +32,7 @@
             <SolidColorBrush x:Name="ColorBrushBg" Opacity="0.1" />
         </Grid.Background>
 
-        <uc:CustomTitleBar Title="Post details" Visibility="{x:Bind _isNotSeparate, Mode=OneWay, Converter={StaticResource BoolToVis}}" />
+        <!--<uc:CustomTitleBar Title="Post details" Visibility="{x:Bind _isNotSeparate, Mode=OneWay, Converter={StaticResource BoolToVis}}" />-->
 
         <ScrollViewer Grid.Row="1" Padding="66,0">
             <StackPanel>
@@ -199,7 +199,41 @@
                     <RichEditBox IsEnabled="{x:Bind Post.NotArchivedOrLocked}" SelectionFlyout="{x:Null}" Height="100" AcceptsReturn="True" MaxHeight="600" Margin="0,12,0,0" PlaceholderText="Add a comment..." x:Name="CommentEditBox" />
                     <Button IsEnabled="{x:Bind Post.NotArchivedOrLocked}" Click="AddCommentButton_Click" Style="{ThemeResource AccentButtonStyle}" Content="Add" />
                 </StackPanel>
-                
+
+                <Grid MaxWidth="1200" Margin="0,12,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="50" />
+                    </Grid.ColumnDefinitions>
+
+                    <RelativePanel>
+                        <TextBlock
+                            RelativePanel.AlignVerticalCenterWithPanel="True"
+                            FontWeight="SemiBold"
+                            Text="Sort" />
+
+                        <ComboBox
+                            x:Name="SortCombo"
+                            Margin="0,0,12,0"
+                            RelativePanel.AlignRightWithPanel="True"
+                            SelectedIndex="0"
+                            SelectionChanged="ComboBox_SelectionChanged">
+                            <x:String>Top</x:String>
+                            <x:String>Hot</x:String>
+                            <x:String>New</x:String>
+                            <x:String>Old</x:String>
+                            <x:String>Rising</x:String>
+                            <x:String>Controversial</x:String>
+                            <x:String>QA</x:String>
+                            <x:String>Random</x:String>
+                        </ComboBox>
+                    </RelativePanel>
+
+                    <Button Width="40" Height="32" Padding="4" Grid.Column="1" ToolTipService.ToolTip="Refresh" Click="RefreshButton_Click">
+                        <FontIcon Glyph="&#xE72C;" FontSize="14" />
+                    </Button>
+                </Grid>
+
                 <muxc:ProgressRing IsActive="True" x:Name="CommentProgress" />
 
                 <muxc:TreeView SelectionMode="None" AllowDrop="False" CanDragItems="False" CanReorderItems="False" x:Name="CommentsTree" MaxWidth="1200" Margin="0,12">
