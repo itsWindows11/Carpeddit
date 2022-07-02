@@ -21,7 +21,9 @@ namespace Carpeddit.App.Pages
         public Reddit.Controllers.Subreddit Subreddit;
         BulkConcurrentObservableCollection<PostViewModel> posts = new();
         Sort currentSort;
+        SubSort currentSubSort;
         bool initialPostsLoaded;
+        bool sortQueued;
 
         public SubredditPage()
         {
@@ -123,6 +125,54 @@ namespace Carpeddit.App.Pages
             ProgressR.Visibility = Visibility.Collapsed;
 
             initialPostsLoaded = true;
+
+            if (sortQueued)
+            {
+                ProgressR.Visibility = Visibility.Visible;
+                MainList.Visibility = Visibility.Collapsed;
+
+                currentSort = SortCombo.SelectedItem as string switch
+                {
+                    "Best" => Sort.Best,
+                    "New" => Sort.New,
+                    "Rising" => Sort.Rising,
+                    _ => Sort.Hot,
+                };
+
+                if ((SortCombo.SelectedItem as string).Contains("Top"))
+                {
+                    currentSort = Sort.Top;
+                }
+                else if ((SortCombo.SelectedItem as string).Contains("Controversial"))
+                {
+                    currentSort = Sort.Controversial;
+                }
+
+                currentSubSort = SortCombo.SelectedItem as string switch
+                {
+                    "Top (All)" => SubSort.TopAll,
+                    "Top (Year)" => SubSort.TopYear,
+                    "Top (Month)" => SubSort.TopMonth,
+                    "Top (Week)" => SubSort.TopWeek,
+                    "Top (Today)" => SubSort.TopToday,
+                    "Top (Hour)" => SubSort.TopHour,
+                    "Controversial (All)" => SubSort.ControversialAll,
+                    "Controversial (Year)" => SubSort.ControversialYear,
+                    "Controversial (Month)" => SubSort.ControversialMonth,
+                    "Controversial (Week)" => SubSort.ControversialWeek,
+                    "Controversial (Today)" => SubSort.ControversialToday,
+                    "Controversial (Hour)" => SubSort.ControversialHour,
+                    _ => SubSort.Default,
+                };
+
+                posts.Clear();
+
+                posts.AddRange(await Task.Run(() => GetPosts(sortType: currentSort, t: currentSubSort.ToString().Replace("Top", string.Empty).Replace("Controversial", string.Empty).ToLower())));
+
+                ProgressR.Visibility = Visibility.Collapsed;
+                MainList.Visibility = Visibility.Visible;
+                sortQueued = false;
+            }
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -142,14 +192,15 @@ namespace Carpeddit.App.Pages
             }
         }
 
-        private IEnumerable<PostViewModel> GetPosts(string after = "", int limit = 100, string before = "", Sort sortType = Sort.Hot)
+        private IEnumerable<PostViewModel> GetPosts(string after = "", int limit = 100, string before = "", string t = "all", Sort sortType = Sort.Hot)
         {
             List<Reddit.Controllers.Post> frontpage = sortType switch
             {
                 Sort.Best => Subreddit.Posts.GetBest(limit: limit, after: after, before: before),
-                Sort.Controversial => Subreddit.Posts.GetControversial(limit: limit, after: after, before: before),
+                Sort.Controversial => Subreddit.Posts.GetControversial(limit: limit, after: after, before: before, t: t),
                 Sort.New => Subreddit.Posts.GetNew(limit: limit, after: after, before: before),
                 Sort.Rising => Subreddit.Posts.GetRising(limit: limit, after: after, before: before),
+                Sort.Top => Subreddit.Posts.GetTop(limit: limit, after: after, before: before, t: t),
                 _ => Subreddit.Posts.GetHot(limit: limit, after: after, before: before),
             };
 
@@ -181,7 +232,7 @@ namespace Carpeddit.App.Pages
                 button.Visibility = Visibility.Collapsed;
                 FooterProgress.Visibility = Visibility.Visible;
 
-                var posts1 = await Task.Run(() => GetPosts(after: posts[posts.Count - 1].Post.Fullname));
+                var posts1 = await Task.Run(() => GetPosts(after: posts[posts.Count - 1].Post.Fullname, sortType: currentSort, t: currentSubSort.ToString().Replace("Top", string.Empty).Replace("Controversial", string.Empty).ToLower()));
 
                 posts.AddRange(posts1);
 
@@ -213,25 +264,51 @@ namespace Carpeddit.App.Pages
         {
             if (initialPostsLoaded)
             {
+                sortQueued = false;
                 ProgressR.Visibility = Visibility.Visible;
                 MainList.Visibility = Visibility.Collapsed;
 
                 currentSort = e.AddedItems[0] as string switch
                 {
                     "Best" => Sort.Best,
-                    "Controversial" => Sort.Controversial,
                     "New" => Sort.New,
                     "Rising" => Sort.Rising,
                     _ => Sort.Hot,
                 };
 
+                if ((e.AddedItems[0] as string).Contains("Top"))
+                {
+                    currentSort = Sort.Top;
+                }
+                else if ((e.AddedItems[0] as string).Contains("Controversial"))
+                {
+                    currentSort = Sort.Controversial;
+                }
+
+                currentSubSort = e.AddedItems[0] as string switch
+                {
+                    "Top (All)" => SubSort.TopAll,
+                    "Top (Year)" => SubSort.TopYear,
+                    "Top (Month)" => SubSort.TopMonth,
+                    "Top (Week)" => SubSort.TopWeek,
+                    "Top (Today)" => SubSort.TopToday,
+                    "Top (Hour)" => SubSort.TopHour,
+                    "Controversial (All)" => SubSort.ControversialAll,
+                    "Controversial (Year)" => SubSort.ControversialYear,
+                    "Controversial (Month)" => SubSort.ControversialMonth,
+                    "Controversial (Week)" => SubSort.ControversialWeek,
+                    "Controversial (Today)" => SubSort.ControversialToday,
+                    "Controversial (Hour)" => SubSort.ControversialHour,
+                    _ => SubSort.Default,
+                };
+
                 posts.Clear();
 
-                posts.AddRange(await Task.Run(() => GetPosts(sortType: currentSort)));
+                posts.AddRange(await Task.Run(() => GetPosts(sortType: currentSort, t: currentSubSort.ToString().Replace("Top", string.Empty).Replace("Controversial", string.Empty).ToLower())));
 
                 ProgressR.Visibility = Visibility.Collapsed;
                 MainList.Visibility = Visibility.Visible;
-            }
+            } else sortQueued = true;
         }
     }
 }

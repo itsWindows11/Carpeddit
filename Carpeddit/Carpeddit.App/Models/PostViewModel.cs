@@ -101,7 +101,7 @@ namespace Carpeddit.App.Models
                     {
                         var image1 = image.Value.OriginalImage;
 
-                        if (image1 != null)
+                        if (image1 != null && image1.Url != null)
                         {
                             image1.Url = image1.Url.Replace("preview.redd.it", "i.redd.it");
 

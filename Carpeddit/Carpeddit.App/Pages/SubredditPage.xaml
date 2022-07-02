@@ -110,15 +110,26 @@
                                 Text="Sort by" />
 
                             <ComboBox
+                                x:Name="SortCombo"
                                 Margin="0,0,12,0"
                                 RelativePanel.AlignRightWithPanel="True"
                                 SelectedIndex="0"
                                 SelectionChanged="ComboBox_SelectionChanged">
                                 <x:String>Hot</x:String>
-                                <x:String>Top</x:String>
                                 <x:String>New</x:String>
                                 <x:String>Rising</x:String>
-                                <x:String>Controversial</x:String>
+                                <x:String>Top (All)</x:String>
+                                <x:String>Top (Year)</x:String>
+                                <x:String>Top (Month)</x:String>
+                                <x:String>Top (Week)</x:String>
+                                <x:String>Top (Today)</x:String>
+                                <x:String>Top (Hour)</x:String>
+                                <x:String>Controversial (All)</x:String>
+                                <x:String>Controversial (Year)</x:String>
+                                <x:String>Controversial (Month)</x:String>
+                                <x:String>Controversial (Week)</x:String>
+                                <x:String>Controversial (Today)</x:String>
+                                <x:String>Controversial (Hour)</x:String>
                             </ComboBox>
                         </RelativePanel>
 

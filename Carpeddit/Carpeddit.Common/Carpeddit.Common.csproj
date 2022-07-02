@@ -126,6 +126,7 @@
     <Compile Include="Enums\ModQueueType.cs" />
     <Compile Include="Enums\PostType.cs" />
     <Compile Include="Enums\Sort.cs" />
+    <Compile Include="Enums\SubSort.cs" />
     <Compile Include="Other\Constants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Carpeddit.Common.rd.xml" />

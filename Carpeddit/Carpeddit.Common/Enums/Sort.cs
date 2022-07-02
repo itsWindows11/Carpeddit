@@ -12,6 +12,7 @@ namespace Carpeddit.Common.Enums
         Best,
         Controversial,
         Hot,
-        Rising
+        Rising,
+        Top
     }
 }
