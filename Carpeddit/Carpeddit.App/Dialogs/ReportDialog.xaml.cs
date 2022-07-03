@@ -10,9 +10,11 @@ namespace Carpeddit.App.Dialogs
         Post post;
         string reason;
         
-        public ReportDialog()
+        public ReportDialog(Post post)
         {
             InitializeComponent();
+
+            this.post = post;
         }
 
         private async void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
