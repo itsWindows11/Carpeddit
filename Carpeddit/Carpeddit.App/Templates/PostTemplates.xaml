@@ -7,7 +7,7 @@
     xmlns:local="using:Carpeddit.App"
     xmlns:models="using:Carpeddit.App.Models"
     xmlns:templates="using:Carpeddit.App.Templates"
-    xmlns:muxc="using:Microsoft.UI.Xaml.Controls" xmlns:redditthings="using:Reddit.Things">
+    xmlns:redditthings="using:Reddit.Things">
 
     <DataTemplate x:Key="PlainPostTemplate" x:DataType="models:PostViewModel">
         <Grid
@@ -142,6 +142,7 @@
                 <FlipView 
                     x:Name="Flip"
                     Margin="0,4,0,0"
+                    MaxHeight="650"
                     x:Load="{x:Bind IsGallery}"
                     ItemsSource="{x:Bind Images}">
                     <FlipView.ItemTemplate>
@@ -278,6 +279,7 @@
                     x:Phase="2"
                     PointerReleased="Title_PointerReleased"
                     Style="{StaticResource SubtitleTextBlockStyle}"
+                    Visibility="{x:Bind Post.Listing.IsSelf}"
                     Tag="{x:Bind}"
                     Text="{x:Bind Title}"
                     TextWrapping="WrapWholeWords" />
@@ -310,15 +312,25 @@
                 <Image
                     x:Name="ImagePost"
                     MaxWidth="500"
+                    Margin="0,4,0,0"
                     x:Load="{x:Bind HasImage}">
                     <Image.Source>
                         <BitmapImage DecodePixelType="Logical" UriSource="{x:Bind ImageUri}" />
                     </Image.Source>
                 </Image>
 
+                <MediaPlayerElement 
+                    x:Name="MediaRedditPlayer"
+                    x:Load="{x:Bind Post.Listing.IsVideo}"
+                    Source="{x:Bind VideoSource}"
+                    AutoPlay="False"
+                    Margin="0,4,0,0"
+                    AreTransportControlsEnabled="True" />
+
                 <FlipView 
                     x:Name="Flip"
                     Margin="0,4,0,0"
+                    MaxHeight="650"
                     x:Load="{x:Bind IsGallery}"
                     ItemsSource="{x:Bind Images}">
                     <FlipView.ItemTemplate>
@@ -492,6 +504,7 @@
                     Margin="0,5,0,0"
                     x:Phase="1"
                     Background="Transparent"
+                    Visibility="{x:Bind Post.Listing.IsSelf}"
                     LinkClicked="MarkdownLinkClicked"
                     Text="{x:Bind ShortDescription}"
                     TextWrapping="WrapWholeWords" />
@@ -499,15 +512,25 @@
                 <Image
                     x:Name="ImagePost"
                     MaxWidth="500"
+                    Margin="0,4,0,0"
                     x:Load="{x:Bind HasImage}">
                     <Image.Source>
                         <BitmapImage DecodePixelType="Logical" UriSource="{x:Bind ImageUri}" />
                     </Image.Source>
                 </Image>
 
+                <MediaPlayerElement 
+                    x:Name="MediaRedditPlayer"
+                    x:Load="{x:Bind Post.Listing.IsVideo}"
+                    Source="{x:Bind VideoSource}"
+                    AutoPlay="False"
+                    Margin="0,4,0,0"
+                    AreTransportControlsEnabled="True" />
+
                 <FlipView 
                     x:Name="Flip"
                     Margin="0,4,0,0"
+                    MaxHeight="650"
                     x:Load="{x:Bind IsGallery}"
                     ItemsSource="{x:Bind Images}">
                     <FlipView.ItemTemplate>
