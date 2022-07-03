@@ -192,7 +192,7 @@
                                 <AutoSuggestBox PlaceholderText="Search" QueryIcon="Find" QuerySubmitted="OnSearchBoxQuerySubmitted" />
 
                                 <StackPanel Orientation="Horizontal" Spacing="8">
-                                    <Button>
+                                    <Button Click="OnCreatePostButtonClick">
                                         <StackPanel Orientation="Horizontal" Spacing="8">
                                             <FontIcon FontSize="14" Glyph="&#xE109;" />
                                             <TextBlock Text="Create a Post" />

@@ -31,7 +31,7 @@
                 </controls:SettingsBlockControl.SettingsActionableElement>
             </controls:SettingsBlockControl>
 
-            <controls:SettingsBlockControl Title="Subreddit">
+            <controls:SettingsBlockControl Title="Subreddit" x:Name="SubredditContainer">
                 <controls:SettingsBlockControl.SettingsActionableElement>
                     <ComboBox
                         x:Name="SubredditComboBox"

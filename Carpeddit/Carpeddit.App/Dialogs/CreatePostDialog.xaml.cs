@@ -12,17 +12,23 @@ namespace Carpeddit.App.Dialogs
         private Subreddit _subreddit;
         private bool _fullyLoaded;
 
-        public CreatePostDialog(PostType postType = PostType.Self)
+        public CreatePostDialog(PostType postType = PostType.Self, Subreddit subreddit = null)
         {
             InitializeComponent();
 
             _postType = postType;
+            _subreddit = subreddit;
 
             Loaded += CreatePostDialog_Loaded;
         }
 
         private async void CreatePostDialog_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
+            if (_subreddit != null)
+            {
+                SubredditContainer.Visibility = Windows.UI.Xaml.Visibility.Collapsed;
+            }
+            
             SubredditComboBox.ItemsSource = await Task.Run(() => App.RedditClient.Account.MySubscribedSubreddits(limit: 100));
             _subreddit ??= SubredditComboBox.Items[0] as Subreddit;
 
@@ -36,6 +42,8 @@ namespace Carpeddit.App.Dialogs
 
         private async void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
         {
+            var deferral = args.GetDeferral();
+            
             if (_fullyLoaded)
             {
                 try
@@ -70,6 +78,7 @@ namespace Carpeddit.App.Dialogs
                 {
 
                 }
+                deferral?.Complete();
             }
         }
 

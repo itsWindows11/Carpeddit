@@ -314,7 +314,12 @@ namespace Carpeddit.App.Pages
 
         private async void OnSearchBoxQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            await new SubredditSearchDialog(Subreddit.Name, sender.Text).ShowAsync();
+            _ = await new SubredditSearchDialog(Subreddit.Name, sender.Text).ShowAsync();
+        }
+
+        private async void OnCreatePostButtonClick(object sender, RoutedEventArgs e)
+        {
+            _ = await new CreatePostDialog(subreddit: Subreddit).ShowAsync();
         }
     }
 }
