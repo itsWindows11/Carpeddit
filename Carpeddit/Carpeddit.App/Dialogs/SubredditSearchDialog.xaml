@@ -12,14 +12,24 @@
     mc:Ignorable="d">
 
     <StackPanel Spacing="12">
-        <AutoSuggestBox d:PlaceholderText="Search r/Carpeddit" QueryIcon="Find" />
+        <AutoSuggestBox
+            x:Name="SuggestBox"
+            d:PlaceholderText="Search r/Carpeddit"
+            QueryIcon="Find"
+            QuerySubmitted="OnSuggestBoxQuerySubmitted" />
 
         <muxc:ProgressRing
             x:Name="PostsLoadingProgress"
             Width="20"
-            Height="20" />
+            Height="20"
+            IsActive="True" />
 
-        <ListView x:Name="PostsList" ItemTemplate="{StaticResource SubredditPostTemplate}">
+        <ListView
+            x:Name="PostsList"
+            Width="500"
+            Height="500"
+            ItemTemplate="{StaticResource SubredditPostTemplate}"
+            SelectionMode="None">
             <ListView.Footer>
                 <Grid>
                     <muxc:ProgressRing

@@ -21,17 +21,21 @@ namespace Carpeddit.App.Dialogs
             this.subredditName = subredditName;
             this.query = query;
             posts = new();
+            SuggestBox.PlaceholderText = "Search r/" + subredditName;
+            SuggestBox.Text = query; 
             Loaded += SubredditSearchDialog_Loaded;
         }
 
         private async void SubredditSearchDialog_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
+            PostsList.Visibility = Visibility.Collapsed;
             PostsLoadingProgress.Visibility = Visibility.Visible;
             
             posts.AddRange(await Task.Run(() => GetPosts()));
             PostsList.ItemsSource = posts;
 
             PostsLoadingProgress.Visibility = Visibility.Collapsed;
+            PostsList.Visibility = Visibility.Visible;
         }
 
         public IEnumerable<PostViewModel> GetPosts(string before = "", string after = "")
@@ -68,6 +72,21 @@ namespace Carpeddit.App.Dialogs
                 button.Visibility = Visibility.Visible;
                 FooterProgress.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private async void OnSuggestBoxQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            query = sender.Text;
+
+            PostsList.Visibility = Visibility.Collapsed;
+            PostsLoadingProgress.Visibility = Visibility.Visible;
+
+            posts.Clear();
+            posts.AddRange(await Task.Run(() => GetPosts()));
+            PostsList.ItemsSource = posts;
+
+            PostsLoadingProgress.Visibility = Visibility.Collapsed;
+            PostsList.Visibility = Visibility.Visible;
         }
     }
 }
