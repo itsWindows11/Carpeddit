@@ -1,4 +1,5 @@
 ﻿using Carpeddit.App.Collections;
+using Carpeddit.App.Dialogs;
 using Carpeddit.App.Helpers;
 using Carpeddit.App.Models;
 using Carpeddit.Common.Enums;
@@ -309,6 +310,11 @@ namespace Carpeddit.App.Pages
                 ProgressR.Visibility = Visibility.Collapsed;
                 MainList.Visibility = Visibility.Visible;
             } else sortQueued = true;
+        }
+
+        private async void OnSearchBoxQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            await new SubredditSearchDialog(Subreddit.Name, sender.Text).ShowAsync();
         }
     }
 }

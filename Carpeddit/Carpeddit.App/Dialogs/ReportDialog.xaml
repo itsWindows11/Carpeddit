@@ -1,0 +1,26 @@
+﻿<ContentDialog
+    x:Class="Carpeddit.App.Dialogs.ReportDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Carpeddit.App.Dialogs"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Report"
+    Style="{ThemeResource DefaultContentDialogStyle}"
+    PrimaryButtonStyle="{ThemeResource AccentButtonStyle}"
+    PrimaryButtonText="OK"
+    SecondaryButtonText="Cancel"
+    PrimaryButtonClick="ContentDialog_PrimaryButtonClick"
+    SecondaryButtonClick="ContentDialog_SecondaryButtonClick">
+
+    <StackPanel>
+        <RadioButton IsChecked="True" Checked="RadioButton_Checked" GroupName="ReportGroup" Content="Breaks subreddit rules" />
+        <RadioButton Checked="RadioButton_Checked" GroupName="ReportGroup" Content="Harassment" />
+        <RadioButton Checked="RadioButton_Checked" GroupName="ReportGroup" Content="Threatening violence" />
+        <RadioButton Checked="RadioButton_Checked" GroupName="ReportGroup" Content="Hate" />
+        <RadioButton Checked="RadioButton_Checked" GroupName="ReportGroup" Content="Impersonation" />
+        <RadioButton Checked="RadioButton_Checked" GroupName="ReportGroup" Content="Spam" />
+        <RadioButton Checked="RadioButton_Checked" GroupName="ReportGroup" Content="Misinformation" />
+    </StackPanel>
+</ContentDialog>

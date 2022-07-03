@@ -1,0 +1,42 @@
+﻿<ContentDialog
+    x:Class="Carpeddit.App.Dialogs.SubredditSearchDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Carpeddit.App.Dialogs"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    Title="Search Results"
+    PrimaryButtonText="OK"
+    Style="{ThemeResource DefaultContentDialogStyle}"
+    mc:Ignorable="d">
+
+    <StackPanel Spacing="12">
+        <AutoSuggestBox d:PlaceholderText="Search r/Carpeddit" QueryIcon="Find" />
+
+        <muxc:ProgressRing
+            x:Name="PostsLoadingProgress"
+            Width="20"
+            Height="20" />
+
+        <ListView x:Name="PostsList" ItemTemplate="{StaticResource SubredditPostTemplate}">
+            <ListView.Footer>
+                <Grid>
+                    <muxc:ProgressRing
+                        x:Name="FooterProgress"
+                        Margin="0,5"
+                        HorizontalAlignment="Center"
+                        IsActive="True"
+                        Visibility="Collapsed" />
+                    <Button
+                        x:Name="LoadMoreButton"
+                        Margin="0,5,0,0"
+                        HorizontalAlignment="Center"
+                        Click="Button_Click"
+                        Content="Load more"
+                        Style="{StaticResource AccentButtonStyle}" />
+                </Grid>
+            </ListView.Footer>
+        </ListView>
+    </StackPanel>
+</ContentDialog>
