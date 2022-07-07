@@ -44,13 +44,24 @@ namespace Carpeddit.App
             InitializeComponent();
             Suspending += OnSuspending;
 
-            //UnhandledException += App_UnhandledException;
+            UnhandledException += App_UnhandledException;
             //AppDomain.CurrentDomain.UnhandledException += AppDomain_UnhandledException;
         }
 
         private void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
-            
+            e.Handled = true;
+
+            ContentDialog dialog = new()
+            {
+                Title = "An error occurred",
+                Content = "Something happened and we couldn't process your request. Try again later.",
+                PrimaryButtonText = "OK",
+                SecondaryButtonText = "Report",
+                PrimaryButtonStyle = Resources["AccentButtonStyle"] as Style
+            };
+
+            _ = dialog.ShowAsync();
         }
 
         private void AppDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)

@@ -233,10 +233,10 @@ namespace Carpeddit.App.Templates
         {
             _ = await new CrossPostDialog(((sender as FrameworkElement).DataContext as PostViewModel).Post).ShowAsync();
         }
-
+        
         private async void OnReportButtonClick(object sender, RoutedEventArgs e)
         {
-            await new ReportDialog((e.OriginalSource as FrameworkElement).DataContext as PostViewModel).ShowAsync();
+            await new ReportDialog(((sender as FrameworkElement).DataContext as PostViewModel).Post).ShowAsync();
         }
     }
 }
