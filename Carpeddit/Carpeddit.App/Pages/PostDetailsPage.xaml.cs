@@ -49,8 +49,6 @@ namespace Carpeddit.App.Pages
 
         Sort currentSort;
         
-        SubSort currentSubSort;
-        
         bool initialCommentsLoaded;
         
         bool sortQueued;
