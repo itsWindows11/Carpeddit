@@ -50,7 +50,7 @@
                 </uc:SettingsBlockControl.ExpandableContent>
             </uc:SettingsBlockControl>
 
-            <uc:SettingsBlockControl Title="Reddit preferences">
+            <uc:SettingsBlockControl x:Name="RedditPrefsExpander" Title="Reddit preferences">
                 <uc:SettingsBlockControl.ExpandableContent>
                     <StackPanel Padding="12" Spacing="4">
                         <TextBlock

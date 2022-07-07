@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.System;
 using Windows.UI;
@@ -54,11 +55,7 @@ namespace Carpeddit.App
             coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
             coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged;
 
-            if (App.RedditClient != null)
-            {
-                YourProfileItem.Content = App.RedditClient.Account.GetMe().UserData.Name;
-                Pfp.Source = new BitmapImage(new Uri(AccountController.GetImageUrl(App.RedditClient.Account.Me.UserData), UriKind.Absolute));
-            }
+            Loaded += OnMainPageLoaded;
 
             App.SViewModel.PropertyChanged += (s, e) =>
             {
@@ -78,6 +75,15 @@ namespace Carpeddit.App
                     }
                 }
             };
+        }
+
+        private async void OnMainPageLoaded(object sender, RoutedEventArgs e)
+        {
+            if (App.RedditClient != null)
+            {
+                YourProfileItem.Content = await Task.Run(() => App.RedditClient.Account.Me.UserData.Name);
+                Pfp.Source = new BitmapImage(new Uri(await Task.Run(() => AccountController.GetImageUrl(App.RedditClient.Account.Me.UserData)), UriKind.Absolute));
+            }
         }
 
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)

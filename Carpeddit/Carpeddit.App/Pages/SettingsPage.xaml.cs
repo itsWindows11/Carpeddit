@@ -53,7 +53,7 @@ namespace Carpeddit.App.Pages
                 ClickTrackingToggleSwitch.IsOn = prefs.AllowClickTracking;
             } catch
             {
-
+                RedditPrefsExpander.IsEnabled = false;
             }
 
             NSFWResultsToggleSwitch.Toggled += NSFWResultsToggleSwitch_Toggled;
