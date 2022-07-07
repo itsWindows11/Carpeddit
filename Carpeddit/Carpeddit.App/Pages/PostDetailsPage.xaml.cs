@@ -119,7 +119,7 @@ namespace Carpeddit.App.Pages
 
                 commentsObservable.Clear();
 
-                commentsObservable.AddRange(await Task.Run(async () => await Post.GetCommentsAsync(sortType: currentSort.ToString().ToLower())));
+                commentsObservable.AddRange(await Post.GetCommentsAsync(sortType: currentSort.ToString().ToLower()));
 
                 CommentProgress.Visibility = Visibility.Collapsed;
                 CommentsTree.Visibility = Visibility.Visible;
@@ -547,7 +547,7 @@ namespace Carpeddit.App.Pages
 
                 commentsObservable.Clear();
 
-                commentsObservable.AddRange(await Task.Run(async () => await Post.GetCommentsAsync(sortType: currentSort.ToString().ToLower())));
+                commentsObservable.AddRange(await Post.GetCommentsAsync(sortType: currentSort.ToString().ToLower()));
 
                 CommentProgress.Visibility = Visibility.Collapsed;
                 CommentsTree.Visibility = Visibility.Visible;
