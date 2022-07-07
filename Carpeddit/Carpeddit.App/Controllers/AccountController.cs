@@ -48,7 +48,7 @@ namespace Carpeddit.App.Controllers
             await App.AccDBController.UpdateAsync(null);
         }
 
-        public static async Task<AuthViewModel> TryGetTokenInfoAsync(string code)
+        public static async Task<CustomAccountModel> TryGetTokenInfoAsync(string code)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace Carpeddit.App.Controllers
 
                 */
 
-                return await GetResultAsync<AuthViewModel>(msg);
+                return await GetResultAsync<CustomAccountModel>(msg);
             } catch (Exception e)
             {
                 Debug.WriteLine(e.Message);

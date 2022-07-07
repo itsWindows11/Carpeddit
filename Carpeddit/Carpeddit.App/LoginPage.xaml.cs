@@ -46,15 +46,9 @@ namespace Carpeddit.App
             {
                 string oneTimeCode = HttpUtility.ParseQueryString(args.Uri.Query).Get("code");
 
-                AuthViewModel tokenInfo = await AccountController.TryGetTokenInfoAsync(oneTimeCode);
-
-                CustomAccountModel account = new();
-
-                account.AccessToken = tokenInfo?.AccessToken;
-                account.RefreshToken = tokenInfo?.RefreshToken;
-                account.Scope = tokenInfo?.Scope;
-                account.TokenExpiresIn = tokenInfo?.ExpiresIn;
+                CustomAccountModel account = await AccountController.TryGetTokenInfoAsync(oneTimeCode);
                 account.LoggedIn = true;
+                
                 App.RedditClient = new RedditClient(Constants.ClientId, account.RefreshToken, Constants.ClientSecret);
 
                 await App.AccDBController.UpdateAsync(account);
