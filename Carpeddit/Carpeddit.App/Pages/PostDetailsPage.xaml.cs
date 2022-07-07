@@ -552,7 +552,7 @@ namespace Carpeddit.App.Pages
                 CommentProgress.Visibility = Visibility.Collapsed;
                 CommentsTree.Visibility = Visibility.Visible;
             }
-            else sortQueued = true;
+            else sortQueued = !initialCommentsLoaded;
         }
 
         private async void RefreshButton_Click(object sender, RoutedEventArgs e)
