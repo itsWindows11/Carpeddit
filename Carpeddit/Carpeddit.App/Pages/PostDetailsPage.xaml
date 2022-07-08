@@ -209,7 +209,7 @@
                                             </MenuFlyoutItem.Icon>
                                         </MenuFlyoutItem>
 
-                                        <MenuFlyoutItem Text="Copy link" Click="CopyLinkButton_Click">
+                                        <MenuFlyoutItem Text="Copy link" Click="CopyLinkButton1_Click">
                                             <MenuFlyoutItem.Icon>
                                                 <FontIcon Glyph="&#xE16F;" />
                                             </MenuFlyoutItem.Icon>
@@ -226,19 +226,19 @@
                                 Delete
                             </HyperlinkButton>
 
-                            <HyperlinkButton IsEnabled="{x:Bind local1:App.OppositeOf(Post.Post.Listing.Removed)}" Visibility="{x:Bind Post.Post.Listing.SrDetail.UserIsModerator, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="RemovePostButton_Click" Margin="4,0,0,-6" Padding="2">
+                            <HyperlinkButton IsEnabled="{x:Bind local1:App.OppositeOf(Post.Post.Listing.Removed)}" Visibility="{Binding Subreddit.SubredditData.UserIsModerator, ElementName=RootPage, Converter={StaticResource BoolToVis}}" Click="RemovePostButton_Click" Margin="4,0,0,-6" Padding="2">
                                 Remove
                             </HyperlinkButton>
 
-                            <HyperlinkButton IsEnabled="{x:Bind local1:App.OppositeOf(Post.Post.Listing.Approved)}" Visibility="{x:Bind Post.Post.Listing.SrDetail.UserIsModerator, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="ApproveButton_Click" Margin="4,0,0,-6" Padding="2">
+                            <HyperlinkButton IsEnabled="{x:Bind local1:App.OppositeOf(Post.Post.Listing.Approved)}" Visibility="{Binding Subreddit.SubredditData.UserIsModerator, ElementName=RootPage, Converter={StaticResource BoolToVis}}" Click="ApproveButton_Click" Margin="4,0,0,-6" Padding="2">
                                 Approve
                             </HyperlinkButton>
 
-                            <HyperlinkButton IsEnabled="{x:Bind local1:App.OppositeOf(Post.Post.Listing.Spam)}" Visibility="{x:Bind Post.Post.Listing.SrDetail.UserIsModerator, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="SpamButton_Click" Margin="4,0,0,-6" Padding="2">
+                            <HyperlinkButton IsEnabled="{x:Bind local1:App.OppositeOf(Post.Post.Listing.Spam)}" Visibility="{Binding Subreddit.SubredditData.UserIsModerator, ElementName=RootPage, Converter={StaticResource BoolToVis}}" Click="SpamButton_Click" Margin="4,0,0,-6" Padding="2">
                                 Spam
                             </HyperlinkButton>
 
-                            <HyperlinkButton IsEnabled="{x:Bind local1:App.OppositeOf(Post.Post.Listing.Stickied)}" Visibility="{x:Bind Post.Post.Listing.SrDetail.UserIsModerator, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="PinButton_Click" Margin="4,0,0,-6" Padding="2">
+                            <HyperlinkButton IsEnabled="{x:Bind local1:App.OppositeOf(Post.Post.Listing.Stickied)}" Visibility="{Binding Subreddit.SubredditData.UserIsModerator, ElementName=RootPage, Converter={StaticResource BoolToVis}}" Click="PinButton_Click" Margin="4,0,0,-6" Padding="2">
                                 Pin
                             </HyperlinkButton>
 

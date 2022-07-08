@@ -41,7 +41,7 @@ namespace Carpeddit.App.Pages
     {
         PostViewModel Post;
 
-        Subreddit Subreddit;
+        public Subreddit Subreddit { get; set; }
 
         BulkConcurrentObservableCollection<CommentViewModel> commentsObservable = new();
 
