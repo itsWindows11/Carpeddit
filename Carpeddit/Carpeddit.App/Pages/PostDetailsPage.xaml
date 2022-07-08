@@ -412,11 +412,14 @@
                                                 <Button Click="ReplyCommentButton_Click" Style="{ThemeResource AccentButtonStyle}" Content="Send" />
                                             </StackPanel>
 
-                                            <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                                <HyperlinkButton Visibility="{x:Bind ShowReplyUI, Mode=OneWay, Converter={StaticResource BoolToVisReverse}}" IsEnabled="{x:Bind NotArchivedOrLocked}" Click="ReplyButton_Click" Padding="2" Content="Reply" />
-                                                <HyperlinkButton Visibility="{x:Bind IsCurrentUserOP, Converter={StaticResource BoolToVis}}" Click="DeleteCommentButton_Click" Padding="2" Content="Delete" />
-                                                <HyperlinkButton Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}" Click="RemoveCommentButton_Click" Margin="4,0,0,0" Padding="2" Content="Remove" />
-                                                <Button Style="{StaticResource TransparentButton}" Padding="5,2">
+                                            <RelativePanel>
+                                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                                    <HyperlinkButton Visibility="{x:Bind ShowReplyUI, Mode=OneWay, Converter={StaticResource BoolToVisReverse}}" IsEnabled="{x:Bind NotArchivedOrLocked}" Click="ReplyButton_Click" Padding="2" Content="Reply" />
+                                                    <HyperlinkButton Visibility="{x:Bind IsCurrentUserOP, Converter={StaticResource BoolToVis}}" Click="DeleteCommentButton_Click" Padding="2" Content="Delete" />
+                                                    <HyperlinkButton Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}" Click="RemoveCommentButton_Click" Margin="4,0,0,0" Padding="2" Content="Remove" />
+                                                </StackPanel>
+
+                                                <Button RelativePanel.AlignRightWithPanel="True" Style="{StaticResource TransparentButton}" Padding="5,2" Margin="0,0,8,0">
                                                     <FontIcon Glyph="&#xE10C;" />
 
                                                     <Button.Flyout>
@@ -471,7 +474,7 @@
                                                         </MenuFlyout>
                                                     </Button.Flyout>
                                                 </Button>
-                                            </StackPanel>
+                                            </RelativePanel>
                                         </StackPanel>
                                     </Grid>
                                 </muxc:TreeViewItem.Content>
