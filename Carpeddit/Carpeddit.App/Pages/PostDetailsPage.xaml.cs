@@ -222,38 +222,36 @@ namespace Carpeddit.App.Pages
         private async void UpvoteButton_Click(object sender, RoutedEventArgs e)
         {
             ToggleButton toggle = sender as ToggleButton;
-            PostViewModel post = toggle.Tag as PostViewModel;
 
             if (toggle.IsChecked ?? false)
             {
-                await post.Post.UpvoteAsync();
-                post.Upvoted = true;
-                post.Downvoted = false;
+                await Post.Post.UpvoteAsync();
+                Post.Upvoted = true;
+                Post.Downvoted = false;
             }
             else
             {
-                await post.Post.UnvoteAsync();
-                post.Upvoted = false;
-                post.Downvoted = false;
+                await Post.Post.UnvoteAsync();
+                Post.Upvoted = false;
+                Post.Downvoted = false;
             }
         }
 
         private async void DownvoteButton_Click(object sender, RoutedEventArgs e)
         {
             ToggleButton toggle = sender as ToggleButton;
-            PostViewModel post = toggle.Tag as PostViewModel;
 
             if (toggle.IsChecked ?? false)
             {
-                await post.Post.DownvoteAsync();
-                post.Upvoted = false;
-                post.Downvoted = true;
+                await Post.Post.DownvoteAsync();
+                Post.Upvoted = false;
+                Post.Downvoted = true;
             }
             else
             {
-                await post.Post.UnvoteAsync();
-                post.Upvoted = false;
-                post.Downvoted = false;
+                await Post.Post.UnvoteAsync();
+                Post.Upvoted = false;
+                Post.Downvoted = false;
             }
         }
 
@@ -307,73 +305,61 @@ namespace Carpeddit.App.Pages
 
         private void SubredditHyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
         {
-            string text = (sender.Inlines[1] as Windows.UI.Xaml.Documents.Run).Text;
+            string text = (sender.Inlines[0] as Windows.UI.Xaml.Documents.Run).Text;
             if (Window.Current.Content is Frame rootFrame)
             {
-                rootFrame.Navigate(typeof(SubredditPage), App.RedditClient.Subreddit(text).About());
+                rootFrame.Navigate(typeof(SubredditPage), App.RedditClient.Subreddit(text.Replace("r/", "")).About());
             }
         }
 
         private async void RemovePostButton_Click(object sender, RoutedEventArgs e)
         {
-            if ((sender as FrameworkElement).DataContext is PostViewModel post)
-            {
-                await post.Post.RemoveAsync();
+            await Post.Post.RemoveAsync();
 
-                (sender as HyperlinkButton).Content = "Removed";
-                (sender as HyperlinkButton).IsEnabled = false;
+            (sender as HyperlinkButton).Content = "Removed";
+            (sender as HyperlinkButton).IsEnabled = false;
 
-                (((sender as HyperlinkButton).Parent as StackPanel).Children[5] as HyperlinkButton).Content = "Approve";
-                (((sender as HyperlinkButton).Parent as StackPanel).Children[5] as HyperlinkButton).IsEnabled = true;
+            (((sender as HyperlinkButton).Parent as StackPanel).Children[5] as HyperlinkButton).Content = "Approve";
+            (((sender as HyperlinkButton).Parent as StackPanel).Children[5] as HyperlinkButton).IsEnabled = true;
 
-                (((sender as HyperlinkButton).Parent as StackPanel).Children[6] as HyperlinkButton).Content = "Spam";
-                (((sender as HyperlinkButton).Parent as StackPanel).Children[6] as HyperlinkButton).IsEnabled = true;
-            }
+            (((sender as HyperlinkButton).Parent as StackPanel).Children[6] as HyperlinkButton).Content = "Spam";
+            (((sender as HyperlinkButton).Parent as StackPanel).Children[6] as HyperlinkButton).IsEnabled = true;
         }
 
         private async void RemoveUserPostButton_Click(object sender, RoutedEventArgs e)
         {
-            if ((sender as FrameworkElement).DataContext is PostViewModel post)
-            {
-                await post.Post.DeleteAsync();
+            await Post.Post.DeleteAsync();
 
-                (sender as HyperlinkButton).Content = "Deleted";
-                (sender as HyperlinkButton).IsEnabled = false;
-            }
+            (sender as HyperlinkButton).Content = "Deleted";
+            (sender as HyperlinkButton).IsEnabled = false;
         }
 
         private void ApproveButton_Click(object sender, RoutedEventArgs e)
         {
-            if ((sender as FrameworkElement).DataContext is PostViewModel post)
-            {
-                post.Post.Approve();
+            Post.Post.Approve();
 
-                (sender as HyperlinkButton).Content = "Approved";
-                (sender as HyperlinkButton).IsEnabled = false;
+            (sender as HyperlinkButton).Content = "Approved";
+            (sender as HyperlinkButton).IsEnabled = false;
 
-                (((sender as HyperlinkButton).Parent as StackPanel).Children[4] as HyperlinkButton).Content = "Remove";
-                (((sender as HyperlinkButton).Parent as StackPanel).Children[4] as HyperlinkButton).IsEnabled = true;
+            (((sender as HyperlinkButton).Parent as StackPanel).Children[4] as HyperlinkButton).Content = "Remove";
+            (((sender as HyperlinkButton).Parent as StackPanel).Children[4] as HyperlinkButton).IsEnabled = true;
 
-                (((sender as HyperlinkButton).Parent as StackPanel).Children[6] as HyperlinkButton).Content = "Spam";
-                (((sender as HyperlinkButton).Parent as StackPanel).Children[6] as HyperlinkButton).IsEnabled = true;
-            }
+            (((sender as HyperlinkButton).Parent as StackPanel).Children[6] as HyperlinkButton).Content = "Spam";
+            (((sender as HyperlinkButton).Parent as StackPanel).Children[6] as HyperlinkButton).IsEnabled = true;
         }
 
         private async void SpamButton_Click(object sender, RoutedEventArgs e)
         {
-            if ((sender as FrameworkElement).DataContext is PostViewModel post)
-            {
-                await post.Post.RemoveAsync(true);
+            await Post.Post.RemoveAsync(true);
 
-                (sender as HyperlinkButton).Content = "Spammed";
-                (sender as HyperlinkButton).IsEnabled = false;
+            (sender as HyperlinkButton).Content = "Spammed";
+            (sender as HyperlinkButton).IsEnabled = false;
 
-                (((sender as HyperlinkButton).Parent as StackPanel).Children[4] as HyperlinkButton).Content = "Remove";
-                (((sender as HyperlinkButton).Parent as StackPanel).Children[4] as HyperlinkButton).IsEnabled = true;
+            (((sender as HyperlinkButton).Parent as StackPanel).Children[4] as HyperlinkButton).Content = "Remove";
+            (((sender as HyperlinkButton).Parent as StackPanel).Children[4] as HyperlinkButton).IsEnabled = true;
 
-                (((sender as HyperlinkButton).Parent as StackPanel).Children[5] as HyperlinkButton).Content = "Approve";
-                (((sender as HyperlinkButton).Parent as StackPanel).Children[5] as HyperlinkButton).IsEnabled = true;
-            }
+            (((sender as HyperlinkButton).Parent as StackPanel).Children[5] as HyperlinkButton).Content = "Approve";
+            (((sender as HyperlinkButton).Parent as StackPanel).Children[5] as HyperlinkButton).IsEnabled = true;
         }
 
         private async void PinButton_Click(object sender, RoutedEventArgs e)
@@ -510,7 +496,7 @@ namespace Carpeddit.App.Pages
 
         private async void CrossPostButton_Click(object sender, RoutedEventArgs e)
         {
-            _ = await new CrossPostDialog(((sender as FrameworkElement).DataContext as PostViewModel).Post).ShowAsync();
+            _ = await new CrossPostDialog(Post.Post).ShowAsync();
         }
 
         private async void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -565,6 +551,11 @@ namespace Carpeddit.App.Pages
             CommentsTree.ItemsSource = commentsObservable;
             CommentsTree.Visibility = Visibility.Visible;
             CommentProgress.Visibility = Visibility.Collapsed;
+        }
+
+        private async void OnReportButtonClick(object sender, RoutedEventArgs e)
+        {
+            _ = await new ReportDialog(Post.Post).ShowAsync();
         }
     }
 }

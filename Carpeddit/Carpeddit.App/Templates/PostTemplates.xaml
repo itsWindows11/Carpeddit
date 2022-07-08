@@ -575,19 +575,19 @@
                         Delete
                     </HyperlinkButton>
 
-                    <HyperlinkButton IsEnabled="{x:Bind local:App.OppositeOf(Post.Listing.Removed)}" Visibility="{x:Bind templates:PostTemplates.IsSubredditMod, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="RemovePostButton_Click" Margin="4,0,0,-6" Padding="2">
+                    <HyperlinkButton IsEnabled="{x:Bind local:App.OppositeOf(Post.Listing.Removed)}" Visibility="{x:Bind Post.Listing.SrDetail.UserIsModerator, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="RemovePostButton_Click" Margin="4,0,0,-6" Padding="2">
                         Remove
                     </HyperlinkButton>
 
-                    <HyperlinkButton IsEnabled="{x:Bind local:App.OppositeOf(Post.Listing.Approved)}" Visibility="{x:Bind templates:PostTemplates.IsSubredditMod, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="ApproveButton_Click" Margin="4,0,0,-6" Padding="2">
+                    <HyperlinkButton IsEnabled="{x:Bind local:App.OppositeOf(Post.Listing.Approved)}" Visibility="{x:Bind Post.Listing.SrDetail.UserIsModerator, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="ApproveButton_Click" Margin="4,0,0,-6" Padding="2">
                         Approve
                     </HyperlinkButton>
 
-                    <HyperlinkButton IsEnabled="{x:Bind local:App.OppositeOf(Post.Listing.Spam)}" Visibility="{x:Bind templates:PostTemplates.IsSubredditMod, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="SpamButton_Click" Margin="4,0,0,-6" Padding="2">
+                    <HyperlinkButton IsEnabled="{x:Bind local:App.OppositeOf(Post.Listing.Spam)}" Visibility="{x:Bind Post.Listing.SrDetail.UserIsModerator, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="SpamButton_Click" Margin="4,0,0,-6" Padding="2">
                         Spam
                     </HyperlinkButton>
 
-                    <HyperlinkButton IsEnabled="{x:Bind local:App.OppositeOf(Post.Listing.Stickied)}" Visibility="{x:Bind templates:PostTemplates.IsSubredditMod, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="PinButton_Click" Margin="4,0,0,-6" Padding="2">
+                    <HyperlinkButton IsEnabled="{x:Bind local:App.OppositeOf(Post.Listing.Stickied)}" Visibility="{x:Bind Post.Listing.SrDetail.UserIsModerator, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="PinButton_Click" Margin="4,0,0,-6" Padding="2">
                         Pin
                     </HyperlinkButton>
 

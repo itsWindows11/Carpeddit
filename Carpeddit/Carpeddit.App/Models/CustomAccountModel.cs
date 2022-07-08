@@ -20,12 +20,14 @@ namespace Carpeddit.App.Models
 
         [JsonProperty("expires_in")]
         public int? TokenExpiresIn { get; set; }
-        
+
+        [JsonProperty("token_type")]
+        public string TokenType { get; set; }
+
         public bool LoggedIn { get; set; }
         
         public string DeviceId { get; set; }
 
-        [JsonProperty("token_type")]
-        public string TokenType { get; set; }
+        
     }
 }
