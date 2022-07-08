@@ -36,6 +36,8 @@
 
         <ScrollViewer Grid.Row="1" Padding="66,0">
             <StackPanel>
+                <muxc:InfoBar MaxWidth="1200" IsOpen="{x:Bind Post.Post.Listing.Removed}" IsClosable="False" Title="The moderators of this subreddit has removed this post." />
+
                 <muxc:InfoBar MaxWidth="1200" IsOpen="{x:Bind Post.Post.Listing.Archived}" IsClosable="False" Title="This post has been archived" Severity="Warning" Message="You cannot submit new comments, vote or reply to this post." />
 
                 <muxc:InfoBar MaxWidth="1200" IsOpen="{x:Bind Post.Post.Listing.Locked}" IsClosable="False" Title="This post has been locked" Severity="Warning" Message="The moderators of this subreddit has locked this post, you cannot submit new comments, vote or reply to this post." />
