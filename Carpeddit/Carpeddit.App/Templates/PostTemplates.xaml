@@ -279,7 +279,6 @@
                     x:Phase="2"
                     PointerReleased="Title_PointerReleased"
                     Style="{StaticResource SubtitleTextBlockStyle}"
-                    Visibility="{x:Bind Post.Listing.IsSelf}"
                     Tag="{x:Bind}"
                     Text="{x:Bind Title}"
                     TextWrapping="WrapWholeWords" />
@@ -307,7 +306,8 @@
                     Background="Transparent"
                     LinkClicked="MarkdownLinkClicked"
                     Text="{x:Bind ShortDescription}"
-                    TextWrapping="WrapWholeWords" />
+                    TextWrapping="WrapWholeWords"
+                    Visibility="{x:Bind Post.Listing.IsSelf}" />
 
                 <Image
                     x:Name="ImagePost"
