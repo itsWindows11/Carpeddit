@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
@@ -76,6 +77,24 @@ namespace Carpeddit.App.Pages
                         ColorBrushBg.Color = App.SViewModel.TintColorsList[App.SViewModel.TintColor];
                         break;
                 }
+            }
+
+            SecondPageFrame.Visibility = Visibility.Collapsed;
+            MainGrid.ColumnDefinitions[1].Width = new GridLength(0, GridUnitType.Star);
+
+            if (ActualWidth >= 750 && _isNotSeparate)
+            {
+                SecondPageFrame.Visibility = Visibility.Visible;
+                MainGrid.ColumnDefinitions[1].Width = new GridLength(0.5, GridUnitType.Star);
+            }
+
+            try
+            {
+                SecondPageFrame.Navigate(typeof(SidebarPage), Subreddit, new Windows.UI.Xaml.Media.Animation.SuppressNavigationTransitionInfo());
+            }
+            catch (COMException)
+            {
+
             }
 
             CommentProgress.Visibility = Visibility.Visible;

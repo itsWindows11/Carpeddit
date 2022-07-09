@@ -73,6 +73,15 @@ namespace Carpeddit.App.Pages
 
             Progress.Visibility = Visibility.Collapsed;
             LoadMoreButton.Visibility = Visibility.Visible;
+
+            try
+            {
+                SecondPageFrame.Navigate(typeof(SidebarPage), "popular", new Windows.UI.Xaml.Media.Animation.SuppressNavigationTransitionInfo());
+            }
+            catch (COMException)
+            {
+
+            }
         }
 
         private IEnumerable<PostViewModel> GetPosts(string after = "", int limit = 100, string before = "")

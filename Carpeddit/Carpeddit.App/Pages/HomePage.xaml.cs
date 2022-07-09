@@ -1,4 +1,6 @@
 ﻿using Carpeddit.App.Collections;
+using Carpeddit.App.Controllers;
+using Carpeddit.App.Dialogs;
 using Carpeddit.App.Helpers;
 using Carpeddit.App.Models;
 using Microsoft.Toolkit.Uwp;
@@ -22,6 +24,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -65,6 +68,8 @@ namespace Carpeddit.App.Pages
         {
             Loaded -= Page_Loaded;
 
+            UserImage.Source = new BitmapImage(new Uri(await Task.Run(() => AccountController.GetImageUrl(App.RedditClient.Account.Me.UserData)), UriKind.Absolute));
+
             LoadMoreButton.Visibility = Visibility.Collapsed;
             Progress.Visibility = Visibility.Visible;
 
@@ -79,6 +84,16 @@ namespace Carpeddit.App.Pages
 
             Progress.Visibility = Visibility.Collapsed;
             LoadMoreButton.Visibility = Visibility.Visible;
+            CreatePostPanel.Visibility = Visibility.Visible;
+
+            try
+            {
+                SecondPageFrame.Navigate(typeof(SidebarPage), "home", new Windows.UI.Xaml.Media.Animation.SuppressNavigationTransitionInfo());
+            }
+            catch (COMException)
+            {
+
+            }
         }
 
         private IEnumerable<PostViewModel> GetPosts(string after = "", int limit = 100, string before = "")
@@ -154,6 +169,11 @@ namespace Carpeddit.App.Pages
             // Ensure the custom title bar does not overlap window caption controls
             Thickness currMargin = MainPage.Current.AppTitleBar.Margin;
             MainPage.Current.AppTitleBar.Margin = new Thickness(currMargin.Left, currMargin.Top, coreTitleBar.SystemOverlayRightInset, currMargin.Bottom);
+        }
+
+        private async void OnCreatePostButtonClick(object sender, RoutedEventArgs e)
+        {
+            _ = await new CreatePostDialog().ShowAsync();
         }
     }
 }

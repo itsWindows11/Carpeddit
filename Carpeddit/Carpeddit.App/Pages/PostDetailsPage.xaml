@@ -22,17 +22,22 @@
         <converters:InvertBoolConverter x:Key="InvertBoolConv" />
     </Page.Resources>
 
-    <Grid>
+    <Grid x:Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="0.5*" />
+        </Grid.ColumnDefinitions>
+
         <Grid.Background>
             <SolidColorBrush x:Name="ColorBrushBg" Opacity="0.1" />
         </Grid.Background>
 
-        <uc:CustomTitleBar Title="Post details" Visibility="{x:Bind _isNotSeparate, Mode=OneWay, Converter={StaticResource BoolToVis}}" />
+        <uc:CustomTitleBar Grid.ColumnSpan="2" Title="Post details" Visibility="{x:Bind _isNotSeparate, Mode=OneWay, Converter={StaticResource BoolToVis}}" />
 
         <ScrollViewer Grid.Row="1" Padding="66,0">
             <StackPanel>
@@ -507,5 +512,31 @@
             </muxc:AnimatedIcon>
         </Button>
 
+        <Frame x:Name="SecondPageFrame" Margin="-56,0,0,0" Grid.Column="1" Grid.Row="1" />
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="MasterDetailEnabled">
+                <VisualState x:Name="WideState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1200" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="MainGrid.ColumnDefinitions[1].Width" Value="0.5*" />
+                        <Setter Target="SecondPageFrame.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState x:Name="NormalState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+
+                    <VisualState.Setters>
+                        <Setter Target="MainGrid.ColumnDefinitions[1].Width" Value="0" />
+                        <Setter Target="SecondPageFrame.Visibility" Value="Collapsed" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </Page>

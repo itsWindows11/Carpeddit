@@ -16,54 +16,83 @@
     <Grid x:Name="MainGrid" Margin="-56,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition d:Width="1.3*" />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <muxc:ProgressRing
             x:Name="Progress"
+            Grid.ColumnSpan="2"
             Width="50"
             Height="50"
             Margin="-56,0,-56,0"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
-            Grid.ColumnSpan="2"
+            d:Visibility="Visible"
             IsActive="True"
-            Visibility="Collapsed"
-            d:Visibility="Visible" />
+            Visibility="Collapsed" />
         <ListView
             x:Name="MainList"
             Padding="56,0,56,12"
+            Canvas.ZIndex="1"
             ItemTemplate="{StaticResource PlainPostTemplate}"
-            SelectionMode="None"
             SelectionChanged="MainList_SelectionChanged"
-            Canvas.ZIndex="1">
+            SelectionMode="None">
             <ListView.Header>
-                <ListView
-                    x:Name="SubredditsList"
-                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                    ScrollViewer.HorizontalScrollMode="Enabled"
-                    ScrollViewer.VerticalScrollMode="Disabled"
-                    SelectionMode="None">
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <ItemsStackPanel Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="reddit:Subreddit">
-                            <Border
-                                Margin="-8,0"
-                                Padding="8,2"
-                                Background="{StaticResource SystemAccentColor}"
-                                CornerRadius="10"
-                                PointerReleased="Border_PointerReleased">
-                                <TextBlock
-                                    HorizontalAlignment="Center"
-                                    Foreground="White"
-                                    Text="{x:Bind Name}" />
-                            </Border>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                <StackPanel>
+                    <ListView
+                        x:Name="SubredditsList"
+                        ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                        ScrollViewer.HorizontalScrollMode="Enabled"
+                        ScrollViewer.VerticalScrollMode="Disabled"
+                        SelectionMode="None">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsStackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="reddit:Subreddit">
+                                <Border
+                                    Margin="-8,0"
+                                    Padding="8,2"
+                                    Background="{StaticResource SystemAccentColor}"
+                                    CornerRadius="10"
+                                    PointerReleased="Border_PointerReleased">
+                                    <TextBlock
+                                        HorizontalAlignment="Center"
+                                        Foreground="White"
+                                        Text="{x:Bind Name}" />
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <RelativePanel
+                        x:Name="CreatePostPanel"
+                        Margin="16,12,12,0"
+                        Padding="12"
+                        Background="{ThemeResource ExpanderHeaderBackground}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4"
+                        Visibility="Collapsed">
+                        <Border
+                            x:Name="UserImageBorder"
+                            Width="32"
+                            Height="32"
+                            CornerRadius="60">
+                            <Image x:Name="UserImage" d:Source="ms-appx:///Assets/ModeratorTools.png" />
+                        </Border>
+
+                        <Button
+                            Margin="8,0,0,0"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Left"
+                            Click="OnCreatePostButtonClick"
+                            Content="Create a post..."
+                            RelativePanel.AlignRightWithPanel="True"
+                            RelativePanel.RightOf="UserImageBorder" />
+                    </RelativePanel>
+                </StackPanel>
             </ListView.Header>
             <ListView.Footer>
                 <Grid>
@@ -84,7 +113,10 @@
             </ListView.Footer>
         </ListView>
 
-        <Frame x:Name="SecondPageFrame" Margin="-56,-56,0,0" Grid.Column="1" />
+        <Frame
+            x:Name="SecondPageFrame"
+            Grid.Column="1"
+            Margin="-56,-56,0,0" />
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="MasterDetailEnabled">
@@ -95,7 +127,7 @@
                     <VisualState.Setters>
                         <Setter Target="MainList.SelectionMode" Value="Single" />
                         <Setter Target="MainList.Padding" Value="56,0,12,12" />
-                        <Setter Target="MainGrid.ColumnDefinitions[1].Width" Value="1.3*" />
+                        <Setter Target="MainGrid.ColumnDefinitions[1].Width" Value="1*" />
                         <Setter Target="SecondPageFrame.Visibility" Value="Visible" />
                     </VisualState.Setters>
                 </VisualState>
@@ -114,7 +146,6 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-
     </Grid>
 
 </Page>

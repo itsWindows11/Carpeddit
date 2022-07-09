@@ -221,6 +221,9 @@
     <Compile Include="Pages\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\SidebarPage.xaml.cs">
+      <DependentUpon>SidebarPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\SubredditPage.xaml.cs">
       <DependentUpon>SubredditPage.xaml</DependentUpon>
     </Compile>
@@ -374,6 +377,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\SettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SidebarPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
