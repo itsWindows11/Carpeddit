@@ -67,6 +67,17 @@ namespace Carpeddit.App.Helpers
             return num.ToString("#,0");
         }
 
+        public static string FormatIntNumber(int? num)
+        {
+            if (num != null && num.HasValue)
+            {
+                int number = num.Value;
+                return FormatNumber(number);
+            }
+
+            return FormatNumber(0);
+        }
+
         public static string GetRelativeDate(DateTime time, bool approximate = true)
         {
             StringBuilder sb = new();

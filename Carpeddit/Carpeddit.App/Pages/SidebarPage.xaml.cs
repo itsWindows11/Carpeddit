@@ -75,5 +75,10 @@ namespace Carpeddit.App.Pages
                 RulesList.ItemsSource = await Task.Run(() => subreddit.GetRules().Rules);
             }
         }
+
+        private void OnSubredditItemClick(object sender, RoutedEventArgs e)
+        {
+            (Window.Current.Content as Frame).Navigate(typeof(SubredditPage), App.RedditClient.Subreddit(name: ((sender as HyperlinkButton).Content as string).Replace("r/", "")).About());
+        }
     }
 }

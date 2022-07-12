@@ -10,6 +10,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:reddit="using:Reddit.Controllers"
     xmlns:reddit1="using:Reddit.Things"
+    xmlns:helpers="using:Carpeddit.App.Helpers"
     d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
@@ -92,9 +93,9 @@
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="reddit:Subreddit">
                             <StackPanel Spacing="4">
-                                <HyperlinkButton Padding="0" Content="{x:Bind SubredditData.DisplayNamePrefixed}" />
+                                <HyperlinkButton Padding="0" Content="{x:Bind SubredditData.DisplayNamePrefixed}" Click="OnSubredditItemClick" />
                                 <TextBlock>
-                                    <Run Text="{x:Bind SubredditData.Subscribers}" />
+                                    <Run Text="{x:Bind helpers:PostHelpers.FormatIntNumber(SubredditData.Subscribers)}" />
                                     <Run Text="subs" />
                                 </TextBlock>
                             </StackPanel>
