@@ -16,7 +16,7 @@
     <Grid x:Name="MainGrid" Margin="-56,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition />
+            <ColumnDefinition Width="0.7*" />
         </Grid.ColumnDefinitions>
         <muxc:ProgressRing
             x:Name="Progress"
@@ -127,7 +127,7 @@
                     <VisualState.Setters>
                         <Setter Target="MainList.SelectionMode" Value="Single" />
                         <Setter Target="MainList.Padding" Value="56,0,12,12" />
-                        <Setter Target="MainGrid.ColumnDefinitions[1].Width" Value="1*" />
+                        <Setter Target="MainGrid.ColumnDefinitions[1].Width" Value="0.7*" />
                         <Setter Target="SecondPageFrame.Visibility" Value="Visible" />
                     </VisualState.Setters>
                 </VisualState>
