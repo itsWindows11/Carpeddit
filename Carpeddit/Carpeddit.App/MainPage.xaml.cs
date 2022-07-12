@@ -251,7 +251,7 @@ namespace Carpeddit.App
             {
                 // SettingsItem is not part of NavView.MenuItems, and doesn't have a Tag.
                 NavView.SelectedItem = (muxc.NavigationViewItem)NavView.SettingsItem;
-                NavView.Header = "Settings";
+                NavViewHeader.Text = "Settings";
             }
             else if (ContentFrame.SourcePageType != null)
             {
@@ -305,13 +305,13 @@ namespace Carpeddit.App
                 }
 
                 if (ContentFrame.SourcePageType == typeof(YourProfilePage)) {
-                    NavView.Header = e.Parameter == null ? "Your profile" : "Profile";
+                    NavViewHeader.Text = e.Parameter == null ? "Your profile" : "Profile";
                 } else if (ContentFrame.SourcePageType == typeof(SearchResultsPage))
                 {
-                    NavView.Header = "Search results";
+                    NavViewHeader.Text = "Search results";
                 } else
                 {
-                    NavView.Header = ((muxc.NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
+                    NavViewHeader.Text = ((muxc.NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
                 }
             }
         }
