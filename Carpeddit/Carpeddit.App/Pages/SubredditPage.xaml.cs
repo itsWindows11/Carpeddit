@@ -309,7 +309,7 @@ namespace Carpeddit.App.Pages
 
                 ProgressR.Visibility = Visibility.Collapsed;
                 MainList.Visibility = Visibility.Visible;
-            } else sortQueued = true;
+            } else sortQueued = !initialPostsLoaded;
         }
 
         private async void OnSearchBoxQuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
