@@ -130,6 +130,14 @@
             <HyperlinkButton Content="Json.NET" NavigateUri="https://www.newtonsoft.com/json" />
             <HyperlinkButton Content="Reddit.NET" NavigateUri="https://github.com/sirkris/Reddit.NET" />
 
+            <TextBlock FontWeight="SemiBold" Text="Social" />
+
+            <StackPanel Spacing="8" Orientation="Horizontal">
+                <HyperlinkButton Content="Github" NavigateUri="https://github.com/itsWindows11/Carpeddit" />
+
+                <HyperlinkButton Content="Discord" NavigateUri="https://discord.gg/Kj49PDum7y" />
+            </StackPanel>
+
             <TextBlock Text="© 2022 itsWindows11." />
         </StackPanel>
     </ScrollViewer>
