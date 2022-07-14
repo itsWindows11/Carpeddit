@@ -82,7 +82,6 @@ namespace Carpeddit.App
             if (App.RedditClient != null)
             {
                 YourProfileItem.Content = await Task.Run(() => App.RedditClient.Account.Me.UserData.Name);
-                Pfp.Source = new BitmapImage(new Uri(await Task.Run(() => AccountController.GetImageUrl(App.RedditClient.Account.Me.UserData)), UriKind.Absolute));
             }
         }
 
