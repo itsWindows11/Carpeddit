@@ -128,7 +128,7 @@
             <HyperlinkButton Content="BracketPipe" NavigateUri="https://github.com/erdomke/BracketPipe" />
             <HyperlinkButton Content="RtfPipe" NavigateUri="https://github.com/erdomke/RtfPipe" />
             <HyperlinkButton Content="Json.NET" NavigateUri="https://www.newtonsoft.com/json" />
-            <HyperlinkButton Content="Reddit.NET" NavigateUri="https://github.com/microsoft/microsoft-ui-xaml" />
+            <HyperlinkButton Content="Reddit.NET" NavigateUri="https://github.com/sirkris/Reddit.NET" />
 
             <TextBlock Text="© 2022 itsWindows11." />
         </StackPanel>
