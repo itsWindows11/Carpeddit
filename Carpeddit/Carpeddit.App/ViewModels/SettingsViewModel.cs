@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Windows.UI;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
 namespace Carpeddit.App.ViewModels
@@ -8,6 +9,12 @@ namespace Carpeddit.App.ViewModels
     public class SettingsViewModel : SettingsManager
     {
         public SettingsViewModel() { }
+
+        public int SetupProgress
+        {
+            get => Get("Setup", nameof(SetupProgress), 0);
+            set => Set("Setup", nameof(SetupProgress), value);
+        }
 
         #region Appearance
         public bool ShowAccountBtnInTitleBar
@@ -86,6 +93,27 @@ namespace Carpeddit.App.ViewModels
             Color.FromArgb(255, 132, 117, 69),
             Color.FromArgb(255, 126, 115, 95)
         };
+
+        public int Theme
+        {
+            get => Get("Appearance", nameof(Theme), 2);
+            set
+            {
+                Set("Appearance", nameof(Theme), value);
+                switch (value)
+                {
+                    case 0:
+                        (Window.Current.Content as Frame).RequestedTheme = ElementTheme.Light;
+                        break;
+                    case 1:
+                        (Window.Current.Content as Frame).RequestedTheme = ElementTheme.Dark;
+                        break;
+                    case 2:
+                        (Window.Current.Content as Frame).RequestedTheme = ElementTheme.Default;
+                        break;
+                }
+            }
+        }
         #endregion
     }
 }

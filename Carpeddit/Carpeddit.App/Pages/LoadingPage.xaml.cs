@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Uwp.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -35,11 +36,24 @@ namespace Carpeddit.App.Pages
 
             Loaded += LoadingPage_Loaded;
         }
-
+        
         private async void LoadingPage_Loaded(object sender, RoutedEventArgs e)
         {
             // Init database
             await App.InitDb();
+
+            switch (App.SViewModel.Theme)
+            {
+                case 0:
+                    (Window.Current.Content as Frame).RequestedTheme = ElementTheme.Light;
+                    break;
+                case 1:
+                    (Window.Current.Content as Frame).RequestedTheme = ElementTheme.Dark;
+                    break;
+                case 2:
+                    (Window.Current.Content as Frame).RequestedTheme = ElementTheme.Default;
+                    break;
+            }
 
             bool networkAvailable = await Task.Run(() =>
             {
@@ -52,6 +66,12 @@ namespace Carpeddit.App.Pages
 
                 return false;
             });
+
+            if (SystemInformation.Instance.IsFirstRun)
+            {
+                Frame.Navigate(typeof(FirstRunPage));
+                return;
+            }
 
             if (networkAvailable)
             {

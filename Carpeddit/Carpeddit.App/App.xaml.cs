@@ -45,7 +45,6 @@ namespace Carpeddit.App
             Suspending += OnSuspending;
 
             UnhandledException += App_UnhandledException;
-            //AppDomain.CurrentDomain.UnhandledException += AppDomain_UnhandledException;
         }
 
         private void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
@@ -62,11 +61,6 @@ namespace Carpeddit.App
             };
 
             _ = dialog.ShowAsync();
-        }
-
-        private void AppDomain_UnhandledException(object sender, System.UnhandledExceptionEventArgs e)
-        {
-            
         }
 
         public static Color GetColorFromHex(string hex)

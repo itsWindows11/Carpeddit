@@ -16,7 +16,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <uc:CustomTitleBar />
+        <uc:CustomTitleBar Margin="-32,0,0,0" />
 
         <Grid
             x:Name="ThingContainer"

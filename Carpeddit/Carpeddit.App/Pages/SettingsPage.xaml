@@ -9,8 +9,18 @@
     xmlns:windowsui="using:Windows.UI"
     mc:Ignorable="d">
 
-    <ScrollViewer Margin="-56,0" Padding="56,12,56,0">
-        <StackPanel Orientation="Vertical" Spacing="10">
+    <ScrollViewer Margin="-56,0" d:Margin="0" Padding="56,12,56,0">
+        <StackPanel Orientation="Vertical" Spacing="12">
+            <uc:SettingsBlockControl Title="Theme">
+                <uc:SettingsBlockControl.SettingsActionableElement>
+                    <ComboBox SelectedIndex="{x:Bind local:App.SViewModel.Theme, Mode=TwoWay}">
+                        <ComboBoxItem Content="Light" />
+                        <ComboBoxItem Content="Dark" />
+                        <ComboBoxItem Content="System default" />
+                    </ComboBox>
+                </uc:SettingsBlockControl.SettingsActionableElement>
+            </uc:SettingsBlockControl>
+
             <uc:SettingsBlockControl Title="Show account button" Description="Show account profile on titlebar (Note: may get overriden by size changes)">
                 <ToggleSwitch Margin="0,0,-36,0" IsOn="{x:Bind local:App.SViewModel.ShowAccountBtnInTitleBar, Mode=TwoWay}" />
             </uc:SettingsBlockControl>
