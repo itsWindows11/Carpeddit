@@ -49,16 +49,16 @@
 
         <Button
             x:Name="AccountMenuBtn"
-            Margin="0,5,200,0"
+            Margin="0,4,200,0"
+            Width="40"
+            CornerRadius="20"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
             Canvas.ZIndex="2"
+            Padding="8"
             Visibility="{x:Bind local:App.SViewModel.ShowAccountBtnInTitleBar, Mode=OneWay, Converter={StaticResource BoolToVis}}">
             <Button.Content>
-                <Image
-                    x:Name="Pfp"
-                    Width="25"
-                    Height="25" />
+                <FontIcon Glyph="&#xE13D;" />
             </Button.Content>
             <Button.Flyout>
                 <MenuFlyout Placement="Bottom">
