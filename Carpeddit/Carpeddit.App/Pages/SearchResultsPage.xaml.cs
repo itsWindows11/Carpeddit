@@ -34,6 +34,7 @@ namespace Carpeddit.App.Pages
 
         private async void SearchResultsPageLoaded(object sender, RoutedEventArgs e)
         {
+            Loaded -= SearchResultsPageLoaded;
             LoadingProgress.Visibility = Visibility.Visible;
 
             List<Post> posts = await GetPostsAsync();
@@ -71,7 +72,7 @@ namespace Carpeddit.App.Pages
             {
                 try
                 {
-                    return App.RedditClient.Search(new Reddit.Inputs.Search.SearchGetSearchInput(query));
+                    return App.RedditClient.Search(new Reddit.Inputs.Search.SearchGetSearchInput(query, false, "relevance"));
                 }
                 catch
                 {
