@@ -1,5 +1,6 @@
 ﻿using Carpeddit.App.Controllers;
 using Carpeddit.App.Pages;
+using Reddit.Things;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -34,6 +35,8 @@ namespace Carpeddit.App
         public static MainPage Current;
 
         private double NavViewCompactModeThresholdWidth { get => NavView.CompactModeThresholdWidth; }
+
+        private bool _shouldDisplayModTools;
 
         public MainPage()
         {
@@ -82,6 +85,7 @@ namespace Carpeddit.App
             if (App.RedditClient != null)
             {
                 YourProfileItem.Content = await Task.Run(() => App.RedditClient.Account.Me.UserData.Name);
+                ModerationToolsItem.Visibility = (await Task.Run(() => App.RedditClient.Account.Me.GetModeratedSubreddits(1) ?? new List<ModeratedListItem>())).Any() ? Visibility.Visible : Visibility.Collapsed;
             }
         }
 
@@ -360,6 +364,11 @@ namespace Carpeddit.App
         private void ProfileFlyoutItem_Click(object sender, RoutedEventArgs e)
         {
             ContentFrame.Navigate(typeof(YourProfilePage));
+        }
+
+        private void OnModerationToolsItemClick(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(ModToolsPage), App.RedditClient.Subreddit("mod"));
         }
     }
 }

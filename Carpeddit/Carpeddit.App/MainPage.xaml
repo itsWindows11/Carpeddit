@@ -49,13 +49,13 @@
 
         <Button
             x:Name="AccountMenuBtn"
-            Margin="0,4,200,0"
             Width="40"
-            CornerRadius="20"
+            Margin="0,4,200,0"
+            Padding="8"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
             Canvas.ZIndex="2"
-            Padding="8"
+            CornerRadius="20"
             Visibility="{x:Bind local:App.SViewModel.ShowAccountBtnInTitleBar, Mode=OneWay, Converter={StaticResource BoolToVis}}">
             <Button.Content>
                 <FontIcon Glyph="&#xE13D;" />
@@ -65,6 +65,16 @@
                     <MenuFlyoutItem Click="ProfileFlyoutItem_Click" Text="Profile">
                         <MenuFlyoutItem.Icon>
                             <FontIcon Glyph="&#xE13D;" />
+                        </MenuFlyoutItem.Icon>
+                    </MenuFlyoutItem>
+
+                    <MenuFlyoutItem
+                        x:Name="ModerationToolsItem"
+                        Click="OnModerationToolsItemClick"
+                        Text="Moderation tools"
+                        Visibility="Collapsed">
+                        <MenuFlyoutItem.Icon>
+                            <FontIcon Glyph="&#xEA18;" />
                         </MenuFlyoutItem.Icon>
                     </MenuFlyoutItem>
 
@@ -87,7 +97,10 @@
             ItemInvoked="NavView_ItemInvoked"
             Loaded="NavView_Loaded">
             <muxc:NavigationView.Header>
-                <TextBlock x:Name="NavViewHeader" d:Text="Home" Margin="-16,-16,0,0" />
+                <TextBlock
+                    x:Name="NavViewHeader"
+                    Margin="-16,-16,0,0"
+                    d:Text="Home" />
             </muxc:NavigationView.Header>
 
             <muxc:NavigationView.MenuItems>

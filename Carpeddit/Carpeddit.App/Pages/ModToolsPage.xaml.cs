@@ -1,5 +1,6 @@
 ﻿using Carpeddit.App.Dialogs;
 using Carpeddit.App.Pages.ModTools;
+using Carpeddit.App.Templates;
 using Carpeddit.Common.Enums;
 using Reddit.Controllers;
 using System;
@@ -21,6 +22,8 @@ namespace Carpeddit.App.Pages
     public sealed partial class ModToolsPage : Page
     {
         public static Subreddit Subreddit { get; private set; }
+
+        private bool _isModSubreddit;
 
         private readonly List<(string Tag, Type Page)> _pages = new()
         {
@@ -55,6 +58,13 @@ namespace Carpeddit.App.Pages
                     ColorBrushBg.Color = App.SViewModel.TintColorsList[App.SViewModel.TintColor];
                     break;
             }
+
+            Unloaded += ModToolsPage_Unloaded;
+        }
+
+        private void ModToolsPage_Unloaded(object sender, RoutedEventArgs e)
+        {
+            PostTemplates.IsSubredditMod = false;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -62,7 +72,11 @@ namespace Carpeddit.App.Pages
             base.OnNavigatedTo(e);
 
             if (e.Parameter is Subreddit subreddit)
+            {
                 Subreddit = subreddit;
+                _isModSubreddit = Subreddit.SubredditData.DisplayName == "mod";
+                PostTemplates.IsSubredditMod = subreddit.SubredditData.UserIsModerator ?? _isModSubreddit;
+            }
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
