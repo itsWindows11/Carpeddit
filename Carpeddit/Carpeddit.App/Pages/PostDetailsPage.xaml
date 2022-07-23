@@ -277,8 +277,7 @@
                             x:Name="SortCombo"
                             Margin="0,0,12,0"
                             RelativePanel.AlignRightWithPanel="True"
-                            SelectedIndex="0"
-                            SelectionChanged="ComboBox_SelectionChanged">
+                            SelectedIndex="0">
                             <x:String>Top</x:String>
                             <x:String>Hot</x:String>
                             <x:String>New</x:String>

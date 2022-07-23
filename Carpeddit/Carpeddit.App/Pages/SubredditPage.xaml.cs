@@ -48,6 +48,8 @@ namespace Carpeddit.App.Pages
 
         private async void SubredditPage_Loaded(object sender, RoutedEventArgs e)
         {
+            SortCombo.SelectionChanged += ComboBox_SelectionChanged;
+
             switch (App.SViewModel.ColorMode)
             {
                 case 0:

@@ -79,6 +79,8 @@ namespace Carpeddit.App.Pages
                 }
             }
 
+            SortCombo.SelectionChanged += ComboBox_SelectionChanged;
+
             SecondPageFrame.Visibility = Visibility.Collapsed;
             MainGrid.ColumnDefinitions[1].Width = new GridLength(0, GridUnitType.Star);
 
