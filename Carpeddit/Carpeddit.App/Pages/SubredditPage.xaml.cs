@@ -80,22 +80,41 @@ namespace Carpeddit.App.Pages
             }
 
             var modsList = await Task.Run(() => Subreddit.GetModerators());
+            var rulesList = await Task.Run(() => Subreddit.GetRules().Rules);
 
-            RulesList.ItemsSource = await Task.Run(() => Subreddit.GetRules().Rules);
+            RulesList.ItemsSource = rulesList;
             ModsList.ItemsSource = modsList;
+
+            if (rulesList.Any())
+            {
+                RulesExpander.Visibility = Visibility.Visible;
+            }
+
+            if (modsList.Any())
+            {
+                ModeratorsExpander.Visibility = Visibility.Visible;
+            }
 
             try
             {
-                PostFlairsList.ItemsSource = await Task.Run(() =>
+                var postFlairs = await Task.Run(() =>
                 {
                     try
                     {
                         return Subreddit.Flairs.LinkFlairV2;
-                    } catch
+                    }
+                    catch
                     {
                         return Enumerable.Empty<FlairV2>();
                     }
                 });
+                
+                PostFlairsList.ItemsSource = postFlairs;
+
+                if (postFlairs.Any())
+                {
+                    PostFlairsExpander.Visibility = Visibility.Visible;
+                }
             }
             catch
             {

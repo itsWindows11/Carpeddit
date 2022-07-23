@@ -76,10 +76,11 @@
                                                 FontWeight="SemiBold"
                                                 Style="{StaticResource SubtitleTextBlockStyle}"
                                                 Text="{x:Bind Subreddit.HeaderTitle}"
+                                                d:Text="Carpeddit"
                                                 Foreground="WhiteSmoke" />
 
                                             <TextBlock x:Name="SubredditName" Foreground="WhiteSmoke" FontSize="12">
-                                                r/<Run Text="{x:Bind Subreddit.Name}" />
+                                                r/<Run d:Text="Carpeddit" Text="{x:Bind Subreddit.Name}" />
                                             </TextBlock>
                                         </StackPanel>
                                     </StackPanel>
@@ -208,7 +209,7 @@
                             </StackPanel>
                         </Border>
 
-                        <muxc:Expander Header="Rules" IsExpanded="True">
+                        <muxc:Expander Visibility="Collapsed" x:Name="RulesExpander" Header="Rules" IsExpanded="True">
                             <ListView
                                 x:Name="RulesList"
                                 Margin="0,-12,0,0"
@@ -236,7 +237,7 @@
                             </ListView>
                         </muxc:Expander>
 
-                        <muxc:Expander Header="Moderators">
+                        <muxc:Expander Visibility="Collapsed" d:Visibility="Visible" x:Name="ModeratorsExpander" Header="Moderators">
                             <ListView
                                 x:Name="ModsList"
                                 Margin="0,-12,0,0"
@@ -251,7 +252,7 @@
                             </ListView>
                         </muxc:Expander>
 
-                        <muxc:Expander Header="Post flairs">
+                        <muxc:Expander Visibility="Collapsed" x:Name="PostFlairsExpander" Header="Post flairs">
                             <ListView
                                 x:Name="PostFlairsList"
                                 Margin="0,-12,0,0"
