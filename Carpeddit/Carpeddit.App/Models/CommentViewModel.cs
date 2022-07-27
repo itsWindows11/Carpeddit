@@ -119,7 +119,7 @@ namespace Carpeddit.App.Models
             set => _isTopLevel = value;
         }
 
-        public Thickness Thickn => Replies.Count > 0 ? new(-12, -2, 0, -4) : (IsTopLevel ? new(-32, -2, 0, -4) : new(-12, -2, 0, -4));
+        public Thickness Thickn => Replies.Count > 0 ? new(-12, 0, 0, 0) : (IsTopLevel ? new(-32, 0, 0, 0) : new(-12, 0, 0, 0));
 
         private string _voteRatio;
 
