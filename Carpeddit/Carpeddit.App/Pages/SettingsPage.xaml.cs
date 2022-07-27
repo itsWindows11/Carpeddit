@@ -5,6 +5,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using System;
+using Carpeddit.App.Helpers;
 
 namespace Carpeddit.App.Pages
 {
@@ -44,7 +45,7 @@ namespace Carpeddit.App.Pages
         private void SettingsPageLoaded(object sender, RoutedEventArgs e)
         {
             VersionTextBlock.Text = $"Carpeddit, version {string.Format("{0}.{1}.{2}.{3}", Package.Current.Id.Version.Major, Package.Current.Id.Version.Minor, Package.Current.Id.Version.Build, Package.Current.Id.Version.Revision)}";
-            App.Logger.Information("[SettingsPage] Loaded version info.");
+            LoggingHelper.LogInfo("[SettingsPage] Loaded version info.");
 
             try
             {
@@ -54,10 +55,10 @@ namespace Carpeddit.App.Pages
                 CompactLinkToggleSwitch.IsOn = prefs.Compress;
                 ClickTrackingToggleSwitch.IsOn = prefs.AllowClickTracking;
 
-                App.Logger.Information("[SettingsPage] Preferences loaded successfully.");
+                LoggingHelper.LogInfo("[SettingsPage] Preferences loaded successfully.");
             } catch (Exception e1)
             {
-                App.Logger.Error(e1, "[SettingsPage] An error occurred while loading preferences.");
+                LoggingHelper.LogError("[SettingsPage] An error occurred while loading preferences.", e1);
 
                 RedditPrefsExpander.IsEnabled = false;
             }

@@ -1,33 +1,13 @@
-﻿using Microsoft.Toolkit.Uwp.Helpers;
+﻿using Carpeddit.App.Helpers;
+using Microsoft.Toolkit.Uwp.Helpers;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Core;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Networking.Connectivity;
-using Windows.Networking.Sockets;
-using Windows.UI;
-using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Carpeddit.App.Pages
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class LoadingPage : Page
     {
         public LoadingPage()
@@ -42,7 +22,7 @@ namespace Carpeddit.App.Pages
             // Init database
             await App.InitDb();
 
-            App.Logger.Information("[LoadingPage] Database initialized.");
+            LoggingHelper.LogInfo("[LoadingPage] Database initialized.");
 
             switch (App.SViewModel.Theme)
             {
@@ -69,7 +49,7 @@ namespace Carpeddit.App.Pages
                 return false;
             });
 
-            App.Logger.Information($"[LoadingPage] Network is {(networkAvailable ? "available" : "not available")}.");
+            LoggingHelper.LogInfo($"[LoadingPage] Network is {(networkAvailable ? "available" : "not available")}.");
 
             if (SystemInformation.Instance.IsFirstRun)
             {
@@ -82,7 +62,7 @@ namespace Carpeddit.App.Pages
                 if (App.CurrentAccount != null && App.CurrentAccount.LoggedIn)
                 {
                     Frame.Navigate(typeof(MainPage), null, new Windows.UI.Xaml.Media.Animation.SuppressNavigationTransitionInfo());
-                    App.Logger.Information("[MainPage] Loading frontpage...");
+                    LoggingHelper.LogInfo("[MainPage] Loading frontpage...");
                 }
                 else
                 {
@@ -93,7 +73,7 @@ namespace Carpeddit.App.Pages
                 Frame.Navigate(typeof(OfflinePage), null, new Windows.UI.Xaml.Media.Animation.SuppressNavigationTransitionInfo());
             }
 
-            App.Logger.Information("[LoadingPage] App successfully initialized.");
+            LoggingHelper.LogInfo("[LoadingPage] App successfully initialized.");
         }
     }
 }

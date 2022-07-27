@@ -17,6 +17,7 @@ using System.IO;
 using Windows.Storage;
 using Serilog;
 using Serilog.Core;
+using Carpeddit.App.Helpers;
 
 namespace Carpeddit.App
 {
@@ -175,7 +176,7 @@ namespace Carpeddit.App
                         .File(Path.Combine(ApplicationData.Current.LocalFolder.Path, "log.txt"))
                         .CreateLogger();
 
-            Logger.Information("[App] Initialized logger.");
+            LoggingHelper.LogInfo("[App] Initialized logger.");
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active

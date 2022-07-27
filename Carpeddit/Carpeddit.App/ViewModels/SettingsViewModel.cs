@@ -8,8 +8,6 @@ namespace Carpeddit.App.ViewModels
 {
     public class SettingsViewModel : SettingsManager
     {
-        public SettingsViewModel() { }
-
         public int SetupProgress
         {
             get => Get("Setup", nameof(SetupProgress), 0);
@@ -113,6 +111,14 @@ namespace Carpeddit.App.ViewModels
                         break;
                 }
             }
+        }
+        #endregion
+
+        #region Debug
+        public bool LoggingEnabled
+        {
+            get => Get("Debug", nameof(LoggingEnabled), true);
+            set => Set("Debug", nameof(LoggingEnabled), value);
         }
         #endregion
     }

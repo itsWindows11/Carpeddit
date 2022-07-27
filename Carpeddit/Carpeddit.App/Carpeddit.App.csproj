@@ -157,6 +157,7 @@
     <Compile Include="FirstRunPage.xaml.cs">
       <DependentUpon>FirstRunPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\LoggingHelper.cs" />
     <Compile Include="Helpers\PostHelpers.cs" />
     <Compile Include="LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>

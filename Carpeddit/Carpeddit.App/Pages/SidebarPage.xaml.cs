@@ -1,4 +1,5 @@
-﻿using Reddit.Controllers;
+﻿using Carpeddit.App.Helpers;
+using Reddit.Controllers;
 using System;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
@@ -21,7 +22,7 @@ namespace Carpeddit.App.Pages
         {
             RecommendedSubredditsList.ItemsSource = await Task.Run(() => App.RedditClient.Account.MySubscribedSubreddits(limit: 5));
 
-            App.Logger.Information("[SidebarPage] Recommended subreddits loaded successfully.");
+            LoggingHelper.LogInfo("[SidebarPage] Recommended subreddits loaded successfully.");
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -69,7 +70,7 @@ namespace Carpeddit.App.Pages
 
                 RulesList.ItemsSource = await Task.Run(() => subreddit.GetRules().Rules);
 
-                App.Logger.Information("[SidebarPage] Loaded subreddit info.");
+                LoggingHelper.LogInfo("[SidebarPage] Loaded subreddit info.");
             }
         }
 
