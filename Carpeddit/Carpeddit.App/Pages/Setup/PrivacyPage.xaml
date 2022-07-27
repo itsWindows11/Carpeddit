@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Carpeddit.App.Pages.Setup"
+    xmlns:local1="using:Carpeddit.App"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="using:Carpeddit.App.UserControls"
     d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
@@ -13,12 +14,9 @@
         <TextBlock Margin="0,12" Text="Your log files are stored locally, we may need the log files for bug reports." />
         <TextBlock Margin="0,0,0,12" Text="Note: Carpeddit doesn't log your personal information." />
 
-        <uc:SettingsBlockControl
-            Title="Log app actions"
-            Description="Useful for debugging, enable this if you have an issue and want to report it."
-            IsEnabled="False">
+        <uc:SettingsBlockControl Title="Log app actions" Description="Useful for debugging, enable this if you have an issue and want to report it.">
             <uc:SettingsBlockControl.SettingsActionableElement>
-                <ToggleSwitch Margin="0,0,-72,0" />
+                <ToggleSwitch Margin="0,0,-72,0" IsOn="{x:Bind local1:App.SViewModel.LoggingEnabled, Mode=TwoWay}" />
             </uc:SettingsBlockControl.SettingsActionableElement>
         </uc:SettingsBlockControl>
     </StackPanel>
