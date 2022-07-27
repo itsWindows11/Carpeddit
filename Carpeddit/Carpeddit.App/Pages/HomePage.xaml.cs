@@ -98,6 +98,8 @@ namespace Carpeddit.App.Pages
 
         private IEnumerable<PostViewModel> GetPosts(string after = "", int limit = 100, string before = "")
         {
+            App.Logger.Information("[HomePage] Loading posts...");
+
             List<Post> frontpage = App.RedditClient.GetFrontPage(limit: limit, after: after, before: before);
             List<PostViewModel> postViews = new();
 
@@ -116,6 +118,8 @@ namespace Carpeddit.App.Pages
 
                 postViews.Add(vm);
             }
+
+            App.Logger.Information("[HomePage] Loaded posts.");
 
             return postViews;
         }

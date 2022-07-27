@@ -2,10 +2,8 @@
 using Carpeddit.App.Models;
 using Carpeddit.App.ViewModels;
 using System;
-using System.Diagnostics;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
@@ -13,18 +11,19 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Reddit;
 using Carpeddit.App.Other;
-using System.Text;
-using Windows.Networking.Connectivity;
 using Carpeddit.App.Pages;
 using Windows.UI;
-using Windows.Networking.Sockets;
+using System.IO;
+using Windows.Storage;
+using Serilog;
+using Serilog.Core;
 
 namespace Carpeddit.App
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
-    sealed partial class App : Application
+    public sealed partial class App : Application
     {
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -38,6 +37,8 @@ namespace Carpeddit.App
         public static AccountDatabaseController AccDBController;
         public static CustomAccountModel CurrentAccount;
         public static RedditClient RedditClient;
+
+        public static Logger Logger;
 
         public App()
         {
@@ -59,6 +60,11 @@ namespace Carpeddit.App
                 SecondaryButtonText = "Report",
                 PrimaryButtonStyle = Resources["AccentButtonStyle"] as Style
             };
+
+            if (Logger != null)
+            {
+                Logger.Error(e.Exception, "An exception occurred.");
+            }
 
             _ = dialog.ShowAsync();
         }
@@ -128,7 +134,7 @@ namespace Carpeddit.App
             CurrentAccount ??= await AccDBController.GetAsync() ?? new CustomAccountModel();
             if (CurrentAccount.RefreshToken != null)
             {
-                RedditClient ??= new RedditClient(Constants.ClientId, CurrentAccount.RefreshToken, Constants.ClientSecret);
+                RedditClient ??= new RedditClient(Other.Constants.ClientId, CurrentAccount.RefreshToken, Other.Constants.ClientSecret);
             }
         }
 
@@ -163,6 +169,14 @@ namespace Carpeddit.App
 
         private async Task InitApp(LaunchActivatedEventArgs e)
         {
+            // Initialize logger
+            Logger = new LoggerConfiguration()
+                        .WriteTo
+                        .File(Path.Combine(ApplicationData.Current.LocalFolder.Path, "log.txt"))
+                        .CreateLogger();
+
+            Logger.Information("[App] Initialized logger.");
+
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
             if (Window.Current.Content is not Frame rootFrame)
@@ -218,6 +232,12 @@ namespace Carpeddit.App
         {
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
+
+            if (Logger != null)
+            {
+                Logger.Dispose();
+            }
+            
             deferral.Complete();
         }
     }

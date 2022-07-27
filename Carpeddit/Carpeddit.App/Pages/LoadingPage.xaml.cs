@@ -42,6 +42,8 @@ namespace Carpeddit.App.Pages
             // Init database
             await App.InitDb();
 
+            App.Logger.Information("[LoadingPage] Database initialized.");
+
             switch (App.SViewModel.Theme)
             {
                 case 0:
@@ -67,6 +69,8 @@ namespace Carpeddit.App.Pages
                 return false;
             });
 
+            App.Logger.Information($"[LoadingPage] Network is {(networkAvailable ? "available" : "not available")}.");
+
             if (SystemInformation.Instance.IsFirstRun)
             {
                 Frame.Navigate(typeof(FirstRunPage));
@@ -78,6 +82,7 @@ namespace Carpeddit.App.Pages
                 if (App.CurrentAccount != null && App.CurrentAccount.LoggedIn)
                 {
                     Frame.Navigate(typeof(MainPage), null, new Windows.UI.Xaml.Media.Animation.SuppressNavigationTransitionInfo());
+                    App.Logger.Information("[MainPage] Loading frontpage...");
                 }
                 else
                 {
@@ -87,6 +92,8 @@ namespace Carpeddit.App.Pages
             {
                 Frame.Navigate(typeof(OfflinePage), null, new Windows.UI.Xaml.Media.Animation.SuppressNavigationTransitionInfo());
             }
+
+            App.Logger.Information("[LoadingPage] App successfully initialized.");
         }
     }
 }

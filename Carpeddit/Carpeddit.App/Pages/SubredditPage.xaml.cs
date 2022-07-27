@@ -81,8 +81,16 @@ namespace Carpeddit.App.Pages
 
             }
 
+            App.Logger.Information($"[SubredditPage] Loading moderators list in {Subreddit.SubredditData.DisplayNamePrefixed}...");
+
             var modsList = await Task.Run(() => Subreddit.GetModerators());
+
+            App.Logger.Information($"[SubredditPage] Loaded moderators list in {Subreddit.SubredditData.DisplayNamePrefixed}.");
+            App.Logger.Information($"[SubredditPage] Loading rules list in {Subreddit.SubredditData.DisplayNamePrefixed}...");
+
             var rulesList = await Task.Run(() => Subreddit.GetRules().Rules);
+
+            App.Logger.Information($"[SubredditPage] Loaded rules list in {Subreddit.SubredditData.DisplayNamePrefixed}.");
 
             RulesList.ItemsSource = rulesList;
             ModsList.ItemsSource = modsList;
@@ -99,6 +107,8 @@ namespace Carpeddit.App.Pages
 
             try
             {
+                App.Logger.Information($"[SubredditPage] Loading post flairs list in {Subreddit.SubredditData.DisplayNamePrefixed}...");
+
                 var postFlairs = await Task.Run(() =>
                 {
                     try
@@ -117,10 +127,12 @@ namespace Carpeddit.App.Pages
                 {
                     PostFlairsExpander.Visibility = Visibility.Visible;
                 }
-            }
-            catch
-            {
 
+                App.Logger.Information($"[SubredditPage] Loaded post flairs list in {Subreddit.SubredditData.DisplayNamePrefixed}.");
+            }
+            catch (Exception e1)
+            {
+                App.Logger.Error(e1, $"[SubredditPage] An error occurred while loading post flairs list in {Subreddit.SubredditData.DisplayNamePrefixed}.");
             }
 
             Templates.PostTemplates.IsSubredditMod = Subreddit.SubredditData.UserIsModerator ?? false;
@@ -136,11 +148,15 @@ namespace Carpeddit.App.Pages
             if (Subreddit.SubredditData.UserIsSubscriber ?? false)
                 JoinButton.Content = "Leave";
 
+            App.Logger.Information($"[SubredditPage] Loading posts in {Subreddit.SubredditData.DisplayNamePrefixed}...");
+
             var posts1 = await Task.Run(() => GetPosts());
 
             posts.AddRange(posts1);
 
             MainList.ItemsSource = posts;
+
+            App.Logger.Information($"[SubredditPage] Loaded posts in {Subreddit.SubredditData.DisplayNamePrefixed}.");
 
             MainList.Visibility = Visibility.Visible;
 
@@ -150,6 +166,8 @@ namespace Carpeddit.App.Pages
 
             if (sortQueued)
             {
+                App.Logger.Information($"[SubredditPage] Using queued sort...");
+
                 ProgressR.Visibility = Visibility.Visible;
                 MainList.Visibility = Visibility.Collapsed;
 
@@ -254,9 +272,13 @@ namespace Carpeddit.App.Pages
                 button.Visibility = Visibility.Collapsed;
                 FooterProgress.Visibility = Visibility.Visible;
 
+                App.Logger.Information($"[SubredditPage] Loading more posts in {Subreddit.SubredditData.DisplayNamePrefixed}...");
+
                 var posts1 = await Task.Run(() => GetPosts(after: posts[posts.Count - 1].Post.Fullname, sortType: currentSort, t: currentSubSort.ToString().Replace("Top", string.Empty).Replace("Controversial", string.Empty).ToLower()));
 
                 posts.AddRange(posts1);
+
+                App.Logger.Information($"[SubredditPage] Loaded more posts in {Subreddit.SubredditData.DisplayNamePrefixed}.");
 
                 button.Visibility = Visibility.Visible;
                 FooterProgress.Visibility = Visibility.Collapsed;
@@ -269,12 +291,16 @@ namespace Carpeddit.App.Pages
             {
                 await Subreddit.UnsubscribeAsync();
                 JoinButton.Content = "Join";
+
+                App.Logger.Information($"[SubredditPage] Unsubscribed from {Subreddit.SubredditData.DisplayNamePrefixed}.");
             }
             else
             {
                 await Subreddit.SubscribeAsync();
                 JoinButton.Content = "Leave";
-            }
+
+                App.Logger.Information($"[SubredditPage] Subscribed into {Subreddit.SubredditData.DisplayNamePrefixed}.");
+           }
         }
 
         private void ModerationToolsButton_Click(object sender, RoutedEventArgs e)
@@ -287,6 +313,7 @@ namespace Carpeddit.App.Pages
             if (initialPostsLoaded)
             {
                 sortQueued = false;
+                App.Logger.Information($"[SubredditPage] Using sort \"{e.AddedItems[0] as string}\" in {Subreddit.SubredditData.DisplayNamePrefixed}.");
                 ProgressR.Visibility = Visibility.Visible;
                 MainList.Visibility = Visibility.Collapsed;
 
@@ -325,6 +352,8 @@ namespace Carpeddit.App.Pages
                 };
 
                 posts.Clear();
+
+                App.Logger.Information($"[SubredditPage] Loading posts using sort \"{e.AddedItems[0] as string}\" in {Subreddit.SubredditData.DisplayNamePrefixed}.");
 
                 posts.AddRange(await Task.Run(() => GetPosts(sortType: currentSort, t: currentSubSort.ToString().Replace("Top", string.Empty).Replace("Controversial", string.Empty).ToLower())));
 

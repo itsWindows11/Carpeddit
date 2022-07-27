@@ -4,6 +4,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using System;
 
 namespace Carpeddit.App.Pages
 {
@@ -43,6 +44,7 @@ namespace Carpeddit.App.Pages
         private void SettingsPageLoaded(object sender, RoutedEventArgs e)
         {
             VersionTextBlock.Text = $"Carpeddit, version {string.Format("{0}.{1}.{2}.{3}", Package.Current.Id.Version.Major, Package.Current.Id.Version.Minor, Package.Current.Id.Version.Build, Package.Current.Id.Version.Revision)}";
+            App.Logger.Information("[SettingsPage] Loaded version info.");
 
             try
             {
@@ -51,8 +53,12 @@ namespace Carpeddit.App.Pages
                 NSFWResultsToggleSwitch.IsOn = prefs.SearchIncludeOver18;
                 CompactLinkToggleSwitch.IsOn = prefs.Compress;
                 ClickTrackingToggleSwitch.IsOn = prefs.AllowClickTracking;
-            } catch
+
+                App.Logger.Information("[SettingsPage] Preferences loaded successfully.");
+            } catch (Exception e1)
             {
+                App.Logger.Error(e1, "[SettingsPage] An error occurred while loading preferences.");
+
                 RedditPrefsExpander.IsEnabled = false;
             }
 

@@ -53,7 +53,11 @@ namespace Carpeddit.App.Pages
                 button.Visibility = Visibility.Collapsed;
                 FooterProgress.Visibility = Visibility.Visible;
 
+                App.Logger.Information($"[YourProfilePage] Loading more posts...");
+
                 posts.AddRange(await Task.Run(() => GetPosts(after: posts[posts.Count - 1].Post.Fullname) ?? new List<PostViewModel>()));
+
+                App.Logger.Information($"[YourProfilePage] Loaded more posts.");
 
                 button.Visibility = Visibility.Visible;
                 FooterProgress.Visibility = Visibility.Collapsed;
@@ -74,10 +78,22 @@ namespace Carpeddit.App.Pages
 
             LoadMoreButton.Visibility = Visibility.Collapsed;
             ProgressR.Visibility = Visibility.Visible;
-            
+
+            App.Logger.Information($"[YourProfilePage] Loading posts...");
+
             posts.AddRange(await Task.Run(() => GetPosts() ?? new List<PostViewModel>()));
+
+            App.Logger.Information($"[YourProfilePage] Loaded posts.");
+            App.Logger.Information($"[YourProfilePage] Loading comments...");
+
             comments.AddRange(await Task.Run(() => GetComments() ?? new List<CommentViewModel>()));
+
+            App.Logger.Information($"[YourProfilePage] Loaded comments.");
+            App.Logger.Information($"[YourProfilePage] Loading your moderated subreddits...");
+
             myModSubreddits.AddRange(await Task.Run(() => user.GetModeratedSubreddits(100) ?? new List<ModeratedListItem>()));
+
+            App.Logger.Information($"[YourProfilePage] Loaded your moderated subreddits...");
 
             MainList.ItemsSource = posts;
             CommentsList.ItemsSource = comments;
@@ -160,7 +176,11 @@ namespace Carpeddit.App.Pages
                 button.Visibility = Visibility.Collapsed;
                 FooterProgress1.Visibility = Visibility.Visible;
 
+                App.Logger.Information($"[YourProfilePage] Loading more comments...");
+
                 comments.AddRange(await Task.Run(() => GetComments(after: comments[comments.Count - 1].OriginalComment.Fullname)));
+
+                App.Logger.Information($"[YourProfilePage] Loaded more comments.");
 
                 button.Visibility = Visibility.Visible;
                 FooterProgress1.Visibility = Visibility.Collapsed;
