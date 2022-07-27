@@ -10,7 +10,13 @@
     mc:Ignorable="d">
 
     <StackPanel>
-        <uc:SettingsBlockControl Title="Send data to App Center" IsEnabled="False">
+        <TextBlock Margin="0,12" Text="Your log files are stored locally, we may need the log files for bug reports." />
+        <TextBlock Margin="0,0,0,12" Text="Note: Carpeddit doesn't log your personal information." />
+
+        <uc:SettingsBlockControl
+            Title="Log app actions"
+            Description="Useful for debugging, enable this if you have an issue and want to report it."
+            IsEnabled="False">
             <uc:SettingsBlockControl.SettingsActionableElement>
                 <ToggleSwitch Margin="0,0,-72,0" />
             </uc:SettingsBlockControl.SettingsActionableElement>
