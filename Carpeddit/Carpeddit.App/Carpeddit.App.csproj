@@ -157,6 +157,7 @@
     <Compile Include="FirstRunPage.xaml.cs">
       <DependentUpon>FirstRunPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AppCenterHelper.cs" />
     <Compile Include="Helpers\LoggingHelper.cs" />
     <Compile Include="Helpers\PostHelpers.cs" />
     <Compile Include="LoginPage.xaml.cs">
@@ -271,6 +272,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Package.StoreAssociation.xml" />
+    <Content Include="AppCenterKey.txt" />
     <Content Include="Assets\DefaultSubredditIcon.png" />
     <Content Include="Assets\ModeratorTools.png" />
     <Content Include="Assets\Setup\Appearance.png" />
@@ -464,6 +466,15 @@
     </PackageReference>
     <PackageReference Include="CarpedditPkg">
       <Version>1.5.6</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AppCenter">
+      <Version>4.5.3</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AppCenter.Analytics">
+      <Version>4.5.3</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AppCenter.Crashes">
+      <Version>4.5.3</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.13</Version>
