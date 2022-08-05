@@ -4,4 +4,4 @@
 
 We only collect data that's useful for diagnostics and analytics such as how many users are using the app, crash info.
 
-We might need a copy of your log file for additional data when creating an issue. This can further help us when fixing a bug.
+We might need a copy of your log file for additional data when creating an issue. This can further help us when fixing a bug. Your personal data is not included in the data we collect or the log files.
