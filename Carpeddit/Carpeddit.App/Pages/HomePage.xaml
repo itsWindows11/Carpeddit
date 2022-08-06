@@ -36,6 +36,11 @@
             ItemTemplate="{StaticResource PlainPostTemplate}"
             SelectionChanged="MainList_SelectionChanged"
             SelectionMode="None">
+            <ListView.ItemContainerTransitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition IsStaggeringEnabled="False" />
+                </TransitionCollection>
+            </ListView.ItemContainerTransitions>
             <ListView.Header>
                 <StackPanel>
                     <ListView
