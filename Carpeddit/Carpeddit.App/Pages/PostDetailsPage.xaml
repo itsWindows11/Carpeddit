@@ -297,6 +297,11 @@
                 <muxc:ProgressRing IsActive="True" x:Name="CommentProgress" />
 
                 <muxc:TreeView SelectionMode="None" AllowDrop="False" CanDragItems="False" CanReorderItems="False" x:Name="CommentsTree" MaxWidth="1200" Margin="0,12">
+                    <muxc:TreeView.ItemContainerTransitions>
+                        <TransitionCollection>
+                            <EntranceThemeTransition IsStaggeringEnabled="False" />
+                        </TransitionCollection>
+                    </muxc:TreeView.ItemContainerTransitions>
                     <muxc:TreeView.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.ThemeDictionaries>
