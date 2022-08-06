@@ -32,9 +32,9 @@
             <StackPanel Orientation="Horizontal">
                 <Image
                     x:Name="AppFontIcon"
-                    Width="24"
-                    Height="24"
-                    Margin="-5,2,0,0"
+                    Width="16"
+                    Height="16"
+                    Margin="-4,2,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     Source="ms-appx:///Assets/Square44x44Logo.png" />
