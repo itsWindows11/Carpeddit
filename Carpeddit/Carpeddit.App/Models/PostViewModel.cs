@@ -144,6 +144,28 @@ namespace Carpeddit.App.Models
             });
         }
 
+        public async IAsyncEnumerable<CommentViewModel> GetCommentsAsync(string sortType = "top", object dummyParameter = null)
+        {
+            List<Task> commentLoadingTasks = new();
+            bool isCurrentUserMod = App.RedditClient.Subreddit(Post.Subreddit).About().SubredditData.UserIsModerator ?? false;
+
+            var comments = await Task.Run(() => Post.Comments.GetComments(sort: sortType));
+
+            foreach (Reddit.Controllers.Comment comment in comments)
+            {
+                CommentViewModel comment1 = new()
+                {
+                    OriginalComment = comment,
+                    IsTopLevel = true,
+                    IsCurrentUserMod = isCurrentUserMod
+                };
+
+                yield return comment1;
+
+                Task.Run(() => _ = comment1.GetReplies(true, isCurrentUserMod));
+            }
+        }
+
         public bool HasImage => Uri.IsWellFormedUriString(Description, UriKind.Absolute) && (Description.StartsWith("https://", StringComparison.OrdinalIgnoreCase) || Description.StartsWith("http://", StringComparison.OrdinalIgnoreCase)) && (Description.Contains("i.redd.it") || Description.Contains("i.imgur"));
 
         public MediaSource VideoSource

@@ -101,7 +101,10 @@ namespace Carpeddit.App.Pages
 
             CommentProgress.Visibility = Visibility.Visible;
 
-            commentsObservable.AddRange(await Post.GetCommentsAsync());
+            await foreach (var comment in Post.GetCommentsAsync(dummyParameter: null))
+            {
+                commentsObservable.Add(comment);
+            }
 
             CommentsTree.ItemsSource = commentsObservable;
             CommentProgress.Visibility = Visibility.Collapsed;
