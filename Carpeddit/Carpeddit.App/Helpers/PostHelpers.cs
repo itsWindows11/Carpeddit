@@ -1,4 +1,5 @@
 ﻿using Carpeddit.App.Models;
+using Carpeddit.Common.Enums;
 using Microsoft.Toolkit.Collections;
 using Reddit.Controllers;
 using System;
@@ -189,6 +190,62 @@ namespace Carpeddit.App.Helpers
         public static string Substring(string str)
         {
             return str.Substring(0, str.Length > 256 ? 256 : str.Length);
+        }
+
+        public static async IAsyncEnumerable<PostViewModel> GetFrontpageAsync(int limit = 100, string before = "", string after = "", Sort sortType = Sort.Hot)
+        {
+            List<Post> frontpage = await Task.Run(() => App.RedditClient.GetFrontPage(limit: limit, after: after, before: before));
+
+            foreach (Post post in frontpage)
+            {
+                PostViewModel vm = new()
+                {
+                    Post = post,
+                    Title = post.Title,
+                    Description = post.GetDescription(),
+                    Created = post.Created,
+                    Subreddit = post.Subreddit,
+                    Author = post.Author,
+                    CommentsCount = post.Listing.NumComments
+                };
+
+                yield return vm;
+            }
+        }
+
+        public static IAsyncEnumerable<PostViewModel> GetAllAsync(int limit = 100, string before = "", string after = "", string t = "all", Sort sortType = Sort.Hot)
+            => GetPostsAsync(App.RedditClient.Subreddit("all"), limit, before, after, t, sortType);
+
+        public static IAsyncEnumerable<PostViewModel> GetPopularAsync(int limit = 100, string before = "", string after = "", string t = "all", Sort sortType = Sort.Hot)
+            => GetPostsAsync(App.RedditClient.Subreddit("popular"), limit, before, after, t, sortType);
+
+        public static async IAsyncEnumerable<PostViewModel> GetPostsAsync(Subreddit subreddit, int limit = 100, string before = "", string after = "", string t = "all", Sort sortType = Sort.Hot)
+        {
+            List<Post> list = sortType switch
+            {
+                Sort.Best => await Task.Run(() => subreddit.Posts.GetBest(limit: limit, after: after, before: before)),
+                Sort.Controversial => await Task.Run(() => subreddit.Posts.GetControversial(limit: limit, after: after, before: before, t: t)),
+                Sort.New => await Task.Run(() => subreddit.Posts.GetNew(limit: limit, after: after, before: before)),
+                Sort.Rising => await Task.Run(() => subreddit.Posts.GetRising(limit: limit, after: after, before: before)),
+                Sort.Top => await Task.Run(() => subreddit.Posts.GetTop(limit: limit, after: after, before: before, t: t)),
+                _ => await Task.Run(() => subreddit.Posts.GetHot(limit: limit, after: after, before: before)),
+            };
+
+            foreach (Post post in list)
+            {
+                PostViewModel vm = new()
+                {
+                    Post = post,
+                    Title = post.Title,
+                    Description = post.GetDescription(),
+                    Created = post.Created,
+                    Subreddit = post.Subreddit,
+                    Author = post.Author,
+                    CommentsCount = post.Listing.NumComments
+                };
+
+                yield return vm;
+            }
         }
     }
 }

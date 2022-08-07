@@ -118,33 +118,7 @@ namespace Carpeddit.App.Models
 
         public string CommentsCountInUI => $"{CommentsCount} comment(s)";
 
-        public Task<ObservableCollection<CommentViewModel>> GetCommentsAsync(string sortType = "top")
-        {
-            return Task.Run(() =>
-            {
-                ObservableCollection<CommentViewModel> comments = new();
-
-                bool isCurrentUserMod = App.RedditClient.Subreddit(Post.Subreddit).About().SubredditData.UserIsModerator ?? false;
-
-                foreach (Reddit.Controllers.Comment comment in Post.Comments.GetComments(sort: sortType))
-                {
-                    CommentViewModel comment1 = new()
-                    {
-                        OriginalComment = comment,
-                        IsTopLevel = true,
-                        IsCurrentUserMod = isCurrentUserMod
-                    };
-
-                    _ = comment1.GetReplies(true, isCurrentUserMod);
-
-                    comments.Add(comment1);
-                }
-
-                return comments;
-            });
-        }
-
-        public async IAsyncEnumerable<CommentViewModel> GetCommentsAsync(string sortType = "top", object dummyParameter = null)
+        public async IAsyncEnumerable<CommentViewModel> GetCommentsAsync(string sortType = "top")
         {
             List<Task> commentLoadingTasks = new();
             bool isCurrentUserMod = App.RedditClient.Subreddit(Post.Subreddit).About().SubredditData.UserIsModerator ?? false;
