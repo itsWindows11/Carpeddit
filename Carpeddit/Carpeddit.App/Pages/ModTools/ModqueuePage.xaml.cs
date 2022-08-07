@@ -48,7 +48,7 @@ namespace Carpeddit.App.Pages.ModTools
         {
             Progress.Visibility = Visibility.Visible;
 
-            await foreach (var post in GetModqueueAsync())
+            await foreach (var post in GetModqueueAsync(type: type))
             {
                 _posts.Add(post);
             }
