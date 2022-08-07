@@ -3,6 +3,7 @@ using Carpeddit.App.Helpers;
 using Carpeddit.App.Models;
 using Reddit.Controllers;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -28,9 +29,10 @@ namespace Carpeddit.App.Pages
                 button.Visibility = Visibility.Collapsed;
                 FooterProgress.Visibility = Visibility.Visible;
 
-                var posts1 = await Task.Run(() => GetPosts(after: savedPosts[savedPosts.Count - 1].Post.Fullname));
-
-                savedPosts.AddRange(posts1);
+                await foreach (var post in PostHelpers.GetUserPostHistoryAsync(App.RedditClient.Account.Me, after: savedPosts.Last().Post.Fullname, where: "saved"))
+                {
+                    savedPosts.Add(post);
+                }
 
                 button.Visibility = Visibility.Visible;
                 FooterProgress.Visibility = Visibility.Collapsed;
@@ -41,34 +43,14 @@ namespace Carpeddit.App.Pages
         {
             LoadingProgress.Visibility = Visibility.Visible;
 
-            savedPosts.AddRange(await Task.Run(() => GetPosts()));
+            await foreach (var post in PostHelpers.GetUserPostHistoryAsync(App.RedditClient.Account.Me, where: "saved"))
+            {
+                savedPosts.Add(post);
+            }
+
             SavedPostsList.ItemsSource = savedPosts;
 
             LoadingProgress.Visibility = Visibility.Collapsed;
-        }
-
-        private IEnumerable<PostViewModel> GetPosts(string after = "", int limit = 100, string before = "")
-        {
-            List<Post> frontpage = App.RedditClient.Account.Me.GetPostHistory(where: "saved", limit: limit, after: after, before: before);
-            List<PostViewModel> postViews = new();
-
-            foreach (Post post in frontpage)
-            {
-                PostViewModel vm = new()
-                {
-                    Post = post,
-                    Title = post.Title,
-                    Description = post.GetDescription(),
-                    Created = post.Created,
-                    Subreddit = post.Subreddit,
-                    Author = post.Author,
-                    CommentsCount = post.Listing.NumComments
-                };
-
-                postViews.Add(vm);
-            }
-
-            return postViews;
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)

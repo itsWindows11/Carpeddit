@@ -19,8 +19,6 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace Carpeddit.App.Pages.ModTools
 {
     public sealed partial class ModqueuePage : Page
@@ -49,7 +47,12 @@ namespace Carpeddit.App.Pages.ModTools
         private async void ModqueuePage_Loaded(object sender, RoutedEventArgs e)
         {
             Progress.Visibility = Visibility.Visible;
-            _posts.AddRange(await Task.Run(() => GetPosts(type: type)));
+
+            await foreach (var post in GetModqueueAsync())
+            {
+                _posts.Add(post);
+            }
+
             MainList.ItemsSource = _posts;
             MainList.Visibility = Visibility.Visible;
             Progress.Visibility = Visibility.Collapsed;
@@ -61,22 +64,20 @@ namespace Carpeddit.App.Pages.ModTools
             }
         }
 
-        public List<PostViewModel> GetPosts(string before = "", string after = "", int limit = 100, ModQueueType type = ModQueueType.Default)
+        public async IAsyncEnumerable<PostViewModel> GetModqueueAsync(string before = "", string after = "", int limit = 100, ModQueueType type = ModQueueType.Default)
         {
             List<Post> list = type switch
             {
-                ModQueueType.Edited => subreddit.Posts.GetModQueueEdited(limit: limit, after: after, before: before),
-                ModQueueType.Reports => subreddit.Posts.GetModQueueReports(limit: limit, after: after, before: before),
-                ModQueueType.Spam => subreddit.Posts.GetModQueueSpam(limit: limit, after: after, before: before),
-                ModQueueType.Unmoderated => subreddit.Posts.GetModQueueUnmoderated(limit: limit, after: after, before: before),
-                _ => subreddit.Posts.GetModQueue(limit: limit, after: after, before: before),
+                ModQueueType.Edited => await Task.Run(() => subreddit.Posts.GetModQueueEdited(limit: limit, after: after, before: before)),
+                ModQueueType.Reports => await Task.Run(() => subreddit.Posts.GetModQueueReports(limit: limit, after: after, before: before)),
+                ModQueueType.Spam => await Task.Run(() => subreddit.Posts.GetModQueueSpam(limit: limit, after: after, before: before)),
+                ModQueueType.Unmoderated => await Task.Run(() => subreddit.Posts.GetModQueueUnmoderated(limit: limit, after: after, before: before)),
+                _ => await Task.Run(() => subreddit.Posts.GetModQueue(limit: limit, after: after, before: before)),
             };
-
-            List<PostViewModel> postViews = new();
 
             foreach (Post post in list)
             {
-                postViews.Add(new()
+                yield return new()
                 {
                     Post = post,
                     Title = post.Title,
@@ -85,15 +86,16 @@ namespace Carpeddit.App.Pages.ModTools
                     Subreddit = post.Subreddit,
                     Author = post.Author,
                     CommentsCount = post.Listing.NumComments
-                });
+                };
             }
-
-            return postViews;
         }
 
         private async void LoadMoreButton_Click(object sender, RoutedEventArgs e)
         {
-            _posts.AddRange(await Task.Run(() => GetPosts(after: _posts[_posts.Count - 1].Post.Fullname, type: type)));
+            await foreach (var post in GetModqueueAsync(after: _posts.Last().Post.Fullname, type: type))
+            {
+                _posts.Add(post);
+            }
         }
     }
 }

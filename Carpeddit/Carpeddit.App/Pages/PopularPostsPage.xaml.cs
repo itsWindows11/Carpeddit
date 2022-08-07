@@ -49,9 +49,10 @@ namespace Carpeddit.App.Pages
                 button.Visibility = Visibility.Collapsed;
                 FooterProgress.Visibility = Visibility.Visible;
 
-                var posts1 = await Task.Run(() => GetPosts(after: posts[posts.Count - 1].Post.Fullname));
-
-                posts.AddRange(posts1);
+                await foreach (var post in PostHelpers.GetPopularAsync(after: posts.Last().Post.Fullname))
+                {
+                    posts.Add(post);
+                }
 
                 button.Visibility = Visibility.Visible;
                 FooterProgress.Visibility = Visibility.Collapsed;
@@ -65,9 +66,10 @@ namespace Carpeddit.App.Pages
             LoadMoreButton.Visibility = Visibility.Collapsed;
             Progress.Visibility = Visibility.Visible;
 
-            var posts1 = await Task.Run(() => GetPosts());
-
-            posts.AddRange(posts1);
+            await foreach (var post in PostHelpers.GetPopularAsync())
+            {
+                posts.Add(post);
+            }
 
             MainList.ItemsSource = posts;
 
@@ -82,30 +84,6 @@ namespace Carpeddit.App.Pages
             {
 
             }
-        }
-
-        private IEnumerable<PostViewModel> GetPosts(string after = "", int limit = 100, string before = "")
-        {
-            List<Post> frontpage = App.RedditClient.Subreddit("all").Posts.GetHot(limit: limit, after: after, before: before);
-            List<PostViewModel> postViews = new();
-
-            foreach (Post post in frontpage)
-            {
-                PostViewModel vm = new()
-                {
-                    Post = post,
-                    Title = post.Title,
-                    Description = post.GetDescription(),
-                    Created = post.Created,
-                    Subreddit = post.Subreddit,
-                    Author = post.Author,
-                    CommentsCount = post.Listing.NumComments
-                };
-
-                postViews.Add(vm);
-            }
-
-            return postViews;
         }
 
         private void MainList_SelectionChanged(object sender, SelectionChangedEventArgs e)

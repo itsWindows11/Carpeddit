@@ -1,6 +1,7 @@
 ﻿using Carpeddit.App.Helpers;
 using Carpeddit.App.Models;
 using Reddit.Controllers;
+using Reddit.Inputs.Search;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
@@ -37,15 +38,39 @@ namespace Carpeddit.App.Pages
             Loaded -= SearchResultsPageLoaded;
             LoadingProgress.Visibility = Visibility.Visible;
 
-            List<Post> posts = await GetPostsAsync();
-            List<User> users = await GetUsersAsync();
-            List<Subreddit> subreddits = await GetSubredditsAsync();
+            List<PostViewModel> posts = new();
+            List<User> users = new();
+            List<Subreddit> subreddits = new();
 
-            List<PostViewModel> posts2 = new();
-
-            foreach (Post post in posts)
+            await foreach (var post in GetPostsAsync())
             {
-                PostViewModel post1 = new()
+                posts.Add(post);
+            }
+
+            await foreach (var user in GetUsersAsync())
+            {
+                users.Add(user);
+            }
+
+            await foreach (var post in GetSubredditsAsync())
+            {
+                subreddits.Add(post);
+            }
+
+            PostsList.ItemsSource = posts;
+            PeopleList.ItemsSource = users;
+            SubredditsList.ItemsSource = subreddits;
+
+            LoadingProgress.Visibility = Visibility.Collapsed;
+        }
+
+        private async IAsyncEnumerable<PostViewModel> GetPostsAsync()
+        {
+            List<Post> list = await Task.Run(() => App.RedditClient.Search(new SearchGetSearchInput(query, false, "relevance")));
+
+            foreach (Post post in list)
+            {
+                yield return new()
                 {
                     Post = post,
                     Title = post.Title,
@@ -55,63 +80,27 @@ namespace Carpeddit.App.Pages
                     Author = post.Author,
                     CommentsCount = post.Listing.NumComments
                 };
-
-                posts2.Add(post1);
             }
-
-            PostsList.ItemsSource = posts2;
-            PeopleList.ItemsSource = users;
-            SubredditsList.ItemsSource = subreddits;
-
-            LoadingProgress.Visibility = Visibility.Collapsed;
         }
 
-        private Task<List<Post>> GetPostsAsync()
+        private async IAsyncEnumerable<User> GetUsersAsync()
         {
-            return Task.Run(() =>
-            {
-                try
-                {
-                    return App.RedditClient.Search(new Reddit.Inputs.Search.SearchGetSearchInput(query, false, "relevance"));
-                }
-                catch
-                {
+            List<User> list = await Task.Run(() => App.RedditClient.SearchUsers(new SearchGetSearchInput(query)));
 
-                }
-                return new();
-            });
+            foreach (var user in list)
+            {
+                yield return user;
+            }
         }
 
-        private Task<List<User>> GetUsersAsync()
+        private async IAsyncEnumerable<Subreddit> GetSubredditsAsync()
         {
-            return Task.Run(() =>
+            List<Subreddit> list = await Task.Run(() => App.RedditClient.SearchSubreddits(new SearchGetSearchInput(query)));
+
+            foreach (var subreddit in list)
             {
-                try
-                {
-                    return App.RedditClient.SearchUsers(new Reddit.Inputs.Search.SearchGetSearchInput(query));
-                }
-                catch
-                {
-
-                }
-                return new();
-            });
-        }
-
-        private Task<List<Subreddit>> GetSubredditsAsync()
-        {
-            return Task.Run(() =>
-            {
-                try
-                {
-                    return App.RedditClient.SearchSubreddits(new Reddit.Inputs.Search.SearchGetSearchInput(query));
-                }
-                catch
-                {
-
-                }
-                return new();
-            });
+                yield return subreddit;
+            }
         }
 
         private void NavigationView_ItemInvoked(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewItemInvokedEventArgs args)

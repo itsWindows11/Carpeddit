@@ -198,7 +198,7 @@ namespace Carpeddit.App.Helpers
 
             foreach (Post post in frontpage)
             {
-                PostViewModel vm = new()
+                yield return new()
                 {
                     Post = post,
                     Title = post.Title,
@@ -208,8 +208,25 @@ namespace Carpeddit.App.Helpers
                     Author = post.Author,
                     CommentsCount = post.Listing.NumComments
                 };
+            }
+        }
 
-                yield return vm;
+        public static async IAsyncEnumerable<PostViewModel> GetUserPostHistoryAsync(User user, int limit = 100, string before = "", string after = "", string where = "submitted", Sort sortType = Sort.Hot)
+        {
+            List<Post> list = await Task.Run(() => user.GetPostHistory(where: where, limit: limit, after: after, before: before));
+
+            foreach (Post post in list)
+            {
+                yield return new()
+                {
+                    Post = post,
+                    Title = post.Title,
+                    Description = post.GetDescription(),
+                    Created = post.Created,
+                    Subreddit = post.Subreddit,
+                    Author = post.Author,
+                    CommentsCount = post.Listing.NumComments
+                };
             }
         }
 
@@ -233,7 +250,7 @@ namespace Carpeddit.App.Helpers
 
             foreach (Post post in list)
             {
-                PostViewModel vm = new()
+                yield return new()
                 {
                     Post = post,
                     Title = post.Title,
@@ -243,8 +260,6 @@ namespace Carpeddit.App.Helpers
                     Author = post.Author,
                     CommentsCount = post.Listing.NumComments
                 };
-
-                yield return vm;
             }
         }
     }

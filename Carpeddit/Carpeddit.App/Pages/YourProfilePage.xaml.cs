@@ -55,7 +55,10 @@ namespace Carpeddit.App.Pages
 
                 LoggingHelper.LogInfo($"[YourProfilePage] Loading more posts...");
 
-                posts.AddRange(await Task.Run(() => GetPosts(after: posts[posts.Count - 1].Post.Fullname) ?? new List<PostViewModel>()));
+                await foreach (var post in PostHelpers.GetUserPostHistoryAsync(user, after: posts.Last().Post.Fullname))
+                {
+                    posts.Add(post);
+                }
 
                 LoggingHelper.LogInfo($"[YourProfilePage] Loaded more posts.");
 
@@ -81,12 +84,18 @@ namespace Carpeddit.App.Pages
 
             LoggingHelper.LogInfo($"[YourProfilePage] Loading posts...");
 
-            posts.AddRange(await Task.Run(() => GetPosts() ?? new List<PostViewModel>()));
+            await foreach (var post in PostHelpers.GetUserPostHistoryAsync(user))
+            {
+                posts.Add(post);
+            }
 
             LoggingHelper.LogInfo($"[YourProfilePage] Loaded posts.");
             LoggingHelper.LogInfo($"[YourProfilePage] Loading comments...");
 
-            comments.AddRange(await Task.Run(() => GetComments() ?? new List<CommentViewModel>()));
+            await foreach (var comment in GetCommentsAsync())
+            {
+                comments.Add(comment);
+            }
 
             LoggingHelper.LogInfo($"[YourProfilePage] Loaded comments.");
             LoggingHelper.LogInfo($"[YourProfilePage] Loading your moderated subreddits...");
@@ -103,43 +112,17 @@ namespace Carpeddit.App.Pages
             LoadMoreButton.Visibility = Visibility.Visible;
         }
 
-        private IEnumerable<PostViewModel> GetPosts(string after = "", int limit = 100, string before = "")
+        private async IAsyncEnumerable<CommentViewModel> GetCommentsAsync(string after = "", int limit = 100, string before = "")
         {
-            List<Reddit.Controllers.Post> frontpage = user.GetPostHistory(limit: limit, after: after, before: before);
-            List<PostViewModel> posts1 = new();
-
-            foreach (Reddit.Controllers.Post post in frontpage)
-            {
-                posts1.Add(new()
-                {
-                    Post = post,
-                    Title = post.Title,
-                    Description = post.GetDescription(),
-                    Created = post.Created,
-                    Subreddit = post.Subreddit,
-                    Author = post.Author,
-                    CommentsCount = post.Listing.NumComments
-                });
-            }
-
-            return posts1;
-        }
-
-        private IEnumerable<CommentViewModel> GetComments(string after = "", int limit = 100, string before = "")
-        {
-            List<Reddit.Controllers.Comment> frontpage = user.GetCommentHistory(limit: limit, after: after, before: before);
-
-            List<CommentViewModel> comments1 = new();
+            List<Reddit.Controllers.Comment> frontpage = await Task.Run(() => user.GetCommentHistory(limit: limit, after: after, before: before));
 
             foreach (Reddit.Controllers.Comment comment in frontpage)
             {
-                comments1.Add(new()
+                yield return new()
                 {
                     OriginalComment = comment
-                });
+                };
             }
-
-            return comments1;
         }
 
         private async void CreatePostItem_Click(object sender, RoutedEventArgs e)
@@ -178,7 +161,10 @@ namespace Carpeddit.App.Pages
 
                 LoggingHelper.LogInfo($"[YourProfilePage] Loading more comments...");
 
-                comments.AddRange(await Task.Run(() => GetComments(after: comments[comments.Count - 1].OriginalComment.Fullname)));
+                await foreach (var comment in GetCommentsAsync(after: comments.Last().OriginalComment.Fullname))
+                {
+                    comments.Add(comment);
+                }
 
                 LoggingHelper.LogInfo($"[YourProfilePage] Loaded more comments.");
 
