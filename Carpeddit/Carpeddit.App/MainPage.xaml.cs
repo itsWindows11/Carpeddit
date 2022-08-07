@@ -78,6 +78,8 @@ namespace Carpeddit.App
                     }
                 }
             };
+
+            NavigationCacheMode = NavigationCacheMode.Required;
         }
 
         private async void OnMainPageLoaded(object sender, RoutedEventArgs e)
@@ -348,6 +350,7 @@ namespace Carpeddit.App
 
             if (result == ContentDialogResult.Primary)
             {
+                NavigationCacheMode = NavigationCacheMode.Disabled;
                 await AccountController.LogOutAsync();
                 (Window.Current.Content as Frame).Navigate(typeof(LoginPage));
             }
