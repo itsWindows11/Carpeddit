@@ -150,7 +150,7 @@ namespace Carpeddit.App.Pages
 
             LoggingHelper.LogInfo($"[SubredditPage] Loading posts in {Subreddit.SubredditData.DisplayNamePrefixed}...");
 
-            await foreach (var post in PostHelpers.GetPostsAsync(Subreddit, sortType: currentSort, t: currentSubSort.ToString().Replace("Top", string.Empty).Replace("Controversial", string.Empty).ToLower()))
+            await foreach (var post in PostHelpers.GetPostsAsync(Subreddit))
             {
                 posts.Add(post);
             }
