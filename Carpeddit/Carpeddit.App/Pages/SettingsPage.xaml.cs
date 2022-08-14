@@ -6,6 +6,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using System;
 using Carpeddit.App.Helpers;
+using System.Threading.Tasks;
 
 namespace Carpeddit.App.Pages
 {
@@ -42,14 +43,14 @@ namespace Carpeddit.App.Pages
             App.SViewModel.TintColor = App.SViewModel.TintColorsList.IndexOf(color);
         }
 
-        private void SettingsPageLoaded(object sender, RoutedEventArgs e)
+        private async void SettingsPageLoaded(object sender, RoutedEventArgs e)
         {
             VersionTextBlock.Text = $"Carpeddit, version {string.Format("{0}.{1}.{2}.{3}", Package.Current.Id.Version.Major, Package.Current.Id.Version.Minor, Package.Current.Id.Version.Build, Package.Current.Id.Version.Revision)}";
             LoggingHelper.LogInfo("[SettingsPage] Loaded version info.");
 
             try
             {
-                var prefs = App.RedditClient.Account.Prefs();
+                var prefs = await Task.Run(() => App.RedditClient.Account.Prefs());
 
                 NSFWResultsToggleSwitch.IsOn = prefs.SearchIncludeOver18;
                 CompactLinkToggleSwitch.IsOn = prefs.Compress;
