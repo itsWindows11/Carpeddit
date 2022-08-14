@@ -152,8 +152,8 @@
                     </FlipView.ItemTemplate>
                 </FlipView>
 
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="0,10,0,3" Text="{x:Bind CommentsCountInUI}" />
+                <controls:WrapPanel>
+                    <TextBlock Margin="8,8,0,3" Text="{x:Bind CommentsCountInUI}" />
 
                     <Button Style="{StaticResource TransparentButton}" Foreground="{StaticResource SystemAccentColor}" Content="Share" Margin="4,0,0,-6" Padding="2">
                         <Button.Flyout>
@@ -190,7 +190,7 @@
                     <HyperlinkButton Margin="4,0,0,-6" Padding="2" Click="OnReportButtonClick">
                         Report
                     </HyperlinkButton>
-                </StackPanel>
+                </controls:WrapPanel>
             </StackPanel>
         </Grid>
     </DataTemplate>
@@ -340,8 +340,8 @@
                     </FlipView.ItemTemplate>
                 </FlipView>
 
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="0,10,0,3" Text="{x:Bind CommentsCountInUI}" />
+                <controls:WrapPanel>
+                    <TextBlock Margin="8,8,0,3" Text="{x:Bind CommentsCountInUI}" />
 
                     <Button Style="{StaticResource TransparentButton}" Foreground="{StaticResource SystemAccentColor}" Content="Share" Margin="4,0,0,-6" Padding="2">
                         <Button.Flyout>
@@ -378,7 +378,7 @@
                     <HyperlinkButton Margin="4,0,0,-6" Padding="2" Click="OnReportButtonClick">
                         Report
                     </HyperlinkButton>
-                </StackPanel>
+                </controls:WrapPanel>
             </StackPanel>
         </Grid>
     </DataTemplate>
@@ -540,8 +540,8 @@
                     </FlipView.ItemTemplate>
                 </FlipView>
 
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="0,10,0,3" Text="{x:Bind CommentsCountInUI}" />
+                <controls:WrapPanel>
+                    <TextBlock Margin="8,8,0,3" Text="{x:Bind CommentsCountInUI}" />
 
                     <Button Style="{StaticResource TransparentButton}" Foreground="{StaticResource SystemAccentColor}" Content="Share" Margin="4,0,0,-6" Padding="2">
                         <Button.Flyout>
@@ -594,7 +594,7 @@
                     <HyperlinkButton Margin="4,0,0,-6" Padding="2" Click="OnReportButtonClick">
                         Report
                     </HyperlinkButton>
-                </StackPanel>
+                </controls:WrapPanel>
             </StackPanel>
         </Grid>
     </DataTemplate>
