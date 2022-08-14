@@ -48,7 +48,8 @@
                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
                         ScrollViewer.HorizontalScrollMode="Enabled"
                         ScrollViewer.VerticalScrollMode="Disabled"
-                        SelectionMode="None">
+                        SelectionMode="None"
+                        Margin="12,0,0,0">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <ItemsStackPanel Orientation="Horizontal" />

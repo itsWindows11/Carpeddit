@@ -9,7 +9,7 @@
     xmlns:windowsui="using:Windows.UI"
     mc:Ignorable="d">
 
-    <ScrollViewer Margin="-56,0" d:Margin="0" Padding="56,12,56,0">
+    <ScrollViewer Margin="-68,0,-56,0" d:Margin="0" Padding="56,12,56,0">
         <StackPanel Orientation="Vertical" Spacing="12">
             <TextBlock FontWeight="SemiBold" Text="Appearance" />
 

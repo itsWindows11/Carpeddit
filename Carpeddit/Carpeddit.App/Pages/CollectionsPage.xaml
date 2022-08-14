@@ -10,7 +10,7 @@
     <StackPanel
         d:Padding="12"
         d:Margin="0"
-        Margin="0,12,0,0"
+        Margin="-16,12,-16,0"
         d:Spacing="0"
         Spacing="12">
         <Button
@@ -29,8 +29,10 @@
 
                 <Border
                     Height="64"
-                    Background="{StaticResource LayerFillColorDefaultBrush}"
-                    CornerRadius="8" />
+                    Background="{StaticResource ExpanderHeaderBackground}"
+                    CornerRadius="8">
+                    <FontIcon Glyph="&#xE105;" />
+                </Border>
 
                 <TextBlock
                     Grid.Column="1"
