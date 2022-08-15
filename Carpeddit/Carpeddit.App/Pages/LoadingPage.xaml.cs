@@ -24,17 +24,7 @@ namespace Carpeddit.App.Pages
 
             LoggingHelper.LogInfo("[LoadingPage] Database initialized.");
 
-            try
-            {
-                await AppCenterHelper.StartAppCenterAsync();
-
-                LoggingHelper.LogInfo("[LoadingPage] App Center initialized.");
-            }
-            catch (Exception ex)
-            {
-                LoggingHelper.LogError("[LoadingPage] App Center failed to initialize.", ex);
-            }
-
+            AppCenterHelper.StartAppCenterAsync();
 
             switch (App.SViewModel.Theme)
             {
