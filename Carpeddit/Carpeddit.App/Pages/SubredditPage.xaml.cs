@@ -150,10 +150,7 @@ namespace Carpeddit.App.Pages
 
             LoggingHelper.LogInfo($"[SubredditPage] Loading posts in {Subreddit.SubredditData.DisplayNamePrefixed}...");
 
-            await foreach (var post in PostHelpers.GetPostsAsync(Subreddit))
-            {
-                posts.Add(post);
-            }
+            posts.AddRange(await Task.Run(() => GetPosts()));
 
             MainList.ItemsSource = posts;
 
@@ -208,15 +205,45 @@ namespace Carpeddit.App.Pages
 
                 posts.Clear();
 
-                await foreach (var post in PostHelpers.GetPostsAsync(Subreddit, sortType: currentSort, t: currentSubSort.ToString().Replace("Top", string.Empty).Replace("Controversial", string.Empty).ToLower()))
-                {
-                    posts.Add(post);
-                }
+                posts.AddRange(await Task.Run(() => GetPosts(sortType: currentSort, t: currentSubSort.ToString().Replace("Top", string.Empty).Replace("Controversial", string.Empty).ToLower())));
 
                 ProgressR.Visibility = Visibility.Collapsed;
                 MainList.Visibility = Visibility.Visible;
                 sortQueued = false;
             }
+        }
+
+        private IEnumerable<PostViewModel> GetPosts(string after = "", int limit = 100, string before = "", string t = "all", Sort sortType = Sort.Hot)
+        {
+            List<Reddit.Controllers.Post> frontpage = sortType switch
+            {
+                Sort.Best => Subreddit.Posts.GetBest(limit: limit, after: after, before: before),
+                Sort.Controversial => Subreddit.Posts.GetControversial(limit: limit, after: after, before: before, t: t),
+                Sort.New => Subreddit.Posts.GetNew(limit: limit, after: after, before: before),
+                Sort.Rising => Subreddit.Posts.GetRising(limit: limit, after: after, before: before),
+                Sort.Top => Subreddit.Posts.GetTop(limit: limit, after: after, before: before, t: t),
+                _ => Subreddit.Posts.GetHot(limit: limit, after: after, before: before),
+            };
+
+            List<PostViewModel> postViews = new();
+
+            foreach (Reddit.Controllers.Post post in frontpage)
+            {
+                PostViewModel vm = new()
+                {
+                    Post = post,
+                    Title = post.Title,
+                    Description = post.GetDescription(),
+                    Created = post.Created,
+                    Subreddit = post.Subreddit,
+                    Author = post.Author,
+                    CommentsCount = post.Listing.NumComments
+                };
+
+                postViews.Add(vm);
+            }
+
+            return postViews;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -327,10 +354,7 @@ namespace Carpeddit.App.Pages
 
                 LoggingHelper.LogInfo($"[SubredditPage] Loading posts using sort \"{e.AddedItems[0] as string}\" in {Subreddit.SubredditData.DisplayNamePrefixed}.");
 
-                await foreach (var post in PostHelpers.GetPostsAsync(Subreddit, sortType: currentSort, t: currentSubSort.ToString().Replace("Top", string.Empty).Replace("Controversial", string.Empty).ToLower()))
-                {
-                    posts.Add(post);
-                }
+                posts.AddRange(await Task.Run(() => GetPosts(sortType: currentSort, t: currentSubSort.ToString().Replace("Top", string.Empty).Replace("Controversial", string.Empty).ToLower())));
 
                 ProgressR.Visibility = Visibility.Collapsed;
                 MainList.Visibility = Visibility.Visible;
