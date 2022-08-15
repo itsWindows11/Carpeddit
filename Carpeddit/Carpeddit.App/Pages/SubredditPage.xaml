@@ -61,7 +61,7 @@
                                             Height="60"
                                             HorizontalAlignment="Left"
                                             BorderBrush="{StaticResource SystemAccentColorLight2}"
-                                            BorderThickness="3"
+                                            BorderThickness="1"
                                             CornerRadius="60">
                                             <Image>
                                                 <Image.Source>
