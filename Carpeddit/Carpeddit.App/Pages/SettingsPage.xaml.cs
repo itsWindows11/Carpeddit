@@ -73,7 +73,7 @@ namespace Carpeddit.App.Pages
         {
             try
             {
-                var prefs = App.RedditClient.Account.Prefs();
+                var prefs = await Task.Run(() => App.RedditClient.Account.Prefs());
                 prefs.SearchIncludeOver18 = (sender as ToggleSwitch).IsOn;
 
                 _ = await App.RedditClient.Account.UpdatePrefsAsync(new Reddit.Things.AccountPrefsSubmit(prefs, null, prefs.Beta, null));
@@ -87,7 +87,7 @@ namespace Carpeddit.App.Pages
         {
             try
             {
-                var prefs = App.RedditClient.Account.Prefs();
+                var prefs = await Task.Run(() => App.RedditClient.Account.Prefs());
                 prefs.Compress = (sender as ToggleSwitch).IsOn;
 
                 _ = await App.RedditClient.Account.UpdatePrefsAsync(new Reddit.Things.AccountPrefsSubmit(prefs, null, prefs.Beta, null));
@@ -101,7 +101,7 @@ namespace Carpeddit.App.Pages
         {
             try
             {
-                var prefs = App.RedditClient.Account.Prefs();
+                var prefs = await Task.Run(() => App.RedditClient.Account.Prefs());
                 prefs.AllowClickTracking = (sender as ToggleSwitch).IsOn;
 
                 _ = await App.RedditClient.Account.UpdatePrefsAsync(new Reddit.Things.AccountPrefsSubmit(prefs, null, prefs.Beta, null));
