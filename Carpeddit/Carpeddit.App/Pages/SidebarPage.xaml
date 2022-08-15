@@ -92,7 +92,7 @@
                 <ListView x:Name="RecommendedSubredditsList" SelectionMode="None">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="reddit:Subreddit">
-                            <StackPanel Spacing="4">
+                            <StackPanel Spacing="4" Margin="0,4,0,0">
                                 <HyperlinkButton Padding="0" Content="{x:Bind SubredditData.DisplayNamePrefixed}" Click="OnSubredditItemClick" />
                                 <TextBlock>
                                     <Run Text="{x:Bind helpers:PostHelpers.FormatIntNumber(SubredditData.Subscribers)}" />
