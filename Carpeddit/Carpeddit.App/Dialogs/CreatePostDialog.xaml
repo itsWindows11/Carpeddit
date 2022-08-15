@@ -22,29 +22,43 @@
 
     <ScrollViewer>
         <StackPanel Spacing="8">
-            <controls:SettingsBlockControl Title="Post type">
-                <controls:SettingsBlockControl.SettingsActionableElement>
-                    <ComboBox SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged">
-                        <x:String>Text</x:String>
-                        <x:String>Link</x:String>
-                    </ComboBox>
-                </controls:SettingsBlockControl.SettingsActionableElement>
-            </controls:SettingsBlockControl>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-            <controls:SettingsBlockControl Title="Subreddit" x:Name="SubredditContainer">
-                <controls:SettingsBlockControl.SettingsActionableElement>
-                    <ComboBox
-                        x:Name="SubredditComboBox"
-                        SelectedIndex="0"
-                        SelectionChanged="SubredditComboBox_SelectionChanged">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate x:DataType="reddit:Subreddit">
-                                <TextBlock Text="{x:Bind SubredditData.DisplayNamePrefixed}" />
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                    </ComboBox>
-                </controls:SettingsBlockControl.SettingsActionableElement>
-            </controls:SettingsBlockControl>
+                <TextBlock Text="Post type" VerticalAlignment="Center" />
+
+                <ComboBox Grid.Column="1" SelectedIndex="0" SelectionChanged="ComboBox_SelectionChanged">
+                    <x:String>Text</x:String>
+                    <x:String>Link</x:String>
+                </ComboBox>
+            </Grid>
+
+            <Grid x:Name="SubredditContainer" ColumnSpacing="8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" MinWidth="150" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Subreddit" VerticalAlignment="Center" />
+
+                <TextBox d:Visibility="Visible" Visibility="Collapsed" x:Name="SubredditTextBox" PlaceholderText="r/subreddit" Grid.Column="1" />
+
+                <ComboBox
+                    x:Name="SubredditComboBox"
+                    SelectedIndex="0"
+                    Grid.Column="2"
+                    SelectionChanged="SubredditComboBox_SelectionChanged">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate x:DataType="x:String">
+                            <TextBlock Text="{x:Bind}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </Grid>
 
             <TextBox x:Name="TitleText" Header="Title" />
 
