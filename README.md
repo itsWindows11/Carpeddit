@@ -1,4 +1,4 @@
-# <p align="center">Carpoddit</p>
+# <p align="center">Carpeddit</p>
 A client for reddit with the latest Fluent Design principles, simple, easy to use, fast and aims to be flexible, safe and full featured.
 
 ## Screenshots
