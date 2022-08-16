@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="using:Carpeddit.App.UserControls"
     xmlns:windowsui="using:Windows.UI"
+    d:Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
     <ScrollViewer Margin="-68,0,-56,0" d:Margin="0" Padding="56,12,56,0">
@@ -145,9 +146,11 @@
             <TextBlock FontWeight="SemiBold" Text="Social" />
 
             <StackPanel Spacing="8" Orientation="Horizontal">
-                <HyperlinkButton Content="Github" NavigateUri="https://github.com/itsWindows11/Carpeddit" />
+                <HyperlinkButton Content="GitHub" NavigateUri="https://github.com/itsWindows11/Carpeddit" />
 
                 <HyperlinkButton Content="Discord" NavigateUri="https://discord.gg/Kj49PDum7y" />
+
+                <HyperlinkButton Content="Submit feedback" NavigateUri="https://github.com/itsWindows11/Carpeddit/issues/new" />
             </StackPanel>
 
             <TextBlock Text="© 2022 itsWindows11." />

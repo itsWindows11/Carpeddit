@@ -18,6 +18,7 @@ using Windows.Storage;
 using Serilog;
 using Serilog.Core;
 using Carpeddit.App.Helpers;
+using Windows.ApplicationModel.Core;
 
 namespace Carpeddit.App
 {
@@ -156,19 +157,11 @@ namespace Carpeddit.App
 
         protected override async void OnActivated(IActivatedEventArgs args)
         {
-            /*if (args.Kind == ActivationKind.Protocol && args is ProtocolActivatedEventArgs args1)
-            {
-                // TODO: Handle URI activation
-                // The received URI is eventArgs.Uri.AbsoluteUri
-                // string param1 = HttpUtility.ParseQueryString(myUri.Query).Get("param1");
-                Debug.WriteLine(args1.Uri.Query);
-                
-            }*/
-            Window.Current.Activate();
+            await InitApp();
         }
 
 
-        private async Task InitApp(LaunchActivatedEventArgs e)
+        private async Task InitApp(LaunchActivatedEventArgs e = null)
         {
             // Initialize logger
             Logger = new LoggerConfiguration()
@@ -187,25 +180,43 @@ namespace Carpeddit.App
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
+                if (e != null)
                 {
-                    //TODO: Load state from previously suspended application
+                    if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
+                    {
+                        //TODO: Load state from previously suspended application
+                    }
                 }
-
+                
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
 
-            if (!e.PrelaunchActivated)
+            if (e != null)
             {
-                Windows.ApplicationModel.Core.CoreApplication.EnablePrelaunch(true);
+                if (!e.PrelaunchActivated)
+                {
+                    CoreApplication.EnablePrelaunch(true);
+                    if (rootFrame.Content == null)
+                    {
+                        // When the navigation stack isn't restored navigate to the first page,
+                        // configuring the new page by passing required information as a navigation
+                        // parameter
+
+                        rootFrame.Navigate(typeof(LoadingPage), e.Arguments);
+                    }
+                    // Ensure the current window is active
+                    Window.Current.Activate();
+                }
+            } else
+            {
                 if (rootFrame.Content == null)
                 {
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
 
-                    rootFrame.Navigate(typeof(LoadingPage), e.Arguments);
+                    rootFrame.Navigate(typeof(LoadingPage));
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();
