@@ -73,15 +73,11 @@ namespace Carpeddit.App.Templates
 
             if (toggle.IsChecked ?? false)
             {
-                await post.Post.UpvoteAsync();
-                post.Upvoted = true;
-                post.Downvoted = false;
+                await post.UpvoteAsync();
             }
             else
             {
-                await post.Post.UnvoteAsync();
-                post.Upvoted = false;
-                post.Downvoted = false;
+                await post.UnvoteAsync();
             }
         }
 
@@ -92,15 +88,11 @@ namespace Carpeddit.App.Templates
 
             if (toggle.IsChecked ?? false)
             {
-                await post.Post.DownvoteAsync();
-                post.Upvoted = false;
-                post.Downvoted = true;
+                await post.DownvoteAsync();
             }
             else
             {
-                await post.Post.UnvoteAsync();
-                post.Upvoted = false;
-                post.Downvoted = false;
+                await post.UnvoteAsync();
             }
         }
 
@@ -196,22 +188,7 @@ namespace Carpeddit.App.Templates
         {
             if ((sender as FrameworkElement).DataContext is PostViewModel post)
             {
-                // Retrieve first 3 posts of the subreddit, the first 2 are pinned (if not then there's at least one empty slot).
-                var pinned = await Task.Run(() => App.RedditClient.Subreddit(name: post.Post.Subreddit).Posts.GetHot(limit: 3));
-                int indexToInsert = 1;
-
-                if (!pinned[0].Listing.Stickied || (pinned[0].Listing.Stickied && pinned[1].Listing.Stickied))
-                {
-                    indexToInsert = 1;
-                } else if (!pinned[1].Listing.Stickied || pinned[0].Listing.Stickied)
-                {
-                    indexToInsert = 2;
-                }
-
-                // Sticky the post, finally.
-                // This function has misleading documentation and I have no idea how to fix it, so the above
-                // if statements are used here as a workaround.
-                await post.Post.SetSubredditStickyAsync(indexToInsert, false);
+                await post.PinAsync();
 
                 (sender as HyperlinkButton).Content = "Pinned";
                 (sender as HyperlinkButton).IsEnabled = false;

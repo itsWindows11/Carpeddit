@@ -3,6 +3,7 @@ using Carpeddit.App.Controllers;
 using Carpeddit.App.Dialogs;
 using Carpeddit.App.Helpers;
 using Carpeddit.App.Models;
+using Carpeddit.App.ViewModels;
 using Microsoft.Toolkit.Uwp;
 using Reddit.Controllers;
 using System;

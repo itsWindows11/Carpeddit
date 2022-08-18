@@ -128,7 +128,7 @@ namespace Carpeddit.App.ViewModels
         public int CommentsCount
         {
             get => _commentsCount;
-            private set => Set(ref _commentsCount, value);
+            set => Set(ref _commentsCount, value);
         }
 
         public string CommentsCountInUI
@@ -411,6 +411,9 @@ namespace Carpeddit.App.ViewModels
     // Helper functions
     public partial class PostViewModel
     {
+        public Task DeleteAsync()
+            => Post.DeleteAsync();
+
         public async IAsyncEnumerable<CommentViewModel> GetCommentsAsync(string sortType = "top", CoreDispatcher dispatcher = null)
         {
             List<Task> commentLoadingTasks = new();
@@ -442,7 +445,7 @@ namespace Carpeddit.App.ViewModels
         }
 
         // Markdown link clicked event handler
-        private async void OnMarkdownLinkClicked(object sender, LinkClickedEventArgs e)
+        public async void OnMarkdownLinkClicked(object sender, LinkClickedEventArgs e)
         {
             if (Uri.TryCreate(e.Link, UriKind.Absolute, out Uri link))
             {

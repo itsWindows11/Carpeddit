@@ -339,6 +339,11 @@ namespace Carpeddit.App.ViewModels
     // Helper functions
     public partial class CommentViewModel
     {
+        public Task DeleteAsync()
+        {
+            return OriginalComment.DeleteAsync();
+        }
+        
         public Task DistinguishAsModeratorAsync()
         {
             return OriginalComment.DistinguishAsync("yes", false);

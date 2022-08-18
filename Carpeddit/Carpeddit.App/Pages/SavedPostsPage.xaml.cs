@@ -1,10 +1,7 @@
 ﻿using Carpeddit.App.Collections;
 using Carpeddit.App.Helpers;
-using Carpeddit.App.Models;
-using Reddit.Controllers;
-using System.Collections.Generic;
+using Carpeddit.App.ViewModels;
 using System.Linq;
-using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 

@@ -7,9 +7,10 @@
     xmlns:local="using:Carpeddit.App"
     xmlns:models="using:Carpeddit.App.Models"
     xmlns:templates="using:Carpeddit.App.Templates"
-    xmlns:redditthings="using:Reddit.Things">
+    xmlns:redditthings="using:Reddit.Things"
+    xmlns:viewmodels="using:Carpeddit.App.ViewModels">
 
-    <DataTemplate x:Key="PlainPostTemplate" x:DataType="models:PostViewModel">
+    <DataTemplate x:Key="PlainPostTemplate" x:DataType="viewmodels:PostViewModel">
         <Grid
             MaxWidth="1200"
             Margin="0,4"
@@ -117,7 +118,7 @@
                     x:Phase="1"
                     Background="Transparent"
                     Visibility="{x:Bind Post.Listing.IsSelf}"
-                    LinkClicked="MarkdownLinkClicked"
+                    LinkClicked="{x:Bind OnMarkdownLinkClicked}"
                     Text="{x:Bind ShortDescription}"
                     TextWrapping="WrapWholeWords" />
 
@@ -195,7 +196,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="UserPostTemplate" x:DataType="models:PostViewModel">
+    <DataTemplate x:Key="UserPostTemplate" x:DataType="viewmodels:PostViewModel">
         <Grid
             MaxWidth="1200"
             Margin="0,4"
@@ -304,7 +305,7 @@
                     Margin="0,5,0,0"
                     x:Phase="1"
                     Background="Transparent"
-                    LinkClicked="MarkdownLinkClicked"
+                    LinkClicked="{x:Bind OnMarkdownLinkClicked}"
                     Text="{x:Bind ShortDescription}"
                     TextWrapping="WrapWholeWords"
                     Visibility="{x:Bind Post.Listing.IsSelf}" />
@@ -383,7 +384,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="SubredditPostTemplate" x:DataType="models:PostViewModel">
+    <DataTemplate x:Key="SubredditPostTemplate" x:DataType="viewmodels:PostViewModel">
         <Grid
             MaxWidth="1200"
             Margin="0,4"
@@ -505,7 +506,7 @@
                     x:Phase="1"
                     Background="Transparent"
                     Visibility="{x:Bind Post.Listing.IsSelf}"
-                    LinkClicked="MarkdownLinkClicked"
+                    LinkClicked="{x:Bind OnMarkdownLinkClicked}"
                     Text="{x:Bind ShortDescription}"
                     TextWrapping="WrapWholeWords" />
 
