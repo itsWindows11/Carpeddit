@@ -16,7 +16,7 @@
 
             <uc:SettingsBlockControl Title="Theme">
                 <uc:SettingsBlockControl.SettingsActionableElement>
-                    <ComboBox SelectedIndex="{x:Bind local:App.SViewModel.Theme, Mode=TwoWay}">
+                    <ComboBox Margin="0,0,36,0" SelectedIndex="{x:Bind local:App.SViewModel.Theme, Mode=TwoWay}">
                         <ComboBoxItem Content="Light" />
                         <ComboBoxItem Content="Dark" />
                         <ComboBoxItem Content="System default" />
@@ -124,6 +124,12 @@
             <uc:SettingsBlockControl Title="Log app actions" Description="Useful for debugging, enable this if you have an issue and want to report it.">
                 <uc:SettingsBlockControl.SettingsActionableElement>
                     <ToggleSwitch Margin="0,0,-36,0" IsOn="{x:Bind local:App.SViewModel.LoggingEnabled, Mode=TwoWay}" />
+                </uc:SettingsBlockControl.SettingsActionableElement>
+            </uc:SettingsBlockControl>
+
+            <uc:SettingsBlockControl IsEnabled="{x:Bind local:App.SViewModel.LoggingEnabled, Mode=OneWay}" Title="Save logs" Description="Save a copy of Carpeddit's logs.">
+                <uc:SettingsBlockControl.SettingsActionableElement>
+                    <Button Margin="0,0,36,0" Click="OnSaveButtonClick">Save</Button>
                 </uc:SettingsBlockControl.SettingsActionableElement>
             </uc:SettingsBlockControl>
 

@@ -7,6 +7,11 @@ using Windows.UI.Xaml.Media;
 using System;
 using Carpeddit.App.Helpers;
 using System.Threading.Tasks;
+using Windows.Storage.Pickers;
+using System.Collections.Generic;
+using System.Collections;
+using Windows.Storage;
+using System.IO;
 
 namespace Carpeddit.App.Pages
 {
@@ -108,6 +113,24 @@ namespace Carpeddit.App.Pages
             } catch
             {
 
+            }
+        }
+
+        private async void OnSaveButtonClick(object sender, RoutedEventArgs e)
+        {
+            var picker = new FileSavePicker
+            {
+                SuggestedFileName = "log.txt"
+            };
+            
+            picker.FileTypeChoices.Add("Plain Text", new List<string>() { ".txt" });
+            
+            var file = await picker.PickSaveFileAsync();
+
+            if (file != null)
+            {
+                var log = await StorageFile.GetFileFromPathAsync(Path.Combine(ApplicationData.Current.LocalFolder.Path, "log.txt"));
+                await log.CopyAndReplaceAsync(file);
             }
         }
     }
