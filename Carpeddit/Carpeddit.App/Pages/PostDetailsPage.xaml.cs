@@ -2,6 +2,7 @@
 using Carpeddit.App.Collections;
 using Carpeddit.App.Dialogs;
 using Carpeddit.App.Models;
+using Carpeddit.App.ViewModels;
 using Carpeddit.Common.Enums;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Reddit.Controllers;
@@ -31,13 +32,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace Carpeddit.App.Pages
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class PostDetailsPage : Page
     {
         PostViewModel Post;

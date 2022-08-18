@@ -1,6 +1,7 @@
 ﻿using Carpeddit.App.Dialogs;
 using Carpeddit.App.Models;
 using Carpeddit.App.Pages;
+using Carpeddit.App.ViewModels;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using System;
 using System.Linq;
