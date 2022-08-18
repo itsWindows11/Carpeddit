@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Carpeddit.App.Collections;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Reddit.Controllers;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 
 namespace Carpeddit.App.Models
@@ -82,9 +84,9 @@ namespace Carpeddit.App.Models
             }
         }
 
-        private ObservableCollection<CommentViewModel> _replies;
+        private BulkConcurrentObservableCollection<CommentViewModel> _replies;
 
-        public ObservableCollection<CommentViewModel> Replies
+        public BulkConcurrentObservableCollection<CommentViewModel> Replies
         {
             get => _replies;
             set
@@ -195,7 +197,7 @@ namespace Carpeddit.App.Models
             return num.ToString("#,0");
         }
 
-        public ObservableCollection<CommentViewModel> GetReplies(bool addToRepliesList = false, bool isCurrentUserMod = false)
+        public ObservableCollection<CommentViewModel> GetReplies(CoreDispatcher dispatcher = null, bool addToRepliesList = false, bool isCurrentUserMod = false)
         {
             ObservableCollection<CommentViewModel> comments = new();
 
@@ -209,16 +211,16 @@ namespace Carpeddit.App.Models
                     IsCurrentUserMod = isCurrentUserMod
                 };
 
-                if (addToRepliesList)
+                if (addToRepliesList && dispatcher != null)
                 {
-                    Replies.Add(commentVm);
+                    _ = dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => Replies.Add(commentVm));
                 }
                 else
                 {
                     comments.Add(commentVm);
                 }
 
-                _ = commentVm.GetReplies(true, isCurrentUserMod);
+                _ = commentVm.GetReplies(dispatcher, true, isCurrentUserMod);
             }
 
             return comments;

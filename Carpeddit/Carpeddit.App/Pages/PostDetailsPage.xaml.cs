@@ -101,7 +101,7 @@ namespace Carpeddit.App.Pages
 
             CommentProgress.Visibility = Visibility.Visible;
 
-            await foreach (var comment in Post.GetCommentsAsync())
+            await foreach (var comment in Post.GetCommentsAsync(dispatcher: Dispatcher))
             {
                 commentsObservable.Add(comment);
             }
@@ -141,7 +141,7 @@ namespace Carpeddit.App.Pages
 
                 commentsObservable.Clear();
 
-                await foreach (var comment in Post.GetCommentsAsync(sortType: currentSort.ToString().ToLower()))
+                await foreach (var comment in Post.GetCommentsAsync(dispatcher: Dispatcher, sortType: currentSort.ToString().ToLower()))
                 {
                     commentsObservable.Add(comment);
                 }
@@ -558,7 +558,7 @@ namespace Carpeddit.App.Pages
 
                 commentsObservable.Clear();
 
-                await foreach (var comment in Post.GetCommentsAsync(sortType: currentSort.ToString().ToLower()))
+                await foreach (var comment in Post.GetCommentsAsync(dispatcher: Dispatcher, sortType: currentSort.ToString().ToLower()))
                 {
                     commentsObservable.Add(comment);
                 }
@@ -576,7 +576,7 @@ namespace Carpeddit.App.Pages
 
             commentsObservable.Clear();
 
-            await foreach (var comment in Post.GetCommentsAsync(sortType: currentSort.ToString().ToLower()))
+            await foreach (var comment in Post.GetCommentsAsync(dispatcher: Dispatcher, sortType: currentSort.ToString().ToLower()))
             {
                 commentsObservable.Add(comment);
             }

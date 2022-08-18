@@ -11,6 +11,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Media.Core;
+using Windows.UI.Core;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace Carpeddit.App.Models
@@ -118,7 +119,7 @@ namespace Carpeddit.App.Models
 
         public string CommentsCountInUI => $"{CommentsCount} comment(s)";
 
-        public async IAsyncEnumerable<CommentViewModel> GetCommentsAsync(string sortType = "top")
+        public async IAsyncEnumerable<CommentViewModel> GetCommentsAsync(string sortType = "top", CoreDispatcher dispatcher = null)
         {
             List<Task> commentLoadingTasks = new();
             bool isCurrentUserMod = App.RedditClient.Subreddit(Post.Subreddit).About().SubredditData.UserIsModerator ?? false;
@@ -136,7 +137,7 @@ namespace Carpeddit.App.Models
 
                 yield return comment1;
 
-                Task.Run(() => _ = comment1.GetReplies(true, isCurrentUserMod));
+                _ = Task.Run(() => _ = comment1.GetReplies(dispatcher, true, isCurrentUserMod));
             }
         }
 
