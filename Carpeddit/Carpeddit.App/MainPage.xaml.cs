@@ -82,6 +82,22 @@ namespace Carpeddit.App
             NavigationCacheMode = NavigationCacheMode.Required;
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            var appViewTitleBar = ApplicationView.GetForCurrentView().TitleBar;
+
+            appViewTitleBar.ButtonBackgroundColor = Colors.Transparent;
+            appViewTitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
+
+            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
+            coreTitleBar.ExtendViewIntoTitleBar = true;
+            UpdateTitleBarLayout(coreTitleBar);
+
+            Window.Current.SetTitleBar(AppTitleBar);
+        }
+
         private async void OnMainPageLoaded(object sender, RoutedEventArgs e)
         {
             if (App.RedditClient != null)
