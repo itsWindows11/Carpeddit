@@ -325,7 +325,7 @@
                                         Padding="4">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="30" />
-                                            <ColumnDefinition Width="40" />
+                                            <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition />
                                         </Grid.ColumnDefinitions>
 
@@ -335,11 +335,12 @@
                                             HorizontalAlignment="Center"
                                             Grid.Column="1"
                                             Spacing="4"
-                                            Margin="0,8,0,0">
+                                            Margin="0,8,12,8">
                                             <ToggleButton 
                                                 Padding="3"
                                                 Style="{StaticResource TransparentToggleButton}"
                                                 Click="CommentUpvoteButton_Click"
+                                                HorizontalAlignment="Center"
                                                 Tag="{x:Bind}"
                                                 IsChecked="{x:Bind Upvoted, Mode=OneWay}">
                                                 <FontIcon Glyph="&#xE010;" />
@@ -358,6 +359,7 @@
                                                 Style="{StaticResource TransparentToggleButton}"
                                                 Click="CommentDownvoteButton_Click"
                                                 Tag="{x:Bind}"
+                                                HorizontalAlignment="Center"
                                                 IsChecked="{x:Bind Downvoted, Mode=OneWay}">
                                                 <FontIcon Glyph="&#xE011;" />
 
