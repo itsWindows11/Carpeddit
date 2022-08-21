@@ -53,7 +53,7 @@ namespace Carpeddit.App.Pages
 
             LoggingHelper.LogInfo($"[LoadingPage] Network is {(networkAvailable ? "available" : "not available")}.");
 
-            if (App.SViewModel.SetupCompleted)
+            if (!App.SViewModel.SetupCompleted)
             {
                 Frame.Navigate(typeof(FirstRunPage));
                 return;
