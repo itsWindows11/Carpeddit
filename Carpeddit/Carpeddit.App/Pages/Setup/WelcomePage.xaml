@@ -41,7 +41,7 @@
             </Grid.ColumnDefinitions>
 
             <Border
-                Background="{ThemeResource LayerFillColorDefaultBrush}"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                 BorderBrush="{StaticResource CardStrokeColorDefaultBrush}"
                 BorderThickness="1"
                 CornerRadius="8">
@@ -64,7 +64,7 @@
 
             <Border
                 Grid.Column="1"
-                Background="{ThemeResource LayerFillColorDefaultBrush}"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                 BorderBrush="{StaticResource CardStrokeColorDefaultBrush}"
                 BorderThickness="1"
                 CornerRadius="8">
@@ -87,7 +87,7 @@
 
             <Border
                 Grid.Column="2"
-                Background="{ThemeResource LayerFillColorDefaultBrush}"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                 BorderBrush="{StaticResource CardStrokeColorDefaultBrush}"
                 BorderThickness="1"
                 CornerRadius="8">
