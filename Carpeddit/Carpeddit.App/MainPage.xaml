@@ -161,7 +161,7 @@
                     <muxc:NavigationViewItem.Icon>
                         <muxc:ImageIcon>
                             <muxc:ImageIcon.Source>
-                                <BitmapImage UriSource="{x:Bind controllers:AccountController.GetImageUrlForBind(local:App.RedditClient.Account.Me.UserData), Mode=OneWay}" />
+                                <BitmapImage />
                             </muxc:ImageIcon.Source>
                         </muxc:ImageIcon>
                     </muxc:NavigationViewItem.Icon>

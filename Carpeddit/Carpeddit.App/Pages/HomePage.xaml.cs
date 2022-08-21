@@ -63,8 +63,6 @@ namespace Carpeddit.App.Pages
         {
             Loaded -= Page_Loaded;
 
-            UserImage.Source = new BitmapImage(new Uri(await Task.Run(() => AccountController.GetImageUrl(App.RedditClient.Account.Me.UserData)), UriKind.Absolute));
-
             LoadMoreButton.Visibility = Visibility.Collapsed;
             Progress.Visibility = Visibility.Visible;
 
@@ -74,8 +72,6 @@ namespace Carpeddit.App.Pages
             }
 
             MainList.ItemsSource = posts;
-            SubredditsList.ItemsSource = await Task.Run(() => App.RedditClient.Account.MySubscribedSubreddits(limit: 100));
-
             Progress.Visibility = Visibility.Collapsed;
             LoadMoreButton.Visibility = Visibility.Visible;
             CreatePostPanel.Visibility = Visibility.Visible;
@@ -88,6 +84,10 @@ namespace Carpeddit.App.Pages
             {
 
             }
+
+            SubredditsList.ItemsSource = await Task.Run(() => App.RedditClient.Account.MySubscribedSubreddits(limit: 100));
+
+            UserImage.Source = new BitmapImage(new Uri(await Task.Run(() => AccountController.GetImageUrl(App.RedditClient.Account.Me.UserData)), UriKind.Absolute));
         }
 
         private void Border_PointerReleased(object sender, PointerRoutedEventArgs e)
