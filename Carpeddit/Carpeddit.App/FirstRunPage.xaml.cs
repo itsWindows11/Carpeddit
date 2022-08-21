@@ -1,6 +1,6 @@
-﻿using Carpeddit.App.Dialogs;
-using System;
+﻿using Carpeddit.App.Pages.Setup;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 
 namespace Carpeddit.App
 {
@@ -10,7 +10,9 @@ namespace Carpeddit.App
         {
             InitializeComponent();
 
-            Loaded += async (s, e) => await new FirstRunDialog().ShowAsync();
+            //Loaded += async (s, e) => await new FirstRunDialog().ShowAsync();
+
+            ContentFrame.Navigate(typeof(WelcomePage), null, new SuppressNavigationTransitionInfo());
         }
     }
 }
