@@ -9,6 +9,12 @@ namespace Carpeddit.App.ViewModels
 {
     public partial class SettingsViewModel
     {
+        public bool SetupCompleted
+        {
+            get => Get("Setup", nameof(SetupCompleted), false);
+            set => Set("Setup", nameof(SetupCompleted), value);
+        }
+        
         public int SetupProgress
         {
             get => Get("Setup", nameof(SetupProgress), 0);

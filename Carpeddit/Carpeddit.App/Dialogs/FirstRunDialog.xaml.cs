@@ -136,6 +136,7 @@ namespace Carpeddit.App.Dialogs
 
                 case 4:
                     ViewModel.SetupProgress = 0;
+                    ViewModel.SetupCompleted = true;
                     Hide();
 
                     _ = (Window.Current.Content as Frame).Navigate(typeof(LoginPage));
