@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Controls.Primitives;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Windows.System;
+using Carpeddit.App.ViewModels;
 
 namespace Carpeddit.App.Dialogs
 {
@@ -33,7 +34,7 @@ namespace Carpeddit.App.Dialogs
             Loaded += SubredditSearchDialog_Loaded;
         }
 
-        private async void SubredditSearchDialog_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private async void SubredditSearchDialog_Loaded(object sender, RoutedEventArgs e)
         {
             PostsList.Visibility = Visibility.Collapsed;
             PostsLoadingProgress.Visibility = Visibility.Visible;
@@ -139,15 +140,11 @@ namespace Carpeddit.App.Dialogs
 
             if (toggle.IsChecked ?? false)
             {
-                await post.Post.UpvoteAsync();
-                post.Upvoted = true;
-                post.Downvoted = false;
+                await post.UpvoteAsync();
             }
             else
             {
-                await post.Post.UnvoteAsync();
-                post.Upvoted = false;
-                post.Downvoted = false;
+                await post.UnvoteAsync();
             }
         }
 

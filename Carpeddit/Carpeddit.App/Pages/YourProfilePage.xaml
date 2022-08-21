@@ -8,7 +8,7 @@
     xmlns:helpers="using:Carpeddit.App.Helpers"
     xmlns:local="using:Carpeddit.App"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="using:Carpeddit.App.Models"
+    xmlns:models="using:Carpeddit.App.ViewModels"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:reddit="using:Reddit.Controllers"
     mc:Ignorable="d">

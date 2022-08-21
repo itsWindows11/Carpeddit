@@ -1,13 +1,11 @@
 ﻿using Carpeddit.App.Helpers;
-using Carpeddit.App.Models;
+using Carpeddit.App.ViewModels;
 using Reddit.Controllers;
 using Reddit.Inputs.Search;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 
 namespace Carpeddit.App.Pages

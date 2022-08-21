@@ -2,6 +2,7 @@
 using Carpeddit.App.Dialogs;
 using Carpeddit.App.Helpers;
 using Carpeddit.App.Models;
+using Carpeddit.App.ViewModels;
 using Carpeddit.Common.Enums;
 using Reddit.Controllers;
 using Reddit.Things;

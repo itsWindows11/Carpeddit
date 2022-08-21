@@ -2,6 +2,7 @@
 using Carpeddit.App.Dialogs;
 using Carpeddit.App.Helpers;
 using Carpeddit.App.Models;
+using Carpeddit.App.ViewModels;
 using Reddit.Controllers;
 using Reddit.Things;
 using System;
@@ -180,16 +181,11 @@ namespace Carpeddit.App.Pages
 
             if (toggle.IsChecked ?? false)
             {
-                await comment.OriginalComment.UpvoteAsync();
-                comment.Upvoted = true;
-                comment.Downvoted = false;
-                comment.RawVoteRatio += 1;
+                await comment.UpvoteAsync();
             }
             else
             {
-                await comment.OriginalComment.UnvoteAsync();
-                comment.Upvoted = false;
-                comment.Downvoted = false;
+                await comment.UnvoteAsync();
             }
         }
 
@@ -200,16 +196,11 @@ namespace Carpeddit.App.Pages
 
             if (toggle.IsChecked ?? false)
             {
-                await comment.OriginalComment.DownvoteAsync();
-                comment.Upvoted = false;
-                comment.Downvoted = true;
-                comment.RawVoteRatio -= 1;
+                await comment.DownvoteAsync();
             }
             else
             {
-                await comment.OriginalComment.UnvoteAsync();
-                comment.Upvoted = false;
-                comment.Downvoted = false;
+                await comment.UnvoteAsync();
             }
         }
 
@@ -218,7 +209,7 @@ namespace Carpeddit.App.Pages
             CommentViewModel comment = (e.OriginalSource as FrameworkElement).DataContext as CommentViewModel;
 
             // Delete the comment and remove it from the list.
-            await comment.OriginalComment.DeleteAsync();
+            await comment.DeleteAsync();
 
             comments.Remove(comment);
         }

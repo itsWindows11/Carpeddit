@@ -1,4 +1,5 @@
 ﻿using Carpeddit.App.Models;
+using Carpeddit.App.ViewModels;
 using Carpeddit.Common.Enums;
 using Microsoft.Toolkit.Collections;
 using Reddit.Controllers;

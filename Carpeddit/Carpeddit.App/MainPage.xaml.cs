@@ -44,22 +44,6 @@ namespace Carpeddit.App
 
             Current = this;
 
-            var appViewTitleBar = ApplicationView.GetForCurrentView().TitleBar;
-
-            appViewTitleBar.ButtonBackgroundColor = Colors.Transparent;
-            appViewTitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
-
-            var coreTitleBar = CoreApplication.GetCurrentView().TitleBar;
-            coreTitleBar.ExtendViewIntoTitleBar = true;
-            UpdateTitleBarLayout(coreTitleBar);
-
-            Window.Current.SetTitleBar(AppTitleBar);
-
-            coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
-            coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged;
-
-            Loaded += OnMainPageLoaded;
-
             App.SViewModel.PropertyChanged += (s, e) =>
             {
                 if (e.PropertyName == nameof(App.SViewModel.TintColor) || e.PropertyName == nameof(App.SViewModel.ColorMode))
@@ -79,7 +63,9 @@ namespace Carpeddit.App
                 }
             };
 
-            NavigationCacheMode = NavigationCacheMode.Required;
+            Loaded += OnMainPageLoaded;
+
+            NavigationCacheMode = NavigationCacheMode.Enabled;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -96,6 +82,9 @@ namespace Carpeddit.App
             UpdateTitleBarLayout(coreTitleBar);
 
             Window.Current.SetTitleBar(AppTitleBar);
+
+            coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
+            coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged;
         }
 
         private async void OnMainPageLoaded(object sender, RoutedEventArgs e)

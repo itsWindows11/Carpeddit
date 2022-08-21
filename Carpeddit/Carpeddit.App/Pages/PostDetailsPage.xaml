@@ -11,7 +11,7 @@
     xmlns:converters="using:Carpeddit.App.Converters"
     xmlns:helpers="using:Carpeddit.App.Helpers"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
-    xmlns:viewmodels="using:Carpeddit.App.Models"
+    xmlns:viewmodels="using:Carpeddit.App.ViewModels"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:templates="using:Carpeddit.App.Templates"
     xmlns:uc="using:Carpeddit.App.UserControls" xmlns:local1="using:Carpeddit.App" xmlns:redditthings="using:Reddit.Things"

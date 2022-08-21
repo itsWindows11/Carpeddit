@@ -1,9 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Carpeddit.App.Models
 {
@@ -27,7 +22,5 @@ namespace Carpeddit.App.Models
         public bool LoggedIn { get; set; }
         
         public string DeviceId { get; set; }
-
-        
     }
 }

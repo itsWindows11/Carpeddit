@@ -2,6 +2,7 @@
 using Carpeddit.App.Collections;
 using Carpeddit.App.Dialogs;
 using Carpeddit.App.Models;
+using Carpeddit.App.ViewModels;
 using Carpeddit.Common.Enums;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Reddit.Controllers;
@@ -31,13 +32,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace Carpeddit.App.Pages
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class PostDetailsPage : Page
     {
         PostViewModel Post;
@@ -195,14 +191,14 @@ namespace Carpeddit.App.Pages
         }
 
         private async void RemoveCommentButton_Click(object sender, RoutedEventArgs e)
-            => await ((e.OriginalSource as FrameworkElement).DataContext as CommentViewModel).OriginalComment.RemoveAsync();
+            => await ((e.OriginalSource as FrameworkElement).DataContext as CommentViewModel).RemoveAsync();
 
         private async void DeleteCommentButton_Click(object sender, RoutedEventArgs e)
         {
             CommentViewModel comment = (e.OriginalSource as FrameworkElement).DataContext as CommentViewModel;
 
             // Delete the comment and remove it from the list.
-            await comment.OriginalComment.DeleteAsync();
+            await comment.DeleteAsync();
 
             if (comment.IsTopLevel)
             {
@@ -252,15 +248,11 @@ namespace Carpeddit.App.Pages
 
             if (toggle.IsChecked ?? false)
             {
-                await Post.Post.UpvoteAsync();
-                Post.Upvoted = true;
-                Post.Downvoted = false;
+                await Post.UpvoteAsync();
             }
             else
             {
-                await Post.Post.UnvoteAsync();
-                Post.Upvoted = false;
-                Post.Downvoted = false;
+                await Post.UnvoteAsync();
             }
         }
 
@@ -270,15 +262,11 @@ namespace Carpeddit.App.Pages
 
             if (toggle.IsChecked ?? false)
             {
-                await Post.Post.DownvoteAsync();
-                Post.Upvoted = false;
-                Post.Downvoted = true;
+                await Post.DownvoteAsync();
             }
             else
             {
-                await Post.Post.UnvoteAsync();
-                Post.Upvoted = false;
-                Post.Downvoted = false;
+                await Post.UnvoteAsync();
             }
         }
 
@@ -289,15 +277,11 @@ namespace Carpeddit.App.Pages
 
             if (toggle.IsChecked ?? false)
             {
-                await comment.OriginalComment.UpvoteAsync();
-                comment.Upvoted = true;
-                comment.Downvoted = false;
+                await comment.UpvoteAsync();
             }
             else
             {
-                await comment.OriginalComment.UnvoteAsync();
-                comment.Upvoted = false;
-                comment.Downvoted = false;
+                await comment.UnvoteAsync();
             }
         }
 
@@ -308,15 +292,11 @@ namespace Carpeddit.App.Pages
 
             if (toggle.IsChecked ?? false)
             {
-                await comment.OriginalComment.DownvoteAsync();
-                comment.Upvoted = false;
-                comment.Downvoted = true;
+                await comment.DownvoteAsync();
             }
             else
             {
-                await comment.OriginalComment.UnvoteAsync();
-                comment.Upvoted = false;
-                comment.Downvoted = false;
+                await comment.UnvoteAsync();
             }
         }
 
@@ -341,7 +321,7 @@ namespace Carpeddit.App.Pages
 
         private async void RemovePostButton_Click(object sender, RoutedEventArgs e)
         {
-            await Post.Post.RemoveAsync();
+            await Post.RemoveAsync();
 
             (sender as HyperlinkButton).Content = "Removed";
             (sender as HyperlinkButton).IsEnabled = false;
@@ -355,15 +335,15 @@ namespace Carpeddit.App.Pages
 
         private async void RemoveUserPostButton_Click(object sender, RoutedEventArgs e)
         {
-            await Post.Post.DeleteAsync();
+            await Post.DeleteAsync();
 
             (sender as HyperlinkButton).Content = "Deleted";
             (sender as HyperlinkButton).IsEnabled = false;
         }
 
-        private void ApproveButton_Click(object sender, RoutedEventArgs e)
+        private async void ApproveButton_Click(object sender, RoutedEventArgs e)
         {
-            Post.Post.Approve();
+            await Post.ApproveAsync();
 
             (sender as HyperlinkButton).Content = "Approved";
             (sender as HyperlinkButton).IsEnabled = false;
@@ -377,7 +357,7 @@ namespace Carpeddit.App.Pages
 
         private async void SpamButton_Click(object sender, RoutedEventArgs e)
         {
-            await Post.Post.RemoveAsync(true);
+            await Post.SpamAsync();
 
             (sender as HyperlinkButton).Content = "Spammed";
             (sender as HyperlinkButton).IsEnabled = false;
@@ -393,23 +373,7 @@ namespace Carpeddit.App.Pages
         {
             if ((sender as FrameworkElement).DataContext is PostViewModel post)
             {
-                // Retrieve first 3 posts of the subreddit, the first 2 are pinned (if not then there's at least one empty slot).
-                var pinned = await Task.Run(() => App.RedditClient.Subreddit(name: post.Post.Subreddit).Posts.GetHot(limit: 3));
-                int indexToInsert = 1;
-
-                if (!pinned[0].Listing.Stickied || (pinned[0].Listing.Stickied && pinned[1].Listing.Stickied))
-                {
-                    indexToInsert = 1;
-                }
-                else if (!pinned[1].Listing.Stickied || pinned[0].Listing.Stickied)
-                {
-                    indexToInsert = 2;
-                }
-
-                // Sticky the post, finally.
-                // This function has misleading documentation and I have no idea how to fix it, so the above
-                // if statements are used here as a workaround.
-                await post.Post.SetSubredditStickyAsync(indexToInsert, false);
+                await post.PinAsync();
 
                 (sender as HyperlinkButton).Content = "Pinned";
                 (sender as HyperlinkButton).IsEnabled = false;
@@ -425,7 +389,7 @@ namespace Carpeddit.App.Pages
         {
             if ((sender as FrameworkElement).DataContext is CommentViewModel comment && comment.IsTopLevel)
             {
-                _ = await comment.OriginalComment.DistinguishAsync("yes", true);
+                await comment.PinAsync();
                 (sender as HyperlinkButton).Content = "Pinned";
                 (sender as HyperlinkButton).IsEnabled = false;
 
@@ -456,7 +420,7 @@ namespace Carpeddit.App.Pages
         {
             if ((sender as FrameworkElement).DataContext is CommentViewModel comment)
             {
-                _ = await comment.OriginalComment.DistinguishAsync("yes", false);
+                await comment.DistinguishAsModeratorAsync();
 
                 // Refresh comments by setting items source
                 // TreeView doesn't have a Refresh function so we have to do this.
@@ -468,7 +432,7 @@ namespace Carpeddit.App.Pages
         {
             if ((sender as FrameworkElement).DataContext is CommentViewModel comment)
             {
-                _ = await comment.OriginalComment.DistinguishAsync("no", false);
+                await comment.RemoveDistinguishAsync();
 
                 // Refresh comments by setting items source
                 // TreeView doesn't have a Refresh function so we have to do this.
@@ -504,21 +468,21 @@ namespace Carpeddit.App.Pages
         {
             if (((sender as FrameworkElement).DataContext as CommentViewModel).OriginalComment.Listing.Locked)
             {
-                await App.RedditClient.Account.Dispatch.LinksAndComments.UnlockAsync(((sender as FrameworkElement).DataContext as CommentViewModel).OriginalComment.Fullname);
+                await ((sender as FrameworkElement).DataContext as CommentViewModel).UnlockCommentsAsync();
             } else
             {
-                await App.RedditClient.Account.Dispatch.LinksAndComments.LockAsync(((sender as FrameworkElement).DataContext as CommentViewModel).OriginalComment.Fullname);
+                await ((sender as FrameworkElement).DataContext as CommentViewModel).LockCommentsAsync();
             }
         }
 
         private async void ApproveCommentItem_Click(object sender, RoutedEventArgs e)
         {
-            await App.RedditClient.Account.Dispatch.Moderation.ApproveAsync(((sender as FrameworkElement).DataContext as CommentViewModel).OriginalComment.Fullname);
+            await ((sender as FrameworkElement).DataContext as CommentViewModel).ApproveAsync();
         }
 
         private async void SpamComment_Click(object sender, RoutedEventArgs e)
         {
-            await ((sender as FrameworkElement).DataContext as CommentViewModel).OriginalComment.RemoveAsync(true);
+            await ((sender as FrameworkElement).DataContext as CommentViewModel).SpamAsync();
         }
 
         private async void CrossPostButton_Click(object sender, RoutedEventArgs e)
