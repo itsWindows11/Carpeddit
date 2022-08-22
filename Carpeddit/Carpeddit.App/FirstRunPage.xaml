@@ -35,7 +35,8 @@
             Canvas.ZIndex="2"
             CornerRadius="5"
             Style="{StaticResource TransparentButton}"
-            Visibility="{x:Bind ContentFrame.CanGoBack, Mode=OneWay, Converter={StaticResource BoolToVis}}">
+            Click="OnBackButtonClick"
+            Visibility="{x:Bind local:App.SViewModel.SetupProgress, Mode=OneWay, Converter={StaticResource IntToVis}}">
             <muxc:AnimatedIcon
                 x:Name="BackAnimatedIcon"
                 Width="16"

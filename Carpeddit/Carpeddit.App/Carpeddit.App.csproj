@@ -129,6 +129,7 @@
     </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DatabaseControllers.cs" />
+    <Compile Include="Converters\IntToVisibilityConverter.cs" />
     <Compile Include="Converters\InvertBoolConverter.cs" />
     <Compile Include="Converters\DecimalPointToPercentageConverter.cs" />
     <Compile Include="Converters\SettingsConverters.cs" />
@@ -286,9 +287,11 @@
     <Content Include="Assets\Setup\Bell.png" />
     <Content Include="Assets\Setup\Done.png" />
     <Content Include="Assets\Setup\FavoriteSubredditsIcon.svg" />
+    <Content Include="Assets\Setup\MailIcon.png" />
     <Content Include="Assets\Setup\NotificationsPreview.png" />
     <Content Include="Assets\Setup\Privacy.png" />
     <Content Include="Assets\Setup\ShowcaseImage.png" />
+    <Content Include="Assets\Setup\SmilingFace.png" />
     <Content Include="Assets\Setup\Sparkle.svg" />
     <Content Include="Assets\Setup\Terms.png" />
     <Content Include="Assets\Setup\WavingHand.png" />

@@ -33,7 +33,10 @@
             </StackPanel>
         </Grid>
 
-        <Grid Margin="0,48,0,0" HorizontalAlignment="Center" ColumnSpacing="16">
+        <Grid
+            Margin="0,48,0,0"
+            HorizontalAlignment="Center"
+            ColumnSpacing="16">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="158" />
                 <ColumnDefinition Width="158" />
@@ -114,9 +117,13 @@
             Height="40"
             Margin="0,48,0,0"
             HorizontalAlignment="Center"
+            Click="OnContinueClick"
             Content="Continue"
             Style="{StaticResource AccentButtonStyle}" />
 
-        <HyperlinkButton HorizontalAlignment="Center" Content="Privacy policy" />
+        <HyperlinkButton
+            HorizontalAlignment="Center"
+            Content="Privacy policy"
+            NavigateUri="https://github.com/itsWindows11/Carpeddit/blob/main/privacy-policy.md" />
     </StackPanel>
 </Page>

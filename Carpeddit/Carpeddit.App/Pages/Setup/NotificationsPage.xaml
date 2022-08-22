@@ -43,8 +43,9 @@
             Margin="0,48,0,0"
             HorizontalAlignment="Center"
             Content="Yes"
+            Click="OnSecondaryActionClick"
             Style="{StaticResource AccentButtonStyle}" />
 
-        <HyperlinkButton HorizontalAlignment="Center" Content="No, thanks" />
+        <HyperlinkButton Click="OnSecondaryActionClick" HorizontalAlignment="Center" Content="No, thanks" />
     </StackPanel>
 </Page>
