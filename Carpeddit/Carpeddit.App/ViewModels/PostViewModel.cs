@@ -1,10 +1,11 @@
-﻿using Carpeddit.App.Pages;
+﻿using System;
+using Carpeddit.App.Pages;
 using Carpeddit.Common.Helpers;
 using Carpeddit.Common.Interfaces;
 using Microsoft.Toolkit.Uwp.UI.Controls;
 using Reddit.Controllers;
 using Reddit.Things;
-using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.Media.Core;
@@ -104,7 +105,7 @@ namespace Carpeddit.App.ViewModels
             {
                 _images ??= new();
 
-                if (Post.Listing.MediaMetadata != null)
+                if (Post.Listing.MediaMetadata != null && !_images.Any())
                 {
                     foreach (var image in Post.Listing.MediaMetadata)
                     {
