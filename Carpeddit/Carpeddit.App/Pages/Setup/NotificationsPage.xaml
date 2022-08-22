@@ -1,0 +1,51 @@
+﻿<Page
+    x:Class="Carpeddit.App.Pages.Setup.NotificationsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Carpeddit.App.Pages.Setup"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
+
+    <StackPanel
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Spacing="16">
+        <Grid MaxWidth="550" ColumnSpacing="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="64" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Image Source="ms-appx:///Assets/Setup/Bell.png" />
+
+            <StackPanel Grid.Column="1" Spacing="8">
+                <TextBlock
+                    FontSize="28"
+                    Style="{StaticResource SubtitleTextBlockStyle}"
+                    Text="Do you want to get notifications?" />
+
+                <TextBlock
+                    Opacity="0.6"
+                    Text="Get notifications when there is a post trending on a subreddit you've subscribed to, or someone responds to your posts."
+                    TextWrapping="Wrap" />
+            </StackPanel>
+        </Grid>
+
+        <Border HorizontalAlignment="Center" CornerRadius="4">
+            <Image Height="300" Source="ms-appx:///Assets/Setup/NotificationsPreview.png" />
+        </Border>
+
+        <Button
+            Width="200"
+            Height="40"
+            Margin="0,48,0,0"
+            HorizontalAlignment="Center"
+            Content="Yes"
+            Click="OnSecondaryActionClick"
+            Style="{StaticResource AccentButtonStyle}" />
+
+        <HyperlinkButton Click="OnSecondaryActionClick" HorizontalAlignment="Center" Content="No, thanks" />
+    </StackPanel>
+</Page>

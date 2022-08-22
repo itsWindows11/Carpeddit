@@ -161,7 +161,7 @@
                     <muxc:NavigationViewItem.Icon>
                         <muxc:ImageIcon>
                             <muxc:ImageIcon.Source>
-                                <BitmapImage />
+                                <BitmapImage x:Name="ProfileBitmap" DecodePixelType="Logical" />
                             </muxc:ImageIcon.Source>
                         </muxc:ImageIcon>
                     </muxc:NavigationViewItem.Icon>
