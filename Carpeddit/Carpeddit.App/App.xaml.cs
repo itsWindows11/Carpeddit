@@ -52,23 +52,10 @@ namespace Carpeddit.App
 
         private void App_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
-            e.Handled = true;
-
-            ContentDialog dialog = new()
-            {
-                Title = "An error occurred",
-                Content = "Something happened and we couldn't process your request. Try again later.",
-                PrimaryButtonText = "OK",
-                SecondaryButtonText = "Report",
-                PrimaryButtonStyle = Resources["AccentButtonStyle"] as Style
-            };
-
             if (Logger != null)
             {
                 Logger.Error(e.Exception, "An exception occurred.");
             }
-
-            _ = dialog.ShowAsync();
         }
 
         public static Color GetColorFromHex(string hex)
