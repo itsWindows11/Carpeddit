@@ -27,8 +27,8 @@
 
             <TextBlock Text="Details" FontWeight="SemiBold" Grid.Column="2" />
         </Grid>
-        
-        <ListView Visibility="Visible" Margin="-56,12,-56,0" Grid.Row="1" Padding="56,0,56,10" x:Name="MainList" SelectionMode="None">
+
+        <ListView ItemContainerStyle="{StaticResource StretchedItemContainerStyle}" Visibility="Visible" Margin="-56,12,-56,0" Grid.Row="1" Padding="56,0,56,10" x:Name="MainList" SelectionMode="None">
             <ListView.Footer>
                 <Grid>
                     <muxc:ProgressRing IsActive="True" Margin="0,5" Visibility="Collapsed" HorizontalAlignment="Center" x:Name="FooterProgress" />

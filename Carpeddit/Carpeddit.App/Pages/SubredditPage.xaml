@@ -144,15 +144,9 @@
                             Margin="0,4,0,12"
                             HorizontalAlignment="Stretch"
                             ItemTemplate="{StaticResource SubredditPostTemplate}"
+                            ItemContainerStyle="{StaticResource StretchedItemContainerStyle}"
                             SelectionMode="None"
                             Visibility="Collapsed">
-                            <ListView.ItemContainerStyle>
-                                <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="ListViewItem">
-                                    <Setter Property="HorizontalAlignment" Value="Stretch" />
-                                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                </Style>
-                            </ListView.ItemContainerStyle>
-
                             <ListView.Footer>
                                 <Grid>
                                     <muxc:ProgressRing

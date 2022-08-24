@@ -31,6 +31,7 @@
             Grid.Row="1"
             MaxWidth="1200"
             HorizontalAlignment="Center"
+            ItemContainerStyle="{StaticResource StretchedItemContainerStyle}"
             ItemTemplate="{StaticResource PlainPostTemplate}">
             <ListView.Footer>
                 <Grid>

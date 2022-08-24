@@ -102,6 +102,7 @@
                         Margin="-56,0,-56,0"
                         Padding="56,0,56,10"
                         ItemTemplate="{StaticResource UserPostTemplate}"
+                        ItemContainerStyle="{StaticResource StretchedItemContainerStyle}"
                         SelectionMode="None">
                         <ListView.Footer>
                             <Grid>

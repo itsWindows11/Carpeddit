@@ -34,7 +34,7 @@
         <Grid Grid.Row="1">
             <muxc:ProgressRing IsActive="True" Visibility="Collapsed" x:Name="LoadingProgress" />
 
-            <ListView ItemTemplate="{StaticResource PlainPostTemplate}" SelectionMode="None" Margin="-56,0" Padding="56,0" x:Name="PostsList" />
+            <ListView ItemTemplate="{StaticResource PlainPostTemplate}" ItemContainerStyle="{StaticResource StretchedItemContainerStyle}" SelectionMode="None" Margin="-56,0" Padding="56,0" x:Name="PostsList" />
 
             <ListView Margin="-56,0" Padding="56,0" x:Name="SubredditsList" SelectionMode="None" Visibility="Collapsed">
                 <ListView.ItemTemplate>

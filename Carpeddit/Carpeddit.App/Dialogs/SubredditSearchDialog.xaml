@@ -42,6 +42,7 @@
             Width="500"
             Height="300"
             Grid.Row="2"
+            ItemContainerStyle="{StaticResource StretchedItemContainerStyle}"
             SelectionMode="None">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:PostViewModel">

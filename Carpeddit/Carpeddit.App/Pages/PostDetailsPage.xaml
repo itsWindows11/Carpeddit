@@ -302,6 +302,11 @@
                             <EntranceThemeTransition IsStaggeringEnabled="False" />
                         </TransitionCollection>
                     </muxc:TreeView.ItemContainerTransitions>
+                    <muxc:TreeView.ItemContainerStyle>
+                        <Style TargetType="muxc:TreeViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </muxc:TreeView.ItemContainerStyle>
                     <muxc:TreeView.Resources>
                         <ResourceDictionary>
                             <ResourceDictionary.ThemeDictionaries>

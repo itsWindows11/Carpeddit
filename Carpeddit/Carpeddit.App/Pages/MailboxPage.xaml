@@ -9,7 +9,7 @@
 
     <Grid Margin="-88,0,-56,0" Padding="56,0">
         <muxc:ProgressRing Width="50" Height="50" Margin="-56,0,-56,0" Visibility="Collapsed" x:Name="Progress" IsActive="True" HorizontalAlignment="Center" VerticalAlignment="Center" />
-        <ListView Margin="-56,0" Padding="56,0,56,10" x:Name="MainList" SelectionMode="None">
+        <ListView Margin="-56,0" Padding="56,0,56,10" ItemContainerStyle="{StaticResource StretchedItemContainerStyle}" x:Name="MainList" SelectionMode="None">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="reddit1:Message">
                     <StackPanel BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="1" Spacing="4" Padding="8" Margin="4" CornerRadius="4" Background="{ThemeResource ExpanderContentBackground}">

@@ -34,14 +34,11 @@
                         <Setter Property="BorderThickness" Value="0" />
                     </Style>
 
-                    <Style TargetType="ListView">
-                        <Setter Property="ItemContainerStyle" Value="{StaticResource StretchedItemContainerStyle}" />
-                    </Style>
-
                     <Style
                         x:Key="StretchedItemContainerStyle"
                         BasedOn="{StaticResource DefaultListViewItemStyle}"
                         TargetType="ListViewItem">
+                        <Setter Property="HorizontalAlignment" Value="Stretch" />
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                         <Setter Property="UseSystemFocusVisuals" Value="False" />
                     </Style>

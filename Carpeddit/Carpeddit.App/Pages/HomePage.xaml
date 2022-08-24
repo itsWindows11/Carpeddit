@@ -34,6 +34,7 @@
             Padding="56,0,56,12"
             Canvas.ZIndex="1"
             ItemTemplate="{StaticResource PlainPostTemplate}"
+            ItemContainerStyle="{StaticResource StretchedItemContainerStyle}"
             SelectionChanged="MainList_SelectionChanged"
             SelectionMode="None">
             <ListView.ItemContainerTransitions>

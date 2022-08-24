@@ -29,6 +29,7 @@
             Canvas.ZIndex="1"
             SelectionChanged="MainList_SelectionChanged"
             ItemTemplate="{StaticResource PlainPostTemplate}"
+            ItemContainerStyle="{StaticResource StretchedItemContainerStyle}"
             SelectionMode="None">
             <ListView.Footer>
                 <Grid>
