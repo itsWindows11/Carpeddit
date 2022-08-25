@@ -268,8 +268,10 @@ namespace Carpeddit.App.Pages
         {
             if (sender is Button button)
             {
+                SubredditSearchBox.IsEnabled = false;
                 button.Visibility = Visibility.Collapsed;
                 FooterProgress.Visibility = Visibility.Visible;
+                SubredditSearchBox.IsEnabled = true;
 
                 LoggingHelper.LogInfo($"[SubredditPage] Loading more posts in {Subreddit.SubredditData.DisplayNamePrefixed}...");
 
