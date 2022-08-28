@@ -75,7 +75,7 @@
 
                     <RelativePanel
                         x:Name="CreatePostPanel"
-                        Margin="16,12,12,0"
+                        Margin="15,12,12,0"
                         Padding="12"
                         Background="{ThemeResource ExpanderHeaderBackground}"
                         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
