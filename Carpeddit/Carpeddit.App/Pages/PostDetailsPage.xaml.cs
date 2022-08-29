@@ -59,6 +59,9 @@ namespace Carpeddit.App.Pages
 
         private async void PostDetailsPage_Loaded(object sender, RoutedEventArgs e)
         {
+            // Prevent duplicate comments
+            Loaded -= PostDetailsPage_Loaded;
+
             if (_isNotSeparate)
             {
                 switch (App.SViewModel.ColorMode)

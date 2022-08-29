@@ -13,6 +13,7 @@ using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using System.Threading;
 
 namespace Carpeddit.App.ViewModels
 {
