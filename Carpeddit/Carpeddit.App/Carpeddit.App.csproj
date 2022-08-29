@@ -170,6 +170,9 @@
     <Compile Include="Pages\Setup\NotificationsPage.xaml.cs">
       <DependentUpon>NotificationsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\Setup\SubscriptionPage.xaml.cs">
+      <DependentUpon>SubscriptionPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\CommentViewModel.cs" />
     <Compile Include="Models\CustomAccountModel.cs" />
     <Compile Include="ViewModels\PostViewModel.cs" />
@@ -287,6 +290,7 @@
     <Content Include="Assets\Setup\Bell.png" />
     <Content Include="Assets\Setup\Done.png" />
     <Content Include="Assets\Setup\FavoriteSubredditsIcon.svg" />
+    <Content Include="Assets\Setup\MagnifyingGlass.png" />
     <Content Include="Assets\Setup\MailIcon.png" />
     <Content Include="Assets\Setup\NotificationsPreview.png" />
     <Content Include="Assets\Setup\Privacy.png" />
@@ -478,6 +482,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\Setup\PrivacyPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\Setup\SubscriptionPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

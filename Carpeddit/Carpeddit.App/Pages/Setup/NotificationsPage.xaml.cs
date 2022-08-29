@@ -14,7 +14,7 @@ namespace Carpeddit.App.Pages.Setup
         private void OnSecondaryActionClick(object sender, RoutedEventArgs e)
         {
             App.SViewModel.SetupProgress++;
-            Frame.Navigate(typeof(FinishPage), new SlideNavigationTransitionInfo());
+            Frame.Navigate(typeof(SubscriptionPage), new SlideNavigationTransitionInfo());
         }
     }
 }
