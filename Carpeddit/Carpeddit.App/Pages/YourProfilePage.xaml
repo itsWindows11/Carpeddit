@@ -10,6 +10,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:Carpeddit.App.ViewModels"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    d:Background="{StaticResource ApplicationPageBackgroundThemeBrush}"
     xmlns:reddit="using:Reddit.Controllers"
     mc:Ignorable="d">
 
@@ -71,7 +72,13 @@
                     HorizontalAlignment="Center"
                     FontWeight="SemiBold"
                     Style="{StaticResource SubtitleTextBlockStyle}"
-                    Text="{x:Bind user.Name, Mode=OneWay}" />
+                    Text="{x:Bind user.Name, Mode=OneWay}"
+                    d:Text="CarpedditTestAccount" />
+
+                <TextBlock HorizontalAlignment="Center">
+                    <Run Text="Cake day:" />
+                    <Run d:Text="Sunday, Januray 1, 2023" Text="{x:Bind user.Created.ToString()}" />
+                </TextBlock>
 
                 <StackPanel Margin="0,10" Orientation="Vertical">
                     <muxc:NavigationView
