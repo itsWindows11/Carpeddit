@@ -19,6 +19,8 @@ using Serilog;
 using Serilog.Core;
 using Carpeddit.App.Helpers;
 using Windows.ApplicationModel.Core;
+using Reddit.Controllers.EventArgs;
+using Microsoft.Toolkit.Uwp.Notifications;
 
 namespace Carpeddit.App
 {
@@ -208,6 +210,27 @@ namespace Carpeddit.App
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+        }
+
+        protected override void OnBackgroundActivated(BackgroundActivatedEventArgs args)
+        {
+            base.OnBackgroundActivated(args);
+
+            RedditClient.Account.Messages.InboxUpdated += MailboxUpdated;
+            _ = RedditClient.Account.Messages.MonitorInbox(5);
+        }
+
+        public static void MailboxUpdated(object sender, MessagesUpdateEventArgs e)
+        {
+            var message = e.NewMessages[0];
+
+            ToastContentBuilder builder = new();
+
+            _ = builder.AddArgument("action", "viewMessage");
+            _ = builder.AddText($"New message from u/{message.Author}!");
+            _ = builder.AddText(message.Body.Length > 60 ? message.Body.Substring(0, 60) + "..." : message.Body);
+
+            builder.Show();
         }
 
         /// <summary>
