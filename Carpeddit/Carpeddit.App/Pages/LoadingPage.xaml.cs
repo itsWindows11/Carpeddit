@@ -2,6 +2,7 @@
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Background;
 using Windows.Networking.Connectivity;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -24,7 +25,42 @@ namespace Carpeddit.App.Pages
 
             LoggingHelper.LogInfo("[LoadingPage] Database initialized.");
 
-            AppCenterHelper.StartAppCenterAsync();
+            _ = AppCenterHelper.StartAppCenterAsync();
+
+            /*if (SystemInformation.Instance.IsAppUpdated)
+            {
+                
+            }*/
+
+            var tasks = BackgroundTaskRegistration.AllTasks;
+            foreach (var task in tasks)
+            {
+                task.Value.Unregister(true);
+            }
+
+            BackgroundExecutionManager.RemoveAccess();
+
+            var requestStatus = await BackgroundExecutionManager.RequestAccessAsync();
+
+            if (requestStatus != BackgroundAccessStatus.AllowedSubjectToSystemPolicy && requestStatus != BackgroundAccessStatus.AlwaysAllowed)
+            {
+                System.Diagnostics.Debug.WriteLine("------ Cannot use background tasks.");
+            } else
+            {
+                var builder = new BackgroundTaskBuilder
+                {
+                    Name = "Carpeddit - Notifications Background Task"
+                };
+                builder.SetTrigger(new TimeTrigger(15, false));
+
+                var task = builder.Register();
+
+                task.Completed += (s, e) =>
+                {
+                    _ = App.RedditClient.Account.Messages.MonitorInbox();
+                    App.RedditClient.Account.Messages.InboxUpdated -= App.MailboxUpdated;
+                };
+            }
 
             switch (App.SViewModel.Theme)
             {
