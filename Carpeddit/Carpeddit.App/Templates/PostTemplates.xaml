@@ -148,7 +148,11 @@
                     ItemsSource="{x:Bind Images}">
                     <FlipView.ItemTemplate>
                         <DataTemplate x:DataType="redditthings:Image">
-                            <Image Source="{x:Bind Url}" />
+                            <Image>
+                                <Image.Source>
+                                    <BitmapImage UriSource="{x:Bind Url}" DecodePixelType="Logical" />
+                                </Image.Source>
+                            </Image>
                         </DataTemplate>
                     </FlipView.ItemTemplate>
                 </FlipView>
@@ -336,7 +340,11 @@
                     ItemsSource="{x:Bind Images}">
                     <FlipView.ItemTemplate>
                         <DataTemplate x:DataType="redditthings:Image">
-                            <Image Source="{x:Bind Url}" />
+                            <Image>
+                                <Image.Source>
+                                    <BitmapImage UriSource="{x:Bind Url}" DecodePixelType="Logical" />
+                                </Image.Source>
+                            </Image>
                         </DataTemplate>
                     </FlipView.ItemTemplate>
                 </FlipView>
@@ -536,7 +544,11 @@
                     ItemsSource="{x:Bind Images}">
                     <FlipView.ItemTemplate>
                         <DataTemplate x:DataType="redditthings:Image">
-                            <Image Source="{x:Bind Url}" />
+                            <Image>
+                                <Image.Source>
+                                    <BitmapImage UriSource="{x:Bind Url}" DecodePixelType="Logical" />
+                                </Image.Source>
+                            </Image>
                         </DataTemplate>
                     </FlipView.ItemTemplate>
                 </FlipView>

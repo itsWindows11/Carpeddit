@@ -13,7 +13,6 @@ using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using System.Threading;
 
 namespace Carpeddit.App.ViewModels
 {
@@ -89,8 +88,16 @@ namespace Carpeddit.App.ViewModels
         public bool IsAdminDistinguished
             => Post.Listing.Distinguished == "admin";
 
+        private string _shortDescription;
+
         public string ShortDescription
-            => Description.Length >= 350 ? Description.Substring(0, 350) + "..." : Description;
+        {
+            get
+            {
+                _shortDescription ??= Description.Length >= 350 ? Description.Substring(0, 350) + "..." : Description;
+                return _shortDescription;
+            }
+        }
 
         public Uri ImageUri
             => HasImage ? new Uri(Description, UriKind.Absolute) : null;
@@ -139,6 +146,8 @@ namespace Carpeddit.App.ViewModels
         public bool HasImage
             => CheckHasImage();
 
+        private MediaSource _videoSource;
+
         public MediaSource VideoSource
         {
             get
@@ -146,10 +155,10 @@ namespace Carpeddit.App.ViewModels
                 if (Post is LinkPost post &&
                     Uri.TryCreate(post.URL + "/DASHPlaylist.mpd", UriKind.Absolute, out Uri uri))
                 {
-                    return MediaSource.CreateFromUri(uri);
+                    _videoSource ??= MediaSource.CreateFromUri(uri);
                 }
                 
-                return null;
+                return _videoSource;
             }
         }
 
