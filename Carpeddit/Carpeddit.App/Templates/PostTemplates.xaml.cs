@@ -216,5 +216,10 @@ namespace Carpeddit.App.Templates
         {
             await new ReportDialog(((sender as FrameworkElement).DataContext as PostViewModel).Post).ShowAsync();
         }
+
+        private async void OnPointerReleased(object sender, PointerRoutedEventArgs e)
+        {
+            _ = await new ImagePreviewDialog().ShowAsync();
+        }
     }
 }
