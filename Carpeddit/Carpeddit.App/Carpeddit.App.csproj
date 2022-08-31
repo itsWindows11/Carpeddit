@@ -149,6 +149,9 @@
     <Compile Include="Dialogs\GrantUserFlairDialog.xaml.cs">
       <DependentUpon>GrantUserFlairDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\ImagePreviewDialog.xaml.cs">
+      <DependentUpon>ImagePreviewDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\ReportDialog.xaml.cs">
       <DependentUpon>ReportDialog.xaml</DependentUpon>
     </Compile>
@@ -258,7 +261,7 @@
       <DependentUpon>YourProfilePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Templates\PostTemplates.cs" />
+    <Compile Include="Templates\PostTemplates.xaml.cs" />
     <Compile Include="UserControls\CustomTitleBar.xaml.cs">
       <DependentUpon>CustomTitleBar.xaml</DependentUpon>
     </Compile>
@@ -370,6 +373,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\GrantUserFlairDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\ImagePreviewDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
