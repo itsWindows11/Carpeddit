@@ -126,6 +126,7 @@
                     x:Name="ImagePost"
                     MaxWidth="500"
                     Margin="0,4,0,0"
+                    PointerReleased="OnPointerReleased"
                     x:Load="{x:Bind HasImage}">
                     <Image.Source>
                         <BitmapImage DecodePixelType="Logical" UriSource="{x:Bind ImageUri}" />
@@ -147,10 +148,10 @@
                     x:Load="{x:Bind IsGallery}"
                     ItemsSource="{x:Bind Images}">
                     <FlipView.ItemTemplate>
-                        <DataTemplate x:DataType="redditthings:Image">
-                            <Image>
+                        <DataTemplate x:DataType="viewmodels:ImageViewModel">
+                            <Image PointerReleased="OnPointerReleased">
                                 <Image.Source>
-                                    <BitmapImage UriSource="{x:Bind Url}" DecodePixelType="Logical" />
+                                    <BitmapImage UriSource="{x:Bind Model.Url}" DecodePixelType="Logical" />
                                 </Image.Source>
                             </Image>
                         </DataTemplate>
@@ -339,10 +340,10 @@
                     x:Load="{x:Bind IsGallery}"
                     ItemsSource="{x:Bind Images}">
                     <FlipView.ItemTemplate>
-                        <DataTemplate x:DataType="redditthings:Image">
+                        <DataTemplate x:DataType="viewmodels:ImageViewModel">
                             <Image>
                                 <Image.Source>
-                                    <BitmapImage UriSource="{x:Bind Url}" DecodePixelType="Logical" />
+                                    <BitmapImage UriSource="{x:Bind Model.Url}" DecodePixelType="Logical" />
                                 </Image.Source>
                             </Image>
                         </DataTemplate>
@@ -522,6 +523,7 @@
                     x:Name="ImagePost"
                     MaxWidth="500"
                     Margin="0,4,0,0"
+                    PointerReleased="OnPointerReleased"
                     x:Load="{x:Bind HasImage}">
                     <Image.Source>
                         <BitmapImage DecodePixelType="Logical" UriSource="{x:Bind ImageUri}" />
@@ -543,10 +545,10 @@
                     x:Load="{x:Bind IsGallery}"
                     ItemsSource="{x:Bind Images}">
                     <FlipView.ItemTemplate>
-                        <DataTemplate x:DataType="redditthings:Image">
-                            <Image>
+                        <DataTemplate x:DataType="viewmodels:ImageViewModel">
+                            <Image PointerReleased="OnPointerReleased">
                                 <Image.Source>
-                                    <BitmapImage UriSource="{x:Bind Url}" DecodePixelType="Logical" />
+                                    <BitmapImage UriSource="{x:Bind Model.Url}" DecodePixelType="Logical" />
                                 </Image.Source>
                             </Image>
                         </DataTemplate>

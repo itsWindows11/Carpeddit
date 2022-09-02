@@ -10,6 +10,7 @@
             <controls:XamlControlsResources.MergedDictionaries>
                 <!--  Other app resources here  -->
                 <ResourceDictionary>
+                    <converters:InvertBoolConverter x:Key="InvertBoolConverter" />
                     <converters:BoolToVisibilityConverter x:Key="BoolToVis" />
                     <converters:BoolToVisibilityConverter x:Key="BoolToVisReverse" Reverse="True" />
                     <converters:DecimalPointToPercentageConverter x:Key="DecimalPointToPercentage" WithPercentage="False" />

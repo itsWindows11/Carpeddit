@@ -219,7 +219,14 @@ namespace Carpeddit.App.Templates
 
         private async void OnPointerReleased(object sender, PointerRoutedEventArgs e)
         {
-            _ = await new ImagePreviewDialog().ShowAsync();
+            if ((e.OriginalSource as FrameworkElement).DataContext is ImageViewModel image)
+            {
+                _ = await new ImagePreviewDialog(image.Images).ShowAsync();
+            } else
+            {
+                var post = (e.OriginalSource as FrameworkElement).DataContext as PostViewModel;
+                _ = await new ImagePreviewDialog(post.ImageUri).ShowAsync();
+            }
         }
     }
 }

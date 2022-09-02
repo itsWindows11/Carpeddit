@@ -105,9 +105,9 @@ namespace Carpeddit.App.ViewModels
         public bool IsGallery
             => Post.Listing.IsGallery ?? false;
 
-        private List<Reddit.Things.Image> _images;
+        private List<ImageViewModel> _images;
 
-        public List<Reddit.Things.Image> Images
+        public List<ImageViewModel> Images
         {
             get
             {
@@ -115,6 +115,8 @@ namespace Carpeddit.App.ViewModels
 
                 if (Post.Listing.MediaMetadata != null && !_images.Any())
                 {
+                    var imageList = new List<Reddit.Things.Image>();
+
                     foreach (var image in Post.Listing.MediaMetadata)
                     {
                         var image1 = image.Value.OriginalImage;
@@ -123,7 +125,14 @@ namespace Carpeddit.App.ViewModels
                         {
                             image1.Url = image1.Url.Replace("preview.redd.it", "i.redd.it");
 
-                            _images.Add(image1);
+                            imageList.Add(image1);
+
+                            var image2 = new ImageViewModel(image1)
+                            {
+                                Images = imageList
+                            };
+
+                            _images.Add(image2);
                         }
                     }
                 }

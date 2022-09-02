@@ -178,6 +178,7 @@
     </Compile>
     <Compile Include="ViewModels\CommentViewModel.cs" />
     <Compile Include="Models\CustomAccountModel.cs" />
+    <Compile Include="ViewModels\ImageViewModel.cs" />
     <Compile Include="ViewModels\PostViewModel.cs" />
     <Compile Include="Pages\CollectionsPage.xaml.cs">
       <DependentUpon>CollectionsPage.xaml</DependentUpon>
