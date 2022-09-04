@@ -162,7 +162,7 @@ namespace Carpeddit.App.ViewModels
             get
             {
                 if (Post is LinkPost post &&
-                    Uri.TryCreate(post.URL + "/DASHPlaylist.mpd", UriKind.Absolute, out Uri uri))
+                    Uri.TryCreate(post.URL + "/HLSPlaylist.m3u8", UriKind.Absolute, out Uri uri))
                 {
                     _videoSource ??= MediaSource.CreateFromUri(uri);
                 }
@@ -436,10 +436,11 @@ namespace Carpeddit.App.ViewModels
 
         public async IAsyncEnumerable<CommentViewModel> GetCommentsAsync(string sortType = "top", CoreDispatcher dispatcher = null)
         {
-            List<Task> commentLoadingTasks = new();
-            bool isCurrentUserMod = App.RedditClient.Subreddit(Post.Subreddit).About().SubredditData.UserIsModerator ?? false;
+            bool isCurrentUserMod = (await Task.Run(App.RedditClient.Subreddit(Post.Subreddit).About)).SubredditData.UserIsModerator ?? false;
 
             var comments = await Task.Run(() => Post.Comments.GetComments(sort: sortType));
+
+            var dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
             foreach (Reddit.Controllers.Comment comment in comments)
             {
@@ -450,9 +451,9 @@ namespace Carpeddit.App.ViewModels
                     IsCurrentUserMod = isCurrentUserMod
                 };
 
-                yield return comment1;
+                _ = Task.Run(() => comment1.GetReplies(dispatcherQueue, true, isCurrentUserMod));
 
-                _ = Task.Run(() => _ = comment1.GetReplies(dispatcher, true, isCurrentUserMod));
+                yield return comment1;
             }
         }
 

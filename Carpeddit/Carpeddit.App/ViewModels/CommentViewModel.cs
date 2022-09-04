@@ -6,6 +6,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 
@@ -397,7 +398,7 @@ namespace Carpeddit.App.ViewModels
                 return canLoadMore;
             });
 
-        public ObservableCollection<CommentViewModel> GetReplies(CoreDispatcher dispatcher = null, bool addToRepliesList = false, bool isCurrentUserMod = false)
+        public ObservableCollection<CommentViewModel> GetReplies(DispatcherQueue dispatcher = null, bool addToRepliesList = false, bool isCurrentUserMod = false)
         {
             ObservableCollection<CommentViewModel> comments = new();
 
@@ -413,7 +414,7 @@ namespace Carpeddit.App.ViewModels
 
                 if (addToRepliesList && dispatcher != null)
                 {
-                    _ = dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => Replies.Add(commentVm));
+                    _ = dispatcher.TryEnqueue(() => Replies.Add(commentVm));
                 }
                 else
                 {
