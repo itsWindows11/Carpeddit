@@ -4,8 +4,10 @@ using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 using Windows.Networking.Connectivity;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 
 namespace Carpeddit.App.Pages
 {
@@ -39,6 +41,27 @@ namespace Carpeddit.App.Pages
             }
 
             BackgroundExecutionManager.RemoveAccess();
+                        
+            await Task.Run(async () =>
+            {
+                try
+                {
+                    _ = App.RedditClient.Account.GetMe();
+                }
+                catch (Exception e1)
+                {
+                    LoggingHelper.LogError("[LoadingPage] An error occurred while verifying user status, signing out...", e1);
+
+                    if (App.CurrentAccount != null)
+                        App.CurrentAccount.LoggedIn = false;
+
+                    App.CurrentAccount.RefreshToken = null;
+                    App.RedditClient = null;
+
+                    await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                        Frame.Navigate(typeof(LoginPage), null, new SuppressNavigationTransitionInfo()));
+                }
+            });
 
             var requestStatus = await BackgroundExecutionManager.RequestAccessAsync();
 
@@ -51,14 +74,22 @@ namespace Carpeddit.App.Pages
                 {
                     Name = "Carpeddit - Notifications Background Task"
                 };
-                builder.SetTrigger(new TimeTrigger(15, false));
+
+                var trigger = new ApplicationTrigger();
+
+                builder.SetTrigger(trigger);
 
                 var task = builder.Register();
 
+                await trigger.RequestAsync();
+
                 task.Completed += (s, e) =>
                 {
-                    _ = App.RedditClient.Account.Messages.MonitorInbox();
-                    App.RedditClient.Account.Messages.InboxUpdated -= App.MailboxUpdated;
+                    if (App.RedditClient != null)
+                    {
+                        _ = App.RedditClient.Account.Messages.MonitorInbox();
+                        App.RedditClient.Account.Messages.InboxUpdated -= App.MailboxUpdated;
+                    }
                 };
             }
 
@@ -99,16 +130,16 @@ namespace Carpeddit.App.Pages
             {
                 if (App.CurrentAccount != null && App.CurrentAccount.LoggedIn)
                 {
-                    Frame.Navigate(typeof(MainPage), null, new Windows.UI.Xaml.Media.Animation.SuppressNavigationTransitionInfo());
+                    Frame.Navigate(typeof(MainPage), null, new SuppressNavigationTransitionInfo());
                     LoggingHelper.LogInfo("[MainPage] Loading frontpage...");
                 }
                 else
                 {
-                    Frame.Navigate(typeof(LoginPage), null, new Windows.UI.Xaml.Media.Animation.SuppressNavigationTransitionInfo());
+                    Frame.Navigate(typeof(LoginPage), null, new SuppressNavigationTransitionInfo());
                 }
             } else
             {
-                Frame.Navigate(typeof(OfflinePage), null, new Windows.UI.Xaml.Media.Animation.SuppressNavigationTransitionInfo());
+                Frame.Navigate(typeof(OfflinePage), null, new SuppressNavigationTransitionInfo());
             }
 
             LoggingHelper.LogInfo("[LoadingPage] App successfully initialized.");

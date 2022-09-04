@@ -216,8 +216,11 @@ namespace Carpeddit.App
         {
             base.OnBackgroundActivated(args);
 
-            RedditClient.Account.Messages.InboxUpdated += MailboxUpdated;
-            _ = RedditClient.Account.Messages.MonitorInbox(5);
+            if (RedditClient != null && CurrentAccount != null && CurrentAccount.LoggedIn)
+            {
+                RedditClient.Account.Messages.InboxUpdated += MailboxUpdated;
+                _ = RedditClient.Account.Messages.MonitorInbox(5);
+            }
         }
 
         public static void MailboxUpdated(object sender, MessagesUpdateEventArgs e)
