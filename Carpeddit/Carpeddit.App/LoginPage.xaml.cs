@@ -23,7 +23,7 @@ namespace Carpeddit.App
         {
             InitializeComponent();
 
-            LoginWebView.Source = new Uri("https://www.reddit.com/api/v1/authorize.compact?client_id=" + Constants.ClientId + "&response_type=code&state=login&redirect_uri=" + Constants.RedirectUri + "&duration=permanent&scope=creddits modcontributors modmail modconfig subscribe structuredstyles vote wikiedit mysubreddits submit modlog modposts modflair save modothers adsconversions read privatemessages report identity livemanage account modtraffic wikiread edit modwiki modself history flair");
+            LoginWebView.Source = new Uri("https://www.reddit.com/api/v1/authorize?client_id=" + Constants.ClientId + "&response_type=code&state=login&redirect_uri=" + Constants.RedirectUri + "&duration=permanent&scope=creddits modcontributors modmail modconfig subscribe structuredstyles vote wikiedit mysubreddits submit modlog modposts modflair save modothers adsconversions read privatemessages report identity livemanage account modtraffic wikiread edit modwiki modself history flair");
             LoginWebView.NavigationStarting += LoginWebView_NavigationStarting;
         }
 
