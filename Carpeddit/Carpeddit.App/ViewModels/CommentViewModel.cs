@@ -4,6 +4,7 @@ using Carpeddit.Common.Interfaces;
 using Reddit.Controllers;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -30,6 +31,7 @@ namespace Carpeddit.App.ViewModels
                 _rawVoteRatio = _originalComment.UpVotes - _originalComment.DownVotes;
                 _upvoted = _originalComment.IsUpvoted;
                 _downvoted = _originalComment.IsDownvoted;
+                GetCanLoadMoreAsync().Wait();
 
                 OnPropertyChanged(nameof(OriginalComment));
             }
@@ -74,6 +76,24 @@ namespace Carpeddit.App.ViewModels
         {
             get => _showReplyUI;
             set => Set(ref _showReplyUI, value);
+        }
+
+        private bool? _canLoadMore;
+
+        public bool? CanLoadMore
+        {
+            get
+            {
+                if (OriginalComment.Listing.Replies != null && OriginalComment.Listing.Replies.MoreData != null)
+                {
+                    _canLoadMore ??= OriginalComment.Listing.Replies.MoreData.Any();
+                    return _canLoadMore;
+                }
+
+                _canLoadMore = false;
+                return _canLoadMore;
+            }
+            set => Set(ref _canLoadMore, value);
         }
 
         private BulkConcurrentObservableCollection<CommentViewModel> _replies;
@@ -363,6 +383,19 @@ namespace Carpeddit.App.ViewModels
         {
             return App.RedditClient.Account.Dispatch.LinksAndComments.LockAsync(OriginalComment.Fullname);
         }
+
+        public Task<bool> GetCanLoadMoreAsync()
+            => Task.Run(() =>
+            {
+                var canLoadMore = false;
+
+                if (OriginalComment.Listing.Replies != null && OriginalComment.Listing.Replies.MoreData != null)
+                    canLoadMore = OriginalComment.Listing.Replies.MoreData.Any();
+
+                CanLoadMore = canLoadMore;
+
+                return canLoadMore;
+            });
 
         public ObservableCollection<CommentViewModel> GetReplies(CoreDispatcher dispatcher = null, bool addToRepliesList = false, bool isCurrentUserMod = false)
         {

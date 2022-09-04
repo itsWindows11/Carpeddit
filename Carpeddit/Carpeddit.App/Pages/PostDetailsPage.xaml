@@ -321,178 +321,182 @@
                         <DataTemplate x:DataType="viewmodels:CommentViewModel">
                             <muxc:TreeViewItem IsExpanded="{x:Bind Collapsed, Mode=TwoWay, Converter={StaticResource InvertBoolConv}}" ItemsSource="{x:Bind Replies}">
                                 <muxc:TreeViewItem.Content>
-                                    <Grid 
-                                        Background="{ThemeResource ExpanderContentBackground}"
-                                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                                        BorderThickness="1"
-                                        CornerRadius="4"
-                                        Margin="{x:Bind Thickn}"
-                                        Padding="4">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="30" />
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <Grid 
+                                            Background="{ThemeResource ExpanderContentBackground}"
+                                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                            BorderThickness="1"
+                                            CornerRadius="4"
+                                            Margin="{x:Bind Thickn}"
+                                            Padding="4">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="30" />
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
 
-                                        <Border Width="1" Margin="0,12" Background="{StaticResource AppBarSeparatorForegroundThemeBrush}" />
+                                            <Border Width="1" Margin="0,12" Background="{StaticResource AppBarSeparatorForegroundThemeBrush}" />
 
-                                        <StackPanel 
-                                            HorizontalAlignment="Center"
-                                            Grid.Column="1"
-                                            Spacing="4"
-                                            Margin="0,8,12,8">
-                                            <ToggleButton 
-                                                Padding="3"
-                                                Style="{StaticResource TransparentToggleButton}"
-                                                Click="CommentUpvoteButton_Click"
+                                            <StackPanel 
                                                 HorizontalAlignment="Center"
-                                                Tag="{x:Bind}"
-                                                IsChecked="{x:Bind Upvoted, Mode=OneWay}">
-                                                <FontIcon Glyph="&#xE010;" />
+                                                Grid.Column="1"
+                                                Spacing="4"
+                                                Margin="0,8,12,8">
+                                                <ToggleButton 
+                                                    Padding="3"
+                                                    Style="{StaticResource TransparentToggleButton}"
+                                                    Click="CommentUpvoteButton_Click"
+                                                    HorizontalAlignment="Center"
+                                                    Tag="{x:Bind}"
+                                                    IsChecked="{x:Bind Upvoted, Mode=OneWay}">
+                                                    <FontIcon Glyph="&#xE010;" />
 
-                                                <ToggleButton.Resources>
-                                                    <ResourceDictionary>
-                                                        <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="#ff4500" />
-                                                        <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="#ff6e38" />
-                                                        <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="#f77d4f" />
-                                                    </ResourceDictionary>
-                                                </ToggleButton.Resources>
-                                            </ToggleButton>
-                                            <TextBlock HorizontalAlignment="Center" Text="{x:Bind VoteRatio, Mode=OneWay}" />
-                                            <ToggleButton
-                                                Padding="3"
-                                                Style="{StaticResource TransparentToggleButton}"
-                                                Click="CommentDownvoteButton_Click"
-                                                Tag="{x:Bind}"
-                                                HorizontalAlignment="Center"
-                                                IsChecked="{x:Bind Downvoted, Mode=OneWay}">
-                                                <FontIcon Glyph="&#xE011;" />
+                                                    <ToggleButton.Resources>
+                                                        <ResourceDictionary>
+                                                            <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="#ff4500" />
+                                                            <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="#ff6e38" />
+                                                            <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="#f77d4f" />
+                                                        </ResourceDictionary>
+                                                    </ToggleButton.Resources>
+                                                </ToggleButton>
+                                                <TextBlock HorizontalAlignment="Center" Text="{x:Bind VoteRatio, Mode=OneWay}" />
+                                                <ToggleButton
+                                                    Padding="3"
+                                                    Style="{StaticResource TransparentToggleButton}"
+                                                    Click="CommentDownvoteButton_Click"
+                                                    Tag="{x:Bind}"
+                                                    HorizontalAlignment="Center"
+                                                    IsChecked="{x:Bind Downvoted, Mode=OneWay}">
+                                                    <FontIcon Glyph="&#xE011;" />
 
-                                                <ToggleButton.Resources>
-                                                    <ResourceDictionary>
-                                                        <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="#7193ff" />
-                                                        <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="#96afff" />
-                                                        <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="#b6c7fc" />
-                                                    </ResourceDictionary>
-                                                </ToggleButton.Resources>
-                                            </ToggleButton>
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="2" Spacing="5">
-                                            <StackPanel Visibility="{x:Bind OriginalComment.Listing.Stickied, Converter={StaticResource BoolToVis}}" Orientation="Horizontal" Spacing="8">
-                                                <FontIcon Glyph="&#xE141;" FontSize="12" />
-
-                                                <TextBlock Text="Pinned by moderators" />
+                                                    <ToggleButton.Resources>
+                                                        <ResourceDictionary>
+                                                            <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="#7193ff" />
+                                                            <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="#96afff" />
+                                                            <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="#b6c7fc" />
+                                                        </ResourceDictionary>
+                                                    </ToggleButton.Resources>
+                                                </ToggleButton>
                                             </StackPanel>
 
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock VerticalAlignment="Center">
-                                                    By <Hyperlink>u/<Run Text="{x:Bind OriginalComment.Author}" /></Hyperlink>, posted <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(OriginalComment.Created, x:True)}" />
-                                                </TextBlock>
+                                            <StackPanel Grid.Column="2" Spacing="5">
+                                                <StackPanel Visibility="{x:Bind OriginalComment.Listing.Stickied, Converter={StaticResource BoolToVis}}" Orientation="Horizontal" Spacing="8">
+                                                    <FontIcon Glyph="&#xE141;" FontSize="12" />
 
-                                                <Button Visibility="{x:Bind OriginalComment.Listing.IsSubmitter, Converter={StaticResource BoolToVis}}" Style="{StaticResource AccentButtonStyle}" Content="OP" Padding="4,2" Margin="4,0,0,0" IsHitTestVisible="False" />
-                                                
-                                                <Button Visibility="{x:Bind ShouldDisplayUserFlair, Converter={StaticResource BoolToVis}}" Padding="4,2" Margin="4,0,0,0" CornerRadius="2">
-                                                    <TextBlock Text="{x:Bind OriginalComment.Listing.AuthorFlairText}" />
-                                                </Button>
-
-                                                <Border Visibility="{x:Bind IsAdminDistinguished, Converter={StaticResource BoolToVis}}" Background="OrangeRed" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="4">
-                                                    <TextBlock Text="A" Foreground="White" />
-                                                </Border>
-
-                                                <Button Visibility="{x:Bind OriginalComment.Listing.Edited, Converter={StaticResource BoolToVis}}" Style="{StaticResource AccentButtonStyle}" Padding="4,2" Margin="4,0,0,0" ToolTipService.ToolTip="Edited">
-                                                    <FontIcon FontSize="12" Glyph="&#xE104;" />
-                                                </Button>
-
-                                                <Button Visibility="{x:Bind OriginalComment.Listing.Approved, Converter={StaticResource BoolToVis}}" Style="{StaticResource AccentButtonStyle}" Padding="4,2" Margin="4,0,0,0" ToolTipService.ToolTip="Approved">
-                                                    <FontIcon FontSize="12" Glyph="&#xE73E;" />
-                                                </Button>
-
-                                                <Button Visibility="{x:Bind OriginalComment.Listing.Spam, Converter={StaticResource BoolToVis}}" Style="{StaticResource AccentButtonStyle}" Padding="4,2" Margin="4,0,0,0" ToolTipService.ToolTip="Marked as spam">
-                                                    <FontIcon FontSize="12" Glyph="&#xE73C;" />
-                                                </Button>
-
-                                                <Button Visibility="{x:Bind OriginalComment.Listing.Removed, Converter={StaticResource BoolToVis}}" Style="{StaticResource AccentButtonStyle}" Padding="4,2" Margin="4,0,0,0" ToolTipService.ToolTip="Removed">
-                                                    <FontIcon FontSize="12" Glyph="&#xE10A;" />
-                                                </Button>
-
-                                                <Button Visibility="{x:Bind OriginalComment.Listing.Locked, Converter={StaticResource BoolToVis}}" Style="{StaticResource AccentButtonStyle}" Padding="4,2" Margin="4,0,0,0" ToolTipService.ToolTip="Locked">
-                                                    <FontIcon FontSize="12" Glyph="&#xE72E;" />
-                                                </Button>
-                                            </StackPanel>
-                                            
-                                            <controls:MarkdownTextBlock Background="Transparent" Text="{x:Bind OriginalComment.Body}" LinkClicked="MarkdownLinkClicked" />
-
-                                            <StackPanel Spacing="8" MaxWidth="1200" Visibility="{x:Bind ShowReplyUI, Mode=OneWay, Converter={StaticResource BoolToVis}}">
-                                                <RichEditBox SelectionFlyout="{x:Null}" Height="100" AcceptsReturn="True" MaxHeight="600" Margin="0,12,0,0" PlaceholderText="Add a reply..." x:Name="CommentEditBox" />
-                                                <Button Click="ReplyCommentButton_Click" Style="{ThemeResource AccentButtonStyle}" Content="Send" />
-                                            </StackPanel>
-
-                                            <RelativePanel>
-                                                <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-                                                    <HyperlinkButton Visibility="{x:Bind ShowReplyUI, Mode=OneWay, Converter={StaticResource BoolToVisReverse}}" IsEnabled="{x:Bind NotArchivedOrLocked}" Click="ReplyButton_Click" Padding="2" Content="Reply" />
-                                                    <HyperlinkButton Visibility="{x:Bind IsCurrentUserOP, Converter={StaticResource BoolToVis}}" Click="DeleteCommentButton_Click" Padding="2" Content="Delete" />
-                                                    <HyperlinkButton Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}" Click="RemoveCommentButton_Click" Margin="4,0,0,0" Padding="2" Content="Remove" />
+                                                    <TextBlock Text="Pinned by moderators" />
                                                 </StackPanel>
 
-                                                <Button RelativePanel.AlignRightWithPanel="True" Style="{StaticResource TransparentButton}" Padding="5,2" Margin="0,0,8,0">
-                                                    <FontIcon Glyph="&#xE10C;" />
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock VerticalAlignment="Center">
+                                                        By <Hyperlink>u/<Run Text="{x:Bind OriginalComment.Author}" /></Hyperlink>, posted <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(OriginalComment.Created, x:True)}" />
+                                                    </TextBlock>
 
-                                                    <Button.Flyout>
-                                                        <MenuFlyout>
-                                                            <MenuFlyoutItem Text="Copy link" Click="CopyLinkButton_Click">
-                                                                <MenuFlyoutItem.Icon>
-                                                                    <FontIcon Glyph="&#xE16F;" />
-                                                                </MenuFlyoutItem.Icon>
-                                                            </MenuFlyoutItem>
+                                                    <Button Visibility="{x:Bind OriginalComment.Listing.IsSubmitter, Converter={StaticResource BoolToVis}}" Style="{StaticResource AccentButtonStyle}" Content="OP" Padding="4,2" Margin="4,0,0,0" IsHitTestVisible="False" />
 
-                                                            <MenuFlyoutItem Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}" Text="Approve comment" Click="ApproveCommentItem_Click">
-                                                                <MenuFlyoutItem.Icon>
-                                                                    <FontIcon Glyph="&#xF16C;" />
-                                                                </MenuFlyoutItem.Icon>
-                                                            </MenuFlyoutItem>
+                                                    <Button Visibility="{x:Bind ShouldDisplayUserFlair, Converter={StaticResource BoolToVis}}" Padding="4,2" Margin="4,0,0,0" CornerRadius="2">
+                                                        <TextBlock Text="{x:Bind OriginalComment.Listing.AuthorFlairText}" />
+                                                    </Button>
 
-                                                            <ToggleMenuFlyoutItem Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}" IsChecked="{x:Bind OriginalComment.Listing.Spam}" Text="Mark comment as spam" Click="SpamComment_Click">
-                                                                <ToggleMenuFlyoutItem.Icon>
-                                                                    <FontIcon Glyph="&#xE73C;" />
-                                                                </ToggleMenuFlyoutItem.Icon>
-                                                            </ToggleMenuFlyoutItem>
+                                                    <Border Visibility="{x:Bind IsAdminDistinguished, Converter={StaticResource BoolToVis}}" Background="OrangeRed" HorizontalAlignment="Left" CornerRadius="10" Padding="8,2" Margin="4">
+                                                        <TextBlock Text="A" Foreground="White" />
+                                                    </Border>
 
-                                                            <ToggleMenuFlyoutItem Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}" IsChecked="{x:Bind OriginalComment.Listing.Locked}" Text="Lock comment" Click="LockCommentItem_Click">
-                                                                <ToggleMenuFlyoutItem.Icon>
-                                                                    <FontIcon Glyph="&#xE72E;" />
-                                                                </ToggleMenuFlyoutItem.Icon>
-                                                            </ToggleMenuFlyoutItem>
+                                                    <Button Visibility="{x:Bind OriginalComment.Listing.Edited, Converter={StaticResource BoolToVis}}" Style="{StaticResource AccentButtonStyle}" Padding="4,2" Margin="4,0,0,0" ToolTipService.ToolTip="Edited">
+                                                        <FontIcon FontSize="12" Glyph="&#xE104;" />
+                                                    </Button>
 
-                                                            <MenuFlyoutSubItem IsEnabled="{x:Bind IsCurrentUserOP}" Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}" Text="Distinguish">
-                                                                <MenuFlyoutSubItem.Icon>
-                                                                    <FontIcon Glyph="&#xEA18;" />
-                                                                </MenuFlyoutSubItem.Icon>
+                                                    <Button Visibility="{x:Bind OriginalComment.Listing.Approved, Converter={StaticResource BoolToVis}}" Style="{StaticResource AccentButtonStyle}" Padding="4,2" Margin="4,0,0,0" ToolTipService.ToolTip="Approved">
+                                                        <FontIcon FontSize="12" Glyph="&#xE73E;" />
+                                                    </Button>
 
-                                                                <MenuFlyoutSubItem.Items>
-                                                                    <MenuFlyoutItem Text="Nothing" Click="RemoveDistinguish_Click">
-                                                                        <MenuFlyoutItem.Icon>
-                                                                            <FontIcon Glyph="&#xE10A;" />
-                                                                        </MenuFlyoutItem.Icon>
-                                                                    </MenuFlyoutItem>
-                                                                    <MenuFlyoutItem Text="Distinguish as moderator" Click="DistinguishAsModerator_Click">
-                                                                        <MenuFlyoutItem.Icon>
-                                                                            <FontIcon Glyph="&#xEA18;" />
-                                                                        </MenuFlyoutItem.Icon>
-                                                                    </MenuFlyoutItem>
-                                                                    <MenuFlyoutItem IsEnabled="{x:Bind IsTopLevel, Mode=OneWay}" Text="Distinguish as moderator and pin" Click="PinCommentButton_Click">
-                                                                        <MenuFlyoutItem.Icon>
-                                                                            <FontIcon Glyph="&#xE141;" />
-                                                                        </MenuFlyoutItem.Icon>
-                                                                    </MenuFlyoutItem>
-                                                                </MenuFlyoutSubItem.Items>
-                                                            </MenuFlyoutSubItem>
-                                                        </MenuFlyout>
-                                                    </Button.Flyout>
-                                                </Button>
-                                            </RelativePanel>
-                                        </StackPanel>
-                                    </Grid>
+                                                    <Button Visibility="{x:Bind OriginalComment.Listing.Spam, Converter={StaticResource BoolToVis}}" Style="{StaticResource AccentButtonStyle}" Padding="4,2" Margin="4,0,0,0" ToolTipService.ToolTip="Marked as spam">
+                                                        <FontIcon FontSize="12" Glyph="&#xE73C;" />
+                                                    </Button>
+
+                                                    <Button Visibility="{x:Bind OriginalComment.Listing.Removed, Converter={StaticResource BoolToVis}}" Style="{StaticResource AccentButtonStyle}" Padding="4,2" Margin="4,0,0,0" ToolTipService.ToolTip="Removed">
+                                                        <FontIcon FontSize="12" Glyph="&#xE10A;" />
+                                                    </Button>
+
+                                                    <Button Visibility="{x:Bind OriginalComment.Listing.Locked, Converter={StaticResource BoolToVis}}" Style="{StaticResource AccentButtonStyle}" Padding="4,2" Margin="4,0,0,0" ToolTipService.ToolTip="Locked">
+                                                        <FontIcon FontSize="12" Glyph="&#xE72E;" />
+                                                    </Button>
+                                                </StackPanel>
+
+                                                <controls:MarkdownTextBlock Background="Transparent" Text="{x:Bind OriginalComment.Body}" LinkClicked="MarkdownLinkClicked" />
+
+                                                <StackPanel Spacing="8" MaxWidth="1200" Visibility="{x:Bind ShowReplyUI, Mode=OneWay, Converter={StaticResource BoolToVis}}">
+                                                    <RichEditBox SelectionFlyout="{x:Null}" Height="100" AcceptsReturn="True" MaxHeight="600" Margin="0,12,0,0" PlaceholderText="Add a reply..." x:Name="CommentEditBox" />
+                                                    <Button Click="ReplyCommentButton_Click" Style="{ThemeResource AccentButtonStyle}" Content="Send" />
+                                                </StackPanel>
+
+                                                <RelativePanel>
+                                                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                                                        <HyperlinkButton Visibility="{x:Bind ShowReplyUI, Mode=OneWay, Converter={StaticResource BoolToVisReverse}}" IsEnabled="{x:Bind NotArchivedOrLocked}" Click="ReplyButton_Click" Padding="2" Content="Reply" />
+                                                        <HyperlinkButton Visibility="{x:Bind IsCurrentUserOP, Converter={StaticResource BoolToVis}}" Click="DeleteCommentButton_Click" Padding="2" Content="Delete" />
+                                                        <HyperlinkButton Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}" Click="RemoveCommentButton_Click" Margin="4,0,0,0" Padding="2" Content="Remove" />
+                                                    </StackPanel>
+
+                                                    <Button RelativePanel.AlignRightWithPanel="True" Style="{StaticResource TransparentButton}" Padding="5,2" Margin="0,0,8,0">
+                                                        <FontIcon Glyph="&#xE10C;" />
+
+                                                        <Button.Flyout>
+                                                            <MenuFlyout>
+                                                                <MenuFlyoutItem Text="Copy link" Click="CopyLinkButton_Click">
+                                                                    <MenuFlyoutItem.Icon>
+                                                                        <FontIcon Glyph="&#xE16F;" />
+                                                                    </MenuFlyoutItem.Icon>
+                                                                </MenuFlyoutItem>
+
+                                                                <MenuFlyoutItem Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}" Text="Approve comment" Click="ApproveCommentItem_Click">
+                                                                    <MenuFlyoutItem.Icon>
+                                                                        <FontIcon Glyph="&#xF16C;" />
+                                                                    </MenuFlyoutItem.Icon>
+                                                                </MenuFlyoutItem>
+
+                                                                <ToggleMenuFlyoutItem Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}" IsChecked="{x:Bind OriginalComment.Listing.Spam}" Text="Mark comment as spam" Click="SpamComment_Click">
+                                                                    <ToggleMenuFlyoutItem.Icon>
+                                                                        <FontIcon Glyph="&#xE73C;" />
+                                                                    </ToggleMenuFlyoutItem.Icon>
+                                                                </ToggleMenuFlyoutItem>
+
+                                                                <ToggleMenuFlyoutItem Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}" IsChecked="{x:Bind OriginalComment.Listing.Locked}" Text="Lock comment" Click="LockCommentItem_Click">
+                                                                    <ToggleMenuFlyoutItem.Icon>
+                                                                        <FontIcon Glyph="&#xE72E;" />
+                                                                    </ToggleMenuFlyoutItem.Icon>
+                                                                </ToggleMenuFlyoutItem>
+
+                                                                <MenuFlyoutSubItem IsEnabled="{x:Bind IsCurrentUserOP}" Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}" Text="Distinguish">
+                                                                    <MenuFlyoutSubItem.Icon>
+                                                                        <FontIcon Glyph="&#xEA18;" />
+                                                                    </MenuFlyoutSubItem.Icon>
+
+                                                                    <MenuFlyoutSubItem.Items>
+                                                                        <MenuFlyoutItem Text="Nothing" Click="RemoveDistinguish_Click">
+                                                                            <MenuFlyoutItem.Icon>
+                                                                                <FontIcon Glyph="&#xE10A;" />
+                                                                            </MenuFlyoutItem.Icon>
+                                                                        </MenuFlyoutItem>
+                                                                        <MenuFlyoutItem Text="Distinguish as moderator" Click="DistinguishAsModerator_Click">
+                                                                            <MenuFlyoutItem.Icon>
+                                                                                <FontIcon Glyph="&#xEA18;" />
+                                                                            </MenuFlyoutItem.Icon>
+                                                                        </MenuFlyoutItem>
+                                                                        <MenuFlyoutItem IsEnabled="{x:Bind IsTopLevel, Mode=OneWay}" Text="Distinguish as moderator and pin" Click="PinCommentButton_Click">
+                                                                            <MenuFlyoutItem.Icon>
+                                                                                <FontIcon Glyph="&#xE141;" />
+                                                                            </MenuFlyoutItem.Icon>
+                                                                        </MenuFlyoutItem>
+                                                                    </MenuFlyoutSubItem.Items>
+                                                                </MenuFlyoutSubItem>
+                                                            </MenuFlyout>
+                                                        </Button.Flyout>
+                                                    </Button>
+                                                </RelativePanel>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <Button Visibility="{x:Bind CanLoadMore, Mode=OneWay, Converter={StaticResource BoolToVis}}" Margin="0,4">Load more</Button>
+                                    </StackPanel>
                                 </muxc:TreeViewItem.Content>
                             </muxc:TreeViewItem>
                         </DataTemplate>
