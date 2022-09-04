@@ -20,7 +20,7 @@ If you're interested in working on a fix, leave a comment to let everyone know a
 ### Running the app
 
 #### Requirements
-- Requires at least version 1809 to run.
+- Requires at least version 1809 (build 17763) to run.
 - Visual Studio 2019, with UWP workload version 2104 (build 20348)
 
 #### Steps to build
