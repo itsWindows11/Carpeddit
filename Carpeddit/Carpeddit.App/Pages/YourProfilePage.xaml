@@ -138,7 +138,7 @@
                         Visibility="Collapsed">
                         <ListView.ItemTemplate>
                             <DataTemplate x:DataType="models:CommentViewModel">
-                                <Grid Margin="{x:Bind Thickn}">
+                                <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="30" />
                                         <ColumnDefinition Width="40" />

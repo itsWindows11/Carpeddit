@@ -67,9 +67,6 @@ namespace Carpeddit.App.ViewModels
             => !string.IsNullOrEmpty(OriginalComment.Listing.AuthorFlairText);
 
         public bool Expanded => !Collapsed;
-        
-        public Thickness Thickn
-            => Replies.Count > 0 ? new(-12, 0, 0, 0) : (IsTopLevel ? new(-32, 0, 0, 0) : new(-12, 0, 0, 0));
 
         private bool _showReplyUI;
 
