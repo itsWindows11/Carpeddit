@@ -168,10 +168,13 @@
                             </Border>
 
                             <TextBlock VerticalAlignment="Center" TextWrapping="WrapWholeWords">
-                                - Posted<Run d:Text="5 hours ago" Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Post.Created, x:True)}" />
-                                in<Hyperlink Click="SubredditHyperlink_Click">
+                                - Posted
+                                <Run d:Text="5 hours ago" Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Post.Created, x:True)}" />
+                                in
+                                <Hyperlink Click="SubredditHyperlink_Click">
                                     <Run d:Text="r/Carpeddit" Text="{x:Bind Post.Post.Listing.SubredditNamePrefixed}" />
-                                </Hyperlink></TextBlock>
+                                </Hyperlink>
+                            </TextBlock>
                         </StackPanel>
 
                         <TextBlock
