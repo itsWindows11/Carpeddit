@@ -4,6 +4,7 @@ using Carpeddit.App.Dialogs;
 using Carpeddit.App.Helpers;
 using Carpeddit.App.Models;
 using Carpeddit.App.ViewModels;
+using Carpeddit.Common.Helpers;
 using Microsoft.Toolkit.Uwp;
 using Reddit.Controllers;
 using System;
@@ -34,6 +35,8 @@ namespace Carpeddit.App.Pages
     {
         BulkConcurrentObservableCollection<PostViewModel> posts;
 
+        bool isLoadingMore;
+
         public HomePage()
         {
             InitializeComponent();
@@ -42,28 +45,10 @@ namespace Carpeddit.App.Pages
             Loaded += Page_Loaded;
         }
 
-        private async void Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button button)
-            {
-                button.Visibility = Visibility.Collapsed;
-                FooterProgress.Visibility = Visibility.Visible;
-
-                await foreach (var post in PostHelpers.GetFrontpageAsync(after: posts.Last().Post.Fullname))
-                {
-                    posts.Add(post);
-                }
-
-                button.Visibility = Visibility.Visible;
-                FooterProgress.Visibility = Visibility.Collapsed;
-            }
-        }
-
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             Loaded -= Page_Loaded;
 
-            LoadMoreButton.Visibility = Visibility.Collapsed;
             Progress.Visibility = Visibility.Visible;
 
             await foreach (var post in PostHelpers.GetFrontpageAsync())
@@ -73,8 +58,28 @@ namespace Carpeddit.App.Pages
 
             MainList.ItemsSource = posts;
             Progress.Visibility = Visibility.Collapsed;
-            LoadMoreButton.Visibility = Visibility.Visible;
             CreatePostPanel.Visibility = Visibility.Visible;
+
+            var scrollViewer = ListHelpers.GetScrollViewer(MainList);
+
+            scrollViewer.ViewChanged += async (s, e) =>
+            {
+                if (!isLoadingMore && scrollViewer.VerticalOffset <= scrollViewer.ScrollableHeight - 50)
+                {
+                    isLoadingMore = true;
+
+                    FooterProgress.Visibility = Visibility.Visible;
+
+                    await foreach (var post in PostHelpers.GetFrontpageAsync(after: posts.Last().Post.Fullname, limit: 30))
+                    {
+                        posts.Add(post);
+                    }
+
+                    FooterProgress.Visibility = Visibility.Collapsed;
+
+                    isLoadingMore = false;
+                }
+            };
 
             try
             {

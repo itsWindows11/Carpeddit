@@ -39,13 +39,6 @@
                         HorizontalAlignment="Center"
                         IsActive="True"
                         Visibility="Collapsed" />
-                    <Button
-                        x:Name="LoadMoreButton"
-                        Margin="0,5,0,0"
-                        HorizontalAlignment="Center"
-                        Click="Button_Click"
-                        Content="Load more"
-                        Style="{StaticResource AccentButtonStyle}" />
                 </Grid>
             </ListView.Footer>
         </ListView>

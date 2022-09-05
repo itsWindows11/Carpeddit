@@ -193,7 +193,7 @@ namespace Carpeddit.App.Helpers
             return str.Substring(0, str.Length > 256 ? 256 : str.Length);
         }
 
-        public static async IAsyncEnumerable<PostViewModel> GetFrontpageAsync(int limit = 100, string before = "", string after = "", Sort sortType = Sort.Hot)
+        public static async IAsyncEnumerable<PostViewModel> GetFrontpageAsync(int limit = 50, string before = "", string after = "", Sort sortType = Sort.Hot)
         {
             List<Post> frontpage = await Task.Run(() => App.RedditClient.GetFrontPage(limit: limit, after: after, before: before));
 
@@ -212,7 +212,7 @@ namespace Carpeddit.App.Helpers
             }
         }
 
-        public static async IAsyncEnumerable<PostViewModel> GetUserPostHistoryAsync(User user, int limit = 100, string before = "", string after = "", string where = "submitted", Sort sortType = Sort.Hot)
+        public static async IAsyncEnumerable<PostViewModel> GetUserPostHistoryAsync(User user, int limit = 50, string before = "", string after = "", string where = "submitted", Sort sortType = Sort.Hot)
         {
             List<Post> list = await Task.Run(() => user.GetPostHistory(where: where, limit: limit, after: after, before: before));
 
@@ -237,7 +237,7 @@ namespace Carpeddit.App.Helpers
         public static IAsyncEnumerable<PostViewModel> GetPopularAsync(int limit = 100, string before = "", string after = "", string t = "all", Sort sortType = Sort.Hot)
             => GetPostsAsync(App.RedditClient.Subreddit("popular"), limit, before, after, t, sortType);
 
-        public static async IAsyncEnumerable<PostViewModel> GetPostsAsync(Subreddit subreddit, int limit = 100, string before = "", string after = "", string t = "all", Sort sortType = Sort.Hot)
+        public static async IAsyncEnumerable<PostViewModel> GetPostsAsync(Subreddit subreddit, int limit = 50, string before = "", string after = "", string t = "all", Sort sortType = Sort.Hot)
         {
             List<Post> list = sortType switch
             {

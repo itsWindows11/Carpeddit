@@ -2,6 +2,7 @@
 using Carpeddit.App.Helpers;
 using Carpeddit.App.Models;
 using Carpeddit.App.ViewModels;
+using Carpeddit.Common.Helpers;
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -16,6 +17,8 @@ namespace Carpeddit.App.Pages
     public sealed partial class PopularPostsPage : Page
     {
         BulkConcurrentObservableCollection<PostViewModel> posts = new();
+
+        bool isLoadingMore;
 
         public PopularPostsPage()
         {
@@ -45,7 +48,6 @@ namespace Carpeddit.App.Pages
         {
             Loaded -= Page_Loaded;
 
-            LoadMoreButton.Visibility = Visibility.Collapsed;
             Progress.Visibility = Visibility.Visible;
 
             await foreach (var post in PostHelpers.GetPopularAsync())
@@ -56,7 +58,27 @@ namespace Carpeddit.App.Pages
             MainList.ItemsSource = posts;
 
             Progress.Visibility = Visibility.Collapsed;
-            LoadMoreButton.Visibility = Visibility.Visible;
+
+            var scrollViewer = ListHelpers.GetScrollViewer(MainList);
+
+            scrollViewer.ViewChanged += async (s, e) =>
+            {
+                if (!isLoadingMore && scrollViewer.VerticalOffset <= scrollViewer.ScrollableHeight - 50)
+                {
+                    isLoadingMore = true;
+
+                    FooterProgress.Visibility = Visibility.Visible;
+
+                    await foreach (var post in PostHelpers.GetPopularAsync(after: posts.Last().Post.Fullname, limit: 30))
+                    {
+                        posts.Add(post);
+                    }
+
+                    FooterProgress.Visibility = Visibility.Collapsed;
+
+                    isLoadingMore = false;
+                }
+            };
 
             try
             {
