@@ -21,7 +21,7 @@ If you're interested in working on a fix, leave a comment to let everyone know a
 
 #### Requirements
 - Requires at least version 1809 (build 17763) to run.
-- Visual Studio 2019, with UWP workload version 2104 (build 20348)
+- Visual Studio 2019 or later, with Windows 11 SDK for UWP (build 22000)
 
 #### Steps to build
 
