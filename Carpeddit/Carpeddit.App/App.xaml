@@ -18,6 +18,7 @@
                     <converters:DecimalPointConverter x:Key="DecimalPoint" />
                     <converters:IntToVisibilityConverter x:Key="IntToVis" />
                     <converters:StringToUriConverter x:Key="StringToUri" />
+                    <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBool" />
 
                     <Style
                         x:Key="TransparentButton"

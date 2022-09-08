@@ -213,7 +213,7 @@
                                 x:Name="ImagePost"
                                 MaxWidth="500"
                                 Margin="0,4,0,0"
-                                x:Load="{x:Bind HasImage}">
+                                x:Load="{x:Bind HasImage, Converter={StaticResource NullableBoolToBool}}">
                                 <Image.Source>
                                     <BitmapImage DecodePixelType="Logical" UriSource="{x:Bind ImageUri}" />
                                 </Image.Source>

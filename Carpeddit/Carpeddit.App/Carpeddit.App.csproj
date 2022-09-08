@@ -132,6 +132,7 @@
     <Compile Include="Converters\IntToVisibilityConverter.cs" />
     <Compile Include="Converters\InvertBoolConverter.cs" />
     <Compile Include="Converters\DecimalPointToPercentageConverter.cs" />
+    <Compile Include="Converters\NullableBoolToBoolConverter.cs" />
     <Compile Include="Converters\SettingsConverters.cs" />
     <Compile Include="Converters\StringToUriConverter.cs" />
     <Compile Include="Dialogs\CreateFlairDialog.xaml.cs">

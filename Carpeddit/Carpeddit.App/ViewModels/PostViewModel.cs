@@ -91,16 +91,10 @@ namespace Carpeddit.App.ViewModels
         private string _shortDescription;
 
         public string ShortDescription
-        {
-            get
-            {
-                _shortDescription ??= Description.Length >= 350 ? Description.Substring(0, 350) + "..." : Description;
-                return _shortDescription;
-            }
-        }
+            => _shortDescription ??= Description.Length >= 350 ? Description.Substring(0, 350) + "..." : Description;
 
         public Uri ImageUri
-            => HasImage ? new Uri(Description, UriKind.Absolute) : null;
+            => (HasImage ?? false) ? new Uri(Description.Trim(), UriKind.Absolute) : null;
 
         public bool IsGallery
             => Post.Listing.IsGallery ?? false;
@@ -152,8 +146,10 @@ namespace Carpeddit.App.ViewModels
         public string CommentsCountInUI
             => $"{CommentsCount} comment{(CommentsCount == 1 ? string.Empty : "s")}";
 
-        public bool HasImage
-            => CheckHasImage();
+        private bool? _hasImage;
+
+        public bool? HasImage
+            => _hasImage ??= CheckHasImage();
 
         private MediaSource _videoSource;
 
@@ -459,10 +455,12 @@ namespace Carpeddit.App.ViewModels
 
         private bool CheckHasImage()
         {
-            return Uri.IsWellFormedUriString(Description, UriKind.Absolute)
-                && (Description.StartsWith("https://", StringComparison.OrdinalIgnoreCase)
-                || Description.StartsWith("http://", StringComparison.OrdinalIgnoreCase))
-                && (Description.Contains("i.redd.it") || Description.Contains("i.imgur"));
+            string description = Description.Trim();
+
+            return Uri.IsWellFormedUriString(description, UriKind.Absolute)
+                && (description.StartsWith("https://", StringComparison.OrdinalIgnoreCase)
+                || description.StartsWith("http://", StringComparison.OrdinalIgnoreCase))
+                && (description.Contains("preview.redd.it") || description.Contains("i.redd.it") || description.Contains("i.imgur"));
         }
 
         // Markdown link clicked event handler
