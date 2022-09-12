@@ -217,6 +217,22 @@ namespace Carpeddit.App.Templates
             await new ReportDialog(((sender as FrameworkElement).DataContext as PostViewModel).Post).ShowAsync();
         }
 
+        private async void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as HyperlinkButton;
+            var post = button.DataContext as PostViewModel;
+
+            if (post.Post.Listing.Saved)
+            {
+                button.Content = "Save";
+                await post.Post.UnsaveAsync();
+            } else
+            {
+                button.Content = "Unsave";
+                await post.Post.SaveAsync(string.Empty);
+            }
+        }
+
         private async void OnPointerReleased(object sender, PointerRoutedEventArgs e)
         {
             if ((e.OriginalSource as FrameworkElement).DataContext is ImageViewModel image)

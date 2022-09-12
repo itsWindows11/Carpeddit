@@ -185,7 +185,7 @@
                         </Button.Flyout>
                     </Button>
 
-                    <HyperlinkButton Margin="4,0,0,-6" Padding="2">
+                    <HyperlinkButton Click="SaveButton_Click" Margin="4,0,0,-6" Padding="2">
                         Save
                     </HyperlinkButton>
 
