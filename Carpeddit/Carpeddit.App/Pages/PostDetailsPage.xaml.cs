@@ -36,19 +36,27 @@ namespace Carpeddit.App.Pages
 {
     public sealed partial class PostDetailsPage : Page
     {
-        PostViewModel Post;
+        private PostViewModel Post;
 
         public Subreddit Subreddit { get; set; }
 
-        BulkConcurrentObservableCollection<CommentViewModel> commentsObservable = new();
+        private BulkConcurrentObservableCollection<CommentViewModel> commentsObservable = new();
 
-        bool _isNotSeparate;
+        private bool _isNotSeparate;
 
-        Sort currentSort;
+        private Sort currentSort;
         
-        bool initialCommentsLoaded;
+        private bool initialCommentsLoaded;
         
-        bool sortQueued;
+        private bool sortQueued;
+
+        // Serves as a lock, because Reddit only allows
+        // sending one request at a time to the more children API.
+        //
+        // If this is set to true and there's another
+        // operation running at the same time, then the action is queued and
+        // proccessed after completing the first operation.
+        private bool _isLoadingMore;
 
         public PostDetailsPage()
         {
@@ -556,6 +564,18 @@ namespace Carpeddit.App.Pages
         private async void OnReportButtonClick(object sender, RoutedEventArgs e)
         {
             _ = await new ReportDialog(Post.Post).ShowAsync();
+        }
+
+        private async void LoadMoreButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_isLoadingMore)
+                return;
+
+            _isLoadingMore = true;
+
+            await ((sender as FrameworkElement).DataContext as CommentViewModel).FetchMoreRepliesAsync();
+
+            _isLoadingMore = false;
         }
     }
 }

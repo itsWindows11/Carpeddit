@@ -46,7 +46,7 @@ namespace Carpeddit.App.Pages
             {
                 try
                 {
-                    _ = App.RedditClient.Account.GetMe();
+                    App.RedditClient?.Account?.GetMe();
                 }
                 catch (Exception e1)
                 {

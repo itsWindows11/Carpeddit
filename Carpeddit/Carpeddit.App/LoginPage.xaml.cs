@@ -36,7 +36,7 @@ namespace Carpeddit.App
                 CustomAccountModel account = await AccountController.TryGetTokenInfoAsync(oneTimeCode);
                 account.LoggedIn = true;
 
-                App.RedditClient = new RedditClient(Constants.ClientId, account.RefreshToken, Constants.ClientSecret, account.AccessToken);
+                App.RedditClient = new RedditClient(Constants.ClientId, account.RefreshToken, Constants.ClientSecret, account.AccessToken, Constants.UserAgent);
 
                 await App.AccDBController.UpdateAsync(account);
 

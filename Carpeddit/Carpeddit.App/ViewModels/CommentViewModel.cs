@@ -7,8 +7,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.System;
-using Windows.UI.Core;
-using Windows.UI.Xaml;
 
 namespace Carpeddit.App.ViewModels
 {
@@ -317,7 +315,7 @@ namespace Carpeddit.App.ViewModels
 
         public void Approve()
         {
-            App.RedditClient.Account.Dispatch.Moderation.Approve(OriginalComment.Fullname);
+            App.RedditClient.Models.Moderation.Approve(OriginalComment.Fullname);
             InvalidateModProperties(false, false, true);
         }
 
@@ -344,7 +342,7 @@ namespace Carpeddit.App.ViewModels
         }
 
         public Task ApproveAsync()
-            => App.RedditClient.Account.Dispatch.Moderation.ApproveAsync(OriginalComment.Fullname);
+            => App.RedditClient.Models.Moderation.ApproveAsync(OriginalComment.Fullname);
 
         private void InvalidateModProperties(bool removed, bool spammed, bool approved)
         {
@@ -358,29 +356,19 @@ namespace Carpeddit.App.ViewModels
     public partial class CommentViewModel
     {
         public Task DeleteAsync()
-        {
-            return OriginalComment.DeleteAsync();
-        }
+            => OriginalComment.DeleteAsync();
         
         public Task DistinguishAsModeratorAsync()
-        {
-            return OriginalComment.DistinguishAsync("yes", false);
-        }
+            => OriginalComment.DistinguishAsync("yes", false);
 
         public Task RemoveDistinguishAsync()
-        {
-            return OriginalComment.DistinguishAsync("no", false);
-        }
+            => OriginalComment.DistinguishAsync("no", false);
 
         public Task UnlockCommentsAsync()
-        {
-            return App.RedditClient.Account.Dispatch.LinksAndComments.UnlockAsync(OriginalComment.Fullname);
-        }
+            => App.RedditClient.Models.LinksAndComments.UnlockAsync(OriginalComment.Fullname);
 
         public Task LockCommentsAsync()
-        {
-            return App.RedditClient.Account.Dispatch.LinksAndComments.LockAsync(OriginalComment.Fullname);
-        }
+            => App.RedditClient.Models.LinksAndComments.LockAsync(OriginalComment.Fullname);
 
         public Task<bool> GetCanLoadMoreAsync()
             => Task.Run(() =>
@@ -422,6 +410,28 @@ namespace Carpeddit.App.ViewModels
             }
 
             return comments;
+        }
+
+        public async Task FetchMoreRepliesAsync()
+        {
+            var moreChildren = OriginalComment.Listing.Replies.MoreData;
+
+            if (moreChildren != null)
+            {
+                foreach (var commentThing in moreChildren)
+                {
+                    var comment = new Comment(App.RedditClient.Models, commentThing.Name).About();
+
+                    var commentViewModel = new CommentViewModel()
+                    {
+                        OriginalComment = comment
+                    };
+
+                    _ = Task.Run(() => commentViewModel.GetReplies(DispatcherQueue.GetForCurrentThread(), true, IsCurrentUserMod));
+
+                    Replies.Add(commentViewModel);
+                }
+            }
         }
     }
 }

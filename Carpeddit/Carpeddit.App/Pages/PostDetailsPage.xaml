@@ -902,7 +902,7 @@
                                             </StackPanel>
                                         </Grid>
 
-                                        <Button Margin="0,4" Visibility="{x:Bind CanLoadMore, Mode=OneWay, Converter={StaticResource BoolToVis}}">Load more</Button>
+                                        <Button Margin="0,4" Visibility="{x:Bind CanLoadMore, Mode=OneWay, Converter={StaticResource BoolToVis}}" Click="LoadMoreButton_Click">Load more</Button>
                                     </StackPanel>
                                 </muxc:TreeViewItem.Content>
                             </muxc:TreeViewItem>

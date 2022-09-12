@@ -123,9 +123,10 @@ namespace Carpeddit.App
             GlobalClient ??= new HttpClient();
             AccDBController ??= await AccountDatabaseController.Init();
             CurrentAccount ??= await AccDBController.GetAsync() ?? new CustomAccountModel();
+
             if (CurrentAccount.RefreshToken != null)
             {
-                RedditClient ??= new RedditClient(Other.Constants.ClientId, CurrentAccount.RefreshToken, Other.Constants.ClientSecret);
+                RedditClient ??= new RedditClient(Other.Constants.ClientId, CurrentAccount.RefreshToken, Other.Constants.ClientSecret, Other.Constants.UserAgent);
             }
         }
 
