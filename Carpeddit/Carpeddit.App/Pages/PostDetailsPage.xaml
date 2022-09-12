@@ -22,6 +22,414 @@
 
     <Page.Resources>
         <converters:InvertBoolConverter x:Key="InvertBoolConv" />
+
+        <Style x:Key="CustomTreeViewStyle" TargetType="muxc:TreeView">
+            <Setter Property="IsTabStop" Value="False" />
+            <Setter Property="CanDragItems" Value="True" />
+            <Setter Property="CanReorderItems" Value="True" />
+            <Setter Property="AllowDrop" Value="True" />
+            <Setter Property="ItemContainerTransitions">
+                <Setter.Value>
+                    <TransitionCollection>
+                        <ContentThemeTransition />
+                        <ReorderThemeTransition />
+                        <EntranceThemeTransition IsStaggeringEnabled="False" />
+                    </TransitionCollection>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="muxc:TreeView">
+                        <muxc:TreeViewList
+                        x:Name="ListControl"
+                        AllowDrop="{TemplateBinding AllowDrop}"
+                        Background="{TemplateBinding Background}"
+                        CanDragItems="{TemplateBinding CanDragItems}"
+                        CanReorderItems="{TemplateBinding CanReorderItems}"
+                        ItemContainerStyle="{TemplateBinding ItemContainerStyle}"
+                        ItemContainerStyleSelector="{TemplateBinding ItemContainerStyleSelector}"
+                        ItemContainerTransitions="{TemplateBinding ItemContainerTransitions}"
+                        ItemTemplate="{TemplateBinding ItemTemplate}"
+                        ItemTemplateSelector="{TemplateBinding ItemTemplateSelector}">
+                            <muxc:TreeViewList.Header>
+                                <StackPanel DataContext="{Binding ElementName=RootPage}">
+                                    <muxc:InfoBar
+                    Title="The moderators of this subreddit has removed this post."
+                    MaxWidth="1200"
+                    IsClosable="False"
+                    IsOpen="{Binding Post.Post.Listing.Removed, Mode=OneTime}" />
+
+                                    <muxc:InfoBar
+                    Title="This post has been archived"
+                    MaxWidth="1200"
+                    IsClosable="False"
+                    IsOpen="{Binding Post.Post.Listing.Archived, Mode=OneTime}"
+                    Message="You cannot submit new comments, vote or reply to this post."
+                    Severity="Warning" />
+
+                                    <muxc:InfoBar
+                    Title="This post has been locked"
+                    MaxWidth="1200"
+                    IsClosable="False"
+                    IsOpen="{Binding Post.Post.Listing.Locked, Mode=OneTime}"
+                    Message="The moderators of this subreddit has locked this post, you cannot submit new comments, vote or reply to this post."
+                    Severity="Warning" />
+
+                                    <Grid
+                    MaxWidth="1200"
+                    Margin="0,4"
+                    Padding="6,10,8,10"
+                    Background="{ThemeResource ExpanderContentBackground}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    ColumnSpacing="10"
+                    CornerRadius="6"
+                                        DataContext="{Binding ElementName=RootPage}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="40" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel
+                        HorizontalAlignment="Center"
+                        Orientation="Vertical"
+                        Spacing="5">
+                                            <ToggleButton
+                            Padding="3"
+                            HorizontalAlignment="Center"
+                            Click="UpvoteButton_Click"
+                            IsChecked="{Binding Post.Upvoted, Mode=OneWay}"
+                            Style="{StaticResource TransparentToggleButton}">
+                                                <FontIcon Glyph="&#xE010;" />
+
+                                                <ToggleButton.Resources>
+                                                    <ResourceDictionary>
+                                                        <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="#ff4500" />
+                                                        <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="#ff6e38" />
+                                                        <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="#f77d4f" />
+                                                    </ResourceDictionary>
+                                                </ToggleButton.Resources>
+                                            </ToggleButton>
+                                            <TextBlock HorizontalAlignment="Center" Text="{Binding Post.VoteRatio}" />
+                                            <ToggleButton
+                            Padding="3"
+                            HorizontalAlignment="Center"
+                            Click="DownvoteButton_Click"
+                            IsChecked="{Binding Post.Downvoted, Mode=OneWay}"
+                            Style="{StaticResource TransparentToggleButton}">
+                                                <FontIcon Glyph="&#xE019;" />
+
+                                                <ToggleButton.Resources>
+                                                    <ResourceDictionary>
+                                                        <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="#7193ff" />
+                                                        <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="#96afff" />
+                                                        <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="#b6c7fc" />
+                                                    </ResourceDictionary>
+                                                </ToggleButton.Resources>
+                                            </ToggleButton>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="1" Orientation="Vertical">
+                                            <StackPanel
+                            Margin="0,0,0,8"
+                            Orientation="Horizontal"
+                            Spacing="8"
+                            Visibility="{Binding Post.Post.Listing.Stickied, Converter={StaticResource BoolToVis}, Mode=OneTime}">
+                                                <FontIcon FontSize="12" Glyph="&#xE141;" />
+
+                                                <TextBlock Text="Pinned by moderators" />
+                                            </StackPanel>
+
+                                            <StackPanel Orientation="Horizontal" Spacing="2">
+                                                <TextBlock VerticalAlignment="Center" TextWrapping="WrapWholeWords">
+                                <Run Text="By" /> <Hyperlink Click="UserHyperlink_Click">
+                                    u/<Run Text="{Binding Post.Author, Mode=OneTime}" />
+                                </Hyperlink>
+                                                </TextBlock>
+
+                                                <Border
+                                Margin="4"
+                                Padding="8,2"
+                                HorizontalAlignment="Left"
+                                Background="ForestGreen"
+                                CornerRadius="10"
+                                Visibility="{Binding Post.IsModDistinguished, Converter={StaticResource BoolToVis}, Mode=OneTime}">
+                                                    <TextBlock Foreground="White" Text="MOD" />
+                                                </Border>
+
+                                                <Border
+                                Margin="0,4"
+                                Padding="8,2"
+                                HorizontalAlignment="Left"
+                                Background="OrangeRed"
+                                CornerRadius="10"
+                                Visibility="{Binding Post.IsAdminDistinguished, Converter={StaticResource BoolToVis}, Mode=OneTime}">
+                                                    <TextBlock Foreground="White" Text="A" />
+                                                </Border>
+
+                                                <Border
+                                Padding="2"
+                                CornerRadius="2"
+                                Visibility="{Binding Post.ShouldDisplayUserFlair, Converter={StaticResource BoolToVis}, Mode=OneTime}">
+                                                    <TextBlock Text="{Binding Post.Post.Listing.AuthorFlairText, Mode=OneTime}" />
+                                                </Border>
+
+                                                <TextBlock VerticalAlignment="Center" TextWrapping="WrapWholeWords">
+                                - Posted
+                                <Run d:Text="5 hours ago" Text="{Binding Post.Created, Mode=OneTime, Converter={StaticResource DateToString}}" />
+                                in
+                                <Hyperlink Click="SubredditHyperlink_Click">
+                                    <Run d:Text="r/Carpeddit" Text="{Binding Post.Post.Listing.SubredditNamePrefixed, Mode=OneTime}" />
+                                </Hyperlink>
+                                                </TextBlock>
+                                            </StackPanel>
+
+                                            <TextBlock
+                            d:Text="Title"
+                            Style="{StaticResource SubtitleTextBlockStyle}"
+                            Text="{Binding Post.Title, Mode=OneTime}"
+                            TextWrapping="WrapWholeWords" />
+
+                                            <controls:WrapPanel HorizontalSpacing="8" Orientation="Horizontal">
+                                                <Border
+                                Margin="0,4"
+                                Padding="8,2"
+                                HorizontalAlignment="Left"
+                                Background="CornflowerBlue"
+                                CornerRadius="10"
+                                Visibility="{Binding Post.Post.Listing.IsOriginalContent, Converter={StaticResource BoolToVis}, Mode=OneTime}">
+                                                    <TextBlock Foreground="White" Text="OC" />
+                                                </Border>
+
+                                                <Border
+                                Margin="-2,4,0,4"
+                                Padding="8,2"
+                                HorizontalAlignment="Left"
+                                Background="IndianRed"
+                                CornerRadius="10"
+                                Visibility="{Binding Post.Post.NSFW, Converter={StaticResource BoolToVis}, Mode=OneTime}">
+                                                    <TextBlock Foreground="White" Text="NSFW" />
+                                                </Border>
+
+                                                <Border
+                                Margin="-2,4,0,4"
+                                Padding="8,2"
+                                HorizontalAlignment="Left"
+                                CornerRadius="10"
+                                Visibility="{Binding Post.ShouldDisplayPostFlair, Converter={StaticResource BoolToVis}, Mode=OneTime}">
+                                                    <Border.Background>
+                                                        <SolidColorBrush Color="{Binding Post.Post.Listing.LinkFlairBackgroundColor, Converter={StaticResource StringToColor}, Mode=OneTime}" />
+                                                    </Border.Background>
+                                                    <TextBlock Text="{Binding Post.Post.Listing.LinkFlairText}">
+                                                        <TextBlock.Foreground>
+                                                            <SolidColorBrush Color="{Binding Post.Post.Listing.LinkFlairTextColor, Converter={StaticResource StringToColor}, Mode=OneTime}" />
+                                                        </TextBlock.Foreground>
+                                                    </TextBlock>
+                                                </Border>
+                                            </controls:WrapPanel>
+
+                                            <controls:MarkdownTextBlock
+                            Margin="0,5,0,0"
+                            d:Text="Description..."
+                            Background="Transparent"
+                            LinkClicked="MarkdownLinkClicked"
+                            Text="{Binding Post.Description, Mode=OneTime}"
+                            TextWrapping="WrapWholeWords"
+                            Visibility="{Binding Post.Post.Listing.IsSelf, Mode=OneTime}" />
+
+                                            <Image
+                            x:Name="ImagePost"
+                            MaxWidth="500"
+                            Margin="0,4,0,0"
+                            Visibility="{Binding Post.HasImage, Converter={StaticResource BoolToVis}, Mode=OneTime}">
+                                                <Image.Source>
+                                                    <BitmapImage DecodePixelType="Logical" UriSource="{Binding Post.ImageUri, Mode=OneTime}" />
+                                                </Image.Source>
+                                            </Image>
+
+                                            <MediaPlayerElement
+                            Margin="0,4,0,0"
+                            d:Visibility="Collapsed"
+                            AreTransportControlsEnabled="True"
+                            AutoPlay="False"
+                            Source="{Binding Post.VideoSource, Mode=OneTime}"
+                            Visibility="{Binding Post.Post.Listing.IsVideo, Converter={StaticResource BoolToVis}, Mode=OneTime}" />
+
+                                            <FlipView
+                            MaxHeight="650"
+                            Margin="0,4,0,0"
+                            d:Visibility="Collapsed"
+                            ItemsSource="{Binding Post.Images, Mode=OneTime}"
+                            Visibility="{Binding Post.IsGallery, Converter={StaticResource BoolToVis}, Mode=OneTime}">
+                                                <FlipView.ItemTemplate>
+                                                    <DataTemplate x:DataType="viewmodels:ImageViewModel">
+                                                        <Image Source="{Binding Model.Url, Mode=OneTime}" />
+                                                    </DataTemplate>
+                                                </FlipView.ItemTemplate>
+                                            </FlipView>
+
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Margin="0,10,0,3" Text="{Binding Post.CommentsCountInUI, Mode=OneTime}" />
+
+                                                <Button
+                                Margin="4,0,0,-6"
+                                Padding="2"
+                                Content="Share"
+                                Foreground="{StaticResource SystemAccentColor}"
+                                Style="{StaticResource TransparentButton}">
+                                                    <Button.Flyout>
+                                                        <MenuFlyout>
+                                                            <MenuFlyoutItem Text="Share to">
+                                                                <MenuFlyoutItem.Icon>
+                                                                    <FontIcon Glyph="&#xE72D;" />
+                                                                </MenuFlyoutItem.Icon>
+                                                            </MenuFlyoutItem>
+
+                                                            <MenuFlyoutItem Click="CrossPostButton_Click" Text="Crosspost">
+                                                                <MenuFlyoutItem.Icon>
+                                                                    <FontIcon Glyph="&#xE72A;" />
+                                                                </MenuFlyoutItem.Icon>
+                                                            </MenuFlyoutItem>
+
+                                                            <MenuFlyoutItem Click="CopyLinkButton1_Click" Text="Copy link">
+                                                                <MenuFlyoutItem.Icon>
+                                                                    <FontIcon Glyph="&#xE16F;" />
+                                                                </MenuFlyoutItem.Icon>
+                                                            </MenuFlyoutItem>
+                                                        </MenuFlyout>
+                                                    </Button.Flyout>
+                                                </Button>
+
+                                                <HyperlinkButton Margin="4,0,0,-6" Padding="2">
+                                                    Save
+                                                </HyperlinkButton>
+
+                                                <HyperlinkButton
+                                Margin="4,0,0,-6"
+                                Padding="2"
+                                Click="RemoveUserPostButton_Click"
+                                Visibility="{Binding Post.IsCurrentUserOP, Converter={StaticResource BoolToVis}, Mode=OneTime}">
+                                                    Delete
+                                                </HyperlinkButton>
+
+                                                <HyperlinkButton
+                                Margin="4,0,0,-6"
+                                Padding="2"
+                                Click="RemovePostButton_Click"
+                                IsEnabled="{Binding Post.Post.Listing.Removed, Converter={StaticResource InvertBoolConv}, Mode=OneTime}"
+                                Visibility="{Binding Subreddit.SubredditData.UserIsModerator, ElementName=RootPage, Converter={StaticResource BoolToVis}}">
+                                                    Remove
+                                                </HyperlinkButton>
+
+                                                <HyperlinkButton
+                                Margin="4,0,0,-6"
+                                Padding="2"
+                                Click="ApproveButton_Click"
+                                IsEnabled="{Binding Post.Post.Listing.Approved, Converter={StaticResource InvertBoolConv}, Mode=OneTime}"
+                                Visibility="{Binding Subreddit.SubredditData.UserIsModerator, ElementName=RootPage, Converter={StaticResource BoolToVis}}">
+                                                    Approve
+                                                </HyperlinkButton>
+
+                                                <HyperlinkButton
+                                Margin="4,0,0,-6"
+                                Padding="2"
+                                Click="SpamButton_Click"
+                                IsEnabled="{Binding Post.Post.Listing.Spam, Converter={StaticResource InvertBoolConv}, Mode=OneTime}"
+                                Visibility="{Binding Subreddit.SubredditData.UserIsModerator, ElementName=RootPage, Converter={StaticResource BoolToVis}}">
+                                                    Spam
+                                                </HyperlinkButton>
+
+                                                <HyperlinkButton
+                                Margin="4,0,0,-6"
+                                Padding="2"
+                                Click="PinButton_Click"
+                                IsEnabled="{Binding Post.Post.Listing.Stickied, Mode=OneTime, Converter={StaticResource InvertBoolConv}}"
+                                Visibility="{Binding Subreddit.SubredditData.UserIsModerator, ElementName=RootPage, Converter={StaticResource BoolToVis}}">
+                                                    Pin
+                                                </HyperlinkButton>
+
+                                                <HyperlinkButton
+                                Margin="4,0,0,-6"
+                                Padding="2"
+                                Click="OnReportButtonClick">
+                                                    Report
+                                                </HyperlinkButton>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <TextBlock
+                    MaxWidth="1200"
+                    Margin="0,5"
+                    FontSize="16"
+                    Style="{StaticResource SubtitleTextBlockStyle}"
+                    Text="{Binding Post.CommentsCountInUI, Mode=OneTime}"
+                    TextWrapping="WrapWholeWords" />
+
+                                    <StackPanel MaxWidth="1200" Spacing="8">
+                                        <RichEditBox
+                        x:Name="CommentEditBox"
+                        Height="100"
+                        MaxHeight="600"
+                        Margin="0,12,0,0"
+                        AcceptsReturn="True"
+                        IsEnabled="{Binding Post.NotArchivedOrLocked, Mode=OneTime}"
+                        PlaceholderText="Add a comment..."
+                        SelectionFlyout="{x:Null}" />
+                                        <Button
+                        Click="AddCommentButton_Click"
+                        Content="Add"
+                        IsEnabled="{Binding Post.NotArchivedOrLocked, Mode=OneTime}"
+                        Style="{ThemeResource AccentButtonStyle}" />
+                                    </StackPanel>
+
+                                    <Grid MaxWidth="1200" Margin="0,12,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="50" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <RelativePanel>
+                                            <TextBlock
+                            FontWeight="SemiBold"
+                            RelativePanel.AlignVerticalCenterWithPanel="True"
+                            Text="Sort" />
+
+                                            <ComboBox
+                            x:Name="SortCombo"
+                            Margin="0,0,12,0"
+                            RelativePanel.AlignRightWithPanel="True"
+                            SelectedIndex="0">
+                                                <x:String>Top</x:String>
+                                                <x:String>Hot</x:String>
+                                                <x:String>New</x:String>
+                                                <x:String>Old</x:String>
+                                                <x:String>Rising</x:String>
+                                                <x:String>Controversial</x:String>
+                                                <x:String>QA</x:String>
+                                                <x:String>Random</x:String>
+                                            </ComboBox>
+                                        </RelativePanel>
+
+                                        <Button
+                        Grid.Column="1"
+                        Width="40"
+                        Height="32"
+                        Padding="4"
+                        Click="RefreshButton_Click"
+                        ToolTipService.ToolTip="Refresh">
+                                            <FontIcon FontSize="14" Glyph="&#xE72C;" />
+                                        </Button>
+                                    </Grid>
+
+                                    <muxc:ProgressRing x:Name="CommentProgress" IsActive="True" />
+                                </StackPanel>
+                            </muxc:TreeViewList.Header>
+                        </muxc:TreeViewList>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Page.Resources>
 
     <Grid x:Name="MainGrid">
@@ -46,379 +454,9 @@
 
         <ScrollViewer Grid.Row="1" Padding="66,0">
             <StackPanel>
-                <muxc:InfoBar
-                    Title="The moderators of this subreddit has removed this post."
-                    MaxWidth="1200"
-                    IsClosable="False"
-                    IsOpen="{x:Bind Post.Post.Listing.Removed}" />
-
-                <muxc:InfoBar
-                    Title="This post has been archived"
-                    MaxWidth="1200"
-                    IsClosable="False"
-                    IsOpen="{x:Bind Post.Post.Listing.Archived}"
-                    Message="You cannot submit new comments, vote or reply to this post."
-                    Severity="Warning" />
-
-                <muxc:InfoBar
-                    Title="This post has been locked"
-                    MaxWidth="1200"
-                    IsClosable="False"
-                    IsOpen="{x:Bind Post.Post.Listing.Locked}"
-                    Message="The moderators of this subreddit has locked this post, you cannot submit new comments, vote or reply to this post."
-                    Severity="Warning" />
-
-                <Grid
-                    MaxWidth="1200"
-                    Margin="0,4"
-                    Padding="6,10,8,10"
-                    Background="{ThemeResource ExpanderContentBackground}"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1"
-                    ColumnSpacing="10"
-                    CornerRadius="6">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="40" />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-
-                    <StackPanel
-                        HorizontalAlignment="Center"
-                        Orientation="Vertical"
-                        Spacing="5">
-                        <ToggleButton
-                            Padding="3"
-                            HorizontalAlignment="Center"
-                            Click="UpvoteButton_Click"
-                            IsChecked="{x:Bind Post.Upvoted, Mode=OneWay}"
-                            Style="{StaticResource TransparentToggleButton}">
-                            <FontIcon Glyph="&#xE010;" />
-
-                            <ToggleButton.Resources>
-                                <ResourceDictionary>
-                                    <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="#ff4500" />
-                                    <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="#ff6e38" />
-                                    <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="#f77d4f" />
-                                </ResourceDictionary>
-                            </ToggleButton.Resources>
-                        </ToggleButton>
-                        <TextBlock HorizontalAlignment="Center" Text="{x:Bind Post.VoteRatio, Mode=OneWay}" />
-                        <ToggleButton
-                            Padding="3"
-                            HorizontalAlignment="Center"
-                            Click="DownvoteButton_Click"
-                            IsChecked="{x:Bind Post.Downvoted, Mode=OneWay}"
-                            Style="{StaticResource TransparentToggleButton}">
-                            <FontIcon Glyph="&#xE019;" />
-
-                            <ToggleButton.Resources>
-                                <ResourceDictionary>
-                                    <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="#7193ff" />
-                                    <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="#96afff" />
-                                    <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="#b6c7fc" />
-                                </ResourceDictionary>
-                            </ToggleButton.Resources>
-                        </ToggleButton>
-                    </StackPanel>
-
-                    <StackPanel Grid.Column="1" Orientation="Vertical">
-                        <StackPanel
-                            Margin="0,0,0,8"
-                            Orientation="Horizontal"
-                            Spacing="8"
-                            Visibility="{x:Bind Post.Post.Listing.Stickied, Converter={StaticResource BoolToVis}}">
-                            <FontIcon FontSize="12" Glyph="&#xE141;" />
-
-                            <TextBlock Text="Pinned by moderators" />
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal" Spacing="2">
-                            <TextBlock VerticalAlignment="Center" TextWrapping="WrapWholeWords">
-                                <Run Text="By" /> <Hyperlink Click="UserHyperlink_Click">
-                                    u/
-                                    <Run Text="{x:Bind Post.Author}" />
-                                </Hyperlink>
-                            </TextBlock>
-
-                            <Border
-                                Margin="4"
-                                Padding="8,2"
-                                HorizontalAlignment="Left"
-                                Background="ForestGreen"
-                                CornerRadius="10"
-                                Visibility="{x:Bind Post.IsModDistinguished, Converter={StaticResource BoolToVis}}">
-                                <TextBlock Foreground="White" Text="MOD" />
-                            </Border>
-
-                            <Border
-                                Margin="0,4"
-                                Padding="8,2"
-                                HorizontalAlignment="Left"
-                                Background="OrangeRed"
-                                CornerRadius="10"
-                                Visibility="{x:Bind Post.IsAdminDistinguished, Converter={StaticResource BoolToVis}}">
-                                <TextBlock Foreground="White" Text="A" />
-                            </Border>
-
-                            <Border
-                                Padding="2"
-                                CornerRadius="2"
-                                Visibility="{x:Bind Post.ShouldDisplayUserFlair, Converter={StaticResource BoolToVis}}">
-                                <TextBlock Text="{x:Bind Post.Post.Listing.AuthorFlairText}" />
-                            </Border>
-
-                            <TextBlock VerticalAlignment="Center" TextWrapping="WrapWholeWords">
-                                - Posted
-                                <Run d:Text="5 hours ago" Text="{x:Bind helpers:PostHelpers.GetRelativeDate(Post.Created, x:True)}" />
-                                in
-                                <Hyperlink Click="SubredditHyperlink_Click">
-                                    <Run d:Text="r/Carpeddit" Text="{x:Bind Post.Post.Listing.SubredditNamePrefixed}" />
-                                </Hyperlink>
-                            </TextBlock>
-                        </StackPanel>
-
-                        <TextBlock
-                            d:Text="Title"
-                            Style="{StaticResource SubtitleTextBlockStyle}"
-                            Text="{x:Bind Post.Title}"
-                            TextWrapping="WrapWholeWords" />
-
-                        <controls:WrapPanel HorizontalSpacing="8" Orientation="Horizontal">
-                            <Border
-                                Margin="0,4"
-                                Padding="8,2"
-                                HorizontalAlignment="Left"
-                                Background="CornflowerBlue"
-                                CornerRadius="10"
-                                Visibility="{x:Bind Post.Post.Listing.IsOriginalContent, Converter={StaticResource BoolToVis}}">
-                                <TextBlock Foreground="White" Text="OC" />
-                            </Border>
-
-                            <Border
-                                Margin="-2,4,0,4"
-                                Padding="8,2"
-                                HorizontalAlignment="Left"
-                                Background="IndianRed"
-                                CornerRadius="10"
-                                Visibility="{x:Bind Post.Post.NSFW, Converter={StaticResource BoolToVis}}">
-                                <TextBlock Foreground="White" Text="NSFW" />
-                            </Border>
-
-                            <Border
-                                Margin="-2,4,0,4"
-                                Padding="8,2"
-                                HorizontalAlignment="Left"
-                                CornerRadius="10"
-                                Visibility="{x:Bind Post.ShouldDisplayPostFlair, Converter={StaticResource BoolToVis}}">
-                                <Border.Background>
-                                    <SolidColorBrush Color="{x:Bind local1:App.GetColorFromHex(Post.Post.Listing.LinkFlairBackgroundColor)}" />
-                                </Border.Background>
-                                <TextBlock Text="{x:Bind Post.Post.Listing.LinkFlairText}">
-                                    <TextBlock.Foreground>
-                                        <SolidColorBrush Color="{x:Bind local1:App.GetTextColorFromHex(Post.Post.Listing.LinkFlairTextColor)}" />
-                                    </TextBlock.Foreground>
-                                </TextBlock>
-                            </Border>
-                        </controls:WrapPanel>
-
-                        <controls:MarkdownTextBlock
-                            Margin="0,5,0,0"
-                            d:Text="Description..."
-                            Background="Transparent"
-                            LinkClicked="MarkdownLinkClicked"
-                            Text="{x:Bind Post.Description}"
-                            TextWrapping="WrapWholeWords"
-                            Visibility="{x:Bind Post.Post.Listing.IsSelf}" />
-
-                        <Image
-                            x:Name="ImagePost"
-                            MaxWidth="500"
-                            Margin="0,4,0,0"
-                            Visibility="{x:Bind Post.HasImage, Converter={StaticResource BoolToVis}}">
-                            <Image.Source>
-                                <BitmapImage DecodePixelType="Logical" UriSource="{x:Bind Post.ImageUri}" />
-                            </Image.Source>
-                        </Image>
-
-                        <MediaPlayerElement
-                            Margin="0,4,0,0"
-                            d:Visibility="Collapsed"
-                            AreTransportControlsEnabled="True"
-                            AutoPlay="False"
-                            Source="{x:Bind Post.VideoSource}"
-                            Visibility="{x:Bind Post.Post.Listing.IsVideo, Converter={StaticResource BoolToVis}}" />
-
-                        <FlipView
-                            MaxHeight="650"
-                            Margin="0,4,0,0"
-                            d:Visibility="Collapsed"
-                            ItemsSource="{x:Bind Post.Images}"
-                            Visibility="{x:Bind Post.IsGallery, Converter={StaticResource BoolToVis}}">
-                            <FlipView.ItemTemplate>
-                                <DataTemplate x:DataType="redditthings:Image">
-                                    <Image Source="{x:Bind Url}" />
-                                </DataTemplate>
-                            </FlipView.ItemTemplate>
-                        </FlipView>
-
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Margin="0,10,0,3" Text="{x:Bind Post.CommentsCountInUI}" />
-
-                            <Button
-                                Margin="4,0,0,-6"
-                                Padding="2"
-                                Content="Share"
-                                Foreground="{StaticResource SystemAccentColor}"
-                                Style="{StaticResource TransparentButton}">
-                                <Button.Flyout>
-                                    <MenuFlyout>
-                                        <MenuFlyoutItem Text="Share to">
-                                            <MenuFlyoutItem.Icon>
-                                                <FontIcon Glyph="&#xE72D;" />
-                                            </MenuFlyoutItem.Icon>
-                                        </MenuFlyoutItem>
-
-                                        <MenuFlyoutItem Click="CrossPostButton_Click" Text="Crosspost">
-                                            <MenuFlyoutItem.Icon>
-                                                <FontIcon Glyph="&#xE72A;" />
-                                            </MenuFlyoutItem.Icon>
-                                        </MenuFlyoutItem>
-
-                                        <MenuFlyoutItem Click="CopyLinkButton1_Click" Text="Copy link">
-                                            <MenuFlyoutItem.Icon>
-                                                <FontIcon Glyph="&#xE16F;" />
-                                            </MenuFlyoutItem.Icon>
-                                        </MenuFlyoutItem>
-                                    </MenuFlyout>
-                                </Button.Flyout>
-                            </Button>
-
-                            <HyperlinkButton Margin="4,0,0,-6" Padding="2">
-                                Save
-                            </HyperlinkButton>
-
-                            <HyperlinkButton
-                                Margin="4,0,0,-6"
-                                Padding="2"
-                                Click="RemoveUserPostButton_Click"
-                                Visibility="{x:Bind Post.IsCurrentUserOP, Converter={StaticResource BoolToVis}}">
-                                Delete
-                            </HyperlinkButton>
-
-                            <HyperlinkButton
-                                Margin="4,0,0,-6"
-                                Padding="2"
-                                Click="RemovePostButton_Click"
-                                IsEnabled="{x:Bind local1:App.OppositeOf(Post.Post.Listing.Removed)}"
-                                Visibility="{Binding Subreddit.SubredditData.UserIsModerator, ElementName=RootPage, Converter={StaticResource BoolToVis}}">
-                                Remove
-                            </HyperlinkButton>
-
-                            <HyperlinkButton
-                                Margin="4,0,0,-6"
-                                Padding="2"
-                                Click="ApproveButton_Click"
-                                IsEnabled="{x:Bind local1:App.OppositeOf(Post.Post.Listing.Approved)}"
-                                Visibility="{Binding Subreddit.SubredditData.UserIsModerator, ElementName=RootPage, Converter={StaticResource BoolToVis}}">
-                                Approve
-                            </HyperlinkButton>
-
-                            <HyperlinkButton
-                                Margin="4,0,0,-6"
-                                Padding="2"
-                                Click="SpamButton_Click"
-                                IsEnabled="{x:Bind local1:App.OppositeOf(Post.Post.Listing.Spam)}"
-                                Visibility="{Binding Subreddit.SubredditData.UserIsModerator, ElementName=RootPage, Converter={StaticResource BoolToVis}}">
-                                Spam
-                            </HyperlinkButton>
-
-                            <HyperlinkButton
-                                Margin="4,0,0,-6"
-                                Padding="2"
-                                Click="PinButton_Click"
-                                IsEnabled="{x:Bind local1:App.OppositeOf(Post.Post.Listing.Stickied)}"
-                                Visibility="{Binding Subreddit.SubredditData.UserIsModerator, ElementName=RootPage, Converter={StaticResource BoolToVis}}">
-                                Pin
-                            </HyperlinkButton>
-
-                            <HyperlinkButton
-                                Margin="4,0,0,-6"
-                                Padding="2"
-                                Click="OnReportButtonClick">
-                                Report
-                            </HyperlinkButton>
-                        </StackPanel>
-                    </StackPanel>
-                </Grid>
-
-                <TextBlock
-                    MaxWidth="1200"
-                    Margin="0,5"
-                    FontSize="16"
-                    Style="{StaticResource SubtitleTextBlockStyle}"
-                    Text="{x:Bind Post.CommentsCountInUI}"
-                    TextWrapping="WrapWholeWords" />
-
-                <StackPanel MaxWidth="1200" Spacing="8">
-                    <RichEditBox
-                        x:Name="CommentEditBox"
-                        Height="100"
-                        MaxHeight="600"
-                        Margin="0,12,0,0"
-                        AcceptsReturn="True"
-                        IsEnabled="{x:Bind Post.NotArchivedOrLocked}"
-                        PlaceholderText="Add a comment..."
-                        SelectionFlyout="{x:Null}" />
-                    <Button
-                        Click="AddCommentButton_Click"
-                        Content="Add"
-                        IsEnabled="{x:Bind Post.NotArchivedOrLocked}"
-                        Style="{ThemeResource AccentButtonStyle}" />
-                </StackPanel>
-
-                <Grid MaxWidth="1200" Margin="0,12,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="50" />
-                    </Grid.ColumnDefinitions>
-
-                    <RelativePanel>
-                        <TextBlock
-                            FontWeight="SemiBold"
-                            RelativePanel.AlignVerticalCenterWithPanel="True"
-                            Text="Sort" />
-
-                        <ComboBox
-                            x:Name="SortCombo"
-                            Margin="0,0,12,0"
-                            RelativePanel.AlignRightWithPanel="True"
-                            SelectedIndex="0">
-                            <x:String>Top</x:String>
-                            <x:String>Hot</x:String>
-                            <x:String>New</x:String>
-                            <x:String>Old</x:String>
-                            <x:String>Rising</x:String>
-                            <x:String>Controversial</x:String>
-                            <x:String>QA</x:String>
-                            <x:String>Random</x:String>
-                        </ComboBox>
-                    </RelativePanel>
-
-                    <Button
-                        Grid.Column="1"
-                        Width="40"
-                        Height="32"
-                        Padding="4"
-                        Click="RefreshButton_Click"
-                        ToolTipService.ToolTip="Refresh">
-                        <FontIcon FontSize="14" Glyph="&#xE72C;" />
-                    </Button>
-                </Grid>
-
-                <muxc:ProgressRing x:Name="CommentProgress" IsActive="True" />
-
                 <muxc:TreeView
                     x:Name="CommentsTree"
+                    Style="{StaticResource CustomTreeViewStyle}"
                     MaxWidth="1200"
                     Margin="0,12"
                     AllowDrop="False"

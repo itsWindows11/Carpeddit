@@ -36,7 +36,7 @@ namespace Carpeddit.App.Pages
 {
     public sealed partial class PostDetailsPage : Page
     {
-        PostViewModel Post;
+        public PostViewModel Post { get; set; }
 
         public Subreddit Subreddit { get; set; }
 
@@ -78,7 +78,7 @@ namespace Carpeddit.App.Pages
                 }
             }
 
-            SortCombo.SelectionChanged += ComboBox_SelectionChanged;
+            //SortCombo.SelectionChanged += ComboBox_SelectionChanged;
 
             SecondPageFrame.Visibility = Visibility.Collapsed;
             MainGrid.ColumnDefinitions[1].Width = new GridLength(0, GridUnitType.Star);
@@ -98,23 +98,18 @@ namespace Carpeddit.App.Pages
 
             }
 
-            CommentProgress.Visibility = Visibility.Visible;
-
             await foreach (var comment in Post.GetCommentsAsync(dispatcher: Dispatcher))
             {
                 commentsObservable.Add(comment);
             }
 
             CommentsTree.ItemsSource = commentsObservable;
-            CommentProgress.Visibility = Visibility.Collapsed;
 
             initialCommentsLoaded = true;
 
-            if (sortQueued)
+            /*if (sortQueued)
             {
                 sortQueued = false;
-                CommentProgress.Visibility = Visibility.Visible;
-                CommentsTree.Visibility = Visibility.Collapsed;
 
                 currentSort = SortCombo.SelectedItem as string switch
                 {
@@ -144,10 +139,7 @@ namespace Carpeddit.App.Pages
                 {
                     commentsObservable.Add(comment);
                 }
-
-                CommentProgress.Visibility = Visibility.Collapsed;
-                CommentsTree.Visibility = Visibility.Visible;
-            }
+            }*/
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -169,7 +161,9 @@ namespace Carpeddit.App.Pages
 
         private async void AddCommentButton_Click(object sender, RoutedEventArgs e)
         {
-            CommentEditBox.Document.GetText(TextGetOptions.FormatRtf, out string rtfText);
+            var richEditBox = ((sender as Button).Parent as StackPanel).Children.First() as RichEditBox;
+
+            richEditBox.Document.GetText(TextGetOptions.FormatRtf, out string rtfText);
             
             Comment submittedComment = await Post.Post.Comment(RtfToMarkdown(rtfText)).SubmitAsync();
 
@@ -178,7 +172,7 @@ namespace Carpeddit.App.Pages
                 OriginalComment = submittedComment
             });
 
-            CommentEditBox.Document.SetText(TextSetOptions.None, "");
+            richEditBox.Document.SetText(TextSetOptions.None, string.Empty);
         }
 
         private string RtfToMarkdown(string source)
@@ -250,13 +244,9 @@ namespace Carpeddit.App.Pages
             ToggleButton toggle = sender as ToggleButton;
 
             if (toggle.IsChecked ?? false)
-            {
                 await Post.UpvoteAsync();
-            }
             else
-            {
                 await Post.UnvoteAsync();
-            }
         }
 
         private async void DownvoteButton_Click(object sender, RoutedEventArgs e)
@@ -264,13 +254,9 @@ namespace Carpeddit.App.Pages
             ToggleButton toggle = sender as ToggleButton;
 
             if (toggle.IsChecked ?? false)
-            {
                 await Post.DownvoteAsync();
-            }
             else
-            {
                 await Post.UnvoteAsync();
-            }
         }
 
         private async void CommentUpvoteButton_Click(object sender, RoutedEventArgs e)
@@ -279,13 +265,9 @@ namespace Carpeddit.App.Pages
             CommentViewModel comment = toggle.Tag as CommentViewModel;
 
             if (toggle.IsChecked ?? false)
-            {
                 await comment.UpvoteAsync();
-            }
             else
-            {
                 await comment.UnvoteAsync();
-            }
         }
 
         private async void CommentDownvoteButton_Click(object sender, RoutedEventArgs e)
@@ -294,13 +276,9 @@ namespace Carpeddit.App.Pages
             CommentViewModel comment = toggle.Tag as CommentViewModel;
 
             if (toggle.IsChecked ?? false)
-            {
                 await comment.DownvoteAsync();
-            }
             else
-            {
                 await comment.UnvoteAsync();
-            }
         }
 
         private void UserHyperlink_Click(Windows.UI.Xaml.Documents.Hyperlink sender, Windows.UI.Xaml.Documents.HyperlinkClickEventArgs args)
@@ -317,9 +295,7 @@ namespace Carpeddit.App.Pages
         {
             string text = (sender.Inlines[0] as Windows.UI.Xaml.Documents.Run).Text;
             if (Window.Current.Content is Frame rootFrame)
-            {
                 rootFrame.Navigate(typeof(SubredditPage), App.RedditClient.Subreddit(text.Replace("r/", "")).About());
-            }
         }
 
         private async void RemovePostButton_Click(object sender, RoutedEventArgs e)
@@ -498,8 +474,6 @@ namespace Carpeddit.App.Pages
             if (initialCommentsLoaded)
             {
                 sortQueued = false;
-                CommentProgress.Visibility = Visibility.Visible;
-                CommentsTree.Visibility = Visibility.Collapsed;
 
                 currentSort = e.AddedItems[0] as string switch
                 {
@@ -529,18 +503,12 @@ namespace Carpeddit.App.Pages
                 {
                     commentsObservable.Add(comment);
                 }
-                
-                CommentProgress.Visibility = Visibility.Collapsed;
-                CommentsTree.Visibility = Visibility.Visible;
             }
             else sortQueued = !initialCommentsLoaded;
         }
 
         private async void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
-            CommentsTree.Visibility = Visibility.Collapsed;
-            CommentProgress.Visibility = Visibility.Visible;
-
             commentsObservable.Clear();
 
             await foreach (var comment in Post.GetCommentsAsync(dispatcher: Dispatcher, sortType: currentSort.ToString().ToLower()))
@@ -549,8 +517,6 @@ namespace Carpeddit.App.Pages
             }
             
             CommentsTree.ItemsSource = commentsObservable;
-            CommentsTree.Visibility = Visibility.Visible;
-            CommentProgress.Visibility = Visibility.Collapsed;
         }
 
         private async void OnReportButtonClick(object sender, RoutedEventArgs e)

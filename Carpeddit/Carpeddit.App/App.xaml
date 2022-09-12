@@ -19,6 +19,8 @@
                     <converters:IntToVisibilityConverter x:Key="IntToVis" />
                     <converters:StringToUriConverter x:Key="StringToUri" />
                     <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBool" />
+                    <converters:DateToStringConverter x:Key="DateToString" />
+                    <converters:StringToColorConverter x:Key="StringToColor" />
 
                     <Style
                         x:Key="TransparentButton"
