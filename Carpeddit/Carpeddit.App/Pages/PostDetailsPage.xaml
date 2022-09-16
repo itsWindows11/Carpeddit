@@ -42,6 +42,7 @@
                     <ControlTemplate TargetType="muxc:TreeView">
                         <muxc:TreeViewList
                         x:Name="ListControl"
+                            Padding="66,0"
                         AllowDrop="{TemplateBinding AllowDrop}"
                         Background="{TemplateBinding Background}"
                         CanDragItems="{TemplateBinding CanDragItems}"
@@ -452,36 +453,35 @@
             Grid.ColumnSpan="2"
             Visibility="{x:Bind _isNotSeparate, Mode=OneWay, Converter={StaticResource BoolToVis}}" />
 
-        <ScrollViewer Grid.Row="1" Padding="66,0">
-            <StackPanel>
-                <muxc:TreeView
-                    x:Name="CommentsTree"
-                    Style="{StaticResource CustomTreeViewStyle}"
-                    MaxWidth="1200"
-                    Margin="0,12"
-                    AllowDrop="False"
-                    CanDragItems="False"
-                    CanReorderItems="False"
-                    SelectionMode="None">
-                    <muxc:TreeView.ItemContainerTransitions>
-                        <TransitionCollection>
-                            <EntranceThemeTransition IsStaggeringEnabled="False" />
-                        </TransitionCollection>
-                    </muxc:TreeView.ItemContainerTransitions>
-                    <muxc:TreeView.ItemContainerStyle>
-                        <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="muxc:TreeViewItem">
-                            <Setter Property="Padding" Value="0" />
-                            <Setter Property="Background" Value="{ThemeResource TreeViewItemBackground}" />
-                            <Setter Property="BorderBrush" Value="{ThemeResource TreeViewItemBorderBrush}" />
-                            <Setter Property="BorderThickness" Value="{ThemeResource TreeViewItemBorderThemeThickness}" />
-                            <Setter Property="GlyphBrush" Value="{ThemeResource TreeViewItemForeground}" />
-                            <Setter Property="MinHeight" Value="{ThemeResource TreeViewItemMinHeight}" />
-                            <Setter Property="CornerRadius" Value="{ThemeResource ControlCornerRadius}" />
-                            <Setter Property="FocusVisualMargin" Value="0,-1,0,-1" />
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="muxc:TreeViewItem">
-                                        <Grid
+        <muxc:TreeView
+                x:Name="CommentsTree"
+                Style="{StaticResource CustomTreeViewStyle}"
+                MaxWidth="1200"
+                Margin="0,12"
+                Grid.Row="1"
+                AllowDrop="False"
+                CanDragItems="False"
+                CanReorderItems="False"
+                SelectionMode="None">
+            <muxc:TreeView.ItemContainerTransitions>
+                <TransitionCollection>
+                    <EntranceThemeTransition IsStaggeringEnabled="False" />
+                </TransitionCollection>
+            </muxc:TreeView.ItemContainerTransitions>
+            <muxc:TreeView.ItemContainerStyle>
+                <Style BasedOn="{StaticResource DefaultListViewItemStyle}" TargetType="muxc:TreeViewItem">
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="Background" Value="{ThemeResource TreeViewItemBackground}" />
+                    <Setter Property="BorderBrush" Value="{ThemeResource TreeViewItemBorderBrush}" />
+                    <Setter Property="BorderThickness" Value="{ThemeResource TreeViewItemBorderThemeThickness}" />
+                    <Setter Property="GlyphBrush" Value="{ThemeResource TreeViewItemForeground}" />
+                    <Setter Property="MinHeight" Value="{ThemeResource TreeViewItemMinHeight}" />
+                    <Setter Property="CornerRadius" Value="{ThemeResource ControlCornerRadius}" />
+                    <Setter Property="FocusVisualMargin" Value="0,-1,0,-1" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="muxc:TreeViewItem">
+                                <Grid
                                             x:Name="ContentPresenterGrid"
                                             Margin="{ThemeResource TreeViewItemPresenterMargin}"
                                             Padding="{ThemeResource TreeViewItemPresenterPadding}"
@@ -489,7 +489,7 @@
                                             BorderBrush="{TemplateBinding BorderBrush}"
                                             BorderThickness="{TemplateBinding BorderThickness}"
                                             CornerRadius="{TemplateBinding CornerRadius}">
-                                            <Rectangle
+                                    <Rectangle
                                                 x:Name="SelectionIndicator"
                                                 Width="3"
                                                 Height="16"
@@ -502,21 +502,21 @@
                                                 Visibility="Collapsed" />
 
 
-                                            <Grid
+                                    <Grid
                                                 x:Name="MultiSelectGrid"
                                                 Margin="{ThemeResource TreeViewItemMultiSelectSelectedItemBorderMargin}"
                                                 Padding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TreeViewItemTemplateSettings.Indentation}"
                                                 BorderBrush="Transparent"
                                                 BorderThickness="{ThemeResource TreeViewItemBorderThemeThickness}"
                                                 CornerRadius="{ThemeResource ControlCornerRadius}">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto" />
-                                                    <ColumnDefinition Width="Auto" />
-                                                    <ColumnDefinition />
-                                                </Grid.ColumnDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
 
-                                                <Grid Grid.Column="0">
-                                                    <CheckBox
+                                        <Grid Grid.Column="0">
+                                            <CheckBox
                                                         x:Name="MultiSelectCheckBox"
                                                         Width="32"
                                                         MinWidth="32"
@@ -526,7 +526,7 @@
                                                         AutomationProperties.AccessibilityView="Raw"
                                                         IsTabStop="False"
                                                         Visibility="Collapsed" />
-                                                    <Border
+                                            <Border
                                                         x:Name="MultiArrangeOverlayTextBorder"
                                                         Height="20"
                                                         MinWidth="20"
@@ -538,7 +538,7 @@
                                                         CornerRadius="{ThemeResource ControlCornerRadius}"
                                                         IsHitTestVisible="False"
                                                         Visibility="Collapsed">
-                                                        <TextBlock
+                                                <TextBlock
                                                             x:Name="MultiArrangeOverlayText"
                                                             HorizontalAlignment="Center"
                                                             VerticalAlignment="Center"
@@ -547,10 +547,10 @@
                                                             IsHitTestVisible="False"
                                                             Style="{ThemeResource CaptionTextBlockStyle}"
                                                             Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TreeViewItemTemplateSettings.DragItemsCount}" />
-                                                    </Border>
-                                                </Grid>
+                                            </Border>
+                                        </Grid>
 
-                                                <Grid
+                                        <Grid
                                                     x:Name="ExpandCollapseChevron"
                                                     Grid.Column="1"
                                                     Width="Auto"
@@ -558,7 +558,7 @@
                                                     Background="Transparent"
                                                     Opacity="{TemplateBinding GlyphOpacity}"
                                                     Visibility="Collapsed">
-                                                    <TextBlock
+                                            <TextBlock
                                                         x:Name="CollapsedGlyph"
                                                         Width="12"
                                                         Height="12"
@@ -572,7 +572,7 @@
                                                         IsTextScaleFactorEnabled="False"
                                                         Text="{TemplateBinding CollapsedGlyph}"
                                                         Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TreeViewItemTemplateSettings.CollapsedGlyphVisibility}" />
-                                                    <TextBlock
+                                            <TextBlock
                                                         x:Name="ExpandedGlyph"
                                                         Width="12"
                                                         Height="12"
@@ -586,9 +586,9 @@
                                                         IsTextScaleFactorEnabled="False"
                                                         Text="{TemplateBinding ExpandedGlyph}"
                                                         Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TreeViewItemTemplateSettings.ExpandedGlyphVisibility}" />
-                                                </Grid>
+                                        </Grid>
 
-                                                <ContentPresenter
+                                        <ContentPresenter
                                                     x:Name="ContentPresenter"
                                                     Grid.Column="2"
                                                     MinHeight="{ThemeResource TreeViewItemContentHeight}"
@@ -598,153 +598,153 @@
                                                     Content="{TemplateBinding Content}"
                                                     ContentTemplate="{TemplateBinding ContentTemplate}"
                                                     ContentTransitions="{TemplateBinding ContentTransitions}" />
-                                            </Grid>
-                                            <VisualStateManager.VisualStateGroups>
-                                                <VisualStateGroup x:Name="CommonStates">
-                                                    <VisualState x:Name="Normal" />
-                                                    <VisualState x:Name="PointerOver" />
-                                                    <VisualState x:Name="Pressed" />
-                                                    <VisualState x:Name="Selected" />
-                                                    <VisualState x:Name="Disabled">
-                                                        <VisualState.Setters>
-                                                            <Setter Target="ContentPresenterGrid.Background" Value="{ThemeResource TreeViewItemBackgroundDisabled}" />
-                                                            <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource TreeViewItemForegroundDisabled}" />
-                                                            <Setter Target="SelectionIndicator.Fill" Value="{ThemeResource TreeViewItemSelectionIndicatorForegroundDisabled}" />
-                                                            <Setter Target="CollapsedGlyph.Foreground" Value="{ThemeResource TreeViewItemForegroundDisabled}" />
-                                                            <Setter Target="ExpandedGlyph.Foreground" Value="{ThemeResource TreeViewItemForegroundDisabled}" />
-                                                            <Setter Target="ContentPresenterGrid.BorderBrush" Value="{ThemeResource TreeViewItemBorderBrushDisabled}" />
-                                                        </VisualState.Setters>
-                                                    </VisualState>
-                                                    <VisualState x:Name="PointerOverSelected" />
-                                                    <VisualState x:Name="PressedSelected" />
-                                                    <VisualState x:Name="SelectedDisabled" />
-                                                    <VisualState x:Name="ReorderedPlaceholder">
-                                                        <Storyboard>
-                                                            <FadeOutThemeAnimation TargetName="MultiSelectGrid" />
-                                                        </Storyboard>
-                                                    </VisualState>
-                                                </VisualStateGroup>
-                                                <VisualStateGroup x:Name="TreeViewMultiSelectStates">
-                                                    <VisualState x:Name="TreeViewMultiSelectDisabled" />
-                                                    <VisualState x:Name="TreeViewMultiSelectEnabledUnselected">
-                                                        <VisualState.Setters>
-                                                            <Setter Target="MultiSelectCheckBox.Visibility" Value="Visible" />
-                                                            <Setter Target="ExpandCollapseChevron.Padding" Value="0,0,14,0" />
-                                                            <Setter Target="ContentPresenterGrid.Padding" Value="0" />
-                                                        </VisualState.Setters>
-                                                    </VisualState>
-                                                    <VisualState x:Name="TreeViewMultiSelectEnabledSelected">
-                                                        <VisualState.Setters>
-                                                            <Setter Target="MultiSelectCheckBox.Visibility" Value="Visible" />
-                                                            <Setter Target="MultiSelectGrid.Background" Value="{ThemeResource TreeViewItemBackgroundSelected}" />
-                                                            <Setter Target="MultiSelectGrid.BorderBrush" Value="{ThemeResource TreeViewItemMultiSelectBorderBrushSelected}" />
-                                                            <Setter Target="ExpandCollapseChevron.Padding" Value="0,0,14,0" />
-                                                            <Setter Target="ContentPresenterGrid.Padding" Value="0" />
-                                                        </VisualState.Setters>
-                                                    </VisualState>
-                                                </VisualStateGroup>
-                                                <VisualStateGroup x:Name="DragStates">
-                                                    <VisualState x:Name="NotDragging" />
-                                                    <VisualState x:Name="MultipleDraggingPrimary">
-                                                        <VisualState.Setters>
-                                                            <Setter Target="MultiSelectCheckBox.Opacity" Value="0" />
-                                                            <Setter Target="MultiArrangeOverlayTextBorder.Visibility" Value="Visible" />
-                                                        </VisualState.Setters>
-                                                    </VisualState>
-                                                </VisualStateGroup>
-                                            </VisualStateManager.VisualStateGroups>
-                                        </Grid>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </muxc:TreeView.ItemContainerStyle>
+                                    </Grid>
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup x:Name="CommonStates">
+                                            <VisualState x:Name="Normal" />
+                                            <VisualState x:Name="PointerOver" />
+                                            <VisualState x:Name="Pressed" />
+                                            <VisualState x:Name="Selected" />
+                                            <VisualState x:Name="Disabled">
+                                                <VisualState.Setters>
+                                                    <Setter Target="ContentPresenterGrid.Background" Value="{ThemeResource TreeViewItemBackgroundDisabled}" />
+                                                    <Setter Target="ContentPresenter.Foreground" Value="{ThemeResource TreeViewItemForegroundDisabled}" />
+                                                    <Setter Target="SelectionIndicator.Fill" Value="{ThemeResource TreeViewItemSelectionIndicatorForegroundDisabled}" />
+                                                    <Setter Target="CollapsedGlyph.Foreground" Value="{ThemeResource TreeViewItemForegroundDisabled}" />
+                                                    <Setter Target="ExpandedGlyph.Foreground" Value="{ThemeResource TreeViewItemForegroundDisabled}" />
+                                                    <Setter Target="ContentPresenterGrid.BorderBrush" Value="{ThemeResource TreeViewItemBorderBrushDisabled}" />
+                                                </VisualState.Setters>
+                                            </VisualState>
+                                            <VisualState x:Name="PointerOverSelected" />
+                                            <VisualState x:Name="PressedSelected" />
+                                            <VisualState x:Name="SelectedDisabled" />
+                                            <VisualState x:Name="ReorderedPlaceholder">
+                                                <Storyboard>
+                                                    <FadeOutThemeAnimation TargetName="MultiSelectGrid" />
+                                                </Storyboard>
+                                            </VisualState>
+                                        </VisualStateGroup>
+                                        <VisualStateGroup x:Name="TreeViewMultiSelectStates">
+                                            <VisualState x:Name="TreeViewMultiSelectDisabled" />
+                                            <VisualState x:Name="TreeViewMultiSelectEnabledUnselected">
+                                                <VisualState.Setters>
+                                                    <Setter Target="MultiSelectCheckBox.Visibility" Value="Visible" />
+                                                    <Setter Target="ExpandCollapseChevron.Padding" Value="0,0,14,0" />
+                                                    <Setter Target="ContentPresenterGrid.Padding" Value="0" />
+                                                </VisualState.Setters>
+                                            </VisualState>
+                                            <VisualState x:Name="TreeViewMultiSelectEnabledSelected">
+                                                <VisualState.Setters>
+                                                    <Setter Target="MultiSelectCheckBox.Visibility" Value="Visible" />
+                                                    <Setter Target="MultiSelectGrid.Background" Value="{ThemeResource TreeViewItemBackgroundSelected}" />
+                                                    <Setter Target="MultiSelectGrid.BorderBrush" Value="{ThemeResource TreeViewItemMultiSelectBorderBrushSelected}" />
+                                                    <Setter Target="ExpandCollapseChevron.Padding" Value="0,0,14,0" />
+                                                    <Setter Target="ContentPresenterGrid.Padding" Value="0" />
+                                                </VisualState.Setters>
+                                            </VisualState>
+                                        </VisualStateGroup>
+                                        <VisualStateGroup x:Name="DragStates">
+                                            <VisualState x:Name="NotDragging" />
+                                            <VisualState x:Name="MultipleDraggingPrimary">
+                                                <VisualState.Setters>
+                                                    <Setter Target="MultiSelectCheckBox.Opacity" Value="0" />
+                                                    <Setter Target="MultiArrangeOverlayTextBorder.Visibility" Value="Visible" />
+                                                </VisualState.Setters>
+                                            </VisualState>
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </muxc:TreeView.ItemContainerStyle>
 
-                    <muxc:TreeView.ItemTemplate>
-                        <DataTemplate x:DataType="viewmodels:CommentViewModel">
-                            <muxc:TreeViewItem IsExpanded="{x:Bind Collapsed, Mode=TwoWay, Converter={StaticResource InvertBoolConv}}" ItemsSource="{x:Bind Replies}">
-                                <muxc:TreeViewItem.Content>
-                                    <StackPanel>
-                                        <Grid
+            <muxc:TreeView.ItemTemplate>
+                <DataTemplate x:DataType="viewmodels:CommentViewModel">
+                    <muxc:TreeViewItem IsExpanded="{x:Bind Collapsed, Mode=TwoWay, Converter={StaticResource InvertBoolConv}}" ItemsSource="{x:Bind Replies}">
+                        <muxc:TreeViewItem.Content>
+                            <StackPanel>
+                                <Grid
                                             Padding="4"
                                             Background="{ThemeResource ExpanderContentBackground}"
                                             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                                             BorderThickness="1"
                                             CornerRadius="4">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="30" />
-                                                <ColumnDefinition Width="Auto" />
-                                                <ColumnDefinition />
-                                            </Grid.ColumnDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="30" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
 
-                                            <Border
+                                    <Border
                                                 Width="1"
                                                 Margin="0,12"
                                                 Background="{StaticResource AppBarSeparatorForegroundThemeBrush}" />
 
-                                            <StackPanel
+                                    <StackPanel
                                                 Grid.Column="1"
                                                 Margin="0,8,12,8"
                                                 HorizontalAlignment="Center"
                                                 Spacing="4">
-                                                <ToggleButton
+                                        <ToggleButton
                                                     Padding="3"
                                                     HorizontalAlignment="Center"
                                                     Click="CommentUpvoteButton_Click"
                                                     IsChecked="{x:Bind Upvoted, Mode=OneWay}"
                                                     Style="{StaticResource TransparentToggleButton}"
                                                     Tag="{x:Bind}">
-                                                    <FontIcon Glyph="&#xE010;" />
+                                            <FontIcon Glyph="&#xE010;" />
 
-                                                    <ToggleButton.Resources>
-                                                        <ResourceDictionary>
-                                                            <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="#ff4500" />
-                                                            <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="#ff6e38" />
-                                                            <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="#f77d4f" />
-                                                        </ResourceDictionary>
-                                                    </ToggleButton.Resources>
-                                                </ToggleButton>
-                                                <TextBlock HorizontalAlignment="Center" Text="{x:Bind VoteRatio, Mode=OneWay}" />
-                                                <ToggleButton
+                                            <ToggleButton.Resources>
+                                                <ResourceDictionary>
+                                                    <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="#ff4500" />
+                                                    <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="#ff6e38" />
+                                                    <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="#f77d4f" />
+                                                </ResourceDictionary>
+                                            </ToggleButton.Resources>
+                                        </ToggleButton>
+                                        <TextBlock HorizontalAlignment="Center" Text="{x:Bind VoteRatio, Mode=OneWay}" />
+                                        <ToggleButton
                                                     Padding="3"
                                                     HorizontalAlignment="Center"
                                                     Click="CommentDownvoteButton_Click"
                                                     IsChecked="{x:Bind Downvoted, Mode=OneWay}"
                                                     Style="{StaticResource TransparentToggleButton}"
                                                     Tag="{x:Bind}">
-                                                    <FontIcon Glyph="&#xE011;" />
+                                            <FontIcon Glyph="&#xE011;" />
 
-                                                    <ToggleButton.Resources>
-                                                        <ResourceDictionary>
-                                                            <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="#7193ff" />
-                                                            <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="#96afff" />
-                                                            <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="#b6c7fc" />
-                                                        </ResourceDictionary>
-                                                    </ToggleButton.Resources>
-                                                </ToggleButton>
-                                            </StackPanel>
+                                            <ToggleButton.Resources>
+                                                <ResourceDictionary>
+                                                    <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="#7193ff" />
+                                                    <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="#96afff" />
+                                                    <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="#b6c7fc" />
+                                                </ResourceDictionary>
+                                            </ToggleButton.Resources>
+                                        </ToggleButton>
+                                    </StackPanel>
 
-                                            <StackPanel Grid.Column="2" Spacing="5">
-                                                <StackPanel
+                                    <StackPanel Grid.Column="2" Spacing="5">
+                                        <StackPanel
                                                     Orientation="Horizontal"
                                                     Spacing="8"
                                                     Visibility="{x:Bind OriginalComment.Listing.Stickied, Converter={StaticResource BoolToVis}}">
-                                                    <FontIcon FontSize="12" Glyph="&#xE141;" />
+                                            <FontIcon FontSize="12" Glyph="&#xE141;" />
 
-                                                    <TextBlock Text="Pinned by moderators" />
-                                                </StackPanel>
+                                            <TextBlock Text="Pinned by moderators" />
+                                        </StackPanel>
 
-                                                <StackPanel Orientation="Horizontal">
-                                                    <TextBlock VerticalAlignment="Center">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock VerticalAlignment="Center">
                                                         By
                                                         <Hyperlink>
                                                             u/<Run Text="{x:Bind OriginalComment.Author}" />
                                                         </Hyperlink>,
                                                         posted
                                                         <Run Text="{x:Bind helpers:PostHelpers.GetRelativeDate(OriginalComment.Created, x:True)}" />
-                                                    </TextBlock>
+                                            </TextBlock>
 
-                                                    <Button
+                                            <Button
                                                         Margin="4,0,0,0"
                                                         Padding="4,2"
                                                         Content="OP"
@@ -752,80 +752,80 @@
                                                         Style="{StaticResource AccentButtonStyle}"
                                                         Visibility="{x:Bind OriginalComment.Listing.IsSubmitter, Converter={StaticResource BoolToVis}}" />
 
-                                                    <Button
+                                            <Button
                                                         Margin="4,0,0,0"
                                                         Padding="4,2"
                                                         CornerRadius="2"
                                                         Visibility="{x:Bind ShouldDisplayUserFlair, Converter={StaticResource BoolToVis}}">
-                                                        <TextBlock Text="{x:Bind OriginalComment.Listing.AuthorFlairText}" />
-                                                    </Button>
+                                                <TextBlock Text="{x:Bind OriginalComment.Listing.AuthorFlairText}" />
+                                            </Button>
 
-                                                    <Border
+                                            <Border
                                                         Margin="4"
                                                         Padding="8,2"
                                                         HorizontalAlignment="Left"
                                                         Background="OrangeRed"
                                                         CornerRadius="10"
                                                         Visibility="{x:Bind IsAdminDistinguished, Converter={StaticResource BoolToVis}}">
-                                                        <TextBlock Foreground="White" Text="A" />
-                                                    </Border>
+                                                <TextBlock Foreground="White" Text="A" />
+                                            </Border>
 
-                                                    <Button
+                                            <Button
                                                         Margin="4,0,0,0"
                                                         Padding="4,2"
                                                         Style="{StaticResource AccentButtonStyle}"
                                                         ToolTipService.ToolTip="Edited"
                                                         Visibility="{x:Bind OriginalComment.Listing.Edited, Converter={StaticResource BoolToVis}}">
-                                                        <FontIcon FontSize="12" Glyph="&#xE104;" />
-                                                    </Button>
+                                                <FontIcon FontSize="12" Glyph="&#xE104;" />
+                                            </Button>
 
-                                                    <Button
+                                            <Button
                                                         Margin="4,0,0,0"
                                                         Padding="4,2"
                                                         Style="{StaticResource AccentButtonStyle}"
                                                         ToolTipService.ToolTip="Approved"
                                                         Visibility="{x:Bind OriginalComment.Listing.Approved, Converter={StaticResource BoolToVis}}">
-                                                        <FontIcon FontSize="12" Glyph="&#xE73E;" />
-                                                    </Button>
+                                                <FontIcon FontSize="12" Glyph="&#xE73E;" />
+                                            </Button>
 
-                                                    <Button
+                                            <Button
                                                         Margin="4,0,0,0"
                                                         Padding="4,2"
                                                         Style="{StaticResource AccentButtonStyle}"
                                                         ToolTipService.ToolTip="Marked as spam"
                                                         Visibility="{x:Bind OriginalComment.Listing.Spam, Converter={StaticResource BoolToVis}}">
-                                                        <FontIcon FontSize="12" Glyph="&#xE73C;" />
-                                                    </Button>
+                                                <FontIcon FontSize="12" Glyph="&#xE73C;" />
+                                            </Button>
 
-                                                    <Button
+                                            <Button
                                                         Margin="4,0,0,0"
                                                         Padding="4,2"
                                                         Style="{StaticResource AccentButtonStyle}"
                                                         ToolTipService.ToolTip="Removed"
                                                         Visibility="{x:Bind OriginalComment.Listing.Removed, Converter={StaticResource BoolToVis}}">
-                                                        <FontIcon FontSize="12" Glyph="&#xE10A;" />
-                                                    </Button>
+                                                <FontIcon FontSize="12" Glyph="&#xE10A;" />
+                                            </Button>
 
-                                                    <Button
+                                            <Button
                                                         Margin="4,0,0,0"
                                                         Padding="4,2"
                                                         Style="{StaticResource AccentButtonStyle}"
                                                         ToolTipService.ToolTip="Locked"
                                                         Visibility="{x:Bind OriginalComment.Listing.Locked, Converter={StaticResource BoolToVis}}">
-                                                        <FontIcon FontSize="12" Glyph="&#xE72E;" />
-                                                    </Button>
-                                                </StackPanel>
+                                                <FontIcon FontSize="12" Glyph="&#xE72E;" />
+                                            </Button>
+                                        </StackPanel>
 
-                                                <controls:MarkdownTextBlock
+                                        <controls:MarkdownTextBlock
                                                     Background="Transparent"
                                                     LinkClicked="MarkdownLinkClicked"
                                                     Text="{x:Bind OriginalComment.Body}" />
 
-                                                <StackPanel
+                                        <StackPanel
                                                     MaxWidth="1200"
                                                     Spacing="8"
                                                     Visibility="{x:Bind ShowReplyUI, Mode=OneWay, Converter={StaticResource BoolToVis}}">
-                                                    <RichEditBox
+                                            <RichEditBox
                                                         x:Name="CommentEditBox"
                                                         Height="100"
                                                         MaxHeight="600"
@@ -833,122 +833,120 @@
                                                         AcceptsReturn="True"
                                                         PlaceholderText="Add a reply..."
                                                         SelectionFlyout="{x:Null}" />
-                                                    <Button
+                                            <Button
                                                         Click="ReplyCommentButton_Click"
                                                         Content="Send"
                                                         Style="{ThemeResource AccentButtonStyle}" />
-                                                </StackPanel>
+                                        </StackPanel>
 
-                                                <RelativePanel>
-                                                    <StackPanel Margin="0,8,0,0" Orientation="Horizontal">
-                                                        <HyperlinkButton
+                                        <RelativePanel>
+                                            <StackPanel Margin="0,8,0,0" Orientation="Horizontal">
+                                                <HyperlinkButton
                                                             Padding="2"
                                                             Click="ReplyButton_Click"
                                                             Content="Reply"
                                                             IsEnabled="{x:Bind NotArchivedOrLocked}"
                                                             Visibility="{x:Bind ShowReplyUI, Mode=OneWay, Converter={StaticResource BoolToVisReverse}}" />
-                                                        <HyperlinkButton
+                                                <HyperlinkButton
                                                             Padding="2"
                                                             Click="DeleteCommentButton_Click"
                                                             Content="Delete"
                                                             Visibility="{x:Bind IsCurrentUserOP, Converter={StaticResource BoolToVis}}" />
-                                                        <HyperlinkButton
+                                                <HyperlinkButton
                                                             Margin="4,0,0,0"
                                                             Padding="2"
                                                             Click="RemoveCommentButton_Click"
                                                             Content="Remove"
                                                             Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}" />
-                                                    </StackPanel>
+                                            </StackPanel>
 
-                                                    <Button
+                                            <Button
                                                         Margin="0,0,8,0"
                                                         Padding="5,2"
                                                         RelativePanel.AlignRightWithPanel="True"
                                                         Style="{StaticResource TransparentButton}">
-                                                        <FontIcon Glyph="&#xE10C;" />
+                                                <FontIcon Glyph="&#xE10C;" />
 
-                                                        <Button.Flyout>
-                                                            <MenuFlyout>
-                                                                <MenuFlyoutItem Click="CopyLinkButton_Click" Text="Copy link">
-                                                                    <MenuFlyoutItem.Icon>
-                                                                        <FontIcon Glyph="&#xE16F;" />
-                                                                    </MenuFlyoutItem.Icon>
-                                                                </MenuFlyoutItem>
+                                                <Button.Flyout>
+                                                    <MenuFlyout>
+                                                        <MenuFlyoutItem Click="CopyLinkButton_Click" Text="Copy link">
+                                                            <MenuFlyoutItem.Icon>
+                                                                <FontIcon Glyph="&#xE16F;" />
+                                                            </MenuFlyoutItem.Icon>
+                                                        </MenuFlyoutItem>
 
-                                                                <MenuFlyoutItem
+                                                        <MenuFlyoutItem
                                                                     Click="ApproveCommentItem_Click"
                                                                     Text="Approve comment"
                                                                     Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}">
-                                                                    <MenuFlyoutItem.Icon>
-                                                                        <FontIcon Glyph="&#xF16C;" />
-                                                                    </MenuFlyoutItem.Icon>
-                                                                </MenuFlyoutItem>
+                                                            <MenuFlyoutItem.Icon>
+                                                                <FontIcon Glyph="&#xF16C;" />
+                                                            </MenuFlyoutItem.Icon>
+                                                        </MenuFlyoutItem>
 
-                                                                <ToggleMenuFlyoutItem
+                                                        <ToggleMenuFlyoutItem
                                                                     Click="SpamComment_Click"
                                                                     IsChecked="{x:Bind OriginalComment.Listing.Spam}"
                                                                     Text="Mark comment as spam"
                                                                     Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}">
-                                                                    <ToggleMenuFlyoutItem.Icon>
-                                                                        <FontIcon Glyph="&#xE73C;" />
-                                                                    </ToggleMenuFlyoutItem.Icon>
-                                                                </ToggleMenuFlyoutItem>
+                                                            <ToggleMenuFlyoutItem.Icon>
+                                                                <FontIcon Glyph="&#xE73C;" />
+                                                            </ToggleMenuFlyoutItem.Icon>
+                                                        </ToggleMenuFlyoutItem>
 
-                                                                <ToggleMenuFlyoutItem
+                                                        <ToggleMenuFlyoutItem
                                                                     Click="LockCommentItem_Click"
                                                                     IsChecked="{x:Bind OriginalComment.Listing.Locked}"
                                                                     Text="Lock comment"
                                                                     Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}">
-                                                                    <ToggleMenuFlyoutItem.Icon>
-                                                                        <FontIcon Glyph="&#xE72E;" />
-                                                                    </ToggleMenuFlyoutItem.Icon>
-                                                                </ToggleMenuFlyoutItem>
+                                                            <ToggleMenuFlyoutItem.Icon>
+                                                                <FontIcon Glyph="&#xE72E;" />
+                                                            </ToggleMenuFlyoutItem.Icon>
+                                                        </ToggleMenuFlyoutItem>
 
-                                                                <MenuFlyoutSubItem
+                                                        <MenuFlyoutSubItem
                                                                     IsEnabled="{x:Bind IsCurrentUserOP}"
                                                                     Text="Distinguish"
                                                                     Visibility="{x:Bind IsCurrentUserMod, Converter={StaticResource BoolToVis}}">
-                                                                    <MenuFlyoutSubItem.Icon>
-                                                                        <FontIcon Glyph="&#xEA18;" />
-                                                                    </MenuFlyoutSubItem.Icon>
+                                                            <MenuFlyoutSubItem.Icon>
+                                                                <FontIcon Glyph="&#xEA18;" />
+                                                            </MenuFlyoutSubItem.Icon>
 
-                                                                    <MenuFlyoutSubItem.Items>
-                                                                        <MenuFlyoutItem Click="RemoveDistinguish_Click" Text="Nothing">
-                                                                            <MenuFlyoutItem.Icon>
-                                                                                <FontIcon Glyph="&#xE10A;" />
-                                                                            </MenuFlyoutItem.Icon>
-                                                                        </MenuFlyoutItem>
-                                                                        <MenuFlyoutItem Click="DistinguishAsModerator_Click" Text="Distinguish as moderator">
-                                                                            <MenuFlyoutItem.Icon>
-                                                                                <FontIcon Glyph="&#xEA18;" />
-                                                                            </MenuFlyoutItem.Icon>
-                                                                        </MenuFlyoutItem>
-                                                                        <MenuFlyoutItem
+                                                            <MenuFlyoutSubItem.Items>
+                                                                <MenuFlyoutItem Click="RemoveDistinguish_Click" Text="Nothing">
+                                                                    <MenuFlyoutItem.Icon>
+                                                                        <FontIcon Glyph="&#xE10A;" />
+                                                                    </MenuFlyoutItem.Icon>
+                                                                </MenuFlyoutItem>
+                                                                <MenuFlyoutItem Click="DistinguishAsModerator_Click" Text="Distinguish as moderator">
+                                                                    <MenuFlyoutItem.Icon>
+                                                                        <FontIcon Glyph="&#xEA18;" />
+                                                                    </MenuFlyoutItem.Icon>
+                                                                </MenuFlyoutItem>
+                                                                <MenuFlyoutItem
                                                                             Click="PinCommentButton_Click"
                                                                             IsEnabled="{x:Bind IsTopLevel, Mode=OneWay}"
                                                                             Text="Distinguish as moderator and pin">
-                                                                            <MenuFlyoutItem.Icon>
-                                                                                <FontIcon Glyph="&#xE141;" />
-                                                                            </MenuFlyoutItem.Icon>
-                                                                        </MenuFlyoutItem>
-                                                                    </MenuFlyoutSubItem.Items>
-                                                                </MenuFlyoutSubItem>
-                                                            </MenuFlyout>
-                                                        </Button.Flyout>
-                                                    </Button>
-                                                </RelativePanel>
-                                            </StackPanel>
-                                        </Grid>
-
-                                        <Button Margin="0,4" Visibility="{x:Bind CanLoadMore, Mode=OneWay, Converter={StaticResource BoolToVis}}">Load more</Button>
+                                                                    <MenuFlyoutItem.Icon>
+                                                                        <FontIcon Glyph="&#xE141;" />
+                                                                    </MenuFlyoutItem.Icon>
+                                                                </MenuFlyoutItem>
+                                                            </MenuFlyoutSubItem.Items>
+                                                        </MenuFlyoutSubItem>
+                                                    </MenuFlyout>
+                                                </Button.Flyout>
+                                            </Button>
+                                        </RelativePanel>
                                     </StackPanel>
-                                </muxc:TreeViewItem.Content>
-                            </muxc:TreeViewItem>
-                        </DataTemplate>
-                    </muxc:TreeView.ItemTemplate>
-                </muxc:TreeView>
-            </StackPanel>
-        </ScrollViewer>
+                                </Grid>
+
+                                <Button Margin="0,4" Visibility="{x:Bind CanLoadMore, Mode=OneWay, Converter={StaticResource BoolToVis}}">Load more</Button>
+                            </StackPanel>
+                        </muxc:TreeViewItem.Content>
+                    </muxc:TreeViewItem>
+                </DataTemplate>
+            </muxc:TreeView.ItemTemplate>
+        </muxc:TreeView>
 
         <Button
             x:Name="BackButton"
