@@ -29,7 +29,7 @@ namespace Carpeddit.App
         /// </summary>
         public static MainPage Current;
 
-        private double NavViewCompactModeThresholdWidth { get => NavView.CompactModeThresholdWidth; }
+        private double NavViewCompactModeThresholdWidth => NavView.CompactModeThresholdWidth;
 
         private bool _shouldDisplayModTools;
 
@@ -329,15 +329,39 @@ namespace Carpeddit.App
 
         private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (e.NewSize.Width >= 641)
+            Debug.WriteLine(e.NewSize.Width);
+            switch (e.NewSize.Width)
             {
-                AppTitleBar.Margin = new Thickness(52, 7, 290, 0);
-                AccountMenuBtn.Visibility = App.SViewModel.ShowAccountBtnInTitleBar ? Visibility.Visible : Visibility.Collapsed;
-            }
-            else if (e.NewSize.Width < 641)
-            {
-                AppTitleBar.Margin = new Thickness(95, 7, 290, 0);
-                AccountMenuBtn.Visibility = Visibility.Collapsed;
+                case >= 956:
+                    AppTitle.Visibility = Visibility.Visible;
+                    AppTitleBar.Margin = new Thickness(52, 7, 290, 0);
+                    AccountMenuBtn.Visibility = App.SViewModel.ShowAccountBtnInTitleBar ? Visibility.Visible : Visibility.Collapsed;
+                    NavViewSearchBox.Width = 500;
+                    break;
+                case > 880:
+                    AppTitle.Visibility = Visibility.Visible;
+                    AppTitleBar.Margin = new Thickness(52, 7, 290, 0);
+                    AccountMenuBtn.Visibility = App.SViewModel.ShowAccountBtnInTitleBar ? Visibility.Visible : Visibility.Collapsed;
+                    NavViewSearchBox.Width = 430;
+                    break;
+                case > 700:
+                    AppTitle.Visibility = Visibility.Visible;
+                    AppTitleBar.Margin = new Thickness(52, 7, 290, 0);
+                    AccountMenuBtn.Visibility = Visibility.Collapsed;
+                    NavViewSearchBox.Width = 350;
+                    break;
+                case >= 641:
+                    AppTitle.Visibility = Visibility.Visible;
+                    AppTitleBar.Margin = new Thickness(52, 7, 290, 0);
+                    AccountMenuBtn.Visibility = Visibility.Collapsed;
+                    NavViewSearchBox.Width = 300;
+                    break;
+                case < 641:
+                    AppTitle.Visibility = Visibility.Collapsed;
+                    AppTitleBar.Margin = new Thickness(95, 7, 290, 0);
+                    AccountMenuBtn.Visibility = Visibility.Collapsed;
+                    NavViewSearchBox.Width = 200;
+                    break;
             }
         }
 
