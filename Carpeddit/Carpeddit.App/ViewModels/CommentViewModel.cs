@@ -1,7 +1,9 @@
 ﻿using Carpeddit.App.Collections;
+using Carpeddit.Common.Enums;
 using Carpeddit.Common.Helpers;
 using Carpeddit.Common.Interfaces;
 using Reddit.Controllers;
+using Reddit.Inputs.LinksAndComments;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -376,10 +378,14 @@ namespace Carpeddit.App.ViewModels
                 var canLoadMore = false;
 
                 if (OriginalComment.Listing.Replies != null && OriginalComment.Listing.Replies.MoreData != null)
-                    canLoadMore = OriginalComment.Listing.Replies.MoreData.Any();
+                {
+                    var moreData = OriginalComment.Listing.Replies.MoreData;
+
+                    var item = moreData.FirstOrDefault();
+                    canLoadMore = moreData.Any() && item != null && !string.IsNullOrEmpty(item.Id);
+                }
 
                 CanLoadMore = canLoadMore;
-
                 return canLoadMore;
             });
 
@@ -420,16 +426,18 @@ namespace Carpeddit.App.ViewModels
             {
                 foreach (var commentThing in moreChildren)
                 {
-                    var comment = new Comment(App.RedditClient.Models, commentThing.Name).About();
-
-                    var commentViewModel = new CommentViewModel()
+                    if (!string.IsNullOrEmpty(commentThing.Id))
                     {
-                        OriginalComment = comment
-                    };
+                        var comment = new Comment(App.RedditClient.Models, commentThing.Name).About();
+                        var commentViewModel = new CommentViewModel()
+                        {
+                            OriginalComment = comment
+                        };
 
-                    _ = Task.Run(() => commentViewModel.GetReplies(DispatcherQueue.GetForCurrentThread(), true, IsCurrentUserMod));
+                        _ = Task.Run(() => commentViewModel.GetReplies(DispatcherQueue.GetForCurrentThread(), true, IsCurrentUserMod));
 
-                    Replies.Add(commentViewModel);
+                        Replies.Add(commentViewModel);
+                    }
                 }
             }
         }
