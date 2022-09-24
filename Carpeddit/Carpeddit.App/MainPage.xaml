@@ -20,10 +20,11 @@
         <Grid.Background>
             <SolidColorBrush x:Name="ColorBrushBg" Opacity="0.1" />
         </Grid.Background>
+
         <Border
             x:Name="AppTitleBar"
             Height="40"
-            Margin="52,7,290,0"
+            Margin="52,8,290,0"
             VerticalAlignment="Top"
             x:FieldModifier="public"
             Background="Transparent"
@@ -40,12 +41,23 @@
                     Source="ms-appx:///Assets/Square44x44Logo.png" />
                 <TextBlock
                     x:Name="AppTitle"
-                    Margin="10,2,0,0"
+                    Margin="12,2,0,0"
                     VerticalAlignment="Center"
                     Style="{StaticResource CaptionTextBlockStyle}"
                     Text="Carpeddit" />
             </StackPanel>
         </Border>
+
+        <AutoSuggestBox
+            x:Name="NavViewSearchBox"
+            Width="500"
+            VerticalAlignment="Top"
+            HorizontalAlignment="Center"
+            Margin="-50,8,0,0"
+            Canvas.ZIndex="1"
+            PlaceholderText="Search..."
+            QueryIcon="Find"
+            QuerySubmitted="NavViewSearchBox_QuerySubmitted" />
 
         <Button
             x:Name="AccountMenuBtn"
@@ -124,15 +136,6 @@
                     Tag="mailbox" />
             </muxc:NavigationView.MenuItems>
 
-            <muxc:NavigationView.AutoSuggestBox>
-                <AutoSuggestBox
-                    x:Name="NavViewSearchBox"
-                    Width="288"
-                    PlaceholderText="Search..."
-                    QueryIcon="Find"
-                    QuerySubmitted="NavViewSearchBox_QuerySubmitted" />
-            </muxc:NavigationView.AutoSuggestBox>
-
             <Frame
                 x:Name="ContentFrame"
                 Padding="56,0,56,0"
@@ -167,7 +170,6 @@
                     </muxc:NavigationViewItem.Icon>
                 </muxc:NavigationViewItem>
             </muxc:NavigationView.FooterMenuItems>
-
         </muxc:NavigationView>
     </Grid>
 </Page>
