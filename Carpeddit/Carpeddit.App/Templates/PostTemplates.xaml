@@ -139,7 +139,16 @@
                     Source="{x:Bind VideoSource}"
                     AutoPlay="False"
                     Margin="0,4,0,0"
-                    AreTransportControlsEnabled="True" />
+                    AreTransportControlsEnabled="True">
+                    <MediaPlayerElement.TransportControls>
+                        <MediaTransportControls
+                            IsCompact="True"
+                            IsPlaybackRateEnabled="True"
+                            IsPlaybackRateButtonVisible="True"
+                            IsZoomEnabled="True"
+                            IsZoomButtonVisible="True" />
+                    </MediaPlayerElement.TransportControls>
+                </MediaPlayerElement>
 
                 <FlipView 
                     x:Name="Flip"
@@ -331,7 +340,16 @@
                     Source="{x:Bind VideoSource}"
                     AutoPlay="False"
                     Margin="0,4,0,0"
-                    AreTransportControlsEnabled="True" />
+                    AreTransportControlsEnabled="True">
+                    <MediaPlayerElement.TransportControls>
+                        <MediaTransportControls
+                            IsCompact="True"
+                            IsPlaybackRateEnabled="True"
+                            IsPlaybackRateButtonVisible="True"
+                            IsZoomEnabled="True"
+                            IsZoomButtonVisible="True" />
+                    </MediaPlayerElement.TransportControls>
+                </MediaPlayerElement>
 
                 <FlipView 
                     x:Name="Flip"
@@ -536,7 +554,16 @@
                     Source="{x:Bind VideoSource}"
                     AutoPlay="False"
                     Margin="0,4,0,0"
-                    AreTransportControlsEnabled="True" />
+                    AreTransportControlsEnabled="True">
+                    <MediaPlayerElement.TransportControls>
+                        <MediaTransportControls
+                            IsCompact="True"
+                            IsPlaybackRateEnabled="True"
+                            IsPlaybackRateButtonVisible="True"
+                            IsZoomEnabled="True"
+                            IsZoomButtonVisible="True" />
+                    </MediaPlayerElement.TransportControls>
+                </MediaPlayerElement>
 
                 <FlipView 
                     x:Name="Flip"

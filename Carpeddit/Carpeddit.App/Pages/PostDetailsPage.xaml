@@ -246,7 +246,16 @@
                             AreTransportControlsEnabled="True"
                             AutoPlay="False"
                             Source="{x:Bind Post.VideoSource}"
-                            Visibility="{x:Bind Post.Post.Listing.IsVideo, Converter={StaticResource BoolToVis}}" />
+                            Visibility="{x:Bind Post.Post.Listing.IsVideo, Converter={StaticResource BoolToVis}}">
+                            <MediaPlayerElement.TransportControls>
+                                <MediaTransportControls
+                                    IsCompact="True"
+                                    IsPlaybackRateButtonVisible="True"
+                                    IsPlaybackRateEnabled="True"
+                                    IsZoomEnabled="True"
+                                    IsZoomButtonVisible="True" />                                
+                            </MediaPlayerElement.TransportControls>
+                        </MediaPlayerElement>
 
                         <FlipView
                             MaxHeight="650"
