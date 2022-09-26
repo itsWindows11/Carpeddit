@@ -289,7 +289,7 @@ namespace Carpeddit.App.Pages
 
         private async void JoinButton_Click(object sender, RoutedEventArgs e)
         {
-            if ((JoinButton.Content as string).Equals("Leave"))
+            if (Subreddit.SubredditData.UserIsSubscriber ?? false)
             {
                 await Subreddit.UnsubscribeAsync();
                 JoinButton.Content = "Join";
