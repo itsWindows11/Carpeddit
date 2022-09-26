@@ -64,6 +64,9 @@ namespace Carpeddit.App.Pages
                     break;
             }
 
+            if (Subreddit.SubredditData.UserIsSubscriber ?? false)
+                JoinButton.Content = "Leave";
+
             if (string.IsNullOrWhiteSpace(Subreddit.HeaderTitle) || Subreddit.HeaderTitle.Equals(Subreddit.Name))
             {
                 SubredditFriendlyName.Visibility = Visibility.Collapsed;
@@ -145,9 +148,6 @@ namespace Carpeddit.App.Pages
                     ModerationToolsButton.Visibility = Visibility.Visible;
                 });
             }
-
-            if (Subreddit.SubredditData.UserIsSubscriber ?? false)
-                JoinButton.Content = "Leave";
 
             LoggingHelper.LogInfo($"[SubredditPage] Loading posts in {Subreddit.SubredditData.DisplayNamePrefixed}...");
 
