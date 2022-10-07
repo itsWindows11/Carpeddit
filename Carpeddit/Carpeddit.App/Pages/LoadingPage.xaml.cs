@@ -29,11 +29,6 @@ namespace Carpeddit.App.Pages
 
             _ = AppCenterHelper.StartAppCenterAsync();
 
-            /*if (SystemInformation.Instance.IsAppUpdated)
-            {
-                
-            }*/
-
             var tasks = BackgroundTaskRegistration.AllTasks;
             foreach (var task in tasks)
             {

@@ -4,7 +4,9 @@ using Carpeddit.App.Helpers;
 using Carpeddit.App.Models;
 using Carpeddit.App.ViewModels;
 using Carpeddit.Common.Enums;
+using Microsoft.Toolkit;
 using Reddit.Controllers;
+using Reddit.Controllers.Structures;
 using Reddit.Things;
 using System;
 using System.Collections.Generic;
@@ -85,29 +87,27 @@ namespace Carpeddit.App.Pages
 
             }
 
-            LoggingHelper.LogInfo($"[SubredditPage] Loading moderators list in {Subreddit.SubredditData.DisplayNamePrefixed}...");
+            var tasks = new List<Task>()
+            {
+                GetModeratorsAsync(),
+                GetRulesAsync(),
+                Task.Run(() => GetPosts())
+            };
 
-            var modsList = await Task.Run(() => Subreddit.GetModerators());
+            await Task.WhenAll(tasks);
 
-            LoggingHelper.LogInfo($"[SubredditPage] Loaded moderators list in {Subreddit.SubredditData.DisplayNamePrefixed}.");
-            LoggingHelper.LogInfo($"[SubredditPage] Loading rules list in {Subreddit.SubredditData.DisplayNamePrefixed}...");
-
-            var rulesList = await Task.Run(() => Subreddit.GetRules().Rules);
-
-            LoggingHelper.LogInfo($"[SubredditPage] Loaded rules list in {Subreddit.SubredditData.DisplayNamePrefixed}.");
+            var rulesList = tasks[1].GetResultOrDefault() as List<Rule> ?? new();
+            var modsList = tasks[0].GetResultOrDefault() as List<Moderator> ?? new();
+            var postsList = tasks[2].GetResultOrDefault() as List<PostViewModel> ?? new();
 
             RulesList.ItemsSource = rulesList;
             ModsList.ItemsSource = modsList;
 
             if (rulesList.Any())
-            {
                 RulesExpander.Visibility = Visibility.Visible;
-            }
 
             if (modsList.Any())
-            {
                 ModeratorsExpander.Visibility = Visibility.Visible;
-            }
 
             try
             {
@@ -151,7 +151,7 @@ namespace Carpeddit.App.Pages
 
             LoggingHelper.LogInfo($"[SubredditPage] Loading posts in {Subreddit.SubredditData.DisplayNamePrefixed}...");
 
-            posts.AddRange(await Task.Run(() => GetPosts()));
+            posts.AddRange(postsList);
 
             MainList.ItemsSource = posts;
 
@@ -214,8 +214,32 @@ namespace Carpeddit.App.Pages
             }
         }
 
+        private async Task<List<Moderator>> GetModeratorsAsync()
+        {
+            LoggingHelper.LogInfo($"[SubredditPage] Loading moderators list in {Subreddit.SubredditData.DisplayNamePrefixed}...");
+
+            var moderators = await Task.Run(() => Subreddit.GetModerators());
+
+            LoggingHelper.LogInfo($"[SubredditPage] Loaded moderators list in {Subreddit.SubredditData.DisplayNamePrefixed}.");
+
+            return moderators;
+        }
+
+        private async Task<List<Rule>> GetRulesAsync()
+        {
+            LoggingHelper.LogInfo($"[SubredditPage] Loading rules list in {Subreddit.SubredditData.DisplayNamePrefixed}...");
+
+            var rulesList = await Task.Run(() => Subreddit.GetRules().Rules);
+
+            LoggingHelper.LogInfo($"[SubredditPage] Loaded rules list in {Subreddit.SubredditData.DisplayNamePrefixed}.");
+
+            return rulesList;
+        }
+
         private IEnumerable<PostViewModel> GetPosts(string after = "", int limit = 100, string before = "", string t = "all", Sort sortType = Sort.Hot)
         {
+            LoggingHelper.LogInfo($"[SubredditPage] Loading posts in {Subreddit.SubredditData.DisplayNamePrefixed}...");
+
             List<Reddit.Controllers.Post> frontpage = sortType switch
             {
                 Sort.Best => Subreddit.Posts.GetBest(limit: limit, after: after, before: before),
@@ -243,6 +267,8 @@ namespace Carpeddit.App.Pages
 
                 postViews.Add(vm);
             }
+
+            LoggingHelper.LogInfo($"[SubredditPage] Loaded posts in {Subreddit.SubredditData.DisplayNamePrefixed}.");
 
             return postViews;
         }
