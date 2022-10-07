@@ -25,9 +25,7 @@ namespace Carpeddit.App.Pages
             Loaded += SettingsPageLoaded;
 
             if (App.SViewModel.ColorMode == 2)
-            {
                 GridViewColorList.SelectedIndex = App.SViewModel.TintColor;
-            }
         }
 
         private void Border_PointerReleased(object sender, PointerRoutedEventArgs e)

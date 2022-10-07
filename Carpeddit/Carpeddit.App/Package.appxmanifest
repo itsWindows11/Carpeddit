@@ -9,9 +9,9 @@
   <Identity
     Name="8cfaee93-c15a-4492-8ce0-248785a6044f"
     Publisher="CN=loremipsum"
-    Version="0.2.0.0" />
+    Version="0.8.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="5d029827-5d1c-4317-84ed-63c9f118b844" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="ba0b3502-6d2d-47ac-bb17-536277e83342" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>Carpeddit</DisplayName>
@@ -35,7 +35,7 @@
         DisplayName="Carpeddit"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="A fluent designed client for reddit which aims to be flexible, safe and full featured."
+        Description="A client for reddit with the latest Fluent Design principles, simple, easy to use, fast and aims to be flexible, safe and full featured."
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
         <uap:SplashScreen a:Optional="true" xmlns:a="http://schemas.microsoft.com/appx/manifest/uap/windows10/5" Image="Assets\SplashScreen.png" />
