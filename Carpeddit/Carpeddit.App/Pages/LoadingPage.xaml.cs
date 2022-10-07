@@ -41,27 +41,6 @@ namespace Carpeddit.App.Pages
             }
 
             BackgroundExecutionManager.RemoveAccess();
-                        
-            await Task.Run(async () =>
-            {
-                try
-                {
-                    _ = App.RedditClient.Account.GetMe();
-                }
-                catch (Exception e1)
-                {
-                    LoggingHelper.LogError("[LoadingPage] An error occurred while verifying user status, signing out...", e1);
-
-                    if (App.CurrentAccount != null)
-                        App.CurrentAccount.LoggedIn = false;
-
-                    App.CurrentAccount.RefreshToken = null;
-                    App.RedditClient = null;
-
-                    await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-                        Frame.Navigate(typeof(LoginPage), null, new SuppressNavigationTransitionInfo()));
-                }
-            });
 
             var requestStatus = await BackgroundExecutionManager.RequestAccessAsync();
 
@@ -126,9 +105,30 @@ namespace Carpeddit.App.Pages
                 return;
             }
 
+            bool isValidSession = await Task.Run(async () =>
+            {
+                try
+                {
+                    _ = App.RedditClient.Account.GetMe();
+                    return true;
+                }
+                catch (Exception e1)
+                {
+                    LoggingHelper.LogError("[LoadingPage] An error occurred while verifying user status, signing out...", e1);
+
+                    if (App.CurrentAccount != null)
+                        App.CurrentAccount.LoggedIn = false;
+
+                    App.CurrentAccount.RefreshToken = null;
+                    App.RedditClient = null;
+                }
+
+                return false;
+            });
+
             if (networkAvailable)
             {
-                if (App.CurrentAccount != null && App.CurrentAccount.LoggedIn)
+                if (isValidSession)
                 {
                     Frame.Navigate(typeof(MainPage), null, new SuppressNavigationTransitionInfo());
                     LoggingHelper.LogInfo("[MainPage] Loading frontpage...");

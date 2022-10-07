@@ -21,10 +21,9 @@ namespace Carpeddit.App.Pages.Setup
         private async void OnSecondaryActionClick(object sender, RoutedEventArgs e)
         {
             App.SViewModel.SetupCompleted = true;
+
             if (!await ApplicationView.GetForCurrentView().TryConsolidateAsync())
-            {
                 Application.Current.Exit();
-            }
         }
     }
 }
