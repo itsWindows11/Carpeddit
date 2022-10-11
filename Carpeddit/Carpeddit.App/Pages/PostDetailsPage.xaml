@@ -135,8 +135,7 @@
                         <StackPanel Orientation="Horizontal" Spacing="2">
                             <TextBlock VerticalAlignment="Center" TextWrapping="WrapWholeWords">
                                 <Run Text="By" /> <Hyperlink Click="UserHyperlink_Click">
-                                    u/
-                                    <Run Text="{x:Bind Post.Author}" />
+                                    u/<Run Text="{x:Bind Post.Author}" />
                                 </Hyperlink>
                             </TextBlock>
 
@@ -264,8 +263,8 @@
                             ItemsSource="{x:Bind Post.Images}"
                             Visibility="{x:Bind Post.IsGallery, Converter={StaticResource BoolToVis}}">
                             <FlipView.ItemTemplate>
-                                <DataTemplate x:DataType="redditthings:Image">
-                                    <Image Source="{x:Bind Url}" />
+                                <DataTemplate x:DataType="viewmodels:ImageViewModel">
+                                    <Image Source="{x:Bind Model.Url}" />
                                 </DataTemplate>
                             </FlipView.ItemTemplate>
                         </FlipView>
