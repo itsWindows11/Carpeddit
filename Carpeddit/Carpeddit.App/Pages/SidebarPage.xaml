@@ -86,6 +86,57 @@
             </muxc:Expander>
 
             <muxc:Expander
+                x:Name="MultiExpander"
+                IsExpanded="True">
+                <muxc:Expander.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock VerticalAlignment="Center" Text="Your multis" />
+                        <Button Grid.Column="2" Content="Create" Click="CreateMultiButton_Click" />
+                    </Grid>
+                </muxc:Expander.Header>
+                <ListView
+                    x:Name="MultisList"
+                    Margin="-8,0"
+                    SelectionMode="None">
+                    <ListView.Resources>
+                        <MenuFlyout x:Key="MultiContextMenu">
+                            <MenuFlyoutItem Text="Rename multi">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xE13E;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyout>
+                    </ListView.Resources>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem" BasedOn="{StaticResource DefaultListViewItemStyle}">
+                            <Setter Property="ContextFlyout" Value="{StaticResource MultiContextMenu}" />
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="reddit1:LabeledMulti">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <Border CornerRadius="64" Width="32" Height="32">
+                                    <Image>
+                                        <Image.Source>
+                                            <BitmapImage DecodePixelHeight="32" DecodePixelWidth="32" UriSource="{x:Bind IconURL}" />
+                                        </Image.Source>
+                                    </Image>
+                                </Border>
+
+                                <TextBlock Text="{x:Bind DisplayName}" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </muxc:Expander>
+
+            <muxc:Expander
                 x:Name="RecommendedSubredditsExpander"
                 Header="Recommended subreddits"
                 IsExpanded="True">

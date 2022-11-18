@@ -1,4 +1,5 @@
-﻿using Carpeddit.App.Helpers;
+﻿using Carpeddit.App.Dialogs;
+using Carpeddit.App.Helpers;
 using Reddit.Controllers;
 using System;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace Carpeddit.App.Pages
         private async void SidebarPage_Loaded(object sender, RoutedEventArgs e)
         {
             RecommendedSubredditsList.ItemsSource = await Task.Run(() => App.RedditClient.Account.MySubscribedSubreddits(limit: 5));
+            MultisList.ItemsSource = await Task.Run(() => App.RedditClient.Account.Multis());
 
             LoggingHelper.LogInfo("[SidebarPage] Recommended subreddits loaded successfully.");
         }
@@ -75,8 +77,9 @@ namespace Carpeddit.App.Pages
         }
 
         private void OnSubredditItemClick(object sender, RoutedEventArgs e)
-        {
-            (Window.Current.Content as Frame).Navigate(typeof(SubredditPage), App.RedditClient.Subreddit(name: ((sender as HyperlinkButton).Content as string).Replace("r/", "")).About());
-        }
+            => (Window.Current.Content as Frame).Navigate(typeof(SubredditPage), App.RedditClient.Subreddit(name: ((sender as HyperlinkButton).Content as string).Replace("r/", "")).About());
+
+        private void CreateMultiButton_Click(object sender, RoutedEventArgs e)
+            => _ = new CreateMultiDialog().ShowAsync();
     }
 }
