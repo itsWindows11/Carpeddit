@@ -27,12 +27,14 @@
             Grid.Row="1"
             IsBackButtonVisible="Auto"
             IsBackEnabled="{x:Bind ContentFrame.CanGoBack, Mode=OneWay}"
-            IsTitleBarAutoPaddingEnabled="False">
+            IsTitleBarAutoPaddingEnabled="False"
+            ItemInvoked="OnItemInvoked">
             <muxc:NavigationView.Header>
                 <TextBlock
                     x:Name="NavViewHeader"
                     Margin="-16,-16,0,0"
-                    d:Text="Home" />
+                    d:Text="Home"
+                    Text="{x:Bind ((muxc:NavigationViewItem)NavView.SelectedItem).Content, Mode=OneWay}"/>
             </muxc:NavigationView.Header>
 
             <muxc:NavigationView.MenuItems>
@@ -68,9 +70,9 @@
             </Frame>
             <muxc:NavigationView.FooterMenuItems>
                 <muxc:NavigationViewItem
-                    x:Name="YourProfileItem"
+                    x:Name="ProfileItem"
                     Content="Your profile"
-                    Tag="your_profile">
+                    Tag="profile">
                     <muxc:NavigationViewItem.ContextFlyout>
                         <MenuFlyout>
                             <MenuFlyoutItem Text="Log out">
