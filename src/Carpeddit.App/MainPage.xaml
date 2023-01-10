@@ -1,0 +1,113 @@
+﻿<Page
+    x:Class="Carpeddit.App.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:uc="using:Carpeddit.App.UserControls"
+    d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <Thickness x:Key="NavigationViewContentMargin">0,48,0,0</Thickness>
+    </Page.Resources>
+
+    <Grid>
+        <uc:CustomTitleBar
+            x:Name="TitleBar"
+            Height="48"
+            Margin="52,0,0,0"
+            VerticalAlignment="Top"
+            Canvas.ZIndex="1" />
+
+        <muxc:NavigationView
+            x:Name="NavView"
+            Grid.Row="1"
+            IsBackButtonVisible="Auto"
+            IsBackEnabled="{x:Bind ContentFrame.CanGoBack, Mode=OneWay}"
+            IsTitleBarAutoPaddingEnabled="False">
+            <muxc:NavigationView.Header>
+                <TextBlock
+                    x:Name="NavViewHeader"
+                    Margin="-16,-16,0,0"
+                    d:Text="Home" />
+            </muxc:NavigationView.Header>
+
+            <muxc:NavigationView.MenuItems>
+                <muxc:NavigationViewItem
+                    Content="Home"
+                    Icon="Home"
+                    Tag="home" />
+                <muxc:NavigationViewItem Content="Popular" Tag="popular">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE128;" />
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem Content="Collections" Tag="collections">
+                    <muxc:NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE158;" />
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+                <muxc:NavigationViewItem
+                    Content="Mailbox"
+                    Icon="Mail"
+                    Tag="mailbox" />
+            </muxc:NavigationView.MenuItems>
+
+            <Frame
+                x:Name="ContentFrame"
+                Padding="56,0,56,0"
+                x:FieldModifier="public">
+                <Frame.ContentTransitions>
+                    <TransitionCollection>
+                        <NavigationThemeTransition />
+                    </TransitionCollection>
+                </Frame.ContentTransitions>
+            </Frame>
+            <muxc:NavigationView.FooterMenuItems>
+                <muxc:NavigationViewItem
+                    x:Name="YourProfileItem"
+                    Content="Your profile"
+                    Tag="your_profile">
+                    <muxc:NavigationViewItem.ContextFlyout>
+                        <MenuFlyout>
+                            <MenuFlyoutItem Text="Log out">
+                                <MenuFlyoutItem.Icon>
+                                    <FontIcon Glyph="&#xF3B1;" />
+                                </MenuFlyoutItem.Icon>
+                            </MenuFlyoutItem>
+                        </MenuFlyout>
+                    </muxc:NavigationViewItem.ContextFlyout>
+                    <muxc:NavigationViewItem.Icon>
+                        <muxc:ImageIcon>
+                            <muxc:ImageIcon.Source>
+                                <BitmapImage x:Name="ProfileBitmap" DecodePixelType="Logical" />
+                            </muxc:ImageIcon.Source>
+                        </muxc:ImageIcon>
+                    </muxc:NavigationViewItem.Icon>
+                </muxc:NavigationViewItem>
+            </muxc:NavigationView.FooterMenuItems>
+        </muxc:NavigationView>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="SizeStates">
+                <VisualState x:Name="LargeSizeState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="641" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+                <VisualState x:Name="SmallSizeState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="TitleBar.ShowTitle" Value="False" />
+                        <Setter Target="TitleBar.Margin" Value="95,0,0,0" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </Grid>
+</Page>
