@@ -60,7 +60,7 @@
 
             <Frame
                 x:Name="ContentFrame"
-                Padding="56,0,56,0"
+                Padding="40,0,56,0"
                 x:FieldModifier="public">
                 <Frame.ContentTransitions>
                     <TransitionCollection>
@@ -107,6 +107,8 @@
                     <VisualState.Setters>
                         <Setter Target="TitleBar.ShowTitle" Value="False" />
                         <Setter Target="TitleBar.Margin" Value="95,0,0,0" />
+                        <Setter Target="NavViewHeader.Margin" Value="-16,4,0,0" />
+                        <Setter Target="ContentFrame.Margin" Value="0,8,0,0" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
