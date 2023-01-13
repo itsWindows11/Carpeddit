@@ -5,12 +5,12 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="146.98"
-    d:DesignWidth="678.859"
+    d:DesignHeight="146"
+    d:DesignWidth="678"
     mc:Ignorable="d">
 
     <Grid
-        Padding="12,8,12,0"
+        Padding="4,8,4,0"
         d:Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
         Background="{x:Bind Background, Mode=OneWay}"
         BorderBrush="{x:Bind BorderBrush, Mode=OneWay}"
