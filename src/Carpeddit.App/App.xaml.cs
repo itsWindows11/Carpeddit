@@ -4,6 +4,7 @@ using Refit;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -66,6 +67,7 @@ namespace Carpeddit.App
 
             if (!e.PrelaunchActivated)
             {
+                CoreApplication.EnablePrelaunch(true);
                 if (rootFrame.Content == null)
                 {
                     // When the navigation stack isn't restored navigate to the first page,
