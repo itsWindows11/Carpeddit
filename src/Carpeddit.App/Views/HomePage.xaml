@@ -7,34 +7,43 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="using:Carpeddit.App.UserControls"
     d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    NavigationCacheMode="Enabled"
     mc:Ignorable="d">
 
-    <ScrollViewer
+    <ListView
         Margin="-48,0,-56,0"
         Padding="48,0,56,0"
         d:Margin="0"
-        d:Padding="0">
-        <StackPanel Spacing="8">
-            <uc:PostItemControl />
-            <uc:PostItemControl />
-            <uc:PostItemControl />
-            <uc:PostItemControl />
-            <uc:PostItemControl />
-            <uc:PostItemControl />
-            <uc:PostItemControl />
-            <uc:PostItemControl />
-            <uc:PostItemControl />
-            <uc:PostItemControl />
-            <uc:PostItemControl />
-            <uc:PostItemControl />
-            <uc:PostItemControl />
-            <uc:PostItemControl />
-            <uc:PostItemControl />
-            <uc:PostItemControl />
-            <uc:PostItemControl />
-            <uc:PostItemControl />
-            <uc:PostItemControl />
-            <uc:PostItemControl />
-        </StackPanel>
-    </ScrollViewer>
+        d:Padding="0"
+        ItemContainerStyle="{StaticResource PostItemContainerStyle}"
+        ItemsSource="{x:Bind SamplePosts}">
+        <ListView.ItemTemplate>
+            <DataTemplate x:DataType="local:SamplePost">
+                <uc:PostItemControl
+                    Title="{x:Bind Title}"
+                    Description="{x:Bind Description}"
+                    SubredditName="{x:Bind Subreddit}"
+                    UserName="{x:Bind User}">
+                    <uc:PostItemControl.FooterContent>
+                        <CommandBar
+                            Margin="-12,0,0,0"
+                            Padding="0"
+                            HorizontalAlignment="Left"
+                            Background="Transparent"
+                            DefaultLabelPosition="Right">
+                            <AppBarButton
+                                Icon="Comment"
+                                IsHitTestVisible="False"
+                                Label="123 comments" />
+                            <AppBarButton Icon="Share" Label="Share" />
+                            <AppBarButton Icon="Save" Label="Save" />
+                        </CommandBar>
+                    </uc:PostItemControl.FooterContent>
+                </uc:PostItemControl>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+        <ListView.Footer>
+            <ContentControl Height="12" />
+        </ListView.Footer>
+    </ListView>
 </Page>

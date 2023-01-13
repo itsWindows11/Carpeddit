@@ -1,30 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Carpeddit.App.Views
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class HomePage : Page
     {
+        private ObservableCollection<SamplePost> SamplePosts { get; } = new();
+
         public HomePage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+
+            foreach (var i in Enumerable.Range(0, 1000))
+            {
+                var userFriendlyIndex = i + 1;
+                SamplePosts.Add(new SamplePost()
+                {
+                    Title = $"Post {userFriendlyIndex}",
+                    Description = $"Description for post {userFriendlyIndex}.",
+                    User = "user",
+                    Subreddit = "subreddit"
+                });
+            }
         }
+    }
+
+    public partial class SamplePost : ObservableObject
+    {
+        [ObservableProperty]
+        private string title;
+
+        [ObservableProperty]
+        private string description;
+
+        [ObservableProperty]
+        private string user;
+
+        [ObservableProperty]
+        private string subreddit;
     }
 }

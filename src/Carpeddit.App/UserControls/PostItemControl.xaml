@@ -5,24 +5,93 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="300"
-    d:DesignWidth="400"
+    d:DesignHeight="146.98"
+    d:DesignWidth="678.859"
     mc:Ignorable="d">
 
-    <StackPanel
-        Padding="16,8"
+    <Grid
+        Padding="12,8,12,0"
         d:Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
         Background="{x:Bind Background, Mode=OneWay}"
         BorderBrush="{x:Bind BorderBrush, Mode=OneWay}"
         BorderThickness="{x:Bind BorderThickness, Mode=OneWay}"
+        ColumnSpacing="4"
         CornerRadius="{x:Bind CornerRadius, Mode=OneWay}">
-        <Button Padding="0" Style="{ThemeResource TransparentNoHoverButtonStyle}">
-            <TextBlock
-                FontSize="20"
-                Style="{StaticResource TitleTextBlockStyle}"
-                Text="Title" />
-        </Button>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="40" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
 
-        <controls:MarkdownTextBlock Margin="0,8,0,0" Text="Description" />
-    </StackPanel>
+        <StackPanel
+            HorizontalAlignment="Center"
+            Orientation="Vertical"
+            Spacing="5">
+            <ToggleButton
+                Padding="3"
+                HorizontalAlignment="Center"
+                IsChecked="{x:Bind IsUpvoted, Mode=TwoWay}"
+                Style="{StaticResource TransparentToggleButtonStyle}"
+                Tag="{x:Bind}">
+                <FontIcon Glyph="&#xE010;" />
+
+                <ToggleButton.Resources>
+                    <ResourceDictionary>
+                        <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="#ff4500" />
+                        <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="#ff6e38" />
+                        <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="#f77d4f" />
+                    </ResourceDictionary>
+                </ToggleButton.Resources>
+            </ToggleButton>
+            <TextBlock
+                HorizontalAlignment="Center"
+                d:Text="1"
+                Text="{x:Bind VoteRatio, Mode=OneWay}" />
+            <ToggleButton
+                Padding="3"
+                HorizontalAlignment="Center"
+                IsChecked="{x:Bind IsDownvoted, Mode=TwoWay}"
+                Style="{StaticResource TransparentToggleButtonStyle}"
+                Tag="{x:Bind}">
+                <FontIcon Glyph="&#xE019;" />
+
+                <ToggleButton.Resources>
+                    <ResourceDictionary>
+                        <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="#7193ff" />
+                        <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="#96afff" />
+                        <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="#b6c7fc" />
+                    </ResourceDictionary>
+                </ToggleButton.Resources>
+            </ToggleButton>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1">
+            <TextBlock>
+                <Run Text="By" />
+                <Hyperlink Click="OnUserHyperlinkClick">
+                    u/<Run Text="{x:Bind UserName, Mode=OneWay}" />
+                </Hyperlink>
+                <Run Text="•" />
+                <Run Text="Posted" />
+                <Run Text="10 hours ago" />
+                <Run Text="in" />
+                <Hyperlink Click="OnSubredditHyperlinkClick">
+                    r/<Run Text="{x:Bind SubredditName, Mode=OneWay}" />
+                </Hyperlink>
+            </TextBlock>
+
+            <Button Margin="0,4,0,0" Style="{ThemeResource TransparentNoHoverButtonStyle}">
+                <TextBlock
+                    FontSize="20"
+                    Style="{StaticResource TitleTextBlockStyle}"
+                    Text="{x:Bind Title, Mode=OneWay}" />
+            </Button>
+
+            <controls:MarkdownTextBlock
+                Margin="0,8,0,0"
+                Text="{x:Bind Description, Mode=OneWay}"
+                Visibility="{x:Bind ShowDescription, Mode=OneWay, Converter={StaticResource BoolToVis}}" />
+
+            <ContentPresenter Content="{x:Bind FooterContent, Mode=OneWay}" />
+        </StackPanel>
+    </Grid>
 </UserControl>

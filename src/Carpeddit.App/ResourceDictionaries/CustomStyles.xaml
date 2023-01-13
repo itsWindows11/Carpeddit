@@ -7,14 +7,14 @@
     xmlns:tkitctrls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:uc="using:Carpeddit.App.UserControls">
     <!--#region Custom Control Styles-->
-    <Style TargetType="uc:PostItemControl" x:Key="DefaultPostItemControlStyle">
+    <Style x:Key="DefaultPostItemControlStyle" TargetType="uc:PostItemControl">
         <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}" />
         <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="{StaticResource ControlCornerRadius}" />
     </Style>
 
-    <Style TargetType="uc:PostItemControl" BasedOn="{StaticResource DefaultPostItemControlStyle}" />
+    <Style BasedOn="{StaticResource DefaultPostItemControlStyle}" TargetType="uc:PostItemControl" />
     <!--#endregion-->
 
     <Style
@@ -297,5 +297,15 @@
         TargetType="ListViewItem">
         <Setter Property="HorizontalAlignment" Value="Stretch" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    </Style>
+
+    <Style BasedOn="{StaticResource StretchedItemContainerStyle}" TargetType="ListViewItem" />
+
+    <Style
+        x:Key="PostItemContainerStyle"
+        BasedOn="{StaticResource StretchedItemContainerStyle}"
+        TargetType="ListViewItem">
+        <Setter Property="Padding" Value="3,0" />
+        <Setter Property="Margin" Value="0,2" />
     </Style>
 </ResourceDictionary>
