@@ -15,9 +15,8 @@
         Padding="48,0,56,0"
         d:Margin="0"
         d:Padding="0"
-        ItemContainerStyle="{StaticResource PostItemContainerStyle}"
-        ItemsSource="{x:Bind SamplePosts}">
-        <ListView.ItemTemplate>
+        ItemContainerStyle="{StaticResource PostItemContainerStyle}">
+        <!--<ListView.ItemTemplate>
             <DataTemplate x:DataType="local:SamplePost">
                 <uc:PostItemControl
                     Title="{x:Bind Title}"
@@ -41,9 +40,6 @@
                     </uc:PostItemControl.FooterContent>
                 </uc:PostItemControl>
             </DataTemplate>
-        </ListView.ItemTemplate>
-        <ListView.Footer>
-            <ContentControl Height="12" />
-        </ListView.Footer>
+        </ListView.ItemTemplate>-->
     </ListView>
 </Page>

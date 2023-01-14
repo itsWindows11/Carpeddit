@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carpeddit.Common", "src\Car
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carpeddit.Models", "src\Carpeddit.Models\Carpeddit.Models.csproj", "{0B3C3582-BB42-49ED-B8C1-4DD3E2FFF51B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carpeddit.Repository", "Carpeddit.Repository\Carpeddit.Repository.csproj", "{F30683CB-6060-4A80-945D-97E39827CACF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,26 @@ Global
 		{0B3C3582-BB42-49ED-B8C1-4DD3E2FFF51B}.Release|x64.Build.0 = Release|x64
 		{0B3C3582-BB42-49ED-B8C1-4DD3E2FFF51B}.Release|x86.ActiveCfg = Release|x86
 		{0B3C3582-BB42-49ED-B8C1-4DD3E2FFF51B}.Release|x86.Build.0 = Release|x86
+		{F30683CB-6060-4A80-945D-97E39827CACF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F30683CB-6060-4A80-945D-97E39827CACF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F30683CB-6060-4A80-945D-97E39827CACF}.Debug|ARM.ActiveCfg = Debug|ARM
+		{F30683CB-6060-4A80-945D-97E39827CACF}.Debug|ARM.Build.0 = Debug|ARM
+		{F30683CB-6060-4A80-945D-97E39827CACF}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{F30683CB-6060-4A80-945D-97E39827CACF}.Debug|ARM64.Build.0 = Debug|ARM64
+		{F30683CB-6060-4A80-945D-97E39827CACF}.Debug|x64.ActiveCfg = Debug|x64
+		{F30683CB-6060-4A80-945D-97E39827CACF}.Debug|x64.Build.0 = Debug|x64
+		{F30683CB-6060-4A80-945D-97E39827CACF}.Debug|x86.ActiveCfg = Debug|x86
+		{F30683CB-6060-4A80-945D-97E39827CACF}.Debug|x86.Build.0 = Debug|x86
+		{F30683CB-6060-4A80-945D-97E39827CACF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F30683CB-6060-4A80-945D-97E39827CACF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F30683CB-6060-4A80-945D-97E39827CACF}.Release|ARM.ActiveCfg = Release|ARM
+		{F30683CB-6060-4A80-945D-97E39827CACF}.Release|ARM.Build.0 = Release|ARM
+		{F30683CB-6060-4A80-945D-97E39827CACF}.Release|ARM64.ActiveCfg = Release|ARM64
+		{F30683CB-6060-4A80-945D-97E39827CACF}.Release|ARM64.Build.0 = Release|ARM64
+		{F30683CB-6060-4A80-945D-97E39827CACF}.Release|x64.ActiveCfg = Release|x64
+		{F30683CB-6060-4A80-945D-97E39827CACF}.Release|x64.Build.0 = Release|x64
+		{F30683CB-6060-4A80-945D-97E39827CACF}.Release|x86.ActiveCfg = Release|x86
+		{F30683CB-6060-4A80-945D-97E39827CACF}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

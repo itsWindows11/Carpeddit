@@ -1,0 +1,75 @@
+﻿<Page
+    x:Class="Carpeddit.App.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
+    mc:Ignorable="d">
+
+    <Grid
+        x:Name="ParentPanel"
+        Padding="16"
+        d:HorizontalAlignment="Center"
+        d:VerticalAlignment="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid MaxWidth="500" ColumnSpacing="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="64" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Image Source="ms-appx:///Assets/Setup/MailIcon.png" />
+
+            <StackPanel Grid.Column="1" Spacing="8">
+                <TextBlock
+                    FontSize="28"
+                    Style="{StaticResource SubtitleTextBlockStyle}"
+                    Text="Sign in to your Reddit account" />
+
+                <TextBlock
+                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                    Text="Choose one of the options below to sign in, or if you don't have a Reddit account, then create one by clicking &quot;Sign up&quot;."
+                    TextWrapping="Wrap" />
+            </StackPanel>
+        </Grid>
+
+        <Border Grid.Row="1" CornerRadius="8">
+            <WebView
+                x:Name="LoginWebView"
+                Margin="0,32,0,0"
+                d:Height="500"
+                d:Width="600" />
+        </Border>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="720" />
+                    </VisualState.StateTriggers>
+
+                    <VisualState.Setters>
+                        <Setter Target="LoginWebView.Width" Value="600" />
+                        <Setter Target="LoginWebView.Height" Value="500" />
+                        <Setter Target="ParentPanel.VerticalAlignment" Value="Center" />
+                        <Setter Target="ParentPanel.HorizontalAlignment" Value="Center" />
+                        <Setter Target="ParentPanel.Padding" Value="0" />
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </Grid>
+</Page>

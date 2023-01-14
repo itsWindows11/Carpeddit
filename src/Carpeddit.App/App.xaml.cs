@@ -2,9 +2,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
 using System;
+using System.Linq;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
+using Windows.Security.Credentials;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -18,6 +20,8 @@ namespace Carpeddit.App
     {
         public static IServiceProvider Services { get; private set; }
 
+        public static PasswordVault Valut { get; private set; }
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -27,6 +31,7 @@ namespace Carpeddit.App
             InitializeComponent();
             Suspending += OnSuspending;
             Services = ConfigureServices();
+            Valut = new PasswordVault();
         }
 
         private IServiceProvider ConfigureServices()
@@ -34,10 +39,10 @@ namespace Carpeddit.App
             var services = new ServiceCollection();
 
             services.AddSingleton<ISettingsService, SettingsService>();
-            services.AddSingleton(RestService.For<IRedditService>("https://www.reddit.com/"));
+            services.AddSingleton(RestService.For<IRedditService>("https://oauth.reddit.com"));
+            services.AddSingleton(RestService.For<IRedditAuthService>("https://www.reddit.com"));
 
             return services.BuildServiceProvider();
-
         }
 
         /// <summary>
@@ -73,7 +78,10 @@ namespace Carpeddit.App
                     // When the navigation stack isn't restored navigate to the first page,
                     // configuring the new page by passing required information as a navigation
                     // parameter
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    if (!Valut.RetrieveAll().Any())
+                        rootFrame.Navigate(typeof(LoginPage), e.Arguments);
+                    else
+                        rootFrame.Navigate(typeof(MainPage), e.Arguments);
                 }
 
                 // Ensure the current window is active

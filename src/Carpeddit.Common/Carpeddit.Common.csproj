@@ -120,6 +120,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Constants\APIConstants.cs" />
     <Compile Include="Constants\Constants.cs" />
     <Compile Include="Extensions\PackageIdExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
