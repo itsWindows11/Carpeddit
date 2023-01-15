@@ -9,8 +9,8 @@ namespace Carpeddit.App.ViewModels
 
         public int SetupProgress
         {
-            get => settingsService.GetValue(0);
-            set => settingsService.SetValue(value);
+            get => _settingsService.GetValue(0);
+            set => _settingsService.SetValue(value);
         }
     }
 }

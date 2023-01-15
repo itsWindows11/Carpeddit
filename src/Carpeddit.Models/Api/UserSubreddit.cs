@@ -78,7 +78,7 @@ namespace Carpeddit.Models
         public string SubmitTextLabel { get; set; }
 
         [JsonPropertyName("is_default_icon")]
-        public string IsDefaultIcon { get; set; }
+        public bool IsDefaultIcon { get; set; }
 
         [JsonPropertyName("link_flair_position")]
         public string LinkFlairPosition { get; set; }

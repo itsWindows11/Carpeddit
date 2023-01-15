@@ -122,6 +122,9 @@
   <ItemGroup>
     <Compile Include="Constants\APIConstants.cs" />
     <Compile Include="Constants\Constants.cs" />
+    <Compile Include="Converters\BaseTimestampConverter.cs" />
+    <Compile Include="Converters\LocalTimestampConverter.cs" />
+    <Compile Include="Converters\UtcTimestampConverter.cs" />
     <Compile Include="Extensions\PackageIdExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Carpeddit.Common.rd.xml" />
@@ -129,6 +132,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.14</Version>
+    </PackageReference>
+    <PackageReference Include="System.Text.Json">
+      <Version>7.0.1</Version>
     </PackageReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

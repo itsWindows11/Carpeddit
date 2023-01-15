@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Refit;
 using System;
 using System.Linq;
+using System.Text.Json;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
@@ -21,7 +22,7 @@ namespace Carpeddit.App
     {
         public static IServiceProvider Services { get; private set; }
 
-        public static PasswordVault Valut { get; private set; } = new PasswordVault();
+        public static PasswordVault Valut { get; } = new PasswordVault();
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -75,6 +76,12 @@ namespace Carpeddit.App
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
+
+                foreach (var item in Valut.RetrieveAll())
+                {
+                    Valut.Remove(item);
+                }
+
                 if (!Valut.RetrieveAll().Any())
                     rootFrame.Navigate(typeof(LoginPage), e.Arguments);
                 else

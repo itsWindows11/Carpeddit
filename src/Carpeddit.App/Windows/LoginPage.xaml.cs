@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Text;
 using Windows.Security.Credentials;
 using Carpeddit.App.ViewModels;
+using System.Text.Json;
 
 namespace Carpeddit.App
 {
@@ -44,7 +45,16 @@ namespace Carpeddit.App
 
                 var userInfo = await _service.GetCurrentlyAuthenticatedUserAsync(authInfo.AccessToken);
 
-                App.Valut.Add(new PasswordCredential("Reddit", userInfo.Name, $"{authInfo.AccessToken} | {authInfo.RefreshToken}"));
+                var info = new
+                {
+                    accessToken = authInfo.AccessToken,
+                    refreshToken = authInfo.RefreshToken
+                };
+
+                App.Valut.Add(new PasswordCredential("Reddit", userInfo.Name, JsonSerializer.Serialize(info)));
+
+                var entry = App.Valut.Retrieve("Reddit", userInfo.Name);
+                entry.RetrievePassword();
 
                 Frame.Navigate(typeof(MainPage));
 

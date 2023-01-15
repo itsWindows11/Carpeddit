@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Carpeddit.Common.Converters;
+using System;
 using System.Collections.Generic;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -32,7 +33,7 @@ namespace Carpeddit.Models
         [property: JsonPropertyName("name")] string Name,
         [property: JsonPropertyName("quarantine")] bool? Quarantine,
         [property: JsonPropertyName("link_flair_text_color")] string LinkFlairTextColor,
-        [property: JsonPropertyName("upvote_ratio")] double? UpvoteRatio,
+        [property: JsonPropertyName("upvote_ratio")] double UpvoteRatio,
         [property: JsonPropertyName("ignore_reports")] bool? IgnoreReports,
         [property: JsonPropertyName("ups")] int? Ups,
         [property: JsonPropertyName("domain")] string Domain,
@@ -57,7 +58,7 @@ namespace Carpeddit.Models
         [property: JsonPropertyName("content_categories")] object ContentCategories,
         [property: JsonPropertyName("is_self")] bool IsSelf,
         [property: JsonPropertyName("subreddit_type")] string SubredditType,
-        [property: JsonPropertyName("created")] double Created,
+        [property: JsonPropertyName("created"), JsonConverter(typeof(LocalTimestampConverter))] DateTime Created,
         [property: JsonPropertyName("link_flair_type")] string LinkFlairType,
         [property: JsonPropertyName("wls")] int Wls,
         [property: JsonPropertyName("removed_by_category")] object RemovedByCategory,
@@ -115,7 +116,7 @@ namespace Carpeddit.Models
         [property: JsonPropertyName("stickied")] bool Stickied,
         [property: JsonPropertyName("url")] string Url,
         [property: JsonPropertyName("subreddit_subscribers")] int? SubredditSubscribers,
-        [property: JsonPropertyName("created_utc")] double? CreatedUtc,
+        [property: JsonPropertyName("created_utc"), JsonConverter(typeof(UtcTimestampConverter))] DateTime CreatedUtc,
         [property: JsonPropertyName("num_crossposts")] int? NumCrossposts,
         [property: JsonPropertyName("mod_reports")] IReadOnlyList<object> ModReports,
         [property: JsonPropertyName("is_video")] bool IsVideo

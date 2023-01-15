@@ -151,6 +151,12 @@
       <Version>7.0.1</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Carpeddit.Common\Carpeddit.Common.csproj">
+      <Project>{a3de218c-3822-4711-9e9c-f52c9d993436}</Project>
+      <Name>Carpeddit.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

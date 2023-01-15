@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Carpeddit.Common.Converters;
+using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Carpeddit.Models
@@ -116,9 +118,6 @@ namespace Carpeddit.Models
         [JsonPropertyName("icon_img")]
         public string IconImage { get; set; }
 
-        [JsonPropertyName("has_mod_mail")]
-        public bool HasModmail { get; set; }
-
         [JsonPropertyName("pref_nightmode")]
         public bool NightMode { get; set; }
 
@@ -132,13 +131,15 @@ namespace Carpeddit.Models
         public bool PrefShowSnooavatar { get; set; }
 
         [JsonPropertyName("created")]
-        public long Created { get; set; }
+        [JsonConverter(typeof(LocalTimestampConverter))]
+        public DateTime Created { get; set; }
 
         [JsonPropertyName("gold_creddits")]
         public int GoldCreddits { get; set; }
 
         [JsonPropertyName("created_utc")]
-        public long CreatedUtc { get; set; }
+        [JsonConverter(typeof(UtcTimestampConverter))]
+        public DateTime CreatedUtc { get; set; }
 
         [JsonPropertyName("pref_show_twitter")]
         public bool PrefShowTwitter { get; set; }
