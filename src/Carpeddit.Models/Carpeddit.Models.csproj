@@ -122,16 +122,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AccountModel.cs" />
-    <Compile Include="FlairRichText.cs" />
-    <Compile Include="Image.cs" />
-    <Compile Include="LinkFlairRichText.cs" />
-    <Compile Include="Listing{T}.cs" />
-    <Compile Include="Post.cs" />
+    <Compile Include="Api\FlairRichText.cs" />
+    <Compile Include="Api\Image.cs" />
+    <Compile Include="Api\LinkFlairRichText.cs" />
+    <Compile Include="Api\Listing{T}.cs" />
+    <Compile Include="Api\Post.cs" />
+    <Compile Include="Api\UserSubreddit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sqlite\CachedUser.cs" />
     <Compile Include="Sqlite\CachedPost.cs" />
     <Compile Include="Sqlite\DbObject.cs" />
-    <Compile Include="User.cs" />
+    <Compile Include="Api\User.cs" />
     <EmbeddedResource Include="Properties\Carpeddit.Models.rd.xml" />
   </ItemGroup>
   <ItemGroup>
