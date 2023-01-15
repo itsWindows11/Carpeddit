@@ -76,12 +76,6 @@ namespace Carpeddit.App
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
-
-                foreach (var item in Valut.RetrieveAll())
-                {
-                    Valut.Remove(item);
-                }
-
                 if (!Valut.RetrieveAll().Any())
                     rootFrame.Navigate(typeof(LoginPage), e.Arguments);
                 else
