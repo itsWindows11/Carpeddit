@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using System.Runtime.CompilerServices;
 
 namespace Carpeddit.App.Services
 {
@@ -11,7 +12,7 @@ namespace Carpeddit.App.Services
         /// <typeparam name="T">The type of the object bound to the key.</typeparam>
         /// <param name="key">The key to check.</param>
         /// <param name="value">The value to assign to the setting key.</param>
-        void SetValue<T>(string key, T value);
+        void SetValue<T>(T value = default, [CallerMemberName] string key = "");
 
         /// <summary>
         /// Reads a value from the current <see cref="IServiceProvider"/> instance.
@@ -20,6 +21,6 @@ namespace Carpeddit.App.Services
         /// <param name="key">The key associated to the requested object.</param>
         /// <returns>The requested object.</returns>
         [Pure]
-        T GetValue<T>(string key);
+        T GetValue<T>(T defaultValue = default, [CallerMemberName] string key = "");
     }
 }

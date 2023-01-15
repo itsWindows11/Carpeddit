@@ -1,7 +1,6 @@
 ﻿using Carpeddit.App.Views;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Windows.System;
 using Windows.UI.Core;

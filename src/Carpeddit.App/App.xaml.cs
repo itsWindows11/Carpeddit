@@ -1,4 +1,5 @@
 ﻿using Carpeddit.App.Services;
+using Carpeddit.App.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
 using System;
@@ -20,7 +21,7 @@ namespace Carpeddit.App
     {
         public static IServiceProvider Services { get; private set; }
 
-        public static PasswordVault Valut { get; private set; }
+        public static PasswordVault Valut { get; private set; } = new PasswordVault();
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -31,7 +32,6 @@ namespace Carpeddit.App
             InitializeComponent();
             Suspending += OnSuspending;
             Services = ConfigureServices();
-            Valut = new PasswordVault();
         }
 
         private IServiceProvider ConfigureServices()
@@ -39,6 +39,7 @@ namespace Carpeddit.App
             var services = new ServiceCollection();
 
             services.AddSingleton<ISettingsService, SettingsService>();
+            services.AddSingleton<SettingsViewModel>();
             services.AddSingleton(RestService.For<IRedditService>("https://oauth.reddit.com"));
             services.AddSingleton(RestService.For<IRedditAuthService>("https://www.reddit.com"));
 
@@ -57,36 +58,31 @@ namespace Carpeddit.App
             if (Window.Current.Content is not Frame rootFrame)
             {
                 // Create a Frame to act as the navigation context and navigate to the first page
-                rootFrame = new Frame();
-
+                rootFrame = new();
                 rootFrame.NavigationFailed += OnNavigationFailed;
-
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
-                    //TODO: Load state from previously suspended application
-                }
 
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
 
-            if (!e.PrelaunchActivated)
-            {
-                CoreApplication.EnablePrelaunch(true);
-                if (rootFrame.Content == null)
-                {
-                    // When the navigation stack isn't restored navigate to the first page,
-                    // configuring the new page by passing required information as a navigation
-                    // parameter
-                    if (!Valut.RetrieveAll().Any())
-                        rootFrame.Navigate(typeof(LoginPage), e.Arguments);
-                    else
-                        rootFrame.Navigate(typeof(MainPage), e.Arguments);
-                }
+            if (e.PrelaunchActivated)
+                return;
 
-                // Ensure the current window is active
-                Window.Current.Activate();
+            CoreApplication.EnablePrelaunch(true);
+
+            if (rootFrame.Content == null)
+            {
+                // When the navigation stack isn't restored navigate to the first page,
+                // configuring the new page by passing required information as a navigation
+                // parameter
+                if (!Valut.RetrieveAll().Any())
+                    rootFrame.Navigate(typeof(LoginPage), e.Arguments);
+                else
+                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
             }
+
+            // Ensure the current window is active
+            Window.Current.Activate();
         }
 
         /// <summary>

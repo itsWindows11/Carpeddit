@@ -25,6 +25,7 @@
         <muxc:NavigationView
             x:Name="NavView"
             Grid.Row="1"
+            BackRequested="OnBackRequested"
             IsBackButtonVisible="Auto"
             IsBackEnabled="{x:Bind ContentFrame.CanGoBack, Mode=OneWay}"
             IsTitleBarAutoPaddingEnabled="False"
@@ -34,7 +35,7 @@
                     x:Name="NavViewHeader"
                     Margin="-16,-16,0,0"
                     d:Text="Home"
-                    Text="{x:Bind ((muxc:NavigationViewItem)NavView.SelectedItem).Content, Mode=OneWay}"/>
+                    Text="{x:Bind ((muxc:NavigationViewItem)NavView.SelectedItem).Content, Mode=OneWay}" />
             </muxc:NavigationView.Header>
 
             <muxc:NavigationView.MenuItems>

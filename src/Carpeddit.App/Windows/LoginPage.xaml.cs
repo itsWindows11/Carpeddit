@@ -2,19 +2,20 @@
 using System;
 using Windows.UI.Xaml.Controls;
 using Carpeddit.Common.Constants;
-using Carpeddit.Models;
 using Carpeddit.App.Services;
+using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Text;
 using Windows.Security.Credentials;
-using System.Linq;
+using Carpeddit.App.ViewModels;
 
 namespace Carpeddit.App
 {
     public sealed partial class LoginPage : Page
     {
-        private IRedditAuthService _authService = App.Services.GetService(typeof(IRedditAuthService)) as IRedditAuthService;
-        private IRedditService _service = App.Services.GetService(typeof(IRedditService)) as IRedditService;
+        private IRedditAuthService _authService = App.Services.GetService<IRedditAuthService>();
+        private SettingsViewModel _settingsViewModel = App.Services.GetService<SettingsViewModel>();
+        private IRedditService _service = App.Services.GetService<IRedditService>();
 
         public LoginPage()
         {
@@ -49,7 +50,7 @@ namespace Carpeddit.App
 
                 // TODO: Check if setup is running instead
                 // of going to the next setup page.
-                // App.SViewModel.SetupProgress++;
+                // _settingsViewModel.SetupProgress++;
                 // Frame.Navigate(typeof(NotificationsPage), new SlideNavigationTransitionInfo());
             }
         }
