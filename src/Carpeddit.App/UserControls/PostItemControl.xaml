@@ -68,14 +68,14 @@
             <TextBlock>
                 <Run Text="By" />
                 <Hyperlink Click="OnUserHyperlinkClick">
-                    u/<Run Text="{x:Bind UserName, Mode=OneWay}" />
+                    <Run d:Text="u/user" Text="{x:Bind UserName, Mode=OneWay}" />
                 </Hyperlink>
                 <Run Text="•" />
                 <Run Text="Posted" />
                 <Run Text="10 hours ago" />
                 <Run Text="in" />
                 <Hyperlink Click="OnSubredditHyperlinkClick">
-                    r/<Run Text="{x:Bind SubredditName, Mode=OneWay}" />
+                    <Run d:Text="r/subreddit" Text="{x:Bind SubredditName, Mode=OneWay}" />
                 </Hyperlink>
             </TextBlock>
 

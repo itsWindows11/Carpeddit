@@ -8,117 +8,344 @@ using System.Text.Json.Serialization;
 
 namespace Carpeddit.Models
 {
-    public record Post(
-        [property: JsonPropertyName("author_flair_background_color")] string AuthorFlairBackgroundColor,
-        [property: JsonPropertyName("approved_at_utc")] DateTime ApprovedAtUtc,
-        [property: JsonPropertyName("subreddit")] string Subreddit,
-        [property: JsonPropertyName("selftext")] string Selftext,
-        [property: JsonPropertyName("user_reports")] JsonArray UserReports,
-        [property: JsonPropertyName("user_reports_dismissed")] JsonArray DismissedUserReports,
-        [property: JsonPropertyName("saved")] bool? Saved,
-        [property: JsonPropertyName("mod_reason_title")] string ModReasonTitle,
-        [property: JsonPropertyName("gilded")] int? Gilded,
-        [property: JsonPropertyName("clicked")] bool? Clicked,
-        [property: JsonPropertyName("title")] string Title,
-        [property: JsonPropertyName("link_flair_richtext")] IReadOnlyList<LinkFlairRichText> LinkFlairRichtext,
-        [property: JsonPropertyName("subreddit_name_prefixed")] string SubredditNamePrefixed,
-        [property: JsonPropertyName("hidden")] bool? Hidden,
-        [property: JsonPropertyName("pwls")] int? Pwls,
-        [property: JsonPropertyName("link_flair_css_class")] string LinkFlairCssClass,
-        [property: JsonPropertyName("downs")] int? Downs,
-        [property: JsonPropertyName("thumbnail_height")] int? ThumbnailHeight,
-        [property: JsonPropertyName("top_awarded_type")] object TopAwardedType,
-        [property: JsonPropertyName("parent_whitelist_status")] string ParentWhitelistStatus,
-        [property: JsonPropertyName("hide_score")] bool? HideScore,
-        [property: JsonPropertyName("name")] string Name,
-        [property: JsonPropertyName("quarantine")] bool? Quarantine,
-        [property: JsonPropertyName("link_flair_text_color")] string LinkFlairTextColor,
-        [property: JsonPropertyName("upvote_ratio")] double UpvoteRatio,
-        [property: JsonPropertyName("ignore_reports")] bool? IgnoreReports,
-        [property: JsonPropertyName("ups")] int? Ups,
-        [property: JsonPropertyName("domain")] string Domain,
-        [property: JsonPropertyName("thumbnail_width")] int? ThumbnailWidth,
-        [property: JsonPropertyName("author_flair_template_id")] string AuthorFlairTemplateId,
-        [property: JsonPropertyName("is_original_content")] bool? IsOriginalContent,
-        [property: JsonPropertyName("author_fullname")] string AuthorFullname,
-        [property: JsonPropertyName("is_reddit_media_domain")] bool? IsRedditMediaDomain,
-        [property: JsonPropertyName("is_meta")] bool? IsMeta,
-        [property: JsonPropertyName("category")] string? Category,
-        [property: JsonPropertyName("link_flair_text")] string LinkFlairText,
-        [property: JsonPropertyName("can_mod_post")] bool? CanModPost,
-        [property: JsonPropertyName("score")] int? Score,
-        [property: JsonPropertyName("approved_by")] string? ApprovedBy,
-        [property: JsonPropertyName("is_created_from_ads_ui")] bool? IsCreatedFromAdsUi,
-        [property: JsonPropertyName("author_premium")] bool? AuthorPremium,
-        [property: JsonPropertyName("thumbnail")] string Thumbnail,
-        [property: JsonPropertyName("edited")] bool? Edited,
-        [property: JsonPropertyName("author_flair_css_class")] string AuthorFlairCssClass,
-        [property: JsonPropertyName("author_flair_richtext")] IReadOnlyList<IReadOnlyList<FlairRichText>> AuthorFlairRichtext,
-        [property: JsonPropertyName("post_hint")] string PostHint,
-        [property: JsonPropertyName("content_categories")] object ContentCategories,
-        [property: JsonPropertyName("is_self")] bool IsSelf,
-        [property: JsonPropertyName("subreddit_type")] string SubredditType,
-        [property: JsonPropertyName("created"), JsonConverter(typeof(LocalTimestampConverter))] DateTime Created,
-        [property: JsonPropertyName("link_flair_type")] string LinkFlairType,
-        [property: JsonPropertyName("wls")] int Wls,
-        [property: JsonPropertyName("removed_by_category")] object RemovedByCategory,
-        [property: JsonPropertyName("banned_by")] object BannedBy,
-        [property: JsonPropertyName("author_flair_type")] string AuthorFlairType,
-        [property: JsonPropertyName("total_awards_received")] int? TotalAwardsReceived,
-        [property: JsonPropertyName("allow_live_comments")] bool? AllowLiveComments,
-        [property: JsonPropertyName("selftext_html")] string SelfTextHtml,
-        [property: JsonPropertyName("likes")] object Likes,
-        [property: JsonPropertyName("suggested_sort")] string SuggestedSort,
-        [property: JsonPropertyName("banned_at_utc")] object BannedAtUtc,
-        [property: JsonPropertyName("url_overridden_by_dest")] string UrlOverriddenByDest,
-        [property: JsonPropertyName("view_count")] int? ViewCount,
-        [property: JsonPropertyName("archived")] bool Archived,
-        [property: JsonPropertyName("no_follow")] bool? NoFollow,
-        [property: JsonPropertyName("spam")] bool Spam,
-        [property: JsonPropertyName("is_crosspostable")] bool IsCrosspostable,
-        [property: JsonPropertyName("pinned")] bool Pinned,
-        [property: JsonPropertyName("over_18")] bool Over18,
-        [property: JsonPropertyName("preview")] Preview Preview,
-        [property: JsonPropertyName("all_awardings")] IReadOnlyList<object> AllAwardings,
-        [property: JsonPropertyName("awarders")] IReadOnlyList<object> Awarders,
-        [property: JsonPropertyName("media_only")] bool MediaOnly,
-        [property: JsonPropertyName("link_flair_template_id")] string LinkFlairTemplateId,
-        [property: JsonPropertyName("can_gild")] bool CanGild,
-        [property: JsonPropertyName("removed")] bool Removed,
-        [property: JsonPropertyName("spoiler")] bool Spoiler,
-        [property: JsonPropertyName("locked")] bool Locked,
-        [property: JsonPropertyName("author_flair_text")] string? AuthorFlairText,
-        [property: JsonPropertyName("treatment_tags")] IReadOnlyList<object> TreatmentTags,
-        [property: JsonPropertyName("visited")] bool Visited,
-        [property: JsonPropertyName("removed_by")] object RemovedBy,
-        [property: JsonPropertyName("mod_note")] string ModNote,
-        [property: JsonPropertyName("distinguished")] string? Distinguished,
-        [property: JsonPropertyName("subreddit_id")] string SubredditId,
-        [property: JsonPropertyName("author_is_blocked")] bool AuthorIsBlocked,
-        [property: JsonPropertyName("mod_reason_by")] string ModReasonBy,
-        [property: JsonPropertyName("num_reports")] int? NumReports,
-        [property: JsonPropertyName("removal_reason")] string? RemovalReason,
-        [property: JsonPropertyName("link_flair_background_color")] string LinkFlairBackgroundColor,
-        [property: JsonPropertyName("id")] string Id,
-        [property: JsonPropertyName("num_duplicates")] int? NumDuplicates,
-        [property: JsonPropertyName("report_reasons")] IReadOnlyList<object> ReportReasons,
-        [property: JsonPropertyName("author")] string Author,
-        [property: JsonPropertyName("discussion_type")] object DiscussionType,
-        [property: JsonPropertyName("num_comments")] int? NumComments,
-        [property: JsonPropertyName("send_replies")] bool SendReplies,
-        [property: JsonPropertyName("media")] object Media,
-        [property: JsonPropertyName("contest_mode")] bool ContestMode,
-        [property: JsonPropertyName("author_patreon_flair")] bool AuthorPatreonFlair,
-        [property: JsonPropertyName("approved")] bool Approved,
-        [property: JsonPropertyName("author_flair_text_color")] object AuthorFlairTextColor,
-        [property: JsonPropertyName("permalink")] string Permalink,
-        [property: JsonPropertyName("whitelist_status")] string WhitelistStatus,
-        [property: JsonPropertyName("stickied")] bool Stickied,
-        [property: JsonPropertyName("url")] string Url,
-        [property: JsonPropertyName("subreddit_subscribers")] int? SubredditSubscribers,
-        [property: JsonPropertyName("created_utc"), JsonConverter(typeof(UtcTimestampConverter))] DateTime CreatedUtc,
-        [property: JsonPropertyName("num_crossposts")] int? NumCrossposts,
-        [property: JsonPropertyName("mod_reports")] IReadOnlyList<object> ModReports,
-        [property: JsonPropertyName("is_video")] bool IsVideo
-    );
+    public sealed class Post
+    {
+        [JsonPropertyName("author_flair_background_color")]
+        public string AuthorFlairBackgroundColor { get; set; }
+
+        [JsonPropertyName("approved_at_utc")]
+        [JsonConverter(typeof(UtcTimestampConverter))]
+        public DateTime ApprovedAtUtc { get; set; }
+
+        [JsonPropertyName("subreddit")]
+        public string Subreddit { get; set; }
+
+        [JsonPropertyName("selftext")]
+        public string Selftext { get; set; }
+
+        [JsonPropertyName("user_reports")]
+        public JsonArray UserReports { get; set; }
+
+        [JsonPropertyName("user_reports_dismissed")]
+        public JsonArray DismissedUserReports { get; set; }
+
+        [JsonPropertyName("saved")]
+        public bool? Saved { get; set; }
+
+        [JsonPropertyName("mod_reason_title")]
+        public string ModReasonTitle { get; set; }
+
+        [JsonPropertyName("gilded")]
+        public int? Gilded { get; set; }
+
+        [JsonPropertyName("clicked")]
+        public bool? Clicked { get; set; }
+
+        [JsonPropertyName("title")]
+        public string Title { get; set; }
+
+        [JsonPropertyName("link_flair_richtext")]
+        public JsonArray LinkFlairRichText { get; set; }
+
+        [JsonPropertyName("subreddit_name_prefixed")]
+        public string SubredditNamePrefixed { get; set; }
+
+        [JsonPropertyName("hidden")]
+        public bool? Hidden { get; set; }
+
+        [JsonPropertyName("pwls")]
+        public int? Pwls { get; set; }
+
+        [JsonPropertyName("link_flair_css_class")]
+        public string LinkFlairCssClass { get; set; }
+
+        [JsonPropertyName("downs")]
+        public int? Downs { get; set; }
+
+        [JsonPropertyName("thumbnail_height")]
+        public int? ThumbnailHeight { get; set; }
+
+        [JsonPropertyName("top_awarded_type")]
+        public JsonObject TopAwardedType { get; set; }
+
+        [JsonPropertyName("parent_whitelist_status")]
+        public string ParentWhitelistStatus { get; set; }
+
+        [JsonPropertyName("hide_score")]
+        public bool? HideScore { get; set; }
+
+        [JsonPropertyName("name")]
+        public string Name { get; set; }
+
+        [JsonPropertyName("quarantine")]
+        public bool? Quarantine { get; set; }
+
+        [JsonPropertyName("link_flair_text_color")]
+        public string LinkFlairTextColor { get; set; }
+
+        [JsonPropertyName("upvote_ratio")]
+        public double UpvoteRatio { get; set; }
+
+        [JsonPropertyName("ignore_reports")]
+        public bool? IgnoreReports { get; set; }
+
+        [JsonPropertyName("ups")]
+        public int? Ups { get; set; }
+
+        [JsonPropertyName("domain")]
+        public string Domain { get; set; }
+
+        [JsonPropertyName("thumbnail_width")]
+        public int? ThumbnailWidth { get; set; }
+
+        [JsonPropertyName("author_flair_template_id")]
+        public string AuthorFlairTemplateId { get; set; }
+
+        [JsonPropertyName("is_original_content")]
+        public bool? IsOriginalCntent { get; set; }
+
+        [JsonPropertyName("author_fullname")]
+        public string AuthorFullname { get; set; }
+
+        [JsonPropertyName("is_reddit_media_domain")]
+        public bool? IsRedditMediaDomain { get; set; }
+
+        [JsonPropertyName("is_meta")]
+        public bool? IsMeta { get; set; }
+
+        [JsonPropertyName("category")]
+        public string? Category { get; set; }
+
+        [JsonPropertyName("link_flair_text")]
+        public string LinkFlairText { get; set; }
+
+        [JsonPropertyName("can_mod_post")]
+        public bool? CanModPost { get; set; }
+
+        [JsonPropertyName("score")]
+        public int? Score { get; set; }
+
+        [JsonPropertyName("approved_by")]
+        public string? ApprovedBy { get; set; }
+
+        [JsonPropertyName("is_created_from_ads_ui")]
+        public bool? IsCreatedFromAdsUI { get; set; }
+
+        [JsonPropertyName("author_premium")]
+        public bool? AuthorPremium { get; set; }
+
+        [JsonPropertyName("thumbnail")]
+        public string Thumbnail { get; set; }
+
+        [JsonPropertyName("edited")]
+        [JsonConverter(typeof(LocalTimestampConverter))]
+        public DateTime Edited { get; set; }
+
+        [JsonPropertyName("author_flair_css_class")]
+        public string AuthorFlairCssClass { get; set; }
+
+        [JsonPropertyName("author_flair_richtext")]
+        public JsonArray AuthorFlairRichText { get; set; }
+
+        [JsonPropertyName("post_hint")]
+        public string PostHint { get; set; }
+
+        [JsonPropertyName("content_categories")]
+        public object ContentCategories { get; set; }
+
+        [JsonPropertyName("is_self")]
+        public bool IsSelf { get; set; }
+
+        [JsonPropertyName("subreddit_type")]
+        public string SubredditType { get; set; }
+
+        [JsonPropertyName("created")]
+        [JsonConverter(typeof(LocalTimestampConverter))]
+        public DateTime? Created { get; set; }
+
+        [JsonPropertyName("link_flair_type")]
+        public string LinkFlairType { get; set; }
+
+        [JsonPropertyName("wls")]
+        public int? Wls { get; set; }
+
+        [JsonPropertyName("removed_by_category")]
+        public object RemovedByCategory { get; set; }
+
+        [JsonPropertyName("banned_by")]
+        public object BannedBy { get; set; }
+
+        [JsonPropertyName("author_flair_type")]
+        public string AuthorFlairType { get; set; }
+
+        [JsonPropertyName("total_awards_received")]
+        public int? TotalAwardsReceived { get; set; }
+
+        [JsonPropertyName("allow_live_comments")]
+        public bool? AllowLiveComments { get; set; }
+
+        [JsonPropertyName("selftext_html")]
+        public string SelfTextHtml { get; set; }
+
+        [JsonPropertyName("likes")]
+        public object Likes { get; set; }
+
+        [JsonPropertyName("suggested_sort")]
+        public string SuggestedSort { get; set; }
+
+        [JsonPropertyName("banned_at_utc")]
+        [JsonConverter(typeof(UtcTimestampConverter))]
+        public DateTime BannedAtUtc { get; set; }
+
+        [JsonPropertyName("url_overridden_by_dest")]
+        public string UrlOverridenByDest { get; set; }
+
+        [JsonPropertyName("view_count")]
+        public int? ViewCount { get; set; }
+
+        [JsonPropertyName("archived")]
+        public bool Archived { get; set; }
+
+        [JsonPropertyName("no_follow")]
+        public bool? NoFollow { get; set; }
+
+        [JsonPropertyName("spam")]
+        public bool Spam { get; set; }
+
+        [JsonPropertyName("is_crosspostable")]
+        public bool IsCrosspostable { get; set; }
+
+        [JsonPropertyName("pinned")]
+        public bool Pinned { get; set; }
+
+        [JsonPropertyName("over_18")]
+        public bool Over18 { get; set; }
+
+        [JsonPropertyName("preview")]
+        public Preview Preview { get; set; }
+
+        [JsonPropertyName("all_awardings")]
+        public JsonArray AllAwardings { get; set; }
+
+        [JsonPropertyName("awarders")]
+        public JsonArray Awarders { get; set; }
+
+        [JsonPropertyName("media_only")]
+        public bool MediaOnly { get; set; }
+
+        [JsonPropertyName("link_flair_template_id")]
+        public string LinkFlairTemplateId { get; set; }
+
+        [JsonPropertyName("can_gild")]
+        public bool CanGild { get; set; }
+
+        [JsonPropertyName("removed")]
+        public bool Removed { get; set; }
+
+        [JsonPropertyName("spoiler")]
+        public bool Spoiler { get; set; }
+
+        [JsonPropertyName("locked")]
+        public bool Locked { get; set; }
+
+        [JsonPropertyName("author_flair_text")]
+        public string? AuthorFlairText { get; set; }
+
+        [JsonPropertyName("treatment_tags")]
+        public JsonArray TreatmentTags { get; set; }
+
+        [JsonPropertyName("visited")]
+        public bool Visited { get; set; }
+
+        [JsonPropertyName("removed_by")]
+        public object RemovedBy { get; set; }
+
+        [JsonPropertyName("mod_note")]
+        public string ModNote { get; set; }
+
+        [JsonPropertyName("distinguished")]
+        public string? Distinguished { get; set; }
+
+        [JsonPropertyName("subreddit_id")]
+        public string SubredditId { get; set; }
+
+        [JsonPropertyName("author_is_blocked")]
+        public bool AuthorIsBlocked { get; set; }
+
+        [JsonPropertyName("mod_reason_by")]
+        public string ModReasonBy { get; set; }
+
+        [JsonPropertyName("num_reports")]
+        public int? NumReports { get; set; }
+
+        [JsonPropertyName("removal_reason")]
+        public string? RemovalReason { get; set; }
+
+        [JsonPropertyName("link_flair_background_color")]
+        public string LinkFlairBackgroundColor { get; set; }
+
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
+
+        [JsonPropertyName("num_duplicates")]
+        public int? NumDuplicates { get; set; }
+
+        [JsonPropertyName("report_reasons")]
+        public JsonArray ReportReasons { get; set; }
+
+        [JsonPropertyName("author")]
+        public string Author { get; set; }
+
+        [JsonPropertyName("discussion_type")]
+        public object DiscussionType { get; set; }
+
+        [JsonPropertyName("num_comments")]
+        public int NumComments { get; set; }
+
+        [JsonPropertyName("send_replies")]
+        public bool SendReplies { get; set; }
+
+        [JsonPropertyName("media")]
+        public object Media { get; set; }
+
+        [JsonPropertyName("contest_mode")]
+        public bool ContestMode { get; set; }
+
+        [JsonPropertyName("author_patreon_flair")]
+        public bool AuthorPatreonFlair { get; set; }
+
+        [JsonPropertyName("approved")]
+        public bool Approved { get; set; }
+
+        [JsonPropertyName("author_flair_text_color")]
+        public object AuthorFlairTextColor { get; set; }
+
+        [JsonPropertyName("permalink")]
+        public string Permalink { get; set; }
+
+        [JsonPropertyName("whitelist_status")]
+        public string WhitelistStatus { get; set; }
+
+        [JsonPropertyName("stickied")]
+        public bool Stickied { get; set; }
+
+        [JsonPropertyName("url")]
+        public string Url { get; set; }
+
+        [JsonPropertyName("subreddit_subscribers")]
+        public int? SubredditSubscribers { get; set; }
+
+        [JsonPropertyName("created_utc")]
+        [JsonConverter(typeof(UtcTimestampConverter))]
+        public DateTime CreatedUtc { get; set; }
+
+        [JsonPropertyName("num_crossposts")]
+        public int? NumCrossposts { get; set; }
+
+        [JsonPropertyName("mod_reports")]
+        public IReadOnlyList<object> ModReports { get; set; }
+
+        [JsonPropertyName("is_video")]
+        public bool IsVideo { get; set; }
+    }
 }

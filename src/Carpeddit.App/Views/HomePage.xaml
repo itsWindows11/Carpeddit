@@ -5,41 +5,49 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Carpeddit.App.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:Carpeddit.Models"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:uc="using:Carpeddit.App.UserControls"
     d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
 
-    <ListView
-        Margin="-48,0,-56,0"
-        Padding="48,0,56,0"
-        d:Margin="0"
-        d:Padding="0"
-        ItemContainerStyle="{StaticResource PostItemContainerStyle}">
-        <!--<ListView.ItemTemplate>
-            <DataTemplate x:DataType="local:SamplePost">
-                <uc:PostItemControl
-                    Title="{x:Bind Title}"
-                    Description="{x:Bind Description}"
-                    SubredditName="{x:Bind Subreddit}"
-                    UserName="{x:Bind User}">
-                    <uc:PostItemControl.FooterContent>
-                        <CommandBar
-                            Margin="-12,0,0,0"
-                            Padding="0"
-                            HorizontalAlignment="Left"
-                            Background="Transparent"
-                            DefaultLabelPosition="Right">
-                            <AppBarButton
-                                Icon="Comment"
-                                IsHitTestVisible="False"
-                                Label="123 comments" />
-                            <AppBarButton Icon="Share" Label="Share" />
-                            <AppBarButton Icon="Save" Label="Save" />
-                        </CommandBar>
-                    </uc:PostItemControl.FooterContent>
-                </uc:PostItemControl>
-            </DataTemplate>
-        </ListView.ItemTemplate>-->
-    </ListView>
+    <Grid>
+        <muxc:ProgressRing x:Name="HomeRing" />
+
+        <ListView
+            x:Name="MainList"
+            Margin="-48,0,-56,0"
+            Padding="48,0,56,0"
+            d:Margin="0"
+            d:Padding="0"
+            ItemContainerStyle="{StaticResource PostItemContainerStyle}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:Post">
+                    <uc:PostItemControl
+                        Title="{x:Bind Title}"
+                        Description="{x:Bind Selftext}"
+                        SubredditName="{x:Bind SubredditNamePrefixed}"
+                        VoteRatio="{x:Bind (x:Int32)UpvoteRatio}"
+                        UserName="{x:Bind Author}">
+                        <uc:PostItemControl.FooterContent>
+                            <CommandBar
+                                Margin="-12,0,0,0"
+                                Padding="0"
+                                HorizontalAlignment="Left"
+                                Background="Transparent"
+                                DefaultLabelPosition="Right">
+                                <AppBarButton
+                                    Icon="Comment"
+                                    IsHitTestVisible="False"
+                                    Label="{x:Bind NumComments}" />
+                                <AppBarButton Icon="Share" Label="Share" />
+                                <AppBarButton Icon="Save" Label="Save" />
+                            </CommandBar>
+                        </uc:PostItemControl.FooterContent>
+                    </uc:PostItemControl>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
 </Page>

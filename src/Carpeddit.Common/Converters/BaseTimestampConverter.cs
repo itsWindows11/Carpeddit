@@ -8,14 +8,20 @@ namespace Carpeddit.Common.Converters
     {
         public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            var valueString = reader.GetDouble().ToString();
-
-            if (valueString.Length > 0 && !bool.TryParse(valueString, out _))
+            try
             {
-                if (DateTime.TryParse(valueString, out DateTime parsedDate))
-                    return parsedDate;
+                var valueString = reader.GetDouble().ToString();
 
-                return ParseDateFromSeconds((long)Convert.ToDouble(valueString));
+                if (valueString.Length > 0 && !bool.TryParse(valueString, out _))
+                {
+                    if (DateTime.TryParse(valueString, out DateTime parsedDate))
+                        return parsedDate;
+
+                    return ParseDateFromSeconds((long)Convert.ToDouble(valueString));
+                }
+            } catch
+            {
+
             }
 
             return default;

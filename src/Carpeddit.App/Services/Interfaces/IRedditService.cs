@@ -1,5 +1,7 @@
 ﻿using Carpeddit.Models;
+using Carpeddit.Models.Api;
 using Refit;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Carpeddit.App.Services
@@ -8,11 +10,18 @@ namespace Carpeddit.App.Services
     public interface IRedditService
     {
         /// <summary>
-        /// Get a list of posts from a given subreddit
+        /// Get a list of posts from a given subreddit.
         /// </summary>
         /// <param name="subreddit">The subreddit name.</param>
-        [Get("/r/{subreddit}/.json")]
-        Task<object> GetSubredditPostsAsync(string subreddit);
+        [Get("/r/{subreddit}/hot")]
+        Task<Listing<IEnumerable<ApiObjectWithKind<Post>>>> GetSubredditPostsAsync(string subreddit, [Authorize] string accessToken);
+
+        /// <summary>
+        /// Get a list of posts from the frontpage.
+        /// </summary>
+        /// <param name="subreddit">The subreddit name.</param>
+        [Get("/hot")]
+        Task<Listing<IEnumerable<ApiObjectWithKind<Post>>>> GetFrontpagePostsAsync([Authorize] string accessToken);
 
         /// <summary>
         /// Gets the currently authenticated user.
