@@ -34,8 +34,10 @@ namespace Carpeddit.App.Views
             Loaded += HomePage_Loaded;
         }
 
-        private async void HomePage_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private async void HomePage_Loaded(object sender, RoutedEventArgs e)
         {
+            Loaded -= HomePage_Loaded;
+
             var valut = App.Valut.Retrieve("Reddit", "itsWindows11");
             valut.RetrievePassword();
             var password = valut.Password;

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -34,6 +35,9 @@ namespace Carpeddit.App
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             TitleBar.SetAsTitleBar();
+            var icon = App.CurrentUser.IconUrl.Replace("&amp;", "&");
+            System.Diagnostics.Debug.WriteLine(icon);
+            ProfileBitmap.UriSource = new(icon);
 
             ContentFrame.Navigated += OnNavigated;
 

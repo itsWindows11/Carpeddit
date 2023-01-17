@@ -72,7 +72,7 @@
             <muxc:NavigationView.FooterMenuItems>
                 <muxc:NavigationViewItem
                     x:Name="ProfileItem"
-                    Content="Your profile"
+                    Content="Profile"
                     Tag="profile">
                     <muxc:NavigationViewItem.ContextFlyout>
                         <MenuFlyout>

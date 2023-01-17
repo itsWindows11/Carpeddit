@@ -10,6 +10,7 @@ using Carpeddit.App.Services;
 using Carpeddit.App.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Windows.UI.Xaml;
+using Carpeddit.Models;
 
 namespace Carpeddit.App.Dialogs
 {
@@ -55,6 +56,14 @@ namespace Carpeddit.App.Dialogs
             };
 
             App.Valut.Add(new PasswordCredential("Reddit", userInfo.Name, JsonSerializer.Serialize(info)));
+
+            await App.CacheRepository.UpsertAsync(new CachedUser()
+            {
+                Name = userInfo.Name,
+                IconUrl = userInfo.IconImage,
+                BannerUrl = userInfo.Subreddit.BannerImage,
+                Created = userInfo.Created
+            });
 
             // TODO: Check if setup is running instead
             // of going to the next setup page.

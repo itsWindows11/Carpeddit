@@ -1,5 +1,6 @@
 ﻿using Carpeddit.Models.Sqlite;
 using SQLite;
+using System;
 
 namespace Carpeddit.Models
 {
@@ -10,6 +11,12 @@ namespace Carpeddit.Models
     [Table("CachedUsers")]
     public sealed class CachedUser : DbObject
     {
+        public string Name { get; set; }
 
+        public string IconUrl { get; set; }
+
+        public string BannerUrl { get; set; }
+
+        public DateTime Created { get; set; }
     }
 }

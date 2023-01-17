@@ -14,7 +14,7 @@ namespace Carpeddit.Repository
         /// Initializes the database.
         /// </summary>
         /// <returns>A <see cref="Task"/> which represents the operation.</returns>
-        Task<IRepository> InitializeAsync();
+        Task InitializeAsync();
 
         /// <summary>
         /// Gets a list of items from the database.
@@ -54,7 +54,7 @@ namespace Carpeddit.Repository
         /// Initializes the database.
         /// </summary>
         /// <returns>A <see cref="Task"/> which represents the operation.</returns>
-        ISyncRepository Initialize();
+        void Initialize();
 
         /// <summary>
         /// Gets a list of items from the database.

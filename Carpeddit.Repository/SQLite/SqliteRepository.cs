@@ -13,20 +13,18 @@ namespace Carpeddit.Repository
     {
         private SQLiteAsyncConnection _asyncDb;
 
-        public async Task<IRepository> InitializeAsync()
+        public async Task InitializeAsync()
         {
-            var file = await ApplicationData.Current.LocalFolder.CreateFileAsync("Lists.db", CreationCollisionOption.OpenIfExists);
+            var file = await ApplicationData.Current.LocalFolder.CreateFileAsync("Cache.db", CreationCollisionOption.OpenIfExists);
 
             _asyncDb ??= new SQLiteAsyncConnection(file.Path);
 
             await _asyncDb.EnableWriteAheadLoggingAsync();
 
             _ = await Task.WhenAll(
-                    _asyncDb.CreateTableAsync<CachedPost>(),
+                    //_asyncDb.CreateTableAsync<CachedPost>(),
                     _asyncDb.CreateTableAsync<CachedUser>()
                 );
-
-            return new SqliteRepository();
         }
 
         public async IAsyncEnumerable<T> GetItemsAsync<T>() where T : DbObject, new()
@@ -50,15 +48,13 @@ namespace Carpeddit.Repository
     {
         private SQLiteConnection _db;
 
-        public ISyncRepository Initialize()
+        public void Initialize()
         {
             var path = ApplicationData.Current.LocalFolder.Path;
 
-            using var _ = File.Create(path);
+            using var _ = File.Open(path, FileMode.OpenOrCreate);
 
             _db = new SQLiteConnection(path);
-
-            return new SqliteRepository();
         }
 
         public IEnumerable<T> GetItems<T>() where T : DbObject, new()

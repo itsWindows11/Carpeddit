@@ -68,7 +68,7 @@
             <TextBlock TextWrapping="Wrap">
                 <Run Text="Posted by" />
                 <Hyperlink Click="OnUserHyperlinkClick">
-                    u/<Run d:Text="u/user" Text="{x:Bind UserName, Mode=OneWay}" />
+                    u/<Run d:Text="user" Text="{x:Bind UserName, Mode=OneWay}" />
                 </Hyperlink>
                 <Run Text="10 hours ago" />
                 <Run FontWeight="Light" Text="•" />

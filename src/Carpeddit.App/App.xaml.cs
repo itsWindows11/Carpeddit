@@ -1,5 +1,7 @@
 ﻿using Carpeddit.App.Services;
 using Carpeddit.App.ViewModels;
+using Carpeddit.Models;
+using Carpeddit.Repository;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
 using System;
@@ -23,6 +25,10 @@ namespace Carpeddit.App
         public static IServiceProvider Services { get; private set; }
 
         public static PasswordVault Valut { get; } = new PasswordVault();
+
+        public static IRepository CacheRepository { get; private set; }
+
+        public static CachedUser CurrentUser { get; set; }
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -52,7 +58,7 @@ namespace Carpeddit.App
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
@@ -76,6 +82,17 @@ namespace Carpeddit.App
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
+
+
+                CacheRepository = new SqliteRepository();
+                await CacheRepository.InitializeAsync();
+
+                await foreach (var user in CacheRepository.GetItemsAsync<CachedUser>())
+                {
+                    CurrentUser = user;
+                    break;
+                }
+
                 if (!Valut.RetrieveAll().Any())
                     rootFrame.Navigate(typeof(LoginPage), e.Arguments);
                 else
