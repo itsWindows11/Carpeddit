@@ -33,6 +33,8 @@ namespace Carpeddit.App
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            TitleBar.SetAsTitleBar();
+
             ContentFrame.Navigated += OnNavigated;
 
             NavView.SelectedItem = NavView.MenuItems[0];
@@ -44,12 +46,6 @@ namespace Carpeddit.App
             Window.Current.CoreWindow.Dispatcher.AcceleratorKeyActivated += OnAcceleratorKeyActivated;
             Window.Current.CoreWindow.PointerPressed += OnCoreWindowPointerPressed;
             SystemNavigationManager.GetForCurrentView().BackRequested += OnSystemBackRequested;
-        }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-            TitleBar.SetAsTitleBar();
         }
     }
 

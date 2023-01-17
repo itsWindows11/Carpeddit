@@ -8,7 +8,7 @@ namespace Carpeddit.App.Services
     public interface IRedditAuthService
     {
         /// <summary>
-        /// Gets the access token
+        /// Gets the access info.
         /// </summary>
         /// <param name="content">The response body.</param>
         /// <param name="authorization">The auth header to use.</param>

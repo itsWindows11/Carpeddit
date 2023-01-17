@@ -1,0 +1,59 @@
+﻿<ContentDialog
+    x:Class="Carpeddit.App.Dialogs.RedditAuthDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Style="{ThemeResource DefaultContentDialogStyle}"
+    mc:Ignorable="d">
+
+    <ContentDialog.Background>
+        <AcrylicBrush
+            BackgroundSource="Backdrop"
+            FallbackColor="#F9F9F9"
+            TintColor="{ThemeResource SystemAccentColorLight1}"
+            TintLuminosityOpacity="0"
+            TintOpacity="0" />
+    </ContentDialog.Background>
+
+    <ContentDialog.Resources>
+        <Thickness x:Key="ContentDialogPadding">0</Thickness>
+    </ContentDialog.Resources>
+
+    <Grid Padding="16" RowSpacing="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <RelativePanel>
+            <Button
+                Click="OnBackButtonClick"
+                IsEnabled="{x:Bind LoginWebView.CanGoBack, Mode=OneWay}"
+                Style="{ThemeResource TransparentButtonStyle}">
+                <FontIcon Glyph="&#xE0A6;" />
+            </Button>
+
+            <StackPanel
+                HorizontalAlignment="Right"
+                Orientation="Horizontal"
+                RelativePanel.AlignRightWithPanel="True"
+                Spacing="4">
+                <Button Click="OnRefreshButtonClick" Style="{ThemeResource TransparentButtonStyle}">
+                    <FontIcon Glyph="&#xE149;" />
+                </Button>
+
+                <Button Click="OnCancelButtonClick" Style="{ThemeResource TransparentButtonStyle}">
+                    <FontIcon Glyph="&#xE10A;" />
+                </Button>
+            </StackPanel>
+        </RelativePanel>
+
+        <WebView
+            x:Name="LoginWebView"
+            Grid.Row="1"
+            Width="500"
+            Margin="-16,0,-16,-17"
+            Height="400" />
+    </Grid>
+</ContentDialog>
