@@ -33,7 +33,6 @@ namespace Carpeddit.App
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
-            TitleBar.SetAsTitleBar();
             ProfileBitmap.UriSource = new((await App.Client.Account.GetMeAsync()).IconImage.Replace("&amp;", "&"));
 
             ContentFrame.Navigated += OnNavigated;

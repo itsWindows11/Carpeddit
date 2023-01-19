@@ -38,6 +38,8 @@ namespace Carpeddit.App.UserControls
         public CustomTitleBar()
         {
             InitializeComponent();
+
+            SetAsTitleBar();
         }
 
         public void SetAsTitleBar()
