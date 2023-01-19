@@ -135,6 +135,7 @@
     <Compile Include="LoadingPage.xaml.cs">
       <DependentUpon>LoadingPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\PostViewModel.cs" />
     <Compile Include="Windows\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>

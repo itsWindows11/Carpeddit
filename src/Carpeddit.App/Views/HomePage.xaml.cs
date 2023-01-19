@@ -1,4 +1,5 @@
 ﻿using Carpeddit.Api.Services;
+using Carpeddit.App.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System.Text.Json;
@@ -20,7 +21,11 @@ namespace Carpeddit.App.Views
         {
             Loaded -= HomePage_Loaded;
 
-            MainList.ItemsSource = await App.Client.GetFrontPageAsync();
+            MainList.ItemsSource = (await App.Client.GetFrontPageAsync()).Select(p => new PostViewModel()
+            {
+                Post = p
+            });
+
             HomeRing.IsIndeterminate = false;
             HomeRing.Visibility = Visibility.Collapsed;
         }

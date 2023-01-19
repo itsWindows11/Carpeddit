@@ -3,11 +3,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:Carpeddit.App.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="using:Carpeddit.Models"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:uc="using:Carpeddit.App.UserControls"
+    xmlns:viewmodels="using:Carpeddit.App.ViewModels"
     d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
@@ -23,14 +22,14 @@
             d:Padding="0"
             ItemContainerStyle="{StaticResource PostItemContainerStyle}">
             <ListView.ItemTemplate>
-                <DataTemplate x:DataType="models:Post">
+                <DataTemplate x:DataType="viewmodels:PostViewModel">
                     <uc:PostItemControl
                         Title="{x:Bind Title}"
-                        Description="{x:Bind Selftext}"
-                        SubredditName="{x:Bind SubredditNamePrefixed}"
-                        VoteRatio="{x:Bind (x:Int32)UpvoteRatio}"
-                        UserName="{x:Bind Author}"
-                        CreationDate="{x:Bind Created}">
+                        CreationDate="{x:Bind Created}"
+                        Description="{x:Bind Description}"
+                        SubredditName="{x:Bind Post.SubredditNamePrefixed}"
+                        UserName="{x:Bind Post.Author}"
+                        VoteRatio="{x:Bind VoteRatio}">
                         <uc:PostItemControl.FooterContent>
                             <CommandBar
                                 Margin="-12,0,0,0"
@@ -41,7 +40,7 @@
                                 <AppBarButton
                                     Icon="Comment"
                                     IsHitTestVisible="False"
-                                    Label="{x:Bind NumComments}" />
+                                    Label="{x:Bind Post.NumComments}" />
                                 <AppBarButton Icon="Share" Label="Share" />
                                 <AppBarButton Icon="Save" Label="Save" />
                             </CommandBar>
