@@ -125,6 +125,9 @@
     <Compile Include="Api\ApiObjectWithKind.cs" />
     <Compile Include="Api\FlairRichText.cs" />
     <Compile Include="Api\Image.cs" />
+    <Compile Include="Api\Interfaces\ICreated.cs" />
+    <Compile Include="Api\Interfaces\Thing{T}.cs" />
+    <Compile Include="Api\Interfaces\IVotable.cs" />
     <Compile Include="Api\LinkFlairRichText.cs" />
     <Compile Include="Api\Listing{T}.cs" />
     <Compile Include="Api\Post.cs" />

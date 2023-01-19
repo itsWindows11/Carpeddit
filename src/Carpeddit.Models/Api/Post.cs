@@ -1,4 +1,5 @@
 ﻿using Carpeddit.Common.Converters;
+using Carpeddit.Models.Api;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Nodes;
@@ -8,7 +9,7 @@ using System.Text.Json.Serialization;
 
 namespace Carpeddit.Models
 {
-    public sealed class Post
+    public sealed class Post : IVotable, ICreated
     {
         [JsonPropertyName("author_flair_background_color")]
         public string AuthorFlairBackgroundColor { get; set; }
@@ -60,7 +61,7 @@ namespace Carpeddit.Models
         public string LinkFlairCssClass { get; set; }
 
         [JsonPropertyName("downs")]
-        public int? Downs { get; set; }
+        public int Downs { get; set; }
 
         [JsonPropertyName("thumbnail_height")]
         public int? ThumbnailHeight { get; set; }
@@ -90,7 +91,7 @@ namespace Carpeddit.Models
         public bool? IgnoreReports { get; set; }
 
         [JsonPropertyName("ups")]
-        public int? Ups { get; set; }
+        public int Ups { get; set; }
 
         [JsonPropertyName("domain")]
         public string Domain { get; set; }
@@ -161,7 +162,7 @@ namespace Carpeddit.Models
 
         [JsonPropertyName("created")]
         [JsonConverter(typeof(LocalTimestampConverter))]
-        public DateTime? Created { get; set; }
+        public DateTime Created { get; set; }
 
         [JsonPropertyName("link_flair_type")]
         public string LinkFlairType { get; set; }
@@ -188,7 +189,7 @@ namespace Carpeddit.Models
         public string SelfTextHtml { get; set; }
 
         [JsonPropertyName("likes")]
-        public object Likes { get; set; }
+        public bool? Likes { get; set; }
 
         [JsonPropertyName("suggested_sort")]
         public string SuggestedSort { get; set; }
