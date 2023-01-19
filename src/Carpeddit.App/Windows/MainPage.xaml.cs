@@ -1,4 +1,6 @@
-﻿using Carpeddit.App.Views;
+﻿using Carpeddit.Api.Services;
+using Carpeddit.App.Views;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +32,10 @@ namespace Carpeddit.App
             NavigationCacheMode = NavigationCacheMode.Enabled;
             Loaded += OnLoaded;
         }
+    }
 
+    public partial class MainPage
+    {
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
             ProfileBitmap.UriSource = new((await App.Client.Account.GetMeAsync()).IconImage.Replace("&amp;", "&"));
@@ -47,10 +52,28 @@ namespace Carpeddit.App
             Window.Current.CoreWindow.PointerPressed += OnCoreWindowPointerPressed;
             SystemNavigationManager.GetForCurrentView().BackRequested += OnSystemBackRequested;
         }
-    }
 
-    public partial class MainPage
-    {
+        private void OnLogOutClick(object sender, RoutedEventArgs e)
+        {
+            NavigationCacheMode = NavigationCacheMode.Disabled;
+
+            foreach (var credential in App.Valut.RetrieveAll())
+                App.Valut.Remove(credential);
+
+            // Even though token_type_hint is optional, the response
+            // should be completed as quick as possible while firing
+            // and forgetting it.
+            var body = new Dictionary<string, string>()
+            {
+                { "token", App.Client.Info.AccessToken },
+                { "token_type_hint", "access_token" }
+            };
+
+            _ = App.Services.GetService<IRedditAuthService>().RevokeAsync(body);
+
+            Frame.Navigate(typeof(LoginPage));
+        }
+
         private void OnItemInvoked(muxc.NavigationView _, muxc.NavigationViewItemInvokedEventArgs args)
         {
             if (args.IsSettingsInvoked)

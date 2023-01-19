@@ -21,10 +21,10 @@ namespace Carpeddit.Repository
 
             await _asyncDb.EnableWriteAheadLoggingAsync();
 
-            _ = await Task.WhenAll(
+            /*_ = await Task.WhenAll(
                     //_asyncDb.CreateTableAsync<CachedPost>(),
-                    _asyncDb.CreateTableAsync<CachedUser>()
-                );
+                    //_asyncDb.CreateTableAsync<CachedUser>()
+                );*/
         }
 
         public async Task<IEnumerable<T>> GetItemsAsync<T>() where T : DbObject, new()

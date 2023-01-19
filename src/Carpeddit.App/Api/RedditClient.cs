@@ -17,6 +17,8 @@ namespace Carpeddit.Api
         private IRedditAuthService _redditAuthService;
         private IRedditService _redditService;
 
+        public TokenInfo Info => _info;
+
         public Account Account
         {
             get => _account;

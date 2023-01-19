@@ -12,7 +12,10 @@
     mc:Ignorable="d">
 
     <Grid>
-        <muxc:ProgressRing x:Name="HomeRing" />
+        <muxc:ProgressRing
+            x:Name="HomeRing"
+            Width="52"
+            Height="52" />
 
         <ListView
             x:Name="MainList"

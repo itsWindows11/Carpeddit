@@ -1,10 +1,12 @@
-﻿using Carpeddit.App.ViewModels;
+﻿using Carpeddit.Api.Helpers;
+using Carpeddit.App.ViewModels;
 using Carpeddit.App.Views;
 using Carpeddit.Common.Helpers;
 using Carpeddit.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
+using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
@@ -26,11 +28,11 @@ namespace Carpeddit.App
             var settings = App.Services.GetService<SettingsViewModel>();
             Frame.RequestedTheme = settings.Theme;
 
-            var account = (await App.CacheRepository.GetItemsAsync<CachedUser>()).FirstOrDefault();
+            var credentials = App.Valut.RetrieveAll();
 
-            if (account != null)
+            if (credentials.Any())
             {
-                var credential = App.Valut.FindAllByUserName(account.Name).FirstOrDefault();
+                var credential = credentials.FirstOrDefault();
                 credential.RetrievePassword();
 
                 var json = JsonSerializer.Deserialize<PasswordToken>(credential.Password);
@@ -76,8 +78,6 @@ namespace Carpeddit.App
             {
                 foreach (var credential in App.Valut.FindAllByResource("Reddit"))
                     App.Valut.Remove(credential);
-
-                await App.CacheRepository.ClearAsync<CachedUser>();
             }
 
             done:

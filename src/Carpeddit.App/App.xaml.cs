@@ -85,8 +85,8 @@ namespace Carpeddit.App
                 // configuring the new page by passing required information as a navigation
                 // parameter
 
-                CacheRepository = new SqliteRepository();
-                await CacheRepository.InitializeAsync();
+                /*CacheRepository = new SqliteRepository();
+                await CacheRepository.InitializeAsync();*/
 
                 rootFrame.Navigate(typeof(LoadingPage), e.Arguments);
             }

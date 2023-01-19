@@ -57,12 +57,12 @@ namespace Carpeddit.App.Dialogs
 
             App.Valut.Add(new PasswordCredential("Reddit", userInfo.Name, JsonSerializer.Serialize(info)));
 
-            await App.CacheRepository.UpsertAsync(new CachedUser()
+            /*await App.CacheRepository.UpsertAsync(new CachedUser()
             {
                 Name = userInfo.Name,
                 IconUrl = userInfo.IconImage,
                 Created = userInfo.Created
-            });
+            });*/
 
             App.Client = new(new()
             {

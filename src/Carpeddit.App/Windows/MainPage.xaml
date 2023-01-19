@@ -76,7 +76,7 @@
                     Tag="profile">
                     <muxc:NavigationViewItem.ContextFlyout>
                         <MenuFlyout>
-                            <MenuFlyoutItem Text="Log out">
+                            <MenuFlyoutItem Click="OnLogOutClick" Text="Log out">
                                 <MenuFlyoutItem.Icon>
                                     <FontIcon Glyph="&#xF3B1;" />
                                 </MenuFlyoutItem.Icon>
