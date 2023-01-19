@@ -25,14 +25,14 @@
             d:Padding="0"
             ItemContainerStyle="{StaticResource PostItemContainerStyle}">
             <ListView.ItemTemplate>
-                <DataTemplate x:DataType="viewmodels:PostViewModel">
+                <DataTemplate x:DataType="viewmodels:PostViewModel" x:DefaultBindMode="OneWay">
                     <uc:PostItemControl
                         Title="{x:Bind Title}"
                         CreationDate="{x:Bind Created}"
                         Description="{x:Bind Description}"
                         SubredditName="{x:Bind Post.SubredditNamePrefixed}"
                         UserName="{x:Bind Post.Author}"
-                        VoteRatio="{x:Bind VoteRatio}">
+                        VoteRatio="{x:Bind VoteRatio, Converter={StaticResource FormattedNumberConverter}}">
                         <uc:PostItemControl.FooterContent>
                             <CommandBar
                                 Margin="-12,0,0,0"
@@ -43,7 +43,7 @@
                                 <AppBarButton
                                     Icon="Comment"
                                     IsHitTestVisible="False"
-                                    Label="{x:Bind Post.NumComments}" />
+                                    Label="{x:Bind Post.NumComments, Converter={StaticResource FormattedNumberConverter}}" />
                                 <AppBarButton Icon="Share" Label="Share" />
                                 <AppBarButton Icon="Save" Label="Save" />
                             </CommandBar>

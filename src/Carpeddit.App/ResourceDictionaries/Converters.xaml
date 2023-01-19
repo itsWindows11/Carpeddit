@@ -5,4 +5,5 @@
     <converters:BoolToVisibilityConverter x:Key="BoolToVis" />
     <converters:BoolToVisibilityConverter x:Key="BoolToVisReverse" Reverse="True" />
     <converters:RelativeTimeConverter x:Key="RelativeTimeConverter" />
+    <converters:FormattedNumberConverter x:Key="FormattedNumberConverter" />
 </ResourceDictionary>

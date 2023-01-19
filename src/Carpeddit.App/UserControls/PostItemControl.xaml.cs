@@ -32,9 +32,9 @@ namespace Carpeddit.App.UserControls
             set => SetValue(SubredditNameProperty, value);
         }
 
-        public int VoteRatio
+        public string VoteRatio
         {
-            get => (int)GetValue(VoteRatioProperty);
+            get => (string)GetValue(VoteRatioProperty);
             set => SetValue(VoteRatioProperty, value);
         }
 
@@ -104,7 +104,7 @@ namespace Carpeddit.App.UserControls
             = DependencyProperty.Register(nameof(ShowDescription), typeof(bool), typeof(PostItemControl), new(true));
 
         public static DependencyProperty VoteRatioProperty
-            = DependencyProperty.Register(nameof(VoteRatio), typeof(int), typeof(PostItemControl), new(0));
+            = DependencyProperty.Register(nameof(VoteRatio), typeof(string), typeof(PostItemControl), new("0"));
 
         public static DependencyProperty IsDownvotedProperty
             = DependencyProperty.Register(nameof(IsDownvoted), typeof(bool), typeof(PostItemControl), new(false));

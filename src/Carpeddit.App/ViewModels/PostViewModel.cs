@@ -26,7 +26,7 @@ namespace Carpeddit.App.ViewModels
 
         public DateTime Created
         {
-            get => (DateTime)Post.Created;
+            get => Post.Created;
             set
             {
                 Post.Created = value;
@@ -36,7 +36,7 @@ namespace Carpeddit.App.ViewModels
 
         public int VoteRatio
         {
-            get => (int)(voteRatio ??= Post.Ups - Post.Downs);
+            get => voteRatio ??= Post.Ups - Post.Downs;
             private set
             {
                 voteRatio = value;
