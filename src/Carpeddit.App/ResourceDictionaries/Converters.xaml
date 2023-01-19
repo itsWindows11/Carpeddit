@@ -4,4 +4,5 @@
     xmlns:converters="using:Carpeddit.App.Converters">
     <converters:BoolToVisibilityConverter x:Key="BoolToVis" />
     <converters:BoolToVisibilityConverter x:Key="BoolToVisReverse" Reverse="True" />
+    <converters:RelativeTimeConverter x:Key="RelativeTimeConverter" />
 </ResourceDictionary>

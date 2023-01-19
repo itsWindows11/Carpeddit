@@ -126,6 +126,7 @@
     <Compile Include="Converters\LocalTimestampConverter.cs" />
     <Compile Include="Converters\UtcTimestampConverter.cs" />
     <Compile Include="Extensions\PackageIdExtensions.cs" />
+    <Compile Include="Helpers\WebHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Carpeddit.Common.rd.xml" />
   </ItemGroup>

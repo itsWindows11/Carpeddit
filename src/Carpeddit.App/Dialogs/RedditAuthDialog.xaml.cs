@@ -6,7 +6,7 @@ using System.Text;
 using System.Web;
 using Windows.Security.Credentials;
 using Windows.UI.Xaml.Controls;
-using Carpeddit.App.Services;
+using Carpeddit.Api.Services;
 using Carpeddit.App.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Windows.UI.Xaml;
@@ -47,12 +47,12 @@ namespace Carpeddit.App.Dialogs
             };
 
             var authInfo = await _authService.GetAccessAsync(dictionary, token);
-            var userInfo = await _service.GetCurrentlyAuthenticatedUserAsync(authInfo.AccessToken);
+            var userInfo = (await _service.GetCurrentlyAuthenticatedUserAsync(authInfo.AccessToken)).Content;
 
-            var info = new
+            var info = new PasswordToken
             {
-                accessToken = authInfo.AccessToken,
-                refreshToken = authInfo.RefreshToken
+                AccessToken = authInfo.AccessToken,
+                RefreshToken = authInfo.RefreshToken
             };
 
             App.Valut.Add(new PasswordCredential("Reddit", userInfo.Name, JsonSerializer.Serialize(info)));
@@ -61,8 +61,13 @@ namespace Carpeddit.App.Dialogs
             {
                 Name = userInfo.Name,
                 IconUrl = userInfo.IconImage,
-                BannerUrl = userInfo.Subreddit.BannerImage,
                 Created = userInfo.Created
+            });
+
+            App.Client = new(new()
+            {
+                AccessToken = info.AccessToken,
+                RefreshToken = info.RefreshToken
             });
 
             // TODO: Check if setup is running instead

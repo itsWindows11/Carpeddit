@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -8,20 +9,14 @@ namespace Carpeddit.Common.Converters
     {
         public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            try
+            var valueString = Encoding.UTF8.GetString(reader.ValueSpan.ToArray());
+
+            if (!string.IsNullOrEmpty(valueString) && valueString != "null" && !bool.TryParse(valueString, out _))
             {
-                var valueString = reader.GetDouble().ToString();
+                if (DateTime.TryParse(valueString, out DateTime parsedDate))
+                    return parsedDate;
 
-                if (valueString.Length > 0 && !bool.TryParse(valueString, out _))
-                {
-                    if (DateTime.TryParse(valueString, out DateTime parsedDate))
-                        return parsedDate;
-
-                    return ParseDateFromSeconds((long)Convert.ToDouble(valueString));
-                }
-            } catch
-            {
-
+                return ParseDateFromSeconds((long)Convert.ToDouble(valueString));
             }
 
             return default;

@@ -138,7 +138,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\Carpeddit.Models\Carpeddit.Models.csproj">
+    <ProjectReference Include="..\Carpeddit.Models\Carpeddit.Models.csproj">
       <Project>{0b3c3582-bb42-49ed-b8c1-4dd3e2fff51b}</Project>
       <Name>Carpeddit.Models</Name>
     </ProjectReference>

@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
@@ -55,6 +56,12 @@ namespace Carpeddit.App.UserControls
             set => SetValue(IsUpvotedProperty, value);
         }
 
+        public DateTime CreationDate
+        {
+            get => (DateTime)GetValue(CreationDateProperty);
+            set => SetValue(CreationDateProperty, value);
+        }
+
         public ICommand UserClickCommand
         {
             get => (ICommand)GetValue(UserClickCommandProperty);
@@ -104,6 +111,9 @@ namespace Carpeddit.App.UserControls
 
         public static DependencyProperty IsUpvotedProperty
             = DependencyProperty.Register(nameof(IsUpvoted), typeof(bool), typeof(PostItemControl), new(false));
+
+        public static DependencyProperty CreationDateProperty
+            = DependencyProperty.Register(nameof(CreationDate), typeof(DateTime), typeof(PostItemControl), new(default(DateTime)));
 
         public static DependencyProperty UserClickCommandProperty
             = DependencyProperty.Register(nameof(UserClickCommand), typeof(ICommand), typeof(PostItemControl), new(null));

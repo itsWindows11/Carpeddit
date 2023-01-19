@@ -9,7 +9,7 @@ using Windows.Storage;
 
 namespace Carpeddit.Repository
 {
-    public partial class SqliteRepository : IRepository, ISyncRepository
+    public partial class SqliteRepository : IRepository
     {
         private SQLiteAsyncConnection _asyncDb;
 
@@ -27,11 +27,8 @@ namespace Carpeddit.Repository
                 );
         }
 
-        public async IAsyncEnumerable<T> GetItemsAsync<T>() where T : DbObject, new()
-        {
-            foreach (var item in await _asyncDb.Table<T>().ToListAsync())
-                yield return item;
-        }
+        public async Task<IEnumerable<T>> GetItemsAsync<T>() where T : DbObject, new()
+            => await _asyncDb.Table<T>().ToListAsync();
 
         public Task InsertAsync<T>(T item) where T : DbObject, new()
             => _asyncDb.InsertAsync(item);
@@ -41,6 +38,12 @@ namespace Carpeddit.Repository
 
         public Task UpsertAsync<T>(T item) where T : DbObject, new()
             => _asyncDb.InsertOrReplaceAsync(item);
+
+        public Task ClearAsync<T>() where T : DbObject, new()
+            => _asyncDb.DeleteAllAsync<T>();
+
+        public Task DeleteAsync<T>(T item) where T : DbObject, new()
+            => _asyncDb.DeleteAsync<T>(item);
     }
 
     // Synchronous implementation.
@@ -68,5 +71,11 @@ namespace Carpeddit.Repository
 
         public void Upsert<T>(T item) where T : DbObject, new()
             => _db.InsertOrReplace(item);
+
+        public void Clear<T>(T item) where T : DbObject, new()
+            => _db.DeleteAll<T>();
+
+        public void Delete<T>(T item) where T : DbObject, new()
+            => _db.Delete(item);
     }
 }

@@ -4,7 +4,7 @@ using Windows.UI.Xaml;
 
 namespace Carpeddit.App.Converters
 {
-    public class BoolToVisibilityConverter : IValueConverter
+    public sealed class BoolToVisibilityConverter : IValueConverter
     {
         /// <summary>
         /// Determines whether an inverse conversion should take place.

@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carpeddit.Common", "src\Car
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carpeddit.Models", "src\Carpeddit.Models\Carpeddit.Models.csproj", "{0B3C3582-BB42-49ED-B8C1-4DD3E2FFF51B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carpeddit.Repository", "Carpeddit.Repository\Carpeddit.Repository.csproj", "{F30683CB-6060-4A80-945D-97E39827CACF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Carpeddit.Repository", "src\Carpeddit.Repository\Carpeddit.Repository.csproj", "{F30683CB-6060-4A80-945D-97E39827CACF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -117,12 +117,23 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Api\Enums\SortMode.cs" />
+    <Compile Include="Api\Helpers\Account.cs" />
+    <Compile Include="Api\Helpers\TokenHelper.cs" />
+    <Compile Include="Api\Models\TokenInfo.cs" />
+    <Compile Include="Api\RedditClient.cs" />
+    <Compile Include="Api\Services\IRedditAuthService.cs" />
+    <Compile Include="Api\Services\IRedditService.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\RelativeTimeConverter.cs" />
     <Compile Include="Dialogs\RedditAuthDialog.xaml.cs">
       <DependentUpon>RedditAuthDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LoadingPage.xaml.cs">
+      <DependentUpon>LoadingPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
@@ -131,8 +142,6 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\Interfaces\IRedditAuthService.cs" />
-    <Compile Include="Services\Interfaces\IRedditService.cs" />
     <Compile Include="Services\Interfaces\ISettingsService.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="UserControls\CustomTitleBar.xaml.cs">
@@ -159,6 +168,9 @@
     </Compile>
     <Compile Include="Views\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\OfflinePage.xaml.cs">
+      <DependentUpon>OfflinePage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -245,6 +257,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="LoadingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\LoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -293,6 +309,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\OfflinePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Labs.Uwp.SettingsControls">
@@ -332,10 +352,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Carpeddit.Repository\Carpeddit.Repository.csproj">
-      <Project>{f30683cb-6060-4a80-945d-97e39827cacf}</Project>
-      <Name>Carpeddit.Repository</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Carpeddit.Common\Carpeddit.Common.csproj">
       <Project>{a3de218c-3822-4711-9e9c-f52c9d993436}</Project>
       <Name>Carpeddit.Common</Name>
@@ -343,6 +359,10 @@
     <ProjectReference Include="..\Carpeddit.Models\Carpeddit.Models.csproj">
       <Project>{0b3c3582-bb42-49ed-b8c1-4dd3e2fff51b}</Project>
       <Name>Carpeddit.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Carpeddit.Repository\Carpeddit.Repository.csproj">
+      <Project>{f30683cb-6060-4a80-945d-97e39827cacf}</Project>
+      <Name>Carpeddit.Repository</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

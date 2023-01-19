@@ -1,16 +1,6 @@
 ﻿using System;
 using Windows.UI.Xaml.Controls;
 using Carpeddit.Common.Constants;
-using Carpeddit.App.Services;
-using Microsoft.Extensions.DependencyInjection;
-using Carpeddit.App.ViewModels;
-using Windows.Security.Authentication.Web;
-using System.Text.Json;
-using Carpeddit.Models;
-using System.Collections.Generic;
-using System.Text;
-using System.Web;
-using Windows.Security.Credentials;
 using Windows.UI.Xaml;
 using Carpeddit.App.Dialogs;
 

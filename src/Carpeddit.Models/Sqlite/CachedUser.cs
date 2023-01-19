@@ -15,8 +15,6 @@ namespace Carpeddit.Models
 
         public string IconUrl { get; set; }
 
-        public string BannerUrl { get; set; }
-
         public DateTime Created { get; set; }
     }
 }

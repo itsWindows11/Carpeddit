@@ -70,7 +70,7 @@
                 <Hyperlink Click="OnUserHyperlinkClick">
                     u/<Run d:Text="user" Text="{x:Bind UserName, Mode=OneWay}" />
                 </Hyperlink>
-                <Run Text="10 hours ago" />
+                <Run Text="{x:Bind CreationDate, Mode=OneWay, Converter={StaticResource RelativeTimeConverter}}" />
                 <Run FontWeight="Light" Text="•" />
                 <Hyperlink Click="OnSubredditHyperlinkClick">
                     <Run d:Text="r/subreddit" Text="{x:Bind SubredditName, Mode=OneWay}" />

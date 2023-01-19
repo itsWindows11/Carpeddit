@@ -1,4 +1,6 @@
-﻿using Carpeddit.App.Services;
+﻿using Carpeddit.Api;
+using Carpeddit.Api.Services;
+using Carpeddit.App.Services;
 using Carpeddit.App.ViewModels;
 using Carpeddit.Models;
 using Carpeddit.Repository;
@@ -26,9 +28,9 @@ namespace Carpeddit.App
 
         public static PasswordVault Valut { get; } = new PasswordVault();
 
-        public static IRepository CacheRepository { get; private set; }
+        public static RedditClient Client { get; set; }
 
-        public static CachedUser CurrentUser { get; set; }
+        public static IRepository CacheRepository { get; private set; }
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -83,20 +85,10 @@ namespace Carpeddit.App
                 // configuring the new page by passing required information as a navigation
                 // parameter
 
-
                 CacheRepository = new SqliteRepository();
                 await CacheRepository.InitializeAsync();
 
-                await foreach (var user in CacheRepository.GetItemsAsync<CachedUser>())
-                {
-                    CurrentUser = user;
-                    break;
-                }
-
-                if (!Valut.RetrieveAll().Any())
-                    rootFrame.Navigate(typeof(LoginPage), e.Arguments);
-                else
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                rootFrame.Navigate(typeof(LoadingPage), e.Arguments);
             }
 
             // Ensure the current window is active
