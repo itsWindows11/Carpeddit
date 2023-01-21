@@ -38,7 +38,7 @@
                         VoteRatio="{x:Bind VoteRatio, Converter={StaticResource FormattedNumberConverter}}">
                         <uc:PostItemControl.FooterContent>
                             <CommandBar
-                                Margin="-12,0,0,0"
+                                Margin="-10,0,0,0"
                                 Padding="0"
                                 HorizontalAlignment="Left"
                                 Background="Transparent"
