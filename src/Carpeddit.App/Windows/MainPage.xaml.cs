@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -38,7 +39,7 @@ namespace Carpeddit.App
     {
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
-            ProfileBitmap.UriSource = new((await App.Client.Account.GetMeAsync()).IconImage.Replace("&amp;", "&"));
+            ProfileBitmap.UriSource = new(WebUtility.HtmlDecode((await App.Client.Account.GetMeAsync()).IconImage));
 
             ContentFrame.Navigated += OnNavigated;
 

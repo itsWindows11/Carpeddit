@@ -7,6 +7,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:uc="using:Carpeddit.App.UserControls"
     xmlns:viewmodels="using:Carpeddit.App.ViewModels"
+    x:Name="RootPage"
     d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
@@ -30,7 +31,9 @@
                         Title="{x:Bind Title}"
                         CreationDate="{x:Bind Created}"
                         Description="{x:Bind Description}"
+                        SubredditClickCommand="{Binding SubredditClickCommand, ElementName=RootPage}"
                         SubredditName="{x:Bind Post.SubredditNamePrefixed}"
+                        UserClickCommand="{Binding UserClickCommand, ElementName=RootPage}"
                         UserName="{x:Bind Post.Author}"
                         VoteRatio="{x:Bind VoteRatio, Converter={StaticResource FormattedNumberConverter}}">
                         <uc:PostItemControl.FooterContent>

@@ -24,11 +24,11 @@
                 <StackPanel Spacing="12">
                     <FontIcon
                         HorizontalAlignment="Left"
-                        FontSize="56"
+                        FontSize="48"
                         Glyph="&#xEA6A;" />
 
-                    <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="An error occurred" />
-                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="We can't reach the internet right now. Check your internet connection and try again." />
+                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="An error occurred" />
+                    <TextBlock TextWrapping="Wrap" Text="We can't reach the internet right now. Check your internet connection and try again." />
 
                     <Button Click="RefreshButton_Click">
                         <StackPanel Orientation="Horizontal" Spacing="12">

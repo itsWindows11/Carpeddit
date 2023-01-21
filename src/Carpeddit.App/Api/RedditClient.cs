@@ -1,7 +1,9 @@
-﻿using Carpeddit.Api.Helpers;
+﻿using Carpeddit.Api.Enums;
+using Carpeddit.Api.Helpers;
 using Carpeddit.Api.Models;
 using Carpeddit.Api.Services;
 using Carpeddit.Models;
+using Carpeddit.Models.Api;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,19 +35,34 @@ namespace Carpeddit.Api
             _redditService = App.App.Services.GetService<IRedditService>();
         }
 
-        public async Task<IEnumerable<Post>> GetFrontPageAsync()
+        public async Task<IEnumerable<Post>> GetFrontPageAsync(SortMode sort = SortMode.Hot)
         {
             await TokenHelper.VerifyTokenValidationAsync(_info);
 
-            var response = await _redditService.GetFrontpagePostsAsync(_info.AccessToken);
+            var response = await _redditService.GetFrontpagePostsAsync(sort, _info.AccessToken);
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 await TokenHelper.RefreshTokenAsync(_info.RefreshToken);
-                response = await _redditService.GetFrontpagePostsAsync(_info.AccessToken);
+                response = await _redditService.GetFrontpagePostsAsync(sort, _info.AccessToken);
             }
 
             return response.Content.Data.Children.Select(p => p.Data);
+        }
+
+        public async Task<Subreddit> GetSubredditAsync(string subredditName)
+        {
+            await TokenHelper.VerifyTokenValidationAsync(_info);
+
+            var response = await _redditService.GetSubredditInfoAsync(subredditName, _info.AccessToken);
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                await TokenHelper.RefreshTokenAsync(_info.RefreshToken);
+                response = await _redditService.GetSubredditInfoAsync(subredditName, _info.AccessToken);
+            }
+
+            return response.Content.Data;
         }
     }
 }

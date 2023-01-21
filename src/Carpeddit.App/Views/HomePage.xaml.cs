@@ -1,8 +1,6 @@
-﻿using Carpeddit.Api.Services;
-using Carpeddit.App.ViewModels;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Carpeddit.App.ViewModels;
+using CommunityToolkit.Mvvm.Input;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -29,5 +27,9 @@ namespace Carpeddit.App.Views
             HomeRing.IsIndeterminate = false;
             HomeRing.Visibility = Visibility.Collapsed;
         }
+
+        [RelayCommand]
+        public void SubredditClick(string subreddit)
+            => Frame.Navigate(typeof(SubredditInfoPage), subreddit.Substring(2));
     }
 }

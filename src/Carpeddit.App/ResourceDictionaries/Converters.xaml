@@ -6,4 +6,6 @@
     <converters:BoolToVisibilityConverter x:Key="BoolToVisReverse" Reverse="True" />
     <converters:RelativeTimeConverter x:Key="RelativeTimeConverter" />
     <converters:FormattedNumberConverter x:Key="FormattedNumberConverter" />
+    <converters:HexStringToColorConverter x:Key="HexStringToColor" />
+    <converters:StringToUriConverter x:Key="StringToUri" />
 </ResourceDictionary>

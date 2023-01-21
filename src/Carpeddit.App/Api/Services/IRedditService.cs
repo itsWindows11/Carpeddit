@@ -1,4 +1,5 @@
-﻿using Carpeddit.Models;
+﻿using Carpeddit.Api.Enums;
+using Carpeddit.Models;
 using Carpeddit.Models.Api;
 using Refit;
 using System.Collections.Generic;
@@ -13,15 +14,15 @@ namespace Carpeddit.Api.Services
         /// Get a list of posts from a given subreddit.
         /// </summary>
         /// <param name="subreddit">The subreddit name.</param>
-        [Get("/r/{subreddit}/hot")]
-        Task<IApiResponse<Listing<IEnumerable<ApiObjectWithKind<Post>>>>> GetSubredditPostsAsync(string subreddit, [Authorize] string accessToken);
+        [Get("/r/{subreddit}/{sort}")]
+        Task<IApiResponse<Listing<IEnumerable<ApiObjectWithKind<Post>>>>> GetSubredditPostsAsync(string subreddit, SortMode sort, [Authorize] string accessToken);
 
         /// <summary>
         /// Get a list of posts from the frontpage.
         /// </summary>
         /// <param name="subreddit">The subreddit name.</param>
-        [Get("/hot")]
-        Task<IApiResponse<Listing<IEnumerable<ApiObjectWithKind<Post>>>>> GetFrontpagePostsAsync([Authorize] string accessToken);
+        [Get("/{sort}")]
+        Task<IApiResponse<Listing<IEnumerable<ApiObjectWithKind<Post>>>>> GetFrontpagePostsAsync(SortMode sort, [Authorize] string accessToken);
 
         /// <summary>
         /// Gets the currently authenticated user.
@@ -39,12 +40,11 @@ namespace Carpeddit.Api.Services
         [Get("/api/v1/me/karma")]
         Task<IApiResponse<UserKarmaContainer>> GetUserKarmaAsync([Authorize] string accessToken);
 
-        /*/// <summary>
-        /// Gets karma.
+        /// <summary>
+        /// Get a list of posts from a given subreddit.
         /// </summary>
-        /// <param name="accessToken">The access token.</param>
-        /// <returns>Karma container.</returns>
-        [Get("/api/v1/me/prefs")]
-        Task<AccountPrefs> GetPrefsAsync([Authorize] string accessToken);*/
+        /// <param name="subreddit">The subreddit name.</param>
+        [Get("/r/{subreddit}/about")]
+        Task<IApiResponse<ApiObjectWithKind<Subreddit>>> GetSubredditInfoAsync(string subreddit, [Authorize] string accessToken);
     }
 }
