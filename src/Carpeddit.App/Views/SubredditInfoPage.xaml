@@ -7,101 +7,152 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:uc="using:Carpeddit.App.UserControls"
     xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
+    xmlns:viewmodels="using:Carpeddit.App.ViewModels"
     d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
-    <Grid VerticalAlignment="Top">
-        <ui:Effects.Shadow>
-            <media:AttachedCardShadow
-                BlurRadius="16"
-                CornerRadius="8"
-                Opacity=".25"
-                Offset="0,4,0" />
-        </ui:Effects.Shadow>
 
-        <muxc:ProgressRing
-            x:Name="LoadingInfoRing"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center" />
+    <ListView
+        x:Name="MainList"
+        Margin="-48,0,-56,0"
+        Padding="48,0,56,0"
+        d:Margin="0"
+        d:Padding="0"
+        SelectionMode="None"
+        ItemContainerStyle="{StaticResource PostItemContainerStyle}">
+        <ListView.Header>
+            <StackPanel Margin="0,8,0,16">
+                <Grid d:Margin="12,0">
+                    <ui:Effects.Shadow>
+                        <media:AttachedCardShadow
+                            BlurRadius="16"
+                            CornerRadius="8"
+                            Opacity=".25"
+                            Offset="0,4,0" />
+                    </ui:Effects.Shadow>
 
-        <Border
-            Height="300"
-            d:Margin="12,0"
-            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-            BorderThickness="1"
-            CornerRadius="8,8,12,12">
-            <Grid>
-                <controls:ImageEx
-                    x:Name="SubredditHeaderImg"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    EnableLazyLoading="True"
-                    Stretch="UniformToFill" />
-                <Grid VerticalAlignment="Bottom">
-                    <StackPanel Padding="20,0">
-                        <StackPanel.Background>
-                            <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                                <GradientStop Offset="0" Color="#00000000" />
-                                <GradientStop Offset="1" Color="#99000000" />
-                            </LinearGradientBrush>
-                        </StackPanel.Background>
+                    <muxc:ProgressRing
+                        x:Name="LoadingInfoRing"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center" />
 
-                        <Border
-                            Width="60"
-                            Height="60"
-                            HorizontalAlignment="Left"
-                            BorderBrush="{StaticResource SystemAccentColorLight2}"
-                            BorderThickness="1"
-                            CornerRadius="60">
-                            <Image>
-                                <Image.Source>
-                                    <BitmapImage UriSource="{x:Bind Subreddit.CommunityIcon, Converter={StaticResource StringToUri}}" />
-                                </Image.Source>
-                            </Image>
-                        </Border>
+                    <Border
+                        Height="300"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="8">
+                        <Grid>
+                            <controls:ImageEx
+                                x:Name="SubredditHeaderImg"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                EnableLazyLoading="True"
+                                Stretch="UniformToFill" />
+                            
+                            <Grid VerticalAlignment="Bottom">
+                                <StackPanel Padding="20,0">
+                                    <StackPanel.Background>
+                                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                                            <GradientStop Offset="0" Color="#00000000" />
+                                            <GradientStop Offset="1" Color="#99000000" />
+                                        </LinearGradientBrush>
+                                    </StackPanel.Background>
 
-                        <StackPanel Padding="0,0,0,12">
-                            <TextBlock
-                                x:Name="SubredditFriendlyName"
-                                Margin="0,4,0,0"
-                                d:Text="Carpeddit"
-                                FontWeight="SemiBold"
-                                Foreground="WhiteSmoke"
-                                Style="{StaticResource SubtitleTextBlockStyle}"
-                                Text="{x:Bind Subreddit.HeaderTitle}" />
+                                    <Border
+                                        Width="60"
+                                        Height="60"
+                                        HorizontalAlignment="Left"
+                                        BorderBrush="{StaticResource SystemAccentColorLight2}"
+                                        BorderThickness="1"
+                                        CornerRadius="60">
+                                        <Image>
+                                            <Image.Source>
+                                                <BitmapImage UriSource="{x:Bind Subreddit.CommunityIcon, Converter={StaticResource StringToUri}}" />
+                                            </Image.Source>
+                                        </Image>
+                                    </Border>
 
-                            <TextBlock
-                                x:Name="SubredditName"
-                                Margin="0,4,0,0"
-                                d:Text="r/Carpeddit"
-                                FontSize="12"
-                                Foreground="WhiteSmoke"
-                                Text="{x:Bind Subreddit.DisplayNamePrefixed}" />
-                        </StackPanel>
-                    </StackPanel>
+                                    <StackPanel Padding="0,0,0,12">
+                                        <TextBlock
+                                            x:Name="SubredditFriendlyName"
+                                            Margin="0,4,0,0"
+                                            d:Text="Carpeddit"
+                                            FontWeight="SemiBold"
+                                            Foreground="WhiteSmoke"
+                                            Style="{StaticResource SubtitleTextBlockStyle}"
+                                            Text="{x:Bind Subreddit.Title}" />
 
-                    <Button
-                        x:Name="JoinButton"
-                        Margin="0,0,20,0"
-                        HorizontalAlignment="Right"
-                        Content="Join"
-                        IsEnabled="False" />
+                                        <TextBlock
+                                            x:Name="SubredditName"
+                                            Margin="0,4,0,0"
+                                            d:Text="r/Carpeddit"
+                                            FontSize="12"
+                                            Foreground="WhiteSmoke"
+                                            Text="{x:Bind Subreddit.DisplayNamePrefixed}" />
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <Button
+                                    x:Name="JoinButton"
+                                    Margin="0,0,20,0"
+                                    HorizontalAlignment="Right"
+                                    Content="Join"
+                                    IsEnabled="False" />
+                            </Grid>
+                        </Grid>
+                    </Border>
+
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup>
+                            <VisualState x:Name="WithDisplayName" />
+                            <VisualState x:Name="NoDisplayName">
+                                <VisualState.Setters>
+                                    <Setter Target="SubredditFriendlyName.Visibility" Value="Collapsed" />
+                                    <Setter Target="SubredditName.Style" Value="{StaticResource SubtitleTextBlockStyle}" />
+                                    <Setter Target="SubredditName.FontSize" Value="20" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
                 </Grid>
-            </Grid>
-        </Border>
 
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState x:Name="WithDisplayName" />
-                <VisualState x:Name="NoDisplayName">
-                    <VisualState.Setters>
-                        <Setter Target="SubredditFriendlyName.Visibility" Value="Collapsed" />
-                        <Setter Target="SubredditName.Style" Value="{StaticResource SubtitleTextBlockStyle}" />
-                        <Setter Target="SubredditName.FontSize" Value="20" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-    </Grid>
+                <muxc:ProgressRing
+                    x:Name="PostLoadingProgressRing"
+                    Margin="0,16,0,0"
+                    IsActive="False"
+                    Visibility="Collapsed" />
+            </StackPanel>
+        </ListView.Header>
+
+        <ListView.ItemTemplate>
+            <DataTemplate x:DataType="viewmodels:PostViewModel">
+                <uc:PostItemControl
+                    Margin="-4,0"
+                    Title="{x:Bind Title}"
+                    CreationDate="{x:Bind Created}"
+                    Description="{x:Bind Description}"
+                    SubredditName="{x:Bind Post.SubredditNamePrefixed}"
+                    UserName="{x:Bind Post.Author}"
+                    VoteRatio="{x:Bind VoteRatio, Converter={StaticResource FormattedNumberConverter}}">
+                    <uc:PostItemControl.FooterContent>
+                        <CommandBar
+                            Margin="-10,0,0,0"
+                            Padding="0"
+                            HorizontalAlignment="Left"
+                            Background="Transparent"
+                            DefaultLabelPosition="Right">
+                            <AppBarButton
+                                Icon="Comment"
+                                IsHitTestVisible="False"
+                                Label="{x:Bind Post.NumComments, Converter={StaticResource FormattedNumberConverter}}" />
+                            <AppBarButton Icon="Share" Label="Share" />
+                            <AppBarButton Icon="Save" Label="Save" />
+                        </CommandBar>
+                    </uc:PostItemControl.FooterContent>
+                </uc:PostItemControl>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
 </Page>

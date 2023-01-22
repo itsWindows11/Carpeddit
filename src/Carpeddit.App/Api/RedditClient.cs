@@ -5,9 +5,11 @@ using Carpeddit.Api.Services;
 using Carpeddit.Models;
 using Carpeddit.Models.Api;
 using Microsoft.Extensions.DependencyInjection;
+using Refit;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Carpeddit.Api
@@ -63,6 +65,21 @@ namespace Carpeddit.Api
             }
 
             return response.Content.Data;
+        }
+
+        public async Task<IEnumerable<Post>> GetSubredditPostsAsync(string subredditName, SortMode sort = SortMode.Hot)
+        {
+            await TokenHelper.VerifyTokenValidationAsync(_info);
+
+            var response = await _redditService.GetSubredditPostsAsync(subredditName, sort, _info.AccessToken);
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                await TokenHelper.RefreshTokenAsync(_info.RefreshToken);
+                response = await _redditService.GetSubredditPostsAsync(subredditName, sort, _info.AccessToken);
+            }
+
+            return response.Content.Data.Children.Select(p => p.Data);
         }
     }
 }

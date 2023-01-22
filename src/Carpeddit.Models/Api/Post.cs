@@ -67,7 +67,7 @@ namespace Carpeddit.Models
         public int? ThumbnailHeight { get; set; }
 
         [JsonPropertyName("top_awarded_type")]
-        public JsonObject TopAwardedType { get; set; }
+        public string TopAwardedType { get; set; }
 
         [JsonPropertyName("parent_whitelist_status")]
         public string ParentWhitelistStatus { get; set; }

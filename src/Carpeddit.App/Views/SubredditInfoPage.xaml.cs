@@ -1,5 +1,9 @@
-﻿using Carpeddit.Models.Api;
+﻿using Carpeddit.Api.Services;
+using Carpeddit.App.ViewModels;
+using Carpeddit.Models.Api;
+using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Linq;
 using System.Net;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -17,14 +21,15 @@ namespace Carpeddit.App.Views
             InitializeComponent();
         }
 
-        private void SubredditInfoPage_Loaded(object sender, RoutedEventArgs e)
+        private async void SubredditInfoPage_Loaded(object sender, RoutedEventArgs e)
         {
+            LoadingInfoRing.IsActive = false;
             LoadingInfoRing.Visibility = Visibility.Collapsed;
 
             if (Subreddit.UserIsSubscriber ?? false)
                 JoinButton.Content = "Leave";
 
-            if (string.IsNullOrWhiteSpace(Subreddit.HeaderTitle) || Subreddit.HeaderTitle.Equals(Subreddit.Name))
+            if (string.IsNullOrWhiteSpace(Subreddit.Title) || Subreddit.Title.Equals(Subreddit.DisplayNamePrefixed))
                 _ = VisualStateManager.GoToState(this, "NoDisplayName", false);
 
             try
@@ -34,6 +39,17 @@ namespace Carpeddit.App.Views
             {
 
             }
+
+            PostLoadingProgressRing.IsActive = true;
+            PostLoadingProgressRing.Visibility = Visibility.Visible;
+
+            MainList.ItemsSource = (await App.Client.GetSubredditPostsAsync(Subreddit.DisplayName, Api.Enums.SortMode.Hot)).Select(p => new PostViewModel()
+            {
+                Post = p
+            });
+
+            PostLoadingProgressRing.IsActive = false;
+            PostLoadingProgressRing.Visibility = Visibility.Collapsed;
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
