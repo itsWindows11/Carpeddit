@@ -24,6 +24,7 @@
             Padding="48,0,56,0"
             d:Margin="0"
             d:Padding="0"
+            ItemsSource="{x:Bind _posts}"
             ItemContainerStyle="{StaticResource PostItemContainerStyle}">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="viewmodels:PostViewModel" x:DefaultBindMode="OneWay">

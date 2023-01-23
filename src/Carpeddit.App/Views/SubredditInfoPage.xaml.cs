@@ -1,7 +1,7 @@
-﻿using Carpeddit.Api.Services;
-using Carpeddit.App.ViewModels;
+﻿using Carpeddit.App.ViewModels;
+using Carpeddit.Common.Collections;
+using Carpeddit.Models;
 using Carpeddit.Models.Api;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Net;
@@ -15,6 +15,8 @@ namespace Carpeddit.App.Views
     public sealed partial class SubredditInfoPage : Page
     {
         private Subreddit Subreddit;
+
+        private BulkObservableCollection<PostViewModel> _posts = new();
 
         public SubredditInfoPage()
         {
@@ -43,10 +45,14 @@ namespace Carpeddit.App.Views
             PostLoadingProgressRing.IsActive = true;
             PostLoadingProgressRing.Visibility = Visibility.Visible;
 
-            MainList.ItemsSource = (await App.Client.GetSubredditPostsAsync(Subreddit.DisplayName, Api.Enums.SortMode.Hot)).Select(p => new PostViewModel()
+            var posts = (await App.Client.GetSubredditPostsAsync(Subreddit.DisplayName, Api.Enums.SortMode.Hot)).Select(p => new PostViewModel()
             {
                 Post = p
             });
+
+            _posts.AddRange(posts);
+
+            MainList.ItemsSource = _posts;
 
             PostLoadingProgressRing.IsActive = false;
             PostLoadingProgressRing.Visibility = Visibility.Collapsed;

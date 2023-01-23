@@ -120,6 +120,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Collections\BulkObservableCollection.cs" />
     <Compile Include="Constants\APIConstants.cs" />
     <Compile Include="Constants\Constants.cs" />
     <Compile Include="Converters\BaseTimestampConverter.cs" />
