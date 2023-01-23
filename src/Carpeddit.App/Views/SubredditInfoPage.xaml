@@ -132,7 +132,7 @@
                     Title="{x:Bind Title}"
                     Margin="-4,0"
                     CreationDate="{x:Bind Created}"
-                    Description="{x:Bind Description}"
+                    Description="{x:Bind ShortDescription}"
                     SubredditName="{x:Bind Post.SubredditNamePrefixed}"
                     UserName="{x:Bind Post.Author}"
                     VoteRatio="{x:Bind VoteRatio, Converter={StaticResource FormattedNumberConverter}}">

@@ -30,7 +30,7 @@
                     <uc:PostItemControl
                         Title="{x:Bind Title}"
                         CreationDate="{x:Bind Created}"
-                        Description="{x:Bind Description}"
+                        Description="{x:Bind ShortDescription}"
                         SubredditClickCommand="{Binding SubredditClickCommand, ElementName=RootPage}"
                         SubredditName="{x:Bind Post.SubredditNamePrefixed}"
                         UserClickCommand="{Binding UserClickCommand, ElementName=RootPage}"
