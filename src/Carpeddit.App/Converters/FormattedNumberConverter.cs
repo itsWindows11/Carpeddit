@@ -20,7 +20,7 @@ namespace Carpeddit.App.Converters
                 >= 100000000 => (num / 1000000D).ToString("0.#M"),
                 >= 1000000 => (num / 1000000D).ToString("0.##M"),
                 >= 100000 => (num / 1000D).ToString("0.#K"),
-                >= 10000 => (num / 1000D).ToString("0.##k"),
+                >= 10000 => (num / 1000D).ToString("0.##K"),
                 _ => num.ToString("#,0"),
             };
         }

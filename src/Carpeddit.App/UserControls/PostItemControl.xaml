@@ -18,7 +18,7 @@
         ColumnSpacing="4"
         CornerRadius="{x:Bind CornerRadius, Mode=OneWay}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="40" />
+            <ColumnDefinition Width="46" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 

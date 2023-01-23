@@ -22,7 +22,7 @@
         ItemContainerStyle="{StaticResource PostItemContainerStyle}"
         SelectionMode="None">
         <ListView.Header>
-            <StackPanel Margin="0,8,0,16">
+            <StackPanel Margin="-1,8">
                 <Grid d:Margin="12,0">
                     <ui:Effects.Shadow>
                         <media:AttachedCardShadow
@@ -117,6 +117,96 @@
                         </VisualStateGroup>
                     </VisualStateManager.VisualStateGroups>
                 </Grid>
+
+                <StackPanel
+                    Margin="0,12,0,0"
+                    Padding="12"
+                    d:Margin="12,12,12,0"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4">
+                    <TextBlock Text="About Community" />
+
+                    <TextBlock
+                        Margin="0,12"
+                        Text="{x:Bind Subreddit.PublicDescription}"
+                        TextWrapping="Wrap" />
+
+                    <StackPanel
+                        Margin="0,8,0,0"
+                        Orientation="Horizontal"
+                        Spacing="8">
+                        <FontIcon Glyph="&#xE163;" />
+
+                        <TextBlock>
+                            <Run Text="Created at" />
+                            <Run Text="{x:Bind Subreddit.CreatedUtc}" />
+                        </TextBlock>
+                    </StackPanel>
+
+                    <MenuFlyoutSeparator Margin="0,12" />
+
+                    <controls:WrapPanel HorizontalSpacing="12" VerticalSpacing="12">
+                        <StackPanel>
+                            <ToolTipService.ToolTip>
+                                <TextBlock>
+                                    <Run Text="{x:Bind Subreddit.AccountsActive}" />
+                                    <Run Text="active members" />
+                                </TextBlock>
+                            </ToolTipService.ToolTip>
+
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse
+                                    Width="8"
+                                    Height="8"
+                                    Fill="MediumSeaGreen" />
+
+                                <TextBlock
+                                    Margin="8,0,0,0"
+                                    d:Text="0"
+                                    FontSize="20"
+                                    Style="{StaticResource SubtitleTextBlockStyle}"
+                                    Text="{x:Bind Subreddit.AccountsActive, Converter={StaticResource FormattedNumberConverter}}" />
+                            </StackPanel>
+
+                            <TextBlock
+                                Margin="0,4,0,0"
+                                FontSize="12"
+                                Text="active members"
+                                TextAlignment="Center" />
+                        </StackPanel>
+
+                        <StackPanel>
+                            <ToolTipService.ToolTip>
+                                <TextBlock>
+                                    <Run Text="{x:Bind Subreddit.Subscribers}" />
+                                    <Run Text="members" />
+                                </TextBlock>
+                            </ToolTipService.ToolTip>
+
+                            <StackPanel Orientation="Horizontal">
+                                <Ellipse
+                                    Width="8"
+                                    Height="8"
+                                    Fill="SlateGray" />
+
+                                <TextBlock
+                                    Margin="8,0,0,0"
+                                    d:Text="200K"
+                                    FontSize="20"
+                                    Style="{StaticResource SubtitleTextBlockStyle}"
+                                    Text="{x:Bind Subreddit.Subscribers, Converter={StaticResource FormattedNumberConverter}}" />
+                            </StackPanel>
+
+                            <TextBlock
+                                Margin="0,4,0,0"
+                                FontSize="12"
+                                Text="members"
+                                TextAlignment="Center" />
+                        </StackPanel>
+                    </controls:WrapPanel>
+                </StackPanel>
 
                 <muxc:ProgressRing
                     x:Name="PostLoadingProgressRing"
