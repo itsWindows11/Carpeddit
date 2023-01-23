@@ -19,15 +19,15 @@
         Padding="48,0,56,0"
         d:Margin="0"
         d:Padding="0"
-        SelectionMode="None"
-        ItemContainerStyle="{StaticResource PostItemContainerStyle}">
+        ItemContainerStyle="{StaticResource PostItemContainerStyle}"
+        SelectionMode="None">
         <ListView.Header>
             <StackPanel Margin="0,8,0,16">
                 <Grid d:Margin="12,0">
                     <ui:Effects.Shadow>
                         <media:AttachedCardShadow
                             BlurRadius="16"
-                            CornerRadius="8"
+                            CornerRadius="4"
                             Opacity=".25"
                             Offset="0,4,0" />
                     </ui:Effects.Shadow>
@@ -42,15 +42,15 @@
                         Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                         BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                         BorderThickness="1"
-                        CornerRadius="8">
-                        <Grid>
+                        CornerRadius="4">
+                        <Grid CornerRadius="4">
                             <controls:ImageEx
                                 x:Name="SubredditHeaderImg"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 EnableLazyLoading="True"
                                 Stretch="UniformToFill" />
-                            
+
                             <Grid VerticalAlignment="Bottom">
                                 <StackPanel Padding="20,0">
                                     <StackPanel.Background>
@@ -129,8 +129,8 @@
         <ListView.ItemTemplate>
             <DataTemplate x:DataType="viewmodels:PostViewModel">
                 <uc:PostItemControl
-                    Margin="-4,0"
                     Title="{x:Bind Title}"
+                    Margin="-4,0"
                     CreationDate="{x:Bind Created}"
                     Description="{x:Bind Description}"
                     SubredditName="{x:Bind Post.SubredditNamePrefixed}"
@@ -154,5 +154,16 @@
                 </uc:PostItemControl>
             </DataTemplate>
         </ListView.ItemTemplate>
+
+        <ListView.Footer>
+            <Grid>
+                <muxc:ProgressRing
+                    x:Name="FooterProgress"
+                    Margin="0,4"
+                    HorizontalAlignment="Center"
+                    IsActive="True"
+                    Visibility="Collapsed" />
+            </Grid>
+        </ListView.Footer>
     </ListView>
 </Page>

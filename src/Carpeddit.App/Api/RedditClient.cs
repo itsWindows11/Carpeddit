@@ -2,6 +2,8 @@
 using Carpeddit.Api.Helpers;
 using Carpeddit.Api.Models;
 using Carpeddit.Api.Services;
+using Carpeddit.App.Api.Models;
+using Carpeddit.Common.Extensions;
 using Carpeddit.Models;
 using Carpeddit.Models.Api;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,16 +39,16 @@ namespace Carpeddit.Api
             _redditService = App.App.Services.GetService<IRedditService>();
         }
 
-        public async Task<IEnumerable<Post>> GetFrontPageAsync(SortMode sort = SortMode.Hot)
+        public async Task<IEnumerable<Post>> GetFrontPageAsync(ListingInput input = null, SortMode sort = SortMode.Hot)
         {
             await TokenHelper.VerifyTokenValidationAsync(_info);
 
-            var response = await _redditService.GetFrontpagePostsAsync(sort, _info.AccessToken);
+            var response = await _redditService.GetFrontpagePostsAsync(sort, _info.AccessToken, input);
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 await TokenHelper.RefreshTokenAsync(_info.RefreshToken);
-                response = await _redditService.GetFrontpagePostsAsync(sort, _info.AccessToken);
+                response = await _redditService.GetFrontpagePostsAsync(sort, _info.AccessToken, input);
             }
 
             return response.Content.Data.Children.Select(p => p.Data);
@@ -67,16 +69,16 @@ namespace Carpeddit.Api
             return response.Content.Data;
         }
 
-        public async Task<IEnumerable<Post>> GetSubredditPostsAsync(string subredditName, SortMode sort = SortMode.Hot)
+        public async Task<IEnumerable<Post>> GetSubredditPostsAsync(string subredditName, ListingInput input = null, SortMode sort = SortMode.Hot)
         {
             await TokenHelper.VerifyTokenValidationAsync(_info);
 
-            var response = await _redditService.GetSubredditPostsAsync(subredditName, sort, _info.AccessToken);
+            var response = await _redditService.GetSubredditPostsAsync(subredditName, sort, _info.AccessToken, input);
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
                 await TokenHelper.RefreshTokenAsync(_info.RefreshToken);
-                response = await _redditService.GetSubredditPostsAsync(subredditName, sort, _info.AccessToken);
+                response = await _redditService.GetSubredditPostsAsync(subredditName, sort, _info.AccessToken, input);
             }
 
             return response.Content.Data.Children.Select(p => p.Data);

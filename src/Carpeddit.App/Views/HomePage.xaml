@@ -24,7 +24,6 @@
             Padding="48,0,56,0"
             d:Margin="0"
             d:Padding="0"
-            ItemsSource="{x:Bind _posts}"
             ItemContainerStyle="{StaticResource PostItemContainerStyle}">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="viewmodels:PostViewModel" x:DefaultBindMode="OneWay">
@@ -55,6 +54,17 @@
                     </uc:PostItemControl>
                 </DataTemplate>
             </ListView.ItemTemplate>
+
+            <ListView.Footer>
+                <Grid>
+                    <muxc:ProgressRing
+                        x:Name="FooterProgress"
+                        Margin="0,4"
+                        HorizontalAlignment="Center"
+                        IsActive="True"
+                        Visibility="Collapsed" />
+                </Grid>
+            </ListView.Footer>
         </ListView>
     </Grid>
 </Page>

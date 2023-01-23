@@ -26,10 +26,10 @@ namespace Carpeddit.App.ViewModels
 
         public DateTime Created
         {
-            get => Post.Created;
+            get => Post.CreatedUtc.ToLocalTime();
             set
             {
-                Post.Created = value;
+                Post.CreatedUtc = value.ToUniversalTime();
                 OnPropertyChanged(nameof(Created));
             }
         }

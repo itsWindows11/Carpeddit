@@ -1,5 +1,7 @@
-﻿using Carpeddit.App.ViewModels;
+﻿using Carpeddit.Api.Enums;
+using Carpeddit.App.ViewModels;
 using Carpeddit.Common.Collections;
+using Carpeddit.Common.Helpers;
 using Carpeddit.Models;
 using Carpeddit.Models.Api;
 using System;
@@ -17,6 +19,8 @@ namespace Carpeddit.App.Views
         private Subreddit Subreddit;
 
         private BulkObservableCollection<PostViewModel> _posts = new();
+
+        private bool isLoadingMore;
 
         public SubredditInfoPage()
         {
@@ -45,7 +49,7 @@ namespace Carpeddit.App.Views
             PostLoadingProgressRing.IsActive = true;
             PostLoadingProgressRing.Visibility = Visibility.Visible;
 
-            var posts = (await App.Client.GetSubredditPostsAsync(Subreddit.DisplayName, Api.Enums.SortMode.Hot)).Select(p => new PostViewModel()
+            var posts = (await App.Client.GetSubredditPostsAsync(Subreddit.DisplayName, new(limit: 50))).Select(p => new PostViewModel()
             {
                 Post = p
             });
@@ -56,6 +60,33 @@ namespace Carpeddit.App.Views
 
             PostLoadingProgressRing.IsActive = false;
             PostLoadingProgressRing.Visibility = Visibility.Collapsed;
+
+            var scrollViewer = ListHelpers.GetScrollViewer(MainList);
+
+            scrollViewer.ViewChanged += ScrollViewer_ViewChanged;
+        }
+
+        private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+        {
+            var scrollViewer = (ScrollViewer)sender;
+
+            if (isLoadingMore || scrollViewer.VerticalOffset > scrollViewer.ScrollableHeight - 50)
+                return;
+
+            isLoadingMore = true;
+
+            FooterProgress.Visibility = Visibility.Visible;
+
+            var posts = (await App.Client.GetSubredditPostsAsync(Subreddit.DisplayName, new(after: _posts.Last().Post.Name, limit: 50))).Select(p => new PostViewModel()
+            {
+                Post = p
+            });
+
+            _posts.AddRange(posts);
+
+            FooterProgress.Visibility = Visibility.Collapsed;
+
+            isLoadingMore = false;
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
