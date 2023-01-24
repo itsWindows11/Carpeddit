@@ -11,8 +11,8 @@
     xmlns:uc="using:Carpeddit.App.UserControls"
     xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
     xmlns:viewmodels="using:Carpeddit.App.ViewModels"
+    Name="RootPage"
     d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    Loaded="Page_Loaded"
     mc:Ignorable="d">
 
     <ListView
@@ -37,7 +37,8 @@
                     <muxc:ProgressRing
                         x:Name="LoadingInfoRing"
                         HorizontalAlignment="Center"
-                        VerticalAlignment="Center" />
+                        VerticalAlignment="Center"
+                        Margin="0,-12,0,0"/>
 
                     <Border
                         Height="300"
@@ -80,9 +81,9 @@
                                         <TextBlock
                                             x:Name="SubredditFriendlyName"
                                             Margin="0,4,0,0"
+                                            HorizontalAlignment="Center"
                                             d:Text="User"
                                             FontWeight="SemiBold"
-                                            HorizontalAlignment="Center"
                                             Foreground="WhiteSmoke"
                                             Style="{StaticResource SubtitleTextBlockStyle}"
                                             Text="{x:Bind _user.Subreddit.Title}" />
@@ -90,9 +91,9 @@
                                         <TextBlock
                                             x:Name="SubredditName"
                                             Margin="0,4,0,0"
+                                            HorizontalAlignment="Center"
                                             d:Text="u/user"
                                             FontSize="12"
-                                            HorizontalAlignment="Center"
                                             Foreground="WhiteSmoke"
                                             Text="{x:Bind _user.Name}" />
                                     </StackPanel>
@@ -160,6 +161,7 @@
                     Margin="-4,0"
                     CreationDate="{x:Bind Created}"
                     Description="{x:Bind ShortDescription}"
+                    SubredditClickCommand="{Binding SubredditClickCommand, ElementName=RootPage}"
                     SubredditName="{x:Bind Post.SubredditNamePrefixed}"
                     UserName="{x:Bind Post.Author}"
                     VoteRatio="{x:Bind VoteRatio, Converter={StaticResource FormattedNumberConverter}}">

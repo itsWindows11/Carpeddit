@@ -33,6 +33,14 @@ namespace Carpeddit.Api.Services
         Task<IApiResponse<Listing<IEnumerable<ApiObjectWithKind<Post>>>>> GetFrontpagePostsAsync(SortMode sort, [Authorize] string accessToken, [Query] ListingInput listingInput);
 
         /// <summary>
+        /// Gets a user using the specified username.
+        /// </summary>
+        /// <param name="accessToken">The access token.</param>
+        /// <returns>The user.</returns>
+        [Get("/user/{userName}/about")]
+        Task<IApiResponse<ApiObjectWithKind<User>>> GetUserAsync(string userName, [Authorize] string accessToken);
+
+        /// <summary>
         /// Gets the currently authenticated user.
         /// </summary>
         /// <param name="accessToken">The access token.</param>

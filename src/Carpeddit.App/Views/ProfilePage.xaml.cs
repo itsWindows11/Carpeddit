@@ -10,6 +10,7 @@ using Windows.UI.Xaml.Navigation;
 using Carpeddit.Common.Collections;
 using System.Linq;
 using Carpeddit.App.ViewModels;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Carpeddit.App.Views
 {
@@ -18,6 +19,7 @@ namespace Carpeddit.App.Views
         private User _user;
         private BulkObservableCollection<PostViewModel> _posts = new();
         private bool isLoadingMore;
+        private bool _eventRegistered;
 
         public ProfilePage()
         {
@@ -27,15 +29,32 @@ namespace Carpeddit.App.Views
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             if (e.Parameter is User user)
+            {
                 _user = user;
+                Loaded += Page_Loaded;
+                _eventRegistered = true;
+            }
+            else if (e.Parameter is string userName)
+            {
+                _user = await App.Client.GetUserAsync(userName);
+                Page_Loaded(null, null);
+                Bindings.Update();
+            }
             else
+            {
                 _user = await App.Client.Account.GetMeAsync();
+                Page_Loaded(null, null);
+                Bindings.Update();
+            }
 
             base.OnNavigatedTo(e);
         }
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
+            if (_eventRegistered)
+                Loaded -= Page_Loaded;
+
             LoadingInfoRing.IsActive = false;
             LoadingInfoRing.Visibility = Visibility.Collapsed;
 
@@ -96,5 +115,9 @@ namespace Carpeddit.App.Views
 
             isLoadingMore = false;
         }
+
+        [RelayCommand]
+        public void SubredditClick(string subreddit)
+            => Frame.Navigate(typeof(SubredditInfoPage), subreddit.Substring(2));
     }
 }

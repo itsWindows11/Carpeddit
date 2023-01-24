@@ -98,5 +98,20 @@ namespace Carpeddit.Api
 
             return response.Content.Data.Children.Select(p => p.Data);
         }
+
+        public async Task<User> GetUserAsync(string userName)
+        {
+            await TokenHelper.VerifyTokenValidationAsync(_info);
+
+            var response = await _redditService.GetUserAsync(userName, _info.AccessToken);
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                await TokenHelper.RefreshTokenAsync(_info.RefreshToken);
+                response = await _redditService.GetUserAsync(userName, _info.AccessToken);
+            }
+
+            return response.Content.Data;
+        }
     }
 }

@@ -67,5 +67,14 @@ namespace Carpeddit.App.Views
         [RelayCommand]
         public void SubredditClick(string subreddit)
             => Frame.Navigate(typeof(SubredditInfoPage), subreddit.Substring(2));
+
+        [RelayCommand]
+        public void UserClick(string name)
+        {
+            if (name == "[deleted]")
+                return;
+
+            Frame.Navigate(typeof(ProfilePage), name);
+        }
     }
 }

@@ -4,6 +4,7 @@ using Carpeddit.Common.Collections;
 using Carpeddit.Common.Helpers;
 using Carpeddit.Models;
 using Carpeddit.Models.Api;
+using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Linq;
 using System.Net;
@@ -104,6 +105,15 @@ namespace Carpeddit.App.Views
                 SubredditInfoPage_Loaded(null, null);
                 Bindings.Update();
             }
+        }
+
+        [RelayCommand]
+        public void UserClick(string name)
+        {
+            if (name == "[deleted]")
+                return;
+
+            Frame.Navigate(typeof(ProfilePage), name);
         }
     }
 }

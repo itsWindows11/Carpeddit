@@ -10,6 +10,7 @@
     xmlns:uc="using:Carpeddit.App.UserControls"
     xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
     xmlns:viewmodels="using:Carpeddit.App.ViewModels"
+    Name="RootPage"
     d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
@@ -224,6 +225,7 @@
                     CreationDate="{x:Bind Created}"
                     Description="{x:Bind ShortDescription}"
                     SubredditName="{x:Bind Post.SubredditNamePrefixed}"
+                    UserClickCommand="{Binding UserClickCommand, ElementName=RootPage}"
                     UserName="{x:Bind Post.Author}"
                     VoteRatio="{x:Bind VoteRatio, Converter={StaticResource FormattedNumberConverter}}">
                     <uc:PostItemControl.FooterContent>

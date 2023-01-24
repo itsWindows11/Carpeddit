@@ -3,124 +3,165 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Threading;
+
+
+#nullable enable
 
 namespace Carpeddit.Common.Collections
 {
-    /// <summary>
-    /// An observable collection class with thread safety and ranges in mind.
-    /// </summary>
-    /// <typeparam name="T">The type of elements in the collection.</typeparam>
-    public partial class BulkObservableCollection<T> : ObservableCollection<T>
+    /// <summary> 
+	/// Represents a dynamic data collection that provides notifications when items get added, removed, or when the whole list is refreshed. 
+	/// </summary> 
+	/// <typeparam name="T"></typeparam> 
+	public class BulkObservableCollection<T> : ObservableCollection<T>
     {
-        private readonly Dictionary<NotifyCollectionChangedEventHandler, SynchronizationContext> CollectionChangedEvents =
-            new Dictionary<NotifyCollectionChangedEventHandler, SynchronizationContext>();
 
-        private readonly Dictionary<PropertyChangedEventHandler, SynchronizationContext> PropertyChangedEvents =
-            new Dictionary<PropertyChangedEventHandler, SynchronizationContext>();
-
-        public override event NotifyCollectionChangedEventHandler CollectionChanged
-        {
-            add => CollectionChangedEvents.Add(value, SynchronizationContext.Current);
-            remove => CollectionChangedEvents.Remove(value);
-        }
-
-        protected override event PropertyChangedEventHandler PropertyChanged
-        {
-            add => PropertyChangedEvents.Add(value, SynchronizationContext.Current);
-            remove => PropertyChangedEvents.Remove(value);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the
-        /// <see cref="SafeObservableCollection{T}"/> class.
-        /// </summary>
+        /// <summary> 
+        /// Initializes a new instance of the System.Collections.ObjectModel.ObservableCollection(Of T) class. 
+        /// </summary> 
         public BulkObservableCollection()
             : base()
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the
-        /// <see cref="SafeObservableCollection{T}"/> class.
-        /// </summary>
-        /// <param name="collection">The collection from which the
-        /// elements are copied.</param>
-        /// <exception cref="ArgumentNullException">The collection
-        /// parameter cannot be null.</exception>
+        /// <summary> 
+        /// Initializes a new instance of the System.Collections.ObjectModel.ObservableCollection(Of T) class that contains elements copied from the specified collection. 
+        /// </summary> 
+        /// <param name="collection">collection: The collection from which the elements are copied.</param> 
+        /// <exception cref="System.ArgumentNullException">The collection parameter cannot be null.</exception> 
         public BulkObservableCollection(IEnumerable<T> collection)
             : base(collection)
         {
         }
 
-        /// <summary>
-        /// Adds the elements from the specified collection
-        /// to the end of this collection.
-        /// </summary>
-        public void AddRange(IEnumerable<T> items)
+        /// <summary> 
+        /// Adds the elements of the specified collection to the end of the ObservableCollection(Of T). 
+        /// </summary> 
+        public void AddRange(IEnumerable<T> collection, NotifyCollectionChangedAction notificationMode = NotifyCollectionChangedAction.Add)
         {
+            if (notificationMode != NotifyCollectionChangedAction.Add && notificationMode != NotifyCollectionChangedAction.Reset)
+                throw new ArgumentException("Mode must be either Add or Reset for AddRange.", nameof(notificationMode));
+            if (collection == null)
+                throw new ArgumentNullException(nameof(collection));
+
             CheckReentrancy();
 
-            int startIndex = Count;
+            var startIndex = Count;
 
-            foreach (T item in items)
+            var itemsAdded = AddArrangeCore(collection);
+
+            if (!itemsAdded)
+                return;
+
+            if (notificationMode == NotifyCollectionChangedAction.Reset)
+            {
+                RaiseChangeNotificationEvents(action: NotifyCollectionChangedAction.Reset);
+
+                return;
+            }
+
+            var changedItems = collection is List<T> ? (List<T>)collection : new List<T>(collection);
+
+            RaiseChangeNotificationEvents(
+                action: NotifyCollectionChangedAction.Add,
+                changedItems: changedItems,
+                startingIndex: startIndex);
+        }
+
+        /// <summary> 
+        /// Removes the first occurence of each item in the specified collection from ObservableCollection(Of T). NOTE: with notificationMode = Remove, removed items starting index is not set because items are not guaranteed to be consecutive.
+        /// </summary> 
+        public void RemoveRange(IEnumerable<T> collection, NotifyCollectionChangedAction notificationMode = NotifyCollectionChangedAction.Reset)
+        {
+            if (notificationMode != NotifyCollectionChangedAction.Remove && notificationMode != NotifyCollectionChangedAction.Reset)
+                throw new ArgumentException("Mode must be either Remove or Reset for RemoveRange.", nameof(notificationMode));
+            if (collection == null)
+                throw new ArgumentNullException(nameof(collection));
+
+            CheckReentrancy();
+
+            if (notificationMode == NotifyCollectionChangedAction.Reset)
+            {
+                var raiseEvents = false;
+                foreach (var item in collection)
+                {
+                    Items.Remove(item);
+                    raiseEvents = true;
+                }
+
+                if (raiseEvents)
+                    RaiseChangeNotificationEvents(action: NotifyCollectionChangedAction.Reset);
+
+                return;
+            }
+
+            var changedItems = new List<T>(collection);
+            for (var i = 0; i < changedItems.Count; i++)
+            {
+                if (!Items.Remove(changedItems[i]))
+                {
+                    changedItems.RemoveAt(i); //Can't use a foreach because changedItems is intended to be (carefully) modified
+                    i--;
+                }
+            }
+
+            if (changedItems.Count == 0)
+                return;
+
+            RaiseChangeNotificationEvents(
+                action: NotifyCollectionChangedAction.Remove,
+                changedItems: changedItems);
+        }
+
+        /// <summary> 
+        /// Clears the current collection and replaces it with the specified item. 
+        /// </summary> 
+        public void Replace(T item) => ReplaceRange(new T[] { item });
+
+        /// <summary> 
+        /// Clears the current collection and replaces it with the specified collection. 
+        /// </summary> 
+        public void ReplaceRange(IEnumerable<T> collection)
+        {
+            if (collection == null)
+                throw new ArgumentNullException(nameof(collection));
+
+            CheckReentrancy();
+
+            var previouslyEmpty = Items.Count == 0;
+
+            Items.Clear();
+
+            AddArrangeCore(collection);
+
+            var currentlyEmpty = Items.Count == 0;
+
+            if (previouslyEmpty && currentlyEmpty)
+                return;
+
+            RaiseChangeNotificationEvents(action: NotifyCollectionChangedAction.Reset);
+        }
+
+        private bool AddArrangeCore(IEnumerable<T> collection)
+        {
+            var itemAdded = false;
+            foreach (var item in collection)
+            {
                 Items.Add(item);
+                itemAdded = true;
+            }
+            return itemAdded;
+        }
 
+        private void RaiseChangeNotificationEvents(NotifyCollectionChangedAction action, List<T>? changedItems = null, int startingIndex = -1)
+        {
             OnPropertyChanged(new PropertyChangedEventArgs(nameof(Count)));
             OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
 
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs
-                (NotifyCollectionChangedAction.Add, items, startIndex));
-        }
-
-        /// <summary>
-        /// Removes the elements in the specified
-        /// collection from this collection.
-        /// </summary>
-        public void RemoveRange(IEnumerable<T> items)
-        {
-            CheckReentrancy();
-
-            bool raiseEvents = false;
-            foreach (T item in items)
-            {
-                if (Items.Remove(item))
-                    raiseEvents = true;
-            }
-
-            if (raiseEvents)
-            {
-                OnPropertyChanged(new PropertyChangedEventArgs(nameof(Count)));
-                OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
-
-                OnCollectionChanged(new NotifyCollectionChangedEventArgs
-                    (NotifyCollectionChangedAction.Reset));
-            }
-        }
-
-        protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
-        {
-            using (BlockReentrancy())
-            {
-                foreach (KeyValuePair<NotifyCollectionChangedEventHandler, SynchronizationContext> @event in CollectionChangedEvents)
-                {
-                    if (@event.Value == null)
-                        @event.Key.Invoke(this, e);
-                    else
-                        @event.Value.Post(s => @event.Key.Invoke(s, e), this);
-                }
-            }
-        }
-
-        protected override void OnPropertyChanged(PropertyChangedEventArgs e)
-        {
-            foreach (KeyValuePair<PropertyChangedEventHandler, SynchronizationContext> @event in PropertyChangedEvents)
-            {
-                if (@event.Value == null)
-                    @event.Key.Invoke(this, e);
-                else
-                    @event.Value.Post(s => @event.Key.Invoke(s, e), this);
-            }
+            if (changedItems is null)
+                OnCollectionChanged(new NotifyCollectionChangedEventArgs(action));
+            else
+                OnCollectionChanged(new NotifyCollectionChangedEventArgs(action, changedItems: changedItems, startingIndex: startingIndex));
         }
     }
 }

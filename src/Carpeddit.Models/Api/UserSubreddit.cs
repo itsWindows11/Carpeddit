@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Nodes;
+﻿using System.Collections.Generic;
+using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
 namespace Carpeddit.Models
@@ -54,7 +55,7 @@ namespace Carpeddit.Models
         public bool Over18 { get; set; }
 
         [JsonPropertyName("icon_size")]
-        public int[] IconSizes { get; set; }
+        public IEnumerable<int> IconSizes { get; set; }
 
         [JsonPropertyName("primary_color")]
         public string PrimaryColor { get; set; }
@@ -102,7 +103,7 @@ namespace Carpeddit.Models
         public bool Quarantine { get; set; }
 
         [JsonPropertyName("banner_size")]
-        public int? BannerSize { get; set; }
+        public IEnumerable<int> BannerSize { get; set; }
 
         [JsonPropertyName("user_is_moderator")]
         public bool UserIsModerator { get; set; }
