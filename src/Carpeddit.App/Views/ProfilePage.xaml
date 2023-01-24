@@ -160,6 +160,8 @@
                     Title="{x:Bind Title}"
                     Margin="-4,0"
                     CreationDate="{x:Bind Created}"
+                    IsDownvoted="{x:Bind IsDownvoted, Mode=TwoWay}"
+                    IsUpvoted="{x:Bind IsUpvoted, Mode=TwoWay}"
                     Description="{x:Bind ShortDescription}"
                     SubredditClickCommand="{Binding SubredditClickCommand, ElementName=RootPage}"
                     SubredditName="{x:Bind Post.SubredditNamePrefixed}"

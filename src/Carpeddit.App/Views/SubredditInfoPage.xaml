@@ -224,6 +224,8 @@
                     Margin="-4,0"
                     CreationDate="{x:Bind Created}"
                     Description="{x:Bind ShortDescription}"
+                    IsDownvoted="{x:Bind IsDownvoted, Mode=TwoWay}"
+                    IsUpvoted="{x:Bind IsUpvoted, Mode=TwoWay}"
                     SubredditName="{x:Bind Post.SubredditNamePrefixed}"
                     UserClickCommand="{Binding UserClickCommand, ElementName=RootPage}"
                     UserName="{x:Bind Post.Author}"

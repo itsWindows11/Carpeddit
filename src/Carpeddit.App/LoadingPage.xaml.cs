@@ -5,6 +5,7 @@ using Carpeddit.Common.Helpers;
 using Carpeddit.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text.Json;
@@ -74,8 +75,10 @@ namespace Carpeddit.App
                 _ = await App.Client.Account.GetMeAsync();
                 return true;
             }
-            catch
+            catch (Exception e)
             {
+                Debug.WriteLine(e);
+
                 foreach (var credential in App.Valut.FindAllByResource("Reddit"))
                     App.Valut.Remove(credential);
             }

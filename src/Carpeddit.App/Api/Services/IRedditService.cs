@@ -62,5 +62,14 @@ namespace Carpeddit.Api.Services
         /// <param name="subreddit">The subreddit name.</param>
         [Get("/r/{subreddit}/about")]
         Task<IApiResponse<ApiObjectWithKind<Subreddit>>> GetSubredditInfoAsync(string subreddit, [Authorize] string accessToken);
+
+        /// <summary>
+        /// Votes on a thing.
+        /// </summary>
+        /// <param name="accessToken">The access token.</param>
+        /// <param name="input">The query data to use.</param>
+        /// <returns>The API response.</returns>
+        [Post("/api/vote")]
+        Task<IApiResponse> VoteAsync([Query] VotingInput input, [Authorize] string accessToken);
     }
 }

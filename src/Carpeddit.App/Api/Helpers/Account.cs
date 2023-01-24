@@ -4,6 +4,7 @@ using Carpeddit.Models;
 using Carpeddit.Models.Api;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Carpeddit.Api.Helpers
@@ -22,7 +23,18 @@ namespace Carpeddit.Api.Helpers
                 return _me;
 
             await TokenHelper.VerifyTokenValidationAsync(_info);
-            return _me = (await App.App.Services.GetService<IRedditService>().GetCurrentlyAuthenticatedUserAsync(_info.AccessToken)).Content;
+
+            var service = App.App.Services.GetService<IRedditService>();
+
+            var response = await service.GetCurrentlyAuthenticatedUserAsync(_info.AccessToken);
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                await TokenHelper.RefreshTokenAsync(_info.RefreshToken);
+                response = await service.GetCurrentlyAuthenticatedUserAsync(_info.AccessToken);
+            }
+
+            return _me = response.Content;
         }
 
         public async Task<IEnumerable<UserKarma>> GetKarmaAsync()
