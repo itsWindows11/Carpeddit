@@ -83,5 +83,20 @@ namespace Carpeddit.Api
 
             return response.Content.Data.Children.Select(p => p.Data);
         }
+
+        public async Task<IEnumerable<Post>> GetUserPostsAsync(string userName, ListingInput input = null, SortMode sort = SortMode.Hot)
+        {
+            await TokenHelper.VerifyTokenValidationAsync(_info);
+
+            var response = await _redditService.GetUserPostsAsync(userName, sort, _info.AccessToken, input);
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                await TokenHelper.RefreshTokenAsync(_info.RefreshToken);
+                response = await _redditService.GetUserPostsAsync(userName, sort, _info.AccessToken, input);
+            }
+
+            return response.Content.Data.Children.Select(p => p.Data);
+        }
     }
 }

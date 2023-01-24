@@ -19,6 +19,13 @@ namespace Carpeddit.Api.Services
         Task<IApiResponse<Listing<IEnumerable<ApiObjectWithKind<Post>>>>> GetSubredditPostsAsync(string subreddit, SortMode sort, [Authorize] string accessToken, [Query] ListingInput listingInput);
 
         /// <summary>
+        /// Get a list of posts from a given subreddit.
+        /// </summary>
+        /// <param name="subreddit">The subreddit name.</param>
+        [Get("/user/{user}/submitted/{sort}")]
+        Task<IApiResponse<Listing<IEnumerable<ApiObjectWithKind<Post>>>>> GetUserPostsAsync(string user, SortMode sort, [Authorize] string accessToken, [Query] ListingInput listingInput);
+
+        /// <summary>
         /// Get a list of posts from the frontpage.
         /// </summary>
         /// <param name="subreddit">The subreddit name.</param>
