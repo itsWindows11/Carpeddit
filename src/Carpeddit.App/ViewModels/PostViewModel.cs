@@ -29,7 +29,15 @@ namespace Carpeddit.App.ViewModels
             => description ??= Post.IsSelf ? Post.Selftext : Post.Url;
 
         public string ShortDescription
-            => Description.Length > 400 ? Description.Substring(0, 400) + "..." : Description;
+        {
+            get
+            {
+                if (!Post.IsSelf)
+                    return Post.Url;
+
+                return Description.Length > 400 ? Description.Substring(0, 400) + "..." : Description;
+            }
+        }
 
         public DateTime Created
         {
