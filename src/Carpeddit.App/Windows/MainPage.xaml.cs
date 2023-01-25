@@ -1,4 +1,5 @@
 ﻿using Carpeddit.Api.Services;
+using Carpeddit.App.Api.Helpers;
 using Carpeddit.App.Views;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -58,21 +59,7 @@ namespace Carpeddit.App
         private void OnLogOutClick(object sender, RoutedEventArgs e)
         {
             NavigationCacheMode = NavigationCacheMode.Disabled;
-
-            foreach (var credential in App.Valut.RetrieveAll())
-                App.Valut.Remove(credential);
-
-            // Even though token_type_hint is optional, the response
-            // should be completed as quick as possible while firing
-            // and forgetting it.
-            var body = new Dictionary<string, string>()
-            {
-                { "token", App.Client.Info.AccessToken },
-                { "token_type_hint", "access_token" }
-            };
-
-            _ = App.Services.GetService<IRedditAuthService>().RevokeAsync(body);
-
+            _ = AccountHelper.SignOutAsync();
             Frame.Navigate(typeof(LoginPage));
         }
 

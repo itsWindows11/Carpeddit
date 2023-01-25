@@ -1,4 +1,5 @@
 ﻿using Carpeddit.Api.Helpers;
+using Carpeddit.App.Api.Helpers;
 using Carpeddit.App.ViewModels;
 using Carpeddit.App.Views;
 using Carpeddit.Common.Helpers;
@@ -30,19 +31,14 @@ namespace Carpeddit.App
             var settings = App.Services.GetService<SettingsViewModel>();
             Frame.RequestedTheme = settings.Theme;
 
-            var credentials = App.Valut.RetrieveAll();
+            var currentInfo = AccountHelper.GetCurrentInfo();
 
-            if (credentials.Any())
+            if (currentInfo != null)
             {
-                var credential = credentials.FirstOrDefault();
-                credential.RetrievePassword();
-
-                var json = JsonSerializer.Deserialize<PasswordToken>(credential.Password);
-
                 App.Client = new(new()
                 {
-                    AccessToken = json.AccessToken,
-                    RefreshToken = json.RefreshToken
+                    AccessToken = currentInfo.AccessToken,
+                    RefreshToken = currentInfo.RefreshToken
                 });
             }
 
@@ -80,11 +76,12 @@ namespace Carpeddit.App
             {
                 Debug.WriteLine(e);
 
-                foreach (var credential in App.Valut.FindAllByResource("Reddit"))
-                    App.Valut.Remove(credential);
+                // Access token seems to be invalid, avoid re-using it.
+                await AccountHelper.SignOutAsync();
+                Frame.Navigate(typeof(LoginPage), null, new SuppressNavigationTransitionInfo());
             }
 
-            done:
+        done:
             return false;
         }
     }

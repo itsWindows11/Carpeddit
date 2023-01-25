@@ -11,6 +11,7 @@ using Carpeddit.App.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Windows.UI.Xaml;
 using Carpeddit.Models;
+using Carpeddit.App.Api.Helpers;
 
 namespace Carpeddit.App.Dialogs
 {
@@ -55,14 +56,7 @@ namespace Carpeddit.App.Dialogs
                 RefreshToken = authInfo.RefreshToken
             };
 
-            App.Valut.Add(new PasswordCredential("Reddit", userInfo.Name, JsonSerializer.Serialize(info)));
-
-            /*await App.CacheRepository.UpsertAsync(new CachedUser()
-            {
-                Name = userInfo.Name,
-                IconUrl = userInfo.IconImage,
-                Created = userInfo.Created
-            });*/
+            await AccountHelper.SaveAccessInfoAsync(info, userInfo.Name);
 
             App.Client = new(new()
             {

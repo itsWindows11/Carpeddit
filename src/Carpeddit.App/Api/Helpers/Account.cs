@@ -17,6 +17,15 @@ namespace Carpeddit.Api.Helpers
         internal Account(TokenInfo info)
             => _info = info;
 
+        public async Task<User> GetMeUnsafeAsync()
+        {
+            var service = App.App.Services.GetService<IRedditService>();
+
+            var response = await service.GetCurrentlyAuthenticatedUserAsync(_info.AccessToken);
+
+            return response.Content;
+        }
+
         public async Task<User> GetMeAsync()
         {
             if (_me != null)

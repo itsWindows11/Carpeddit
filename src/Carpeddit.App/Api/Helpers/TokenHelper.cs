@@ -1,5 +1,6 @@
 ﻿using Carpeddit.Api.Models;
 using Carpeddit.Api.Services;
+using Carpeddit.App.Api.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,12 @@ namespace Carpeddit.Api.Helpers
             var authInfo = await App.App.Services.GetService<IRedditAuthService>().RefreshTokenAsync(dictionary, refreshToken);
 
             authInfo.RefreshToken = refreshToken;
+
+            await AccountHelper.SaveAccessInfoAsync(new()
+            {
+                AccessToken = authInfo.AccessToken,
+                RefreshToken = authInfo.RefreshToken
+            });
 
             return authInfo;
         }

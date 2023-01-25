@@ -120,6 +120,7 @@
     <Compile Include="Api\Enums\SortMode.cs" />
     <Compile Include="Api\Helpers\Account.cs" />
     <Compile Include="Api\Helpers\TokenHelper.cs" />
+    <Compile Include="Api\Helpers\AccountHelper.cs" />
     <Compile Include="Api\Models\ListingInput.cs" />
     <Compile Include="Api\Models\TokenInfo.cs" />
     <Compile Include="Api\Models\VotingInput.cs" />

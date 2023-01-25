@@ -3,10 +3,10 @@ using Windows.Networking.Connectivity;
 
 namespace Carpeddit.Common.Helpers
 {
-    public static class WebHelpers
+    public static partial class WebHelpers
     {
         public static Task<bool> CheckIsConnectedAsync()
-            => Task.Run(() => CheckIsConnected());
+            => Task.Run(CheckIsConnected);
 
         private static bool CheckIsConnected()
         {
