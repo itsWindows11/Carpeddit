@@ -21,7 +21,7 @@
                 Margin="0,2,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center"
-                Source="{x:Bind Icon, Mode=OneWay}"
+                Source="{x:Bind Icon}"
                 Visibility="{x:Bind ShowIcon, Mode=OneWay, Converter={StaticResource BoolToVis}}" />
             <TextBlock
                 x:Name="AppTitle"

@@ -60,6 +60,8 @@ namespace Carpeddit.App.ViewModels
 
                 if (value)
                 {
+                    // Do not directly change IsDownvoted property so that
+                    // we don't end up downvoting everything we come across.
                     isDownvoted = false;
                     OnPropertyChanged(nameof(IsDownvoted));
                 }
@@ -77,6 +79,8 @@ namespace Carpeddit.App.ViewModels
 
                 if (value)
                 {
+                    // Do not directly change IsUpvoted property so that
+                    // we don't end up upvoting everything we come across.
                     isUpvoted = false;
                     OnPropertyChanged(nameof(IsUpvoted));
                 }

@@ -1,4 +1,6 @@
-﻿using Carpeddit.App.ViewModels;
+﻿using Carpeddit.App.Models;
+using Carpeddit.App.UserControls;
+using Carpeddit.App.ViewModels;
 using Carpeddit.Common.Collections;
 using Carpeddit.Common.Helpers;
 using CommunityToolkit.Mvvm.Input;
@@ -65,16 +67,24 @@ namespace Carpeddit.App.Views
         }
 
         [RelayCommand]
-        public void SubredditClick(string subreddit)
+        private void SubredditClick(string subreddit)
             => Frame.Navigate(typeof(SubredditInfoPage), subreddit.Substring(2));
 
         [RelayCommand]
-        public void UserClick(string name)
+        private void UserClick(string name)
         {
             if (name == "[deleted]")
                 return;
 
             Frame.Navigate(typeof(ProfilePage), name);
         }
+
+        [RelayCommand]
+        private void TitleClick(PostViewModel model)
+            => ((Frame)Window.Current.Content).Navigate(typeof(PostDetailsPage), new PostDetailsNavigationInfo()
+            {
+                ShowFullPage = true,
+                ItemData = model
+            });
     }
 }

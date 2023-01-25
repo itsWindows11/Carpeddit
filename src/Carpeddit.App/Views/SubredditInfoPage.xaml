@@ -221,6 +221,7 @@
             <DataTemplate x:DataType="viewmodels:PostViewModel">
                 <uc:PostItemControl
                     Title="{x:Bind Title}"
+                    Post="{x:Bind}"
                     Margin="-4,0"
                     CreationDate="{x:Bind Created}"
                     Description="{x:Bind ShortDescription}"
@@ -228,6 +229,7 @@
                     IsUpvoted="{x:Bind IsUpvoted, Mode=TwoWay}"
                     SubredditName="{x:Bind Post.SubredditNamePrefixed}"
                     UserClickCommand="{Binding UserClickCommand, ElementName=RootPage}"
+                    TitleClickCommand="{Binding TitleClickCommand, ElementName=RootPage}"
                     UserName="{x:Bind Post.Author}"
                     VoteRatio="{x:Bind VoteRatio, Converter={StaticResource FormattedNumberConverter}}">
                     <uc:PostItemControl.FooterContent>

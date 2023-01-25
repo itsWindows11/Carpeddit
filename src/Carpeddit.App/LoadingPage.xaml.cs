@@ -22,6 +22,7 @@ namespace Carpeddit.App
         {
             InitializeComponent();
             Loaded += OnLoaded;
+            TitleBar.Loaded += (_, _1) => TitleBar.SetAsTitleBar();
         }
 
         private async void OnLoaded(object sender, RoutedEventArgs e)

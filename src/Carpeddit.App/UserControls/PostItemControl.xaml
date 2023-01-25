@@ -77,17 +77,23 @@
                 </Hyperlink>
             </TextBlock>
 
-            <Button Margin="0,4,0,0" Style="{ThemeResource TransparentNoHoverButtonStyle}">
+            <Button
+                Margin="0,4,0,0"
+                Command="{x:Bind TitleClickCommand, Mode=OneWay}"
+                CommandParameter="{x:Bind Post, Mode=OneWay}"
+                Style="{ThemeResource TransparentNoHoverButtonStyle}">
                 <TextBlock
                     FontSize="20"
                     Style="{StaticResource TitleTextBlockStyle}"
-                    Text="{x:Bind Title, Mode=OneWay}" />
+                    Text="{x:Bind Title, Mode=OneWay}"
+                    d:Text="Title" />
             </Button>
 
             <controls:MarkdownTextBlock
                 Margin="0,8,0,0"
                 Text="{x:Bind Description, Mode=OneWay}"
-                Visibility="{x:Bind ShowDescription, Mode=OneWay, Converter={StaticResource BoolToVis}}" />
+                Visibility="{x:Bind ShowDescription, Mode=OneWay, Converter={StaticResource BoolToVis}}"
+                d:Text="Description" />
 
             <ContentPresenter Content="{x:Bind FooterContent, Mode=OneWay}" />
         </StackPanel>

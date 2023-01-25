@@ -1,4 +1,5 @@
 ﻿using Carpeddit.Api.Enums;
+using Carpeddit.App.Models;
 using Carpeddit.App.ViewModels;
 using Carpeddit.Common.Collections;
 using Carpeddit.Common.Helpers;
@@ -108,12 +109,20 @@ namespace Carpeddit.App.Views
         }
 
         [RelayCommand]
-        public void UserClick(string name)
+        private void UserClick(string name)
         {
             if (name == "[deleted]")
                 return;
 
             Frame.Navigate(typeof(ProfilePage), name);
         }
+
+        [RelayCommand]
+        private void TitleClick(PostViewModel model)
+            => ((Frame)Window.Current.Content).Navigate(typeof(PostDetailsPage), new PostDetailsNavigationInfo()
+            {
+                ShowFullPage = true,
+                ItemData = model
+            });
     }
 }

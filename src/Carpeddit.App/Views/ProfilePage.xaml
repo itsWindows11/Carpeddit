@@ -158,11 +158,13 @@
             <DataTemplate x:DataType="viewmodels:PostViewModel">
                 <uc:PostItemControl
                     Title="{x:Bind Title}"
+                    Post="{x:Bind}"
                     Margin="-4,0"
                     CreationDate="{x:Bind Created}"
                     IsDownvoted="{x:Bind IsDownvoted, Mode=TwoWay}"
                     IsUpvoted="{x:Bind IsUpvoted, Mode=TwoWay}"
                     Description="{x:Bind ShortDescription}"
+                    TitleClickCommand="{Binding TitleClickCommand, ElementName=RootPage}"
                     SubredditClickCommand="{Binding SubredditClickCommand, ElementName=RootPage}"
                     SubredditName="{x:Bind Post.SubredditNamePrefixed}"
                     UserName="{x:Bind Post.Author}"

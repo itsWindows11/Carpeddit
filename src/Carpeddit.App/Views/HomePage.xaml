@@ -33,8 +33,10 @@
                         Description="{x:Bind ShortDescription}"
                         IsDownvoted="{x:Bind IsDownvoted, Mode=TwoWay}"
                         IsUpvoted="{x:Bind IsUpvoted, Mode=TwoWay}"
+                        Post="{x:Bind}"
                         SubredditClickCommand="{Binding SubredditClickCommand, ElementName=RootPage}"
                         SubredditName="{x:Bind Post.SubredditNamePrefixed}"
+                        TitleClickCommand="{Binding TitleClickCommand, ElementName=RootPage}"
                         UserClickCommand="{Binding UserClickCommand, ElementName=RootPage}"
                         UserName="{x:Bind Post.Author}"
                         VoteRatio="{x:Bind VoteRatio, Converter={StaticResource FormattedNumberConverter}}">

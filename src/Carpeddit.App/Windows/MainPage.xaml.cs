@@ -32,6 +32,7 @@ namespace Carpeddit.App
             InitializeComponent();
             NavigationCacheMode = NavigationCacheMode.Enabled;
             Loaded += OnLoaded;
+            TitleBar.Loaded += (_, _1) => TitleBar.SetAsTitleBar();
         }
     }
 

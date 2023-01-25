@@ -16,7 +16,10 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <uc:CustomTitleBar ShowIcon="False" ShowTitle="False" />
+        <uc:CustomTitleBar
+            x:Name="TitleBar"
+            ShowIcon="False"
+            ShowTitle="False" />
 
         <muxc:ProgressRing
             Grid.Row="1"

@@ -11,6 +11,7 @@ using Carpeddit.Common.Collections;
 using System.Linq;
 using Carpeddit.App.ViewModels;
 using CommunityToolkit.Mvvm.Input;
+using Carpeddit.App.Models;
 
 namespace Carpeddit.App.Views
 {
@@ -117,7 +118,15 @@ namespace Carpeddit.App.Views
         }
 
         [RelayCommand]
-        public void SubredditClick(string subreddit)
+        private void SubredditClick(string subreddit)
             => Frame.Navigate(typeof(SubredditInfoPage), subreddit.Substring(2));
+
+        [RelayCommand]
+        private void TitleClick(PostViewModel model)
+            => ((Frame)Window.Current.Content).Navigate(typeof(PostDetailsPage), new PostDetailsNavigationInfo()
+            {
+                ShowFullPage = true,
+                ItemData = model
+            });
     }
 }

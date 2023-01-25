@@ -140,7 +140,11 @@
     <Compile Include="LoadingPage.xaml.cs">
       <DependentUpon>LoadingPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\PostDetailsNavigationInfo.cs" />
     <Compile Include="ViewModels\PostViewModel.cs" />
+    <Compile Include="Views\PostDetailsPage.xaml.cs">
+      <DependentUpon>PostDetailsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SubredditInfoPage.xaml.cs">
       <DependentUpon>SubredditInfoPage.xaml</DependentUpon>
     </Compile>
@@ -267,6 +271,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="LoadingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PostDetailsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

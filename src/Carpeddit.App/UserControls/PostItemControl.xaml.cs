@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Carpeddit.App.ViewModels;
+using System;
 using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -74,10 +75,22 @@ namespace Carpeddit.App.UserControls
             set => SetValue(SubredditClickCommandProperty, value);
         }
 
+        public ICommand TitleClickCommand
+        {
+            get => (ICommand)GetValue(TitleClickCommandProperty);
+            set => SetValue(TitleClickCommandProperty, value);
+        }
+
         public object FooterContent
         {
             get => GetValue(FooterContentProperty);
             set => SetValue(FooterContentProperty, value);
+        }
+
+        public PostViewModel Post
+        {
+            get => (PostViewModel)GetValue(PostProperty);
+            set => SetValue(PostProperty, value);
         }
 
         public PostItemControl()
@@ -121,8 +134,14 @@ namespace Carpeddit.App.UserControls
         public static DependencyProperty SubredditClickCommandProperty
             = DependencyProperty.Register(nameof(SubredditClickCommand), typeof(ICommand), typeof(PostItemControl), new(null));
 
+        public static DependencyProperty TitleClickCommandProperty
+            = DependencyProperty.Register(nameof(TitleClickCommand), typeof(ICommand), typeof(PostItemControl), new(null));
+
         public static DependencyProperty FooterContentProperty
             = DependencyProperty.Register(nameof(FooterContent), typeof(object), typeof(PostItemControl), new(null));
+
+        public static DependencyProperty PostProperty
+            = DependencyProperty.Register(nameof(Post), typeof(PostViewModel), typeof(PostItemControl), new(null));
     }
 
     public partial class PostItemControl
