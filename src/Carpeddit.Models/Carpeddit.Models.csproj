@@ -130,6 +130,7 @@
     <Compile Include="Api\Interfaces\IVotable.cs" />
     <Compile Include="Api\LinkFlairRichText.cs" />
     <Compile Include="Api\Listing{T}.cs" />
+    <Compile Include="Api\More.cs" />
     <Compile Include="Api\Post.cs" />
     <Compile Include="Api\Subreddit.cs" />
     <Compile Include="Api\UserKarma.cs" />

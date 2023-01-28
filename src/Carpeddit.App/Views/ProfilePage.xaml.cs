@@ -62,7 +62,7 @@ namespace Carpeddit.App.Views
             if (_user.Subreddit.UserIsSubscriber)
                 JoinButton.Content = "Unfollow";
 
-            if (string.IsNullOrWhiteSpace(_user.Subreddit.Title) || _user.Subreddit.DisplayName.Equals($"u_{_user.Name}"))
+            if (string.IsNullOrWhiteSpace(_user.Subreddit.Title))
                 _ = VisualStateManager.GoToState(this, "NoDisplayName", false);
 
             try

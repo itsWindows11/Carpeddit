@@ -8,4 +8,7 @@
     <converters:FormattedNumberConverter x:Key="FormattedNumberConverter" />
     <converters:HexStringToColorConverter x:Key="HexStringToColor" />
     <converters:StringToUriConverter x:Key="StringToUri" />
+    <converters:EnumToStringConverter x:Key="EnumToString" />
+    <converters:NumberToPercentageConverter x:Name="NumberToPercentage" />
+    <converters:SettingsChoiceToColorConverter x:Name="SettingsChoiceToColor" />
 </ResourceDictionary>

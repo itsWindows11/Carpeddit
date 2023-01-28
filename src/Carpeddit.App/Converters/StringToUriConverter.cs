@@ -13,7 +13,10 @@ namespace Carpeddit.App.Converters
             if (successful)
                 return result;
 
-            return new Uri("ms-appx:///Assets/DefaultSubredditIcon.png");
+            if ((string)parameter == "SubredditIconFallback")
+                return new Uri("ms-appx:///Assets/DefaultSubredditIcon.png");
+
+            return new Uri("ms-appx:///Assets/Dummy.png");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

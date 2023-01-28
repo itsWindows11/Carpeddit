@@ -17,8 +17,16 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
-    <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <LangVersion>latest</LangVersion>
+    <GenerateAppInstallerFile>False</GenerateAppInstallerFile>
+    <PackageCertificateKeyFile>Carpeddit.App_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <GenerateTestArtifacts>True</GenerateTestArtifacts>
+    <AppxBundle>Always</AppxBundle>
+    <AppxBundlePlatforms>x64</AppxBundlePlatforms>
+    <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -131,9 +139,12 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\EnumToStringConverter.cs" />
     <Compile Include="Converters\FormattedNumberConverter.cs" />
     <Compile Include="Converters\HexStringToColorConverter.cs" />
+    <Compile Include="Converters\NumberToPercentageConverter.cs" />
     <Compile Include="Converters\RelativeTimeConverter.cs" />
+    <Compile Include="Converters\SettingsChoiceToColorConverter.cs" />
     <Compile Include="Converters\StringToUriConverter.cs" />
     <Compile Include="Dialogs\RedditAuthDialog.xaml.cs">
       <DependentUpon>RedditAuthDialog.xaml</DependentUpon>
@@ -194,6 +205,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\DefaultSubredditIcon.png" />
+    <Content Include="Assets\Dummy.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
     <Content Include="Assets\LargeTile.scale-150.png" />
@@ -389,6 +401,12 @@
       <Project>{f30683cb-6060-4a80-945d-97e39827cacf}</Project>
       <Name>Carpeddit.Repository</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\SettingsIcons.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Carpeddit.App_TemporaryKey.pfx" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

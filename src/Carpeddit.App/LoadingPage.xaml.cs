@@ -76,9 +76,15 @@ namespace Carpeddit.App
             {
                 Debug.WriteLine(e);
 
-                // Access token seems to be invalid, avoid re-using it.
-                await AccountHelper.SignOutAsync();
-                Frame.Navigate(typeof(LoginPage), null, new SuppressNavigationTransitionInfo());
+                try
+                {
+                    await TokenHelper.RefreshTokenAsync(App.Client.Info.RefreshToken);
+                }
+                catch
+                {
+                    // All tokens seem to be invalid, sign out the user.
+                    await AccountHelper.SignOutAsync(false);
+                }
             }
 
         done:

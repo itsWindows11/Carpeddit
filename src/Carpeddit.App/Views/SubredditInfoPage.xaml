@@ -70,7 +70,7 @@
                                         CornerRadius="60">
                                         <Image>
                                             <Image.Source>
-                                                <BitmapImage UriSource="{x:Bind Subreddit.CommunityIcon, Converter={StaticResource StringToUri}}" />
+                                                <BitmapImage UriSource="{x:Bind Subreddit.CommunityIcon, Converter={StaticResource StringToUri}, ConverterParameter=SubredditIconFallback}" />
                                             </Image.Source>
                                         </Image>
                                     </Border>
@@ -172,10 +172,9 @@
                             </StackPanel>
 
                             <TextBlock
-                                Margin="0,4,0,0"
+                                Margin="14,4,0,0"
                                 FontSize="12"
-                                Text="active members"
-                                TextAlignment="Center" />
+                                Text="active members" />
                         </StackPanel>
 
                         <StackPanel>
@@ -201,10 +200,9 @@
                             </StackPanel>
 
                             <TextBlock
-                                Margin="0,4,0,0"
+                                Margin="14,4,0,0"
                                 FontSize="12"
-                                Text="members"
-                                TextAlignment="Center" />
+                                Text="members" />
                         </StackPanel>
                     </controls:WrapPanel>
                 </StackPanel>

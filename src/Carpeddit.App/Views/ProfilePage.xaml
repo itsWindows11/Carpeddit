@@ -108,19 +108,6 @@
                             </Grid>
                         </Grid>
                     </Border>
-
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup>
-                            <VisualState x:Name="WithDisplayName" />
-                            <VisualState x:Name="NoDisplayName">
-                                <VisualState.Setters>
-                                    <Setter Target="SubredditFriendlyName.Visibility" Value="Collapsed" />
-                                    <Setter Target="SubredditName.Style" Value="{StaticResource SubtitleTextBlockStyle}" />
-                                    <Setter Target="SubredditName.FontSize" Value="20" />
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
                 </Grid>
 
                 <StackPanel
@@ -198,5 +185,18 @@
                     Visibility="Collapsed" />
             </Grid>
         </ListView.Footer>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState x:Name="WithDisplayName" />
+                <VisualState x:Name="NoDisplayName">
+                    <VisualState.Setters>
+                        <Setter Target="SubredditFriendlyName.Visibility" Value="Collapsed" />
+                        <Setter Target="SubredditName.Style" Value="{StaticResource SubtitleTextBlockStyle}" />
+                        <Setter Target="SubredditName.FontSize" Value="20" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </ListView>
 </Page>

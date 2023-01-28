@@ -66,10 +66,13 @@ namespace Carpeddit.App.Api.Helpers
         /// Cleans up locally stored tokens, then revokes the access token.
         /// </summary>
         /// <returns>A <see cref="Task" /> which represents the operation.</returns>
-        public static Task SignOutAsync()
+        public static Task SignOutAsync(bool revokeToken = true)
         {
             foreach (var credential in App.Valut.RetrieveAll())
                 App.Valut.Remove(credential);
+
+            if (!revokeToken)
+                return Task.CompletedTask;
 
             // Even though token_type_hint is optional, the response
             // should be completed as quick as possible.

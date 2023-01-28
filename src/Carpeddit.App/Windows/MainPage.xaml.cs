@@ -1,5 +1,6 @@
 ﻿using Carpeddit.Api.Services;
 using Carpeddit.App.Api.Helpers;
+using Carpeddit.App.ViewModels;
 using Carpeddit.App.Views;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -19,6 +20,8 @@ namespace Carpeddit.App
 {
     public sealed partial class MainPage : Page
     {
+        private SettingsViewModel SViewModel { get; } = App.Services.GetService<SettingsViewModel>();
+
         private readonly List<(string Tag, Type Page)> _pages = new()
         {
             ("home", typeof(HomePage)),
