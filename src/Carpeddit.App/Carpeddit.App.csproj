@@ -153,6 +153,7 @@
       <DependentUpon>LoadingPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\PostDetailsNavigationInfo.cs" />
+    <Compile Include="ViewModels\Pages\SettingsPageViewModel.cs" />
     <Compile Include="ViewModels\PostViewModel.cs" />
     <Compile Include="Views\PostDetailsPage.xaml.cs">
       <DependentUpon>PostDetailsPage.xaml</DependentUpon>

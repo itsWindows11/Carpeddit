@@ -11,11 +11,17 @@
     mc:Ignorable="d">
     <Page.Resources>
         <MenuFlyout x:Name="ImageCardMenuFlyout">
-            <MenuFlyoutItem Text="From file" Icon="{ui:FontIcon Glyph=&#xE1A5;}" Click="OnImageCardFromFileClick" />
-            <MenuFlyoutItem Text="From URL" Icon="{ui:FontIcon Glyph=&#xE12B;}" Click="OnImageCardFromUrlClick" />
+            <MenuFlyoutItem
+                Command="{x:Bind ViewModel.PickTintFromFileCommand, Mode=OneWay}"
+                Icon="{ui:FontIcon Glyph=&#xE1A5;}"
+                Text="From file" />
+            <MenuFlyoutItem
+                Command="{x:Bind ViewModel.PickTintFromUrlCommand, Mode=OneWay}"
+                Icon="{ui:FontIcon Glyph=&#xE12B;}"
+                Text="From URL" />
         </MenuFlyout>
     </Page.Resources>
-    
+
     <ScrollViewer
         Margin="-48,0,-56,0"
         Padding="48,0,56,0"
@@ -40,7 +46,7 @@
                 </labs:SettingsCard.HeaderIcon>
                 <ComboBox
                     ItemsSource="{ui:EnumValues Type=ElementTheme}"
-                    SelectedItem="{x:Bind SViewModel.Theme, Mode=TwoWay}"
+                    SelectedItem="{x:Bind ViewModel.SettingsManager.Theme, Mode=TwoWay}"
                     SelectionChanged="OnThemeComboBoxSelectionChanged">
                     <ComboBox.ItemTemplate>
                         <DataTemplate x:DataType="ElementTheme">
@@ -55,7 +61,7 @@
                     <FontIcon Glyph="&#xE771;" />
                 </labs:SettingsExpander.HeaderIcon>
 
-                <ComboBox SelectedIndex="{x:Bind SViewModel.TintType, Mode=TwoWay}" SelectionChanged="OnTintTypeComboBoxSelectionChanged">
+                <ComboBox SelectedIndex="{x:Bind ViewModel.SettingsManager.TintType, Mode=TwoWay}" SelectionChanged="OnTintTypeComboBoxSelectionChanged">
                     <ComboBoxItem Content="No tint" />
                     <ComboBoxItem Content="Use custom color" />
                     <ComboBoxItem Content="Use custom image" />
@@ -72,7 +78,7 @@
                                 MaxWidth="500"
                                 Margin="0,8,0,0"
                                 HorizontalAlignment="Left"
-                                ItemsSource="{x:Bind SViewModel.TintColorsList}"
+                                ItemsSource="{x:Bind ViewModel.SettingsManager.TintColorsList}"
                                 SelectionChanged="OnGridViewColorListSelectionChanged">
                                 <GridView.ItemTemplate>
                                     <DataTemplate x:DataType="wui:Color">
@@ -94,9 +100,9 @@
                         x:Name="ImageCard"
                         Padding="58,12,48,12"
                         ActionIcon="{ui:FontIcon Glyph=&#xE8A7;}"
+                        Click="OnImageCardClick"
                         Header="Choose image"
                         IsClickEnabled="True"
-                        Click="OnImageCardClick"
                         Visibility="Collapsed" />
                     <labs:SettingsCard x:Name="TintOpacityCard" Header="Opacity">
                         <StackPanel Orientation="Horizontal" Spacing="12">
@@ -108,15 +114,15 @@
                                 Maximum="1"
                                 Minimum="0"
                                 StepFrequency="0.01"
-                                Value="{x:Bind SViewModel.TintOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                Value="{x:Bind ViewModel.SettingsManager.TintOpacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock
                                 Margin="0,-4,0,0"
                                 VerticalAlignment="Center"
                                 d:Text="100"
-                                Text="{x:Bind SViewModel.TintOpacity, Mode=OneWay, Converter={StaticResource NumberToPercentage}, ConverterParameter=WithPercentageSymbol}" />
+                                Text="{x:Bind ViewModel.SettingsManager.TintOpacity, Mode=OneWay, Converter={StaticResource NumberToPercentage}, ConverterParameter=WithPercentageSymbol}" />
                         </StackPanel>
                     </labs:SettingsCard>
-                    <labs:SettingsCard Visibility="Collapsed" x:Name="DummyTintCard" />
+                    <labs:SettingsCard x:Name="DummyTintCard" Visibility="Collapsed" />
                 </labs:SettingsExpander.Items>
             </labs:SettingsExpander>
 
@@ -142,9 +148,7 @@
                 Style="{StaticResource BaseTextBlockStyle}"
                 Text="About" />
 
-            <labs:SettingsExpander
-                Header="Backup and restore"
-                HeaderIcon="Refresh">
+            <labs:SettingsExpander Header="Backup and restore" HeaderIcon="Refresh">
                 <labs:SettingsExpander.Items>
                     <labs:SettingsCard Header="Save a copy of the logs" HeaderIcon="Save">
                         <Button Content="Save" />

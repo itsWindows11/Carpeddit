@@ -2,6 +2,7 @@
 using Carpeddit.Api.Services;
 using Carpeddit.App.Services;
 using Carpeddit.App.ViewModels;
+using Carpeddit.App.ViewModels.Pages;
 using Carpeddit.Models;
 using Carpeddit.Repository;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,6 +52,7 @@ namespace Carpeddit.App
             services.AddSingleton<SettingsViewModel>();
             services.AddSingleton(RestService.For<IRedditService>("https://oauth.reddit.com"));
             services.AddSingleton(RestService.For<IRedditAuthService>("https://www.reddit.com"));
+            services.AddTransient<SettingsPageViewModel>();
 
             return services.BuildServiceProvider();
         }
