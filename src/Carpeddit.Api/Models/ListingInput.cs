@@ -1,5 +1,4 @@
-﻿using Refit;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace Carpeddit.App.Api.Models
 {
@@ -8,28 +7,24 @@ namespace Carpeddit.App.Api.Models
         /// <summary>
         /// Fullname of a thing.
         /// </summary>
-        [AliasAs("after")]
         [JsonPropertyName("after")]
         public string After { get; set; }
 
         /// <summary>
         /// Fullname of a thing.
         /// </summary>
-        [AliasAs("before")]
         [JsonPropertyName("before")]
         public string Before { get; set; }
 
         /// <summary>
         /// The maximum number of items desired.
         /// </summary>
-        [AliasAs("limit")]
         [JsonPropertyName("limit")]
         public int Limit { get; set; }
 
         /// <summary>
         /// A positive integer.
         /// </summary>
-        [AliasAs("count")]
         [JsonPropertyName("count")]
         public int Count { get; set; }
 

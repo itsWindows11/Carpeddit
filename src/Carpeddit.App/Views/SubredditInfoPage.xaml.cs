@@ -1,11 +1,12 @@
 ﻿using Carpeddit.Api.Enums;
+using Carpeddit.Api.Services;
 using Carpeddit.App.Models;
 using Carpeddit.App.ViewModels;
 using Carpeddit.Common.Collections;
 using Carpeddit.Common.Helpers;
-using Carpeddit.Models;
 using Carpeddit.Models.Api;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Net;
@@ -21,6 +22,7 @@ namespace Carpeddit.App.Views
         private Subreddit Subreddit;
 
         private BulkObservableCollection<PostViewModel> _posts = new();
+        private IRedditService service = App.Services.GetService<IRedditService>();
 
         private bool isLoadingMore;
 
@@ -51,7 +53,7 @@ namespace Carpeddit.App.Views
             PostLoadingProgressRing.IsActive = true;
             PostLoadingProgressRing.Visibility = Visibility.Visible;
 
-            var posts = (await App.Client.GetSubredditPostsAsync(Subreddit.DisplayName, new(limit: 50))).Select(p => new PostViewModel()
+            var posts = (await service.GetSubredditPostsAsync(Subreddit.DisplayName, SortMode.Hot, new(limit: 50))).Select(p => new PostViewModel()
             {
                 Post = p
             });
@@ -79,7 +81,7 @@ namespace Carpeddit.App.Views
 
             FooterProgress.Visibility = Visibility.Visible;
 
-            var posts = (await App.Client.GetSubredditPostsAsync(Subreddit.DisplayName, new(after: _posts.Last().Post.Name, limit: 50))).Select(p => new PostViewModel()
+            var posts = (await service.GetSubredditPostsAsync(Subreddit.DisplayName, SortMode.Hot, new(after: _posts.Last().Post.Name, limit: 50))).Select(p => new PostViewModel()
             {
                 Post = p
             });
@@ -102,7 +104,7 @@ namespace Carpeddit.App.Views
             }
             else if (e.Parameter is string name)
             {
-                Subreddit = await App.Client.GetSubredditAsync(name);
+                Subreddit = await service.GetSubredditInfoAsync(name);
                 SubredditInfoPage_Loaded(null, null);
                 Bindings.Update();
             }

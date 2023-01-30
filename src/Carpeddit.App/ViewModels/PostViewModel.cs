@@ -74,7 +74,7 @@ namespace Carpeddit.App.ViewModels
                     OnPropertyChanged(nameof(IsDownvoted));
                 }
 
-                _ = App.Services.GetService<IRedditService>().VoteAsync(new(value ? 1 : 0, Post.Name), App.Client.Info.AccessToken);
+                _ = App.Services.GetService<IRedditService>().VoteAsync(new(value ? 1 : 0, Post.Name));
             }
         }
 
@@ -93,7 +93,7 @@ namespace Carpeddit.App.ViewModels
                     OnPropertyChanged(nameof(IsUpvoted));
                 }
 
-                _ = App.Services.GetService<IRedditService>().VoteAsync(new(value ? -1 : 0, Post.Name), App.Client.Info.AccessToken);
+                _ = App.Services.GetService<IRedditService>().VoteAsync(new(value ? -1 : 0, Post.Name));
             }
         }
     }

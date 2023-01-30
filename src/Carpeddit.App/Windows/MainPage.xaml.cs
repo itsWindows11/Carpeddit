@@ -31,6 +31,8 @@ namespace Carpeddit.App
             ("profile", typeof(ProfilePage)),
         };
 
+        private IRedditService service = App.Services.GetService<IRedditService>();
+
         public MainPage()
         {
             InitializeComponent();
@@ -44,7 +46,8 @@ namespace Carpeddit.App
     {
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
-            ProfileBitmap.UriSource = new(WebUtility.HtmlDecode((await App.Client.Account.GetMeAsync()).IconImage));
+            var user = await service.GetMeAsync();
+            ProfileBitmap.UriSource = new(WebUtility.HtmlDecode(user.IconImage));
 
             ContentFrame.Navigated += OnNavigated;
 
@@ -62,7 +65,7 @@ namespace Carpeddit.App
         private void OnLogOutClick(object sender, RoutedEventArgs e)
         {
             NavigationCacheMode = NavigationCacheMode.Disabled;
-            _ = AccountHelper.SignOutAsync();
+            _ = AccountHelper.Instance.SignOutAsync();
             Frame.Navigate(typeof(LoginPage));
         }
 

@@ -1,15 +1,11 @@
-﻿using Carpeddit.Api.Helpers;
+﻿using Carpeddit.Api.Services;
 using Carpeddit.App.Api.Helpers;
 using Carpeddit.App.ViewModels;
 using Carpeddit.App.Views;
 using Carpeddit.Common.Helpers;
-using Carpeddit.Models;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -30,17 +26,6 @@ namespace Carpeddit.App
         {
             var settings = App.Services.GetService<SettingsViewModel>();
             Frame.RequestedTheme = settings.Theme;
-
-            var currentInfo = AccountHelper.GetCurrentInfo();
-
-            if (currentInfo != null)
-            {
-                App.Client = new(new()
-                {
-                    AccessToken = currentInfo.AccessToken,
-                    RefreshToken = currentInfo.RefreshToken
-                });
-            }
 
             if (!await WebHelpers.CheckIsConnectedAsync())
             {
@@ -64,30 +49,19 @@ namespace Carpeddit.App
 
         private async Task<bool> IsValidSessionAsync()
         {
-            if (App.Client == null)
-                goto done;
-
             try
             {
-                _ = await App.Client.Account.GetMeAsync();
+                _ = await App.Services.GetService<IRedditService>().GetMeAsync();
                 return true;
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e);
 
-                try
-                {
-                    await TokenHelper.RefreshTokenAsync(App.Client.Info.RefreshToken);
-                }
-                catch
-                {
-                    // All tokens seem to be invalid, sign out the user.
-                    await AccountHelper.SignOutAsync(false);
-                }
+                // Token must not be reused, sign out the user.
+                await AccountHelper.Instance.SignOutAsync(false);
             }
 
-        done:
             return false;
         }
     }

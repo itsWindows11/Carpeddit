@@ -1,19 +1,14 @@
-﻿using Carpeddit.Api;
+﻿using Carpeddit.Api.Helpers;
 using Carpeddit.Api.Services;
+using Carpeddit.App.Api.Helpers;
 using Carpeddit.App.Services;
 using Carpeddit.App.ViewModels;
 using Carpeddit.App.ViewModels.Pages;
-using Carpeddit.Models;
 using Carpeddit.Repository;
 using Microsoft.Extensions.DependencyInjection;
-using Refit;
 using System;
-using System.Linq;
-using System.Text.Json;
-using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
-using Windows.Security.Credentials;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -27,10 +22,6 @@ namespace Carpeddit.App
     {
         public static IServiceProvider Services { get; private set; }
 
-        public static PasswordVault Valut { get; } = new PasswordVault();
-
-        public static RedditClient Client { get; set; }
-
         public static IRepository CacheRepository { get; private set; }
 
         /// <summary>
@@ -40,8 +31,11 @@ namespace Carpeddit.App
         public App()
         {
             InitializeComponent();
-            Suspending += OnSuspending;
             Services = ConfigureServices();
+
+            // Initialize the helpers.
+            _ = new AccountHelper(Services.GetService<IRedditAuthService>(), Services.GetService<IRedditService>());
+            _ = new TokenHelper(Services.GetService<IRedditAuthService>());
         }
 
         private IServiceProvider ConfigureServices()
@@ -50,8 +44,8 @@ namespace Carpeddit.App
 
             services.AddSingleton<ISettingsService, SettingsService>();
             services.AddSingleton<SettingsViewModel>();
-            services.AddSingleton(RestService.For<IRedditService>("https://oauth.reddit.com"));
-            services.AddSingleton(RestService.For<IRedditAuthService>("https://www.reddit.com"));
+            services.AddSingleton<IRedditAuthService, RedditAuthService>();
+            services.AddSingleton<IRedditService, RedditService>();
             services.AddTransient<SettingsPageViewModel>();
 
             return services.BuildServiceProvider();
@@ -62,7 +56,7 @@ namespace Carpeddit.App
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override async void OnLaunched(LaunchActivatedEventArgs e)
+        protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
@@ -76,21 +70,12 @@ namespace Carpeddit.App
                 Window.Current.Content = rootFrame;
             }
 
-            if (e.PrelaunchActivated)
-                return;
-
-            CoreApplication.EnablePrelaunch(true);
-
-            if (rootFrame.Content == null)
+            if (!e.PrelaunchActivated)
             {
-                // When the navigation stack isn't restored navigate to the first page,
-                // configuring the new page by passing required information as a navigation
-                // parameter
+                CoreApplication.EnablePrelaunch(true);
 
-                /*CacheRepository = new SqliteRepository();
-                await CacheRepository.InitializeAsync();*/
-
-                rootFrame.Navigate(typeof(LoadingPage), e.Arguments);
+                if (rootFrame.Content == null)
+                    rootFrame.Navigate(typeof(LoadingPage), e.Arguments);
             }
 
             // Ensure the current window is active
@@ -105,20 +90,6 @@ namespace Carpeddit.App
         private void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load page " + e.SourcePageType.FullName);
-        }
-
-        /// <summary>
-        /// Invoked when application execution is being suspended.  Application state is saved
-        /// without knowing whether the application will be terminated or resumed with the contents
-        /// of memory still intact.
-        /// </summary>
-        /// <param name="sender">The source of the suspend request.</param>
-        /// <param name="e">Details about the suspend request.</param>
-        private void OnSuspending(object sender, SuspendingEventArgs e)
-        {
-            /*var deferral = e.SuspendingOperation.GetDeferral();
-            //TODO: Save application state and stop any background activity
-            deferral.Complete();*/
         }
     }
 }

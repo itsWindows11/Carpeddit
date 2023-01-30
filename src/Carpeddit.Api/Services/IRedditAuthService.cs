@@ -1,5 +1,4 @@
-﻿using Refit;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Carpeddit.Api.Models;
 
@@ -12,23 +11,27 @@ namespace Carpeddit.Api.Services
         /// </summary>
         /// <param name="content">The response body.</param>
         /// <param name="authorization">The auth header to use.</param>
-        [Post("/api/v1/access_token")]
-        Task<TokenInfo> GetAccessAsync([Body(BodySerializationMethod.UrlEncoded)] IDictionary<string, string> content, [Authorize("Basic")] string token);
+        Task<TokenInfo> GetAccessAsync(string code, string token);
 
         /// <summary>
         /// Revokes the access token provided.
         /// </summary>
         /// <param name="content">The response body.</param>
         /// <param name="authorization">The auth header to use.</param>
-        [Post("/api/v1/access_token")]
-        Task RevokeAsync([Body(BodySerializationMethod.UrlEncoded)] IDictionary<string, string> content);
+        Task RevokeAsync(string accessToken);
 
         /// <summary>
-        /// Gets the access info.
+        /// Refreshes the access token with the provided refresh token.
         /// </summary>
         /// <param name="content">The response body.</param>
         /// <param name="authorization">The auth header to use.</param>
-        [Post("/api/v1/access_token")]
-        Task<TokenInfo> RefreshTokenAsync([Body(BodySerializationMethod.UrlEncoded)] IDictionary<string, string> content, string refreshToken);
+        Task<TokenInfo> RefreshTokenAsync(string refreshToken);
+
+        /// <summary>
+        /// Gets the access info, refreshing it if needed.
+        /// </summary>
+        /// <param name="content">The response body.</param>
+        /// <param name="authorization">The auth header to use.</param>
+        Task<TokenInfo> GetAccessAsync();
     }
 }

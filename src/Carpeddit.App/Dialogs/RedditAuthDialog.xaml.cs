@@ -1,17 +1,12 @@
 ﻿using Carpeddit.Common.Constants;
 using System;
-using System.Collections.Generic;
-using System.Text.Json;
-using System.Text;
 using System.Web;
-using Windows.Security.Credentials;
 using Windows.UI.Xaml.Controls;
 using Carpeddit.Api.Services;
 using Carpeddit.App.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Windows.UI.Xaml;
-using Carpeddit.Models;
-using Carpeddit.App.Api.Helpers;
+using System.Text;
 
 namespace Carpeddit.App.Dialogs
 {
@@ -38,31 +33,9 @@ namespace Carpeddit.App.Dialogs
 
             string oneTimeCode = HttpUtility.ParseQueryString(args.Uri.Query).Get("code");
 
-            var token = Convert.ToBase64String(Encoding.ASCII.GetBytes(APIConstants.ClientId + ":" + APIConstants.ClientSecret));
+            var authInfo = await _authService.GetAccessAsync(oneTimeCode, Convert.ToBase64String(Encoding.ASCII.GetBytes(APIConstants.ClientId + ":" + APIConstants.ClientSecret)));
 
-            var dictionary = new Dictionary<string, string>()
-            {
-                { "code", oneTimeCode },
-                { "grant_type", "authorization_code" },
-                { "redirect_uri", APIConstants.RedirectUri }
-            };
-
-            var authInfo = await _authService.GetAccessAsync(dictionary, token);
-            var userInfo = (await _service.GetCurrentlyAuthenticatedUserAsync(authInfo.AccessToken)).Content;
-
-            var info = new PasswordToken
-            {
-                AccessToken = authInfo.AccessToken,
-                RefreshToken = authInfo.RefreshToken
-            };
-
-            await AccountHelper.SaveAccessInfoAsync(info, userInfo.Name);
-
-            App.Client = new(new()
-            {
-                AccessToken = info.AccessToken,
-                RefreshToken = info.RefreshToken
-            });
+            (_authService as RedditAuthService).Data = authInfo;
 
             // TODO: Check if setup is running instead
             // of going to the next setup page.

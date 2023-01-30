@@ -12,6 +12,9 @@ using System.Linq;
 using Carpeddit.App.ViewModels;
 using CommunityToolkit.Mvvm.Input;
 using Carpeddit.App.Models;
+using Carpeddit.Api.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Carpeddit.Api.Enums;
 
 namespace Carpeddit.App.Views
 {
@@ -19,6 +22,7 @@ namespace Carpeddit.App.Views
     {
         private User _user;
         private BulkObservableCollection<PostViewModel> _posts = new();
+        private IRedditService service = App.Services.GetService<IRedditService>();
         private bool isLoadingMore;
         private bool _eventRegistered;
 
@@ -37,13 +41,13 @@ namespace Carpeddit.App.Views
             }
             else if (e.Parameter is string userName)
             {
-                _user = await App.Client.GetUserAsync(userName);
+                _user = await service.GetUserAsync(userName);
                 Page_Loaded(null, null);
                 Bindings.Update();
             }
             else
             {
-                _user = await App.Client.Account.GetMeAsync();
+                _user = await service.GetMeAsync();
                 Page_Loaded(null, null);
                 Bindings.Update();
             }
@@ -77,7 +81,7 @@ namespace Carpeddit.App.Views
             PostLoadingProgressRing.IsActive = true;
             PostLoadingProgressRing.Visibility = Visibility.Visible;
 
-            var posts = (await App.Client.GetUserPostsAsync(_user.Name, new(limit: 50))).Select(p => new PostViewModel()
+            var posts = (await service.GetUserPostsAsync(_user.Name, SortMode.New, new(limit: 50))).Select(p => new PostViewModel()
             {
                 Post = p
             });
@@ -105,7 +109,7 @@ namespace Carpeddit.App.Views
 
             FooterProgress.Visibility = Visibility.Visible;
 
-            var posts = (await App.Client.GetUserPostsAsync(_user.Name, new(after: _posts.Last().Post.Name, limit: 50))).Select(p => new PostViewModel()
+            var posts = (await service.GetUserPostsAsync(_user.Name, SortMode.New, new(after: _posts.Last().Post.Name, limit: 50))).Select(p => new PostViewModel()
             {
                 Post = p
             });

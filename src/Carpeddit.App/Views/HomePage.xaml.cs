@@ -1,9 +1,11 @@
-﻿using Carpeddit.App.Models;
-using Carpeddit.App.UserControls;
+﻿using Carpeddit.Api.Enums;
+using Carpeddit.Api.Services;
+using Carpeddit.App.Models;
 using Carpeddit.App.ViewModels;
 using Carpeddit.Common.Collections;
 using Carpeddit.Common.Helpers;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -13,6 +15,7 @@ namespace Carpeddit.App.Views
     public sealed partial class HomePage : Page
     {
         private BulkObservableCollection<PostViewModel> _posts = new();
+        private IRedditService service = App.Services.GetService<IRedditService>();
 
         private bool isLoadingMore;
 
@@ -26,7 +29,7 @@ namespace Carpeddit.App.Views
         {
             Loaded -= HomePage_Loaded;
 
-            var posts = (await App.Client.GetFrontPageAsync(new(limit: 50))).Select(p => new PostViewModel()
+            var posts = (await service.GetFrontpagePostsAsync(SortMode.Best, new(limit: 50))).Select(p => new PostViewModel()
             {
                 Post = p
             });
@@ -54,7 +57,7 @@ namespace Carpeddit.App.Views
 
             FooterProgress.Visibility = Visibility.Visible;
 
-            var posts = (await App.Client.GetFrontPageAsync(new(after: _posts.Last().Post.Name, limit: 50))).Select(p => new PostViewModel()
+            var posts = (await service.GetFrontpagePostsAsync(SortMode.Best, new(after: _posts.Last().Post.Name, limit: 50))).Select(p => new PostViewModel()
             {
                 Post = p
             });

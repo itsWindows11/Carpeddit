@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Carpeddit.Api.Models
 {
-    public struct TokenInfo
+    public sealed class TokenInfo
     {
         [JsonPropertyName("access_token")]
         public string AccessToken { get; set; }
@@ -20,6 +20,6 @@ namespace Carpeddit.Api.Models
         [JsonPropertyName("refresh_token")]
         public string RefreshToken { get; set; }
 
-        public DateTimeOffset UtcExpirationTime { get; set; }
+        public DateTimeOffset ExpirationTime { get; set; }
     }
 }
