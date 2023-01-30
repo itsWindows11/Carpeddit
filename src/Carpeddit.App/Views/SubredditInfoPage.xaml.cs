@@ -44,7 +44,7 @@ namespace Carpeddit.App.Views
 
             try
             {
-                SubredditHeaderImg.Source = new BitmapImage(new(WebUtility.HtmlDecode(Subreddit.BannerBackgroundImage)));
+                SubredditHeaderImg.Source = new BitmapImage(new(WebUtility.HtmlDecode(string.IsNullOrEmpty(Subreddit.BannerBackgroundImage) ? "ms-appx:///Assets/Dummy.png" : Subreddit.BannerBackgroundImage)));
             } catch (UriFormatException)
             {
 

@@ -1,30 +1,93 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using Carpeddit.Api.Enums;
+using Carpeddit.Api.Services;
+using Carpeddit.App.Models;
+using Carpeddit.App.ViewModels;
+using Carpeddit.Common.Collections;
+using Carpeddit.Common.Helpers;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace Carpeddit.App.Views
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class PopularPage : Page
     {
+        private BulkObservableCollection<PostViewModel> _posts = new();
+        private IRedditService service = App.Services.GetService<IRedditService>();
+
+        private bool isLoadingMore;
+
         public PopularPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+            Loaded += HomePage_Loaded;
         }
+
+        private async void HomePage_Loaded(object sender, RoutedEventArgs e)
+        {
+            Loaded -= HomePage_Loaded;
+
+            var posts = (await service.GetSubredditPostsAsync("popular", SortMode.Best, new(limit: 50))).Select(p => new PostViewModel()
+            {
+                Post = p
+            });
+
+            _posts.AddRange(posts);
+
+            MainList.ItemsSource = _posts;
+
+            HomeRing.IsIndeterminate = false;
+            HomeRing.Visibility = Visibility.Collapsed;
+
+            var scrollViewer = ListHelpers.GetScrollViewer(MainList);
+
+            scrollViewer.ViewChanged += OnViewChanged;
+        }
+
+        private async void OnViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+        {
+            var scrollViewer = (ScrollViewer)sender;
+
+            if (isLoadingMore || scrollViewer.VerticalOffset > scrollViewer.ScrollableHeight - 50)
+                return;
+
+            isLoadingMore = true;
+
+            FooterProgress.Visibility = Visibility.Visible;
+
+            var posts = (await service.GetSubredditPostsAsync("popular", SortMode.Best, new(after: _posts.Last().Post.Name, limit: 50))).Select(p => new PostViewModel()
+            {
+                Post = p
+            });
+
+            _posts.AddRange(posts);
+
+            FooterProgress.Visibility = Visibility.Collapsed;
+
+            isLoadingMore = false;
+        }
+
+        [RelayCommand]
+        private void SubredditClick(string subreddit)
+            => Frame.Navigate(typeof(SubredditInfoPage), subreddit.Substring(2));
+
+        [RelayCommand]
+        private void UserClick(string name)
+        {
+            if (name == "[deleted]")
+                return;
+
+            Frame.Navigate(typeof(ProfilePage), name);
+        }
+
+        [RelayCommand]
+        private void TitleClick(PostViewModel model)
+            => ((Frame)Window.Current.Content).Navigate(typeof(PostDetailsPage), new PostDetailsNavigationInfo()
+            {
+                ShowFullPage = true,
+                ItemData = model
+            });
     }
 }

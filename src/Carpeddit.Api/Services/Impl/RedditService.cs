@@ -31,7 +31,7 @@ namespace Carpeddit.Api.Services
 
         public async Task<Subreddit> GetSubredditInfoAsync(string subreddit)
         {
-            var response = await WebHelper.GetDeserializedResponseAsync<ApiObjectWithKind<Subreddit>>($"/r/{subreddit}.json");
+            var response = await WebHelper.GetDeserializedResponseAsync<ApiObjectWithKind<Subreddit>>($"/r/{subreddit}/about.json");
 
             return response.Data;
         }
@@ -47,7 +47,9 @@ namespace Carpeddit.Api.Services
                 queryString.Add("limit", listingInput.Limit.ToString());
             }
 
-            return (await WebHelper.GetDeserializedResponseAsync<Listing<IEnumerable<ApiObjectWithKind<Post>>>>($"/r/{subreddit}/{sort.ToString().ToLower()}.json?{queryString}")).Data.Children.Select(p => p.Data);
+            var listing = await WebHelper.GetDeserializedResponseAsync<Listing<IEnumerable<ApiObjectWithKind<Post>>>>($"/r/{subreddit}/{sort.ToString().ToLower()}.json?{queryString}");
+
+            return listing.Data.Children.Select(p => p.Data);
         }
 
         public async Task<User> GetUserAsync(string userName)
