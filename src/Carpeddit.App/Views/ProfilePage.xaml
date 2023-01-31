@@ -17,7 +17,7 @@
 
     <ListView
         x:Name="MainList"
-        Margin="-48,0,-56,0"
+        Margin="-48,36,-56,0"
         Padding="48,0,56,0"
         d:Margin="0"
         d:Padding="0"

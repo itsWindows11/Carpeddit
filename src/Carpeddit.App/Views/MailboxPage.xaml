@@ -9,6 +9,14 @@
     d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
 
+        <TextBlock
+            Margin="0,56,0,12"
+            Style="{StaticResource NavigationViewTitleTextBlockStyle}"
+            Text="Mailbox" />
     </Grid>
 </Page>

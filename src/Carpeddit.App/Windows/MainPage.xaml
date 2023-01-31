@@ -11,7 +11,7 @@
     mc:Ignorable="d">
 
     <Page.Resources>
-        <Thickness x:Key="NavigationViewContentMargin">0,48,0,0</Thickness>
+        <CornerRadius x:Key="NavigationViewContentGridCornerRadius">0</CornerRadius>
     </Page.Resources>
 
     <Grid>
@@ -26,9 +26,15 @@
         <uc:CustomTitleBar
             x:Name="TitleBar"
             Height="48"
-            Margin="52,0,0,0"
+            Margin="58,0,0,0"
             VerticalAlignment="Top"
-            Canvas.ZIndex="1" />
+            Canvas.ZIndex="1">
+            <uc:CustomTitleBar.Transitions>
+                <TransitionCollection>
+                    <RepositionThemeTransition />
+                </TransitionCollection>
+            </uc:CustomTitleBar.Transitions>
+        </uc:CustomTitleBar>
 
         <muxc:NavigationView
             x:Name="NavView"
@@ -38,14 +44,6 @@
             IsBackEnabled="{x:Bind ContentFrame.CanGoBack, Mode=OneWay}"
             IsTitleBarAutoPaddingEnabled="False"
             ItemInvoked="OnItemInvoked">
-            <muxc:NavigationView.Header>
-                <TextBlock
-                    x:Name="NavViewHeader"
-                    Margin="-16,-16,0,0"
-                    d:Text="Home"
-                    Text="{x:Bind ((muxc:NavigationViewItem)NavView.SelectedItem).Content, Mode=OneWay}" />
-            </muxc:NavigationView.Header>
-
             <muxc:NavigationView.MenuItems>
                 <muxc:NavigationViewItem
                     Content="Home"
@@ -104,6 +102,14 @@
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="SizeStates">
+                <VisualState x:Name="VeryLargeSizeState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1008" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="TitleBar.Margin" Value="52,0,0,0" />
+                    </VisualState.Setters>
+                </VisualState>
                 <VisualState x:Name="LargeSizeState">
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="641" />

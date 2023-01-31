@@ -151,7 +151,6 @@ namespace Carpeddit.App
             if (ContentFrame.SourcePageType == typeof(SettingsPage))
             {
                 NavView.SelectedItem = (muxc.NavigationViewItem)NavView.SettingsItem;
-                NavViewHeader.Text = (NavView.SettingsItem as muxc.NavigationViewItem).Content as string;
             }
             else if (ContentFrame.SourcePageType != null)
             {

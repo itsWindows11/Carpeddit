@@ -17,6 +17,11 @@
     <Style BasedOn="{StaticResource DefaultPostItemControlStyle}" TargetType="uc:PostItemControl" />
     <!--#endregion-->
 
+    <Style x:Key="NavigationViewTitleTextBlockStyle" TargetType="TextBlock">
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="FontSize" Value="28" />
+    </Style>
+
     <Style
         x:Key="TransparentAccentNoHoverButtonStyle"
         BasedOn="{StaticResource TransparentButtonStyle}"

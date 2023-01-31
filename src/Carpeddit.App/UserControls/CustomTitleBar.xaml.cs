@@ -24,10 +24,9 @@ namespace Carpeddit.App.UserControls
 
         public ImageSource Icon
         {
-            get => (ImageSource)GetValue(IconProperty);
+            get => (ImageSource)GetValue(IconProperty) ?? new BitmapImage(new("ms-appx:///Assets/Square44x44Logo.png"));
             set => SetValue(IconProperty, value);
         }
-
 
         public bool ShowIcon
         {
@@ -65,10 +64,7 @@ namespace Carpeddit.App.UserControls
 
         public static DependencyProperty ShowTitleProperty = DependencyProperty.Register(nameof(ShowTitle), typeof(bool), typeof(CustomTitleBar), new(true));
 
-        public static DependencyProperty IconProperty = DependencyProperty.Register(nameof(Icon), typeof(ImageSource), typeof(CustomTitleBar), new(new BitmapImage()
-        {
-            UriSource = new("ms-appx:///Assets/Square44x44Logo.png")
-        }));
+        public static DependencyProperty IconProperty = DependencyProperty.Register(nameof(Icon), typeof(ImageSource), typeof(CustomTitleBar), new(null));
 
         public static DependencyProperty ShowIconProperty = DependencyProperty.Register(nameof(ShowIcon), typeof(bool), typeof(CustomTitleBar), new(true));
     }

@@ -13,13 +13,25 @@
     mc:Ignorable="d">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Margin="0,56,0,12"
+            Style="{StaticResource NavigationViewTitleTextBlockStyle}"
+            Text="Popular" />
+
         <muxc:ProgressRing
             x:Name="HomeRing"
+            Grid.Row="1"
             Width="52"
             Height="52" />
 
         <ListView
             x:Name="MainList"
+            Grid.Row="1"
             Margin="-48,0,-56,0"
             Padding="48,0,56,0"
             d:Margin="0"
