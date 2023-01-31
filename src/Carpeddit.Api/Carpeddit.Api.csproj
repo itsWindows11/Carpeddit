@@ -126,6 +126,7 @@
     <Compile Include="Helpers\AccountHelper.cs" />
     <Compile Include="Helpers\TokenHelper.cs" />
     <Compile Include="Models\ApiObjectWithKind.cs" />
+    <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\FlairRichText.cs" />
     <Compile Include="Models\Image.cs" />
     <Compile Include="Models\Interfaces\ICreated.cs" />

@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 namespace Carpeddit.Models
 {
@@ -17,7 +18,7 @@ namespace Carpeddit.Models
         public string After { get; init; }
 
         [JsonPropertyName("dist")]
-        public int Dist { get; init; }
+        public JsonNode Dist { get; init; }
 
         [JsonPropertyName("before")]
         public string Before { get; init; }

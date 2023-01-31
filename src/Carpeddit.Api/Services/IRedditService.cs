@@ -1,4 +1,5 @@
 ﻿using Carpeddit.Api.Enums;
+using Carpeddit.Api.Models;
 using Carpeddit.App.Api.Models;
 using Carpeddit.Models;
 using Carpeddit.Models.Api;
@@ -13,19 +14,19 @@ namespace Carpeddit.Api.Services
         /// Get a list of posts from a given subreddit.
         /// </summary>
         /// <param name="subreddit">The subreddit name.</param>
-        Task<IEnumerable<Post>> GetSubredditPostsAsync(string subreddit, SortMode sort, ListingInput listingInput);
+        Task<IList<Post>> GetSubredditPostsAsync(string subreddit, SortMode sort, ListingInput listingInput);
 
         /// <summary>
         /// Get a list of posts from a given subreddit.
         /// </summary>
         /// <param name="subreddit">The subreddit name.</param>
-        Task<IEnumerable<Post>> GetUserPostsAsync(string user, SortMode sort, ListingInput listingInput);
+        Task<IList<Post>> GetUserPostsAsync(string user, SortMode sort, ListingInput listingInput);
 
         /// <summary>
         /// Get a list of posts from the frontpage.
         /// </summary>
         /// <param name="subreddit">The subreddit name.</param>
-        Task<IEnumerable<Post>> GetFrontpagePostsAsync(SortMode sort, ListingInput listingInput);
+        Task<IList<Post>> GetFrontpagePostsAsync(SortMode sort, ListingInput listingInput);
 
         /// <summary>
         /// Gets a user using the specified username.
@@ -53,6 +54,12 @@ namespace Carpeddit.Api.Services
         /// </summary>
         /// <param name="subreddit">The subreddit name.</param>
         Task<Subreddit> GetSubredditInfoAsync(string subreddit);
+
+        /// <summary>
+        /// Get a post's comments.
+        /// </summary>
+        /// <param name="postName">The post name.</param>
+        Task<IList<Comment>> GetCommentsAsync(string postName, ListingInput input);
 
         /// <summary>
         /// Votes on a thing.

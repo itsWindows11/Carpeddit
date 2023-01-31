@@ -1,4 +1,5 @@
 ﻿using Carpeddit.Api.Enums;
+using Carpeddit.Api.Models;
 using Carpeddit.App.Api.Models;
 using Carpeddit.Models;
 using Carpeddit.Models.Api;
@@ -11,7 +12,19 @@ namespace Carpeddit.Api.Services
 {
     public sealed class RedditService : IRedditService
     {
-        public async Task<IEnumerable<Post>> GetFrontpagePostsAsync(SortMode sort, ListingInput listingInput = null)
+        public async Task<IList<Comment>> GetCommentsAsync(string postName, ListingInput input)
+        {
+            var response = await WebHelper.GetDeserializedResponseAsync<IList<Listing<IList<ApiObjectWithKind<Comment>>>>>($"/comments/{postName}");
+
+            // First listing is always the post.
+            response.RemoveAt(0);
+
+            var commentsListing = response.FirstOrDefault();
+
+            return commentsListing.Data.Children.Select(obj => obj.Data).ToList();
+        }
+
+        public async Task<IList<Post>> GetFrontpagePostsAsync(SortMode sort, ListingInput listingInput = null)
         {
             var queryString = HttpUtility.ParseQueryString(string.Empty);
 
@@ -22,8 +35,8 @@ namespace Carpeddit.Api.Services
                 queryString.Add("limit", listingInput.Limit.ToString());
             }
 
-            return (await WebHelper.GetDeserializedResponseAsync<Listing<IEnumerable<ApiObjectWithKind<Post>>>>("/.json?" + queryString.ToString()))
-                .Data.Children.Select(p => p.Data);
+            return (await WebHelper.GetDeserializedResponseAsync<Listing<IList<ApiObjectWithKind<Post>>>>("/.json?" + queryString.ToString()))
+                .Data.Children.Select(p => p.Data).ToList();
         }
 
         public Task<User> GetMeAsync()
@@ -36,7 +49,7 @@ namespace Carpeddit.Api.Services
             return response.Data;
         }
 
-        public async Task<IEnumerable<Post>> GetSubredditPostsAsync(string subreddit, SortMode sort, ListingInput listingInput)
+        public async Task<IList<Post>> GetSubredditPostsAsync(string subreddit, SortMode sort, ListingInput listingInput)
         {
             var queryString = HttpUtility.ParseQueryString(string.Empty);
 
@@ -47,9 +60,9 @@ namespace Carpeddit.Api.Services
                 queryString.Add("limit", listingInput.Limit.ToString());
             }
 
-            var listing = await WebHelper.GetDeserializedResponseAsync<Listing<IEnumerable<ApiObjectWithKind<Post>>>>($"/r/{subreddit}/{sort.ToString().ToLower()}.json?{queryString}");
+            var listing = await WebHelper.GetDeserializedResponseAsync<Listing<IList<ApiObjectWithKind<Post>>>>($"/r/{subreddit}/{sort.ToString().ToLower()}.json?{queryString}");
 
-            return listing.Data.Children.Select(p => p.Data);
+            return listing.Data.Children.Select(p => p.Data).ToList();
         }
 
         public async Task<User> GetUserAsync(string userName)
@@ -62,7 +75,7 @@ namespace Carpeddit.Api.Services
             throw new System.NotImplementedException();
         }
 
-        public async Task<IEnumerable<Post>> GetUserPostsAsync(string user, SortMode sort, ListingInput listingInput)
+        public async Task<IList<Post>> GetUserPostsAsync(string user, SortMode sort, ListingInput listingInput)
         {
             var queryString = HttpUtility.ParseQueryString(string.Empty);
 
@@ -73,8 +86,8 @@ namespace Carpeddit.Api.Services
                 queryString.Add("limit", listingInput.Limit.ToString());
             }
 
-            return (await WebHelper.GetDeserializedResponseAsync<Listing<IEnumerable<ApiObjectWithKind<Post>>>>($"/user/{user}/submitted/{sort.ToString().ToLower()}.json?{queryString}"))
-                .Data.Children.Select(p => p.Data);
+            return (await WebHelper.GetDeserializedResponseAsync<Listing<IList<ApiObjectWithKind<Post>>>>($"/user/{user}/submitted/{sort.ToString().ToLower()}.json?{queryString}"))
+                .Data.Children.Select(p => p.Data).ToList();
         }
 
         public Task VoteAsync(VotingInput input)

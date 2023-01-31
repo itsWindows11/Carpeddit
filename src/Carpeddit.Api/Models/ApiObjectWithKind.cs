@@ -8,6 +8,12 @@ namespace Carpeddit.Models.Api
         public string Kind { get; set; }
 
         [JsonPropertyName("data")]
-        public T Data { get; set; }
+        public virtual T Data { get; set; }
+    }
+
+    public class ApiObjectWithKind : ApiObjectWithKind<object>
+    {
+        [JsonPropertyName("data")]
+        public override object Data { get; set; }
     }
 }

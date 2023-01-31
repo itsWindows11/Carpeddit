@@ -97,37 +97,36 @@ namespace Carpeddit.Api.Services
             bool shouldRefresh = false;
             bool shouldWait = false;
 
-            lock (refreshEvent)
-            {
-                TimeSpan timeRemaining = data.ExpirationTime - DateTime.Now;
+            TimeSpan timeRemaining = data.ExpirationTime - DateTimeOffset.Now;
 
-                // If it is already expired or will do so soon wait on the refresh before using it.
-                if (timeRemaining.TotalSeconds < 30 || isTokenRefreshFailed)
+            // If it is already expired or will do so soon wait on the refresh before using it.
+            if (timeRemaining.TotalSeconds < 30 || isTokenRefreshFailed)
+            {
+                // Check if someone else is refreshing
+                if (!isTokenRefreshing)
                 {
-                    // Check if someone else is refreshing
-                    if (!isTokenRefreshing)
-                    {
-                        isTokenRefreshing = true;
-                        shouldRefresh = true;
-                    }
-                    shouldWait = true;
+                    isTokenRefreshing = true;
+                    shouldRefresh = true;
                 }
-                // If it is going to expire soon but not too soon refresh it async.
-                else if (timeRemaining.TotalMinutes < 5)
+                shouldWait = true;
+            }
+            // If it is going to expire soon but not too soon refresh it async.
+            else if (timeRemaining.TotalMinutes < 5)
+            {
+                // Check if someone else it refreshing
+                if (!isTokenRefreshing)
                 {
-                    // Check if someone else it refreshing
-                    if (!isTokenRefreshing)
-                    {
-                        isTokenRefreshing = true;
-                        shouldRefresh = true;
-                    }
+                    isTokenRefreshing = true;
+                    shouldRefresh = true;
                 }
             }
+
+            Task refreshTask = Task.CompletedTask;
 
             // If we should refresh kick off a task to do so.
             if (shouldRefresh)
             {
-                new Task(async () =>
+                refreshTask = Task.Run(async () =>
                 {
                     // Try to refresh
                     try
@@ -139,23 +138,11 @@ namespace Carpeddit.Api.Services
                     {
                         isTokenRefreshFailed = true;
                     }
-
-                    // Lock the refresh event
-                    lock (refreshEvent)
-                    {
-                        isTokenRefreshing = false;
-                        refreshEvent.Set();
-                    }
-                }).Start();
+                });
             }
 
             if (shouldWait)
-            {
-                await Task.Run(() =>
-                {
-                    refreshEvent.WaitOne();
-                });
-            }
+                await refreshTask;
 
             // Now return the key.
             return isTokenRefreshFailed ? null : data;
