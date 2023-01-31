@@ -36,6 +36,16 @@
             </uc:CustomTitleBar.Transitions>
         </uc:CustomTitleBar>
 
+        <AutoSuggestBox
+            x:Name="NavViewSearchBox"
+            Width="500"
+            Margin="0,8,0,0"
+            VerticalAlignment="Top"
+            Canvas.ZIndex="2"
+            IsFocusEngaged="False"
+            PlaceholderText="Search Reddit..."
+            QueryIcon="Find" />
+
         <muxc:NavigationView
             x:Name="NavView"
             Grid.Row="1"
@@ -101,7 +111,50 @@
         </muxc:NavigationView>
 
         <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="SizeStates">
+            <VisualStateGroup x:Name="SearchBoxSizeStates">
+                <VisualState x:Name="SmallerState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="NavViewSearchBox.Width" Value="200" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="SmallState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="641" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="NavViewSearchBox.Width" Value="300" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="MediumState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="701" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="NavViewSearchBox.Width" Value="350" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="LargeState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="881" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="NavViewSearchBox.Width" Value="430" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="LargerState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="956" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="NavViewSearchBox.Margin" Value="360,8,0,0" />
+                        <Setter Target="NavViewSearchBox.HorizontalAlignment" Value="Left" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+            <VisualStateGroup x:Name="WindowSizeStates">
                 <VisualState x:Name="VeryLargeSizeState">
                     <VisualState.StateTriggers>
                         <AdaptiveTrigger MinWindowWidth="1008" />
