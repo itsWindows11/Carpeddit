@@ -90,9 +90,9 @@ namespace Carpeddit.Api
     // More helper methods.
     public static partial class WebHelper
     {
-        public static async Task<IHttpContent> GetAsync(string url, bool oauthOnly = false)
+        public static Task<IHttpContent> GetAsync(string url, bool oauthOnly = false)
         {
-            var info = await AccountHelper.Instance.GetCurrentInfo();
+            var info = AccountHelper.Instance.GetCurrentInfo();
 
             if (info != null)
             {
@@ -101,15 +101,15 @@ namespace Carpeddit.Api
                     { "Authorization", $"bearer {info.AccessToken}" }
                 };
 
-                return await MakeGetRequestAsync("https://oauth.reddit.com" + url, neededHeaders);
+                return MakeGetRequestAsync("https://oauth.reddit.com" + url, neededHeaders);
             }
 
-            return oauthOnly ? new HttpStringContent(string.Empty) : await MakeGetRequestAsync("https://www.reddit.com" + url, new Dictionary<string, string>());
+            return oauthOnly ? Task.FromResult<IHttpContent>(new HttpStringContent(string.Empty)) : MakeGetRequestAsync("https://www.reddit.com" + url, new Dictionary<string, string>());
         }
 
-        public static async Task<IHttpContent> PostAsync(string url, IDictionary<string, string> postData, bool oauthOnly = false)
+        public static Task<IHttpContent> PostAsync(string url, IDictionary<string, string> postData, bool oauthOnly = false)
         {
-            var info = await AccountHelper.Instance.GetCurrentInfo();
+            var info = AccountHelper.Instance.GetCurrentInfo();
 
             if (info != null)
             {
@@ -118,15 +118,15 @@ namespace Carpeddit.Api
                     { "Authorization", $"bearer {info.AccessToken}" }
                 };
 
-                return await MakePostRequestAsync("https://oauth.reddit.com" + url, neededHeaders, postData);
+                return MakePostRequestAsync("https://oauth.reddit.com" + url, neededHeaders, postData);
             }
 
-            return oauthOnly ? new HttpStringContent(string.Empty) : await MakePostRequestAsync("https://www.reddit.com" + url, new Dictionary<string, string>(), postData);
+            return oauthOnly ? Task.FromResult<IHttpContent>(new HttpStringContent(string.Empty)) : MakePostRequestAsync("https://www.reddit.com" + url, new Dictionary<string, string>(), postData);
         }
 
-        public static async Task<IHttpContent> PatchAsync(string url, IDictionary<string, string> postData, bool oauthOnly = false)
+        public static Task<IHttpContent> PatchAsync(string url, IDictionary<string, string> postData, bool oauthOnly = false)
         {
-            var info = await AccountHelper.Instance.GetCurrentInfo();
+            var info = AccountHelper.Instance.GetCurrentInfo();
 
             if (info != null)
             {
@@ -135,10 +135,10 @@ namespace Carpeddit.Api
                     { "Authorization", $"bearer {info.AccessToken}" }
                 };
 
-                return await MakePatchRequestAsync("https://oauth.reddit.com" + url, neededHeaders, postData);
+                return MakePatchRequestAsync("https://oauth.reddit.com" + url, neededHeaders, postData);
             }
 
-            return oauthOnly ? new HttpStringContent(string.Empty) : await MakePatchRequestAsync("https://www.reddit.com" + url, new Dictionary<string, string>(), postData);
+            return oauthOnly ? Task.FromResult<IHttpContent>(new HttpStringContent(string.Empty)) : MakePatchRequestAsync("https://www.reddit.com" + url, new Dictionary<string, string>(), postData);
         }
     }
     
@@ -162,6 +162,10 @@ namespace Carpeddit.Api
             {
                 throw new ServiceDownException();
             }
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                throw new UnauthorizedAccessException("You are not authorized to send this request.");
+            }
 
             return response.Content;
         }
@@ -184,6 +188,10 @@ namespace Carpeddit.Api
                 response.StatusCode == HttpStatusCode.InternalServerError)
             {
                 throw new ServiceDownException();
+            } 
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                throw new UnauthorizedAccessException("You are not authorized to send this request.");
             }
 
             return response.Content;
@@ -207,6 +215,10 @@ namespace Carpeddit.Api
                 response.StatusCode == HttpStatusCode.InternalServerError)
             {
                 throw new ServiceDownException();
+            }
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                throw new UnauthorizedAccessException("You are not authorized to send this request.");
             }
 
             return response.Content;

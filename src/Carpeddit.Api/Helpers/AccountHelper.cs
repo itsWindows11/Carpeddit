@@ -99,10 +99,10 @@ namespace Carpeddit.App.Api.Helpers
             if (!revokeToken)
                 return;
 
-            await authService.RevokeAsync((await GetCurrentInfo()).AccessToken);
+            await authService.RevokeAsync(GetCurrentInfo().AccessToken);
         }
 
-        public Task<TokenInfo> GetCurrentInfo()
-            => authService.GetAccessAsync();
+        public TokenInfo GetCurrentInfo()
+            => (authService as RedditAuthService).Data;
     }
 }

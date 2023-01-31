@@ -26,12 +26,5 @@ namespace Carpeddit.Api.Services
         /// <param name="content">The response body.</param>
         /// <param name="authorization">The auth header to use.</param>
         Task<TokenInfo> RefreshTokenAsync(string refreshToken);
-
-        /// <summary>
-        /// Gets the access info, refreshing it if needed.
-        /// </summary>
-        /// <param name="content">The response body.</param>
-        /// <param name="authorization">The auth header to use.</param>
-        Task<TokenInfo> GetAccessAsync();
     }
 }

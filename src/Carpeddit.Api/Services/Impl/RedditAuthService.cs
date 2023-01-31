@@ -16,9 +16,6 @@ namespace Carpeddit.Api.Services
     public sealed class RedditAuthService : IRedditAuthService
     {
         private TokenInfo data;
-        private ManualResetEvent refreshEvent = new(false);
-        private bool isTokenRefreshing;
-        private bool isTokenRefreshFailed;
 
         public TokenInfo Data
         {
@@ -87,65 +84,6 @@ namespace Carpeddit.Api.Services
             };
 
             return WebHelper.PostAsync("/api/v1/access_token", body);
-        }
-
-        public async Task<TokenInfo> GetAccessAsync()
-        {
-            if (Data == null)
-                return null;
-
-            bool shouldRefresh = false;
-            bool shouldWait = false;
-
-            TimeSpan timeRemaining = data.ExpirationTime - DateTimeOffset.Now;
-
-            // If it is already expired or will do so soon wait on the refresh before using it.
-            if (timeRemaining.TotalSeconds < 30 || isTokenRefreshFailed)
-            {
-                // Check if someone else is refreshing
-                if (!isTokenRefreshing)
-                {
-                    isTokenRefreshing = true;
-                    shouldRefresh = true;
-                }
-                shouldWait = true;
-            }
-            // If it is going to expire soon but not too soon refresh it async.
-            else if (timeRemaining.TotalMinutes < 5)
-            {
-                // Check if someone else it refreshing
-                if (!isTokenRefreshing)
-                {
-                    isTokenRefreshing = true;
-                    shouldRefresh = true;
-                }
-            }
-
-            Task refreshTask = Task.CompletedTask;
-
-            // If we should refresh kick off a task to do so.
-            if (shouldRefresh)
-            {
-                refreshTask = Task.Run(async () =>
-                {
-                    // Try to refresh
-                    try
-                    {
-                        TokenInfo result = await TokenHelper.Instance.RefreshTokenAsync(data.RefreshToken);
-                        isTokenRefreshFailed = result == null;
-                    }
-                    catch
-                    {
-                        isTokenRefreshFailed = true;
-                    }
-                });
-            }
-
-            if (shouldWait)
-                await refreshTask;
-
-            // Now return the key.
-            return isTokenRefreshFailed ? null : data;
         }
     }
 }
