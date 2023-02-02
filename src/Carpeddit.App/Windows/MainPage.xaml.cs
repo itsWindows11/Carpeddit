@@ -1,5 +1,5 @@
-﻿using Carpeddit.Api.Services;
-using Carpeddit.App.Api.Helpers;
+﻿using Carpeddit.Api.Helpers;
+using Carpeddit.Api.Services;
 using Carpeddit.App.ViewModels;
 using Carpeddit.App.Views;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +13,6 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
-
 using muxc = Microsoft.UI.Xaml.Controls;
 
 namespace Carpeddit.App

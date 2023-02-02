@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 
 #nullable enable
 
-namespace Carpeddit.Models
+namespace Carpeddit.Api.Models
 {
     public sealed class Post : IVotable, ICreated
     {

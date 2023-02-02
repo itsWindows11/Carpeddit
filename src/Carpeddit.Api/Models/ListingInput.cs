@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Carpeddit.App.Api.Models
+namespace Carpeddit.Api.Models
 {
     public class ListingInput
     {

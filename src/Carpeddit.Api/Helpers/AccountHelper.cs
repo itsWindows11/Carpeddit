@@ -3,15 +3,12 @@ using Carpeddit.Api.Services;
 using Carpeddit.Common.Constants;
 using Carpeddit.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Windows.Security.Credentials;
-using Windows.Storage;
 
-namespace Carpeddit.App.Api.Helpers
+namespace Carpeddit.Api.Helpers
 {
     public sealed partial class AccountHelper
     {

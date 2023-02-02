@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Carpeddit.Models
+namespace Carpeddit.Api.Models
 {
     public record LinkFlairRichText(
         [property: JsonPropertyName("e")] string Type,

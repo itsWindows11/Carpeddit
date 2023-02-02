@@ -3,14 +3,38 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animatedvisuals="using:Microsoft.UI.Xaml.Controls.AnimatedVisuals"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Carpeddit.App.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:Carpeddit.Api.Models"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:uc="using:Carpeddit.App.UserControls"
+    xmlns:viewmodels="using:Carpeddit.App.ViewModels"
     d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     mc:Ignorable="d">
+
+    <Page.Resources>
+        <DataTemplate x:Key="CommentItemTemplate" x:DataType="viewmodels:CommentViewModel">
+            <controls:MarkdownTextBlock Margin="{x:Bind CommentMargin}" Text="{x:Bind Body}" TextWrapping="Wrap" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="MoreItemTemplate" x:DataType="models:More">
+            <Button Margin="-12,0,0,0" Style="{ThemeResource TransparentAccentButtonStyle}">
+                <TextBlock>
+                    <Run Text="Load" />
+                    <Run Text="{x:Bind Count}" />
+                    <Run Text="items..." />
+                </TextBlock>
+            </Button>
+        </DataTemplate>
+
+        <local:CommentItemTemplateSelector
+            x:Key="CommentItemTemplateSelector"
+            CommentItemTemplate="{StaticResource CommentItemTemplate}"
+            MoreItemTemplate="{StaticResource MoreItemTemplate}" />
+    </Page.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -35,8 +59,8 @@
                 Margin="4"
                 VerticalAlignment="Stretch"
                 AutomationProperties.Name="Back"
-                CornerRadius="5"
                 Click="OnBackButtonClick"
+                CornerRadius="5"
                 Style="{ThemeResource TransparentButtonStyle}"
                 ToolTipService.ToolTip="Back">
                 <muxc:AnimatedIcon
@@ -58,31 +82,38 @@
                 Grid.Column="1" />
         </Grid>
 
-        <uc:PostItemControl
-            Title="{x:Bind ViewModel.Title}"
+        <ListView
             Grid.Row="1"
-            Margin="12"
-            VerticalAlignment="Top"
-            CreationDate="{x:Bind ViewModel.Created}"
-            Description="{x:Bind ViewModel.Description}"
-            IsDownvoted="{x:Bind ViewModel.IsDownvoted, Mode=TwoWay}"
-            IsUpvoted="{x:Bind ViewModel.IsUpvoted, Mode=TwoWay}"
-            SubredditClickCommand="{Binding SubredditClickCommand, ElementName=RootPage}"
-            SubredditName="{x:Bind ViewModel.Post.SubredditNamePrefixed}"
-            UserClickCommand="{Binding UserClickCommand, ElementName=RootPage}"
-            UserName="{x:Bind ViewModel.Post.Author}"
-            VoteRatio="{x:Bind ViewModel.VoteRatio, Converter={StaticResource FormattedNumberConverter}}">
-            <uc:PostItemControl.FooterContent>
-                <CommandBar
-                    Margin="-10,0,0,0"
-                    Padding="0"
-                    HorizontalAlignment="Left"
-                    Background="Transparent"
-                    DefaultLabelPosition="Right">
-                    <AppBarButton Icon="Share" Label="Share" />
-                    <AppBarButton Icon="Save" Label="Save" />
-                </CommandBar>
-            </uc:PostItemControl.FooterContent>
-        </uc:PostItemControl>
+            ItemTemplateSelector="{StaticResource CommentItemTemplateSelector}"
+            ItemsSource="{x:Bind comments}"
+            SelectionMode="None">
+            <ListView.Header>
+                <uc:PostItemControl
+                    Title="{x:Bind ViewModel.Title}"
+                    Margin="12"
+                    VerticalAlignment="Top"
+                    CreationDate="{x:Bind ViewModel.Created}"
+                    Description="{x:Bind ViewModel.Description}"
+                    IsDownvoted="{x:Bind ViewModel.IsDownvoted, Mode=TwoWay}"
+                    IsUpvoted="{x:Bind ViewModel.IsUpvoted, Mode=TwoWay}"
+                    SubredditClickCommand="{Binding SubredditClickCommand, ElementName=RootPage}"
+                    SubredditName="{x:Bind ViewModel.Post.SubredditNamePrefixed}"
+                    UserClickCommand="{Binding UserClickCommand, ElementName=RootPage}"
+                    UserName="{x:Bind ViewModel.Post.Author}"
+                    VoteRatio="{x:Bind ViewModel.VoteRatio, Converter={StaticResource FormattedNumberConverter}}">
+                    <uc:PostItemControl.FooterContent>
+                        <CommandBar
+                            Margin="-10,0,0,0"
+                            Padding="0"
+                            HorizontalAlignment="Left"
+                            Background="Transparent"
+                            DefaultLabelPosition="Right">
+                            <AppBarButton Icon="Share" Label="Share" />
+                            <AppBarButton Icon="Save" Label="Save" />
+                        </CommandBar>
+                    </uc:PostItemControl.FooterContent>
+                </uc:PostItemControl>
+            </ListView.Header>
+        </ListView>
     </Grid>
 </Page>

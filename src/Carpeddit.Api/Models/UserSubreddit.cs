@@ -2,7 +2,7 @@
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
-namespace Carpeddit.Models
+namespace Carpeddit.Api.Models
 {
     public sealed class UserSubreddit
     {

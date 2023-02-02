@@ -8,7 +8,7 @@ using System.Text.Json.Serialization;
 
 namespace Carpeddit.Api.Models
 {
-    public sealed class Comment : IVotable
+    public sealed class Comment : IVotable, IPostReplyable
     {
         [JsonPropertyName("approved_at_utc")]
         [JsonConverter(typeof(UtcTimestampConverter))]
@@ -150,7 +150,8 @@ namespace Carpeddit.Api.Models
         public string Thumbnail { get; set; }
 
         [JsonPropertyName("edited")]
-        public bool Edited { get; set; }
+        [JsonConverter(typeof(LocalTimestampConverter))]
+        public DateTime Edited { get; set; }
 
         [JsonPropertyName("author_flair_css_class")]
         public object AuthorFlairCssClass { get; set; }
@@ -345,8 +346,8 @@ namespace Carpeddit.Api.Models
         public object CommentType { get; set; }*/
         
         // A replies listing can either contain comments or a more object.
-        [JsonPropertyName("replies")]
-        public Listing<IList<ApiObjectWithKind>> Replies { get; set; }
+        /*[JsonPropertyName("replies")]
+        public Listing<IList<ApiObjectWithKind<object>>> Replies { get; set; }*/
 
         /*[JsonPropertyName("collapsed_reason_code")]
         public object CollapsedReasonCode { get; set; }*/

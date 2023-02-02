@@ -1,4 +1,5 @@
 ﻿using Carpeddit.Common.Converters;
+using Carpeddit.Models.Api;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Nodes;
@@ -6,7 +7,7 @@ using System.Text.Json.Serialization;
 
 #nullable enable
 
-namespace Carpeddit.Models.Api
+namespace Carpeddit.Api.Models
 {
     public sealed class Subreddit
     {

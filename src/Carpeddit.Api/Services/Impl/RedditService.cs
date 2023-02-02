@@ -1,13 +1,11 @@
 ﻿using Carpeddit.Api.Enums;
 using Carpeddit.Api.Helpers;
 using Carpeddit.Api.Models;
-using Carpeddit.App.Api.Helpers;
-using Carpeddit.App.Api.Models;
-using Carpeddit.Models;
 using Carpeddit.Models.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -31,6 +29,30 @@ namespace Carpeddit.Api.Services
             {
                 await TokenHelper.Instance.RefreshTokenAsync(AccountHelper.Instance.GetCurrentInfo().RefreshToken);
                 return await GetCommentsAsync(postName, input);
+            }
+        }
+
+        public async Task<IList<IPostReplyable>> GetCommentsOrMoreAsync(string postName, ListingInput input)
+        {
+            try
+            {
+                var response = await WebHelper.GetDeserializedResponseAsync<IList<Listing<IList<ApiObjectWithKind<object>>>>>($"/comments/{postName}");
+
+                // First listing is always the post.
+                response.RemoveAt(0);
+
+                return response.FirstOrDefault().Data.Children.Select<ApiObjectWithKind<object>, IPostReplyable>(obj =>
+                {
+                    if (obj.Kind == "more")
+                        return JsonSerializer.Deserialize<More>(obj.Data.ToString());
+
+                    return JsonSerializer.Deserialize<Comment>(obj.Data.ToString());
+                }).ToList();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                await TokenHelper.Instance.RefreshTokenAsync(AccountHelper.Instance.GetCurrentInfo().RefreshToken);
+                return await GetCommentsOrMoreAsync(postName, input);
             }
         }
 

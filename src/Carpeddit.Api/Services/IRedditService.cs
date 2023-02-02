@@ -1,8 +1,5 @@
 ﻿using Carpeddit.Api.Enums;
 using Carpeddit.Api.Models;
-using Carpeddit.App.Api.Models;
-using Carpeddit.Models;
-using Carpeddit.Models.Api;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -60,6 +57,12 @@ namespace Carpeddit.Api.Services
         /// </summary>
         /// <param name="postName">The post name.</param>
         Task<IList<Comment>> GetCommentsAsync(string postName, ListingInput input);
+
+        /// <summary>
+        /// Get a post's comments.
+        /// </summary>
+        /// <param name="postName">The post name.</param>
+        Task<IList<IPostReplyable>> GetCommentsOrMoreAsync(string postName, ListingInput input);
 
         /// <summary>
         /// Votes on a thing.

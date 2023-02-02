@@ -1,10 +1,10 @@
 ﻿using Carpeddit.Api.Enums;
+using Carpeddit.Api.Models;
 using Carpeddit.Api.Services;
 using Carpeddit.App.Models;
 using Carpeddit.App.ViewModels;
 using Carpeddit.Common.Collections;
 using Carpeddit.Common.Helpers;
-using Carpeddit.Models.Api;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using System;

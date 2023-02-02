@@ -1,13 +1,10 @@
 ﻿using Carpeddit.Api.Helpers;
 using Carpeddit.Api.Models;
-using Carpeddit.App.Api.Helpers;
 using Carpeddit.Common.Constants;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage;
 
@@ -65,7 +62,12 @@ namespace Carpeddit.Api.Services
                 { "refresh_token", refreshToken }
             };
 
-            var tokenInfo = await WebHelper.PostDeserializedResponseAsync<TokenInfo>("/api/v1/access_token", dictionary);
+            var content = await WebHelper.MakePostRequestAsync("https://www.reddit.com/api/v1/access_token", new Dictionary<string, string>()
+            {
+                { "Authorization", "Basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes(APIConstants.ClientId + ":" + APIConstants.ClientSecret)) }
+            }, dictionary);
+
+            var tokenInfo = JsonSerializer.Deserialize<TokenInfo>(await content.ReadAsStringAsync());
 
             tokenInfo.RefreshToken = refreshToken;
             ApplicationData.Current.LocalSettings.Values["TokenInfo"] = JsonSerializer.Serialize(tokenInfo);
@@ -83,7 +85,7 @@ namespace Carpeddit.Api.Services
                 { "token_type_hint", "access_token" }
             };
 
-            return WebHelper.PostAsync("/api/v1/access_token", body);
+            return WebHelper.MakePostRequestAsync("https://www.reddit.com/api/v1/revoke_token", new Dictionary<string, string>(), body);
         }
     }
 }

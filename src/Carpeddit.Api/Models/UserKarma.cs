@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Carpeddit.Models.Api
+namespace Carpeddit.Api.Models
 {
     public sealed class UserKarma
     {

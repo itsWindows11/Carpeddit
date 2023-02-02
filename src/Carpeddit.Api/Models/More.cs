@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using Carpeddit.Api.Models;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Carpeddit.Models.Api
+namespace Carpeddit.Api.Models
 {
-    public sealed class More
+    public sealed class More : IPostReplyable
     {
         [JsonPropertyName("count")]
         public int Count { get; set; }

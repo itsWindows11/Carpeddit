@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Carpeddit.Models
+namespace Carpeddit.Api.Models
 {
     public record Image(
         [property: JsonPropertyName("source")] PostImageSource Source,

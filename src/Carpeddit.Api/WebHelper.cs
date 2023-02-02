@@ -1,5 +1,4 @@
 ﻿using Carpeddit.Api.Exceptions;
-using Carpeddit.App.Api.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +7,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Windows.Web.Http;
 
-namespace Carpeddit.Api
+namespace Carpeddit.Api.Helpers
 {
     // Variables and helpers
     public static partial class WebHelper

@@ -1,4 +1,4 @@
-﻿namespace Carpeddit.Models.Api
+﻿namespace Carpeddit.Api.Models
 {
     public abstract class Thing<T>
     {

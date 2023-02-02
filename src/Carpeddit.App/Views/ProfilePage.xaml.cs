@@ -15,6 +15,7 @@ using Carpeddit.App.Models;
 using Carpeddit.Api.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Carpeddit.Api.Enums;
+using Carpeddit.Api.Models;
 
 namespace Carpeddit.App.Views
 {

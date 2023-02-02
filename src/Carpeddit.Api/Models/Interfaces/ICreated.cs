@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Carpeddit.Models.Api
+namespace Carpeddit.Api.Models
 {
     public interface ICreated
     {

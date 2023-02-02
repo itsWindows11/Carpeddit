@@ -3,55 +3,34 @@ using Carpeddit.Api.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using Windows.UI.Xaml;
 
 namespace Carpeddit.App.ViewModels
 {
-    public sealed partial class PostViewModel : ObservableObject
+    public sealed class CommentViewModel : ObservableObject, IPostReplyable
     {
-        private string description;
         private int? voteRatio;
         private bool? isUpvoted;
         private bool? isDownvoted;
+        private Thickness? commentMargin;
 
-        public Post Post { get; set; }
+        public Comment Comment { get; set; }
 
-        public string Title
-        {
-            get => Post.Title;
-            set
-            {
-                Post.Title = value;
-                OnPropertyChanged(nameof(Title));
-            }
-        }
-
-        public string Description
-            => description ??= Post.IsSelf ? Post.Selftext : Post.Url;
-
-        public string ShortDescription
-        {
-            get
-            {
-                if (!Post.IsSelf)
-                    return Post.Url;
-
-                return Description.Length > 400 ? Description.Substring(0, 400) + "..." : Description;
-            }
-        }
+        public string Body => Comment.Body;
 
         public DateTime Created
         {
-            get => Post.CreatedUtc.ToLocalTime();
+            get => Comment.CreatedUtc.ToLocalTime();
             set
             {
-                Post.CreatedUtc = value.ToUniversalTime();
+                Comment.CreatedUtc = value.ToUniversalTime();
                 OnPropertyChanged(nameof(Created));
             }
         }
 
         public int VoteRatio
         {
-            get => voteRatio ??= Post.Ups - Post.Downs;
+            get => voteRatio ??= Comment.Ups - Comment.Downs;
             private set
             {
                 voteRatio = value;
@@ -61,7 +40,7 @@ namespace Carpeddit.App.ViewModels
 
         public bool IsUpvoted
         {
-            get => isUpvoted ??= Post.Likes ?? false;
+            get => isUpvoted ??= Comment.Likes ?? false;
             set
             {
                 isUpvoted = value;
@@ -74,13 +53,13 @@ namespace Carpeddit.App.ViewModels
                     OnPropertyChanged(nameof(IsDownvoted));
                 }
 
-                _ = App.Services.GetService<IRedditService>().VoteAsync(new(value ? 1 : 0, Post.Name));
+                _ = App.Services.GetService<IRedditService>().VoteAsync(new(value ? 1 : 0, Comment.Name));
             }
         }
 
         public bool IsDownvoted
         {
-            get => isDownvoted ??= !(Post.Likes ?? true);
+            get => isDownvoted ??= !(Comment.Likes ?? true);
             set
             {
                 isDownvoted = value;
@@ -93,8 +72,12 @@ namespace Carpeddit.App.ViewModels
                     OnPropertyChanged(nameof(IsUpvoted));
                 }
 
-                _ = App.Services.GetService<IRedditService>().VoteAsync(new(value ? -1 : 0, Post.Name));
+                _ = App.Services.GetService<IRedditService>().VoteAsync(new(value ? -1 : 0, Comment.Name));
             }
         }
+
+        public int Depth => Comment.Depth ?? 0;
+
+        public Thickness CommentMargin => commentMargin ??= new(Depth * 8, 0, 0, 0);
     }
 }

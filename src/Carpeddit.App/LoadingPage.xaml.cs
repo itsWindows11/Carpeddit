@@ -1,11 +1,10 @@
-﻿using Carpeddit.Api.Services;
-using Carpeddit.App.Api.Helpers;
+﻿using Carpeddit.Api.Helpers;
+using Carpeddit.Api.Services;
 using Carpeddit.App.ViewModels;
 using Carpeddit.App.Views;
 using Carpeddit.Common.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -33,36 +32,36 @@ namespace Carpeddit.App
                 return;
             }
 
-            /*if (!settings.SetupCompleted)
-            {
-                // TODO: Handle setup.
-            }*/
+            // TODO: Handle setup.
 
-            if (await IsValidSessionAsync())
+            var message = await IsValidSessionAsync();
+
+            if (message == "Successful")
             {
                 Frame.Navigate(typeof(MainPage), null, new SuppressNavigationTransitionInfo());
                 return;
+            } else if (message == "NoNetwork")
+            {
+                Frame.Navigate(typeof(OfflinePage), null, new SuppressNavigationTransitionInfo());
+                return;
             }
 
+            // Token must not be reused, sign out the user.
+            await AccountHelper.Instance.SignOutAsync(false);
             Frame.Navigate(typeof(LoginPage), null, new SuppressNavigationTransitionInfo());
         }
 
-        private async Task<bool> IsValidSessionAsync()
+        private async Task<string> IsValidSessionAsync()
         {
             try
             {
                 _ = await App.Services.GetService<IRedditService>().GetMeAsync();
-                return true;
+                return "Successful";
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e);
-
-                // Token must not be reused, sign out the user.
-                await AccountHelper.Instance.SignOutAsync(false);
+                return e.Message.Contains("The server name or address could not be resolved") ? "NoNetwork" : "UnknownError";
             }
-
-            return false;
         }
     }
 }
