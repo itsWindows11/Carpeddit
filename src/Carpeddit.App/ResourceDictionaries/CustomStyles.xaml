@@ -15,6 +15,15 @@
     </Style>
 
     <Style BasedOn="{StaticResource DefaultPostItemControlStyle}" TargetType="uc:PostItemControl" />
+
+    <Style x:Key="DefaultCommentItemControlStyle" TargetType="uc:CommentItemControl">
+        <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}" />
+        <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{StaticResource ControlCornerRadius}" />
+    </Style>
+
+    <Style BasedOn="{StaticResource DefaultCommentItemControlStyle}" TargetType="uc:CommentItemControl" />
     <!--#endregion-->
 
     <Style x:Key="NavigationViewTitleTextBlockStyle" TargetType="TextBlock">

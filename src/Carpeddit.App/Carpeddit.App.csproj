@@ -143,6 +143,9 @@
       <DependentUpon>LoadingPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\PostDetailsNavigationInfo.cs" />
+    <Compile Include="UserControls\CommentItemControl.xaml.cs">
+      <DependentUpon>CommentItemControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\CommentViewModel.cs" />
     <Compile Include="ViewModels\Pages\SettingsPageViewModel.cs" />
     <Compile Include="ViewModels\PostViewModel.cs" />
@@ -277,6 +280,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="LoadingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\CommentItemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

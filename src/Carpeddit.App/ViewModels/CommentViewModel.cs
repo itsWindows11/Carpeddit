@@ -78,6 +78,6 @@ namespace Carpeddit.App.ViewModels
 
         public int Depth => Comment.Depth ?? 0;
 
-        public Thickness CommentMargin => commentMargin ??= new(Depth * 8, 0, 0, 0);
+        public Thickness CommentMargin => commentMargin ??= new((Depth * 8) - 4, 0, 0, 4);
     }
 }

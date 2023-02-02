@@ -173,15 +173,11 @@ namespace Carpeddit.Api.Services
         {
             try
             {
-                var queryString = HttpUtility.ParseQueryString(string.Empty);
-
-                if (input != null)
+                await WebHelper.PostAsync($"/api/vote", new Dictionary<string, string>()
                 {
-                    queryString.Add("direction", input.Direction.ToString());
-                    queryString.Add("id", input.Id);
-                }
-
-                await WebHelper.PostAsync("/api/vote", new Dictionary<string, string>());
+                    { "dir", input.Direction.ToString() },
+                    { "id", input.Id }
+                });
             } catch (UnauthorizedAccessException)
             {
                 await TokenHelper.Instance.RefreshTokenAsync(AccountHelper.Instance.GetCurrentInfo().RefreshToken);

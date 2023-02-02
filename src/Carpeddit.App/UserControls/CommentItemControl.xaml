@@ -1,0 +1,85 @@
+﻿<UserControl
+    x:Class="Carpeddit.App.UserControls.CommentItemControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Carpeddit.App.UserControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="115"
+    d:DesignWidth="813.525"
+    mc:Ignorable="d">
+
+    <Grid
+        Padding="4,8,4,0"
+        d:Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+        Background="{x:Bind Background, Mode=OneWay}"
+        BorderBrush="{x:Bind BorderBrush, Mode=OneWay}"
+        BorderThickness="{x:Bind BorderThickness, Mode=OneWay}"
+        ColumnSpacing="4"
+        CornerRadius="{x:Bind CornerRadius, Mode=OneWay}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="46" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel
+            HorizontalAlignment="Center"
+            Orientation="Vertical"
+            Spacing="5">
+            <ToggleButton
+                Padding="3"
+                HorizontalAlignment="Center"
+                IsChecked="{x:Bind Model.IsUpvoted, Mode=TwoWay}"
+                Style="{StaticResource TransparentToggleButtonStyle}"
+                Tag="{x:Bind}">
+                <FontIcon Glyph="&#xE010;" />
+
+                <ToggleButton.Resources>
+                    <ResourceDictionary>
+                        <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="#ff4500" />
+                        <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="#ff6e38" />
+                        <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="#f77d4f" />
+                    </ResourceDictionary>
+                </ToggleButton.Resources>
+            </ToggleButton>
+            <TextBlock
+                HorizontalAlignment="Center"
+                d:Text="1"
+                Text="{x:Bind Model.VoteRatio, Mode=OneWay}" />
+            <ToggleButton
+                Padding="3"
+                HorizontalAlignment="Center"
+                IsChecked="{x:Bind Model.IsDownvoted, Mode=TwoWay}"
+                Style="{StaticResource TransparentToggleButtonStyle}"
+                Tag="{x:Bind}">
+                <FontIcon Glyph="&#xE019;" />
+
+                <ToggleButton.Resources>
+                    <ResourceDictionary>
+                        <SolidColorBrush x:Key="ToggleButtonBackgroundChecked" Color="#7193ff" />
+                        <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="#96afff" />
+                        <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="#b6c7fc" />
+                    </ResourceDictionary>
+                </ToggleButton.Resources>
+            </ToggleButton>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1">
+            <TextBlock TextWrapping="Wrap">
+                <Run Text="Posted by" />
+                <Hyperlink>
+                    u/<Run d:Text="user" Text="{x:Bind Model.Comment.Author, Mode=OneWay}" />
+                </Hyperlink>
+                <Run d:Text="10 hours ago" Text="{x:Bind Model.Comment.CreatedUtc, Mode=OneWay, Converter={StaticResource RelativeTimeConverter}}" />
+            </TextBlock>
+
+            <controls:MarkdownTextBlock
+                Margin="0,8,0,0"
+                d:Text="Description"
+                Text="{x:Bind Model.Comment.Body, Mode=OneWay}" />
+
+            <ContentPresenter Content="{x:Bind FooterContent, Mode=OneWay}" />
+        </StackPanel>
+    </Grid>
+</UserControl>
