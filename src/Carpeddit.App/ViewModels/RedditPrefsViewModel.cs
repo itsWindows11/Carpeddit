@@ -1,4 +1,7 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Carpeddit.Api.Helpers;
+using CommunityToolkit.Mvvm.ComponentModel;
+using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
@@ -158,9 +161,87 @@ namespace Carpeddit.App.ViewModels
         [property: JsonPropertyName("video_autoplay")]
         private bool videoAutoplay;
 
-        public async Task UpdatePrefsAsync()
+        public static async Task<RedditPrefsViewModel> GetForCurrentUserAsync()
         {
-
+            try
+            {
+                return await WebHelper.GetDeserializedResponseAsync<RedditPrefsViewModel>("/api/v1/me/prefs", true);
+            } catch (UnauthorizedAccessException)
+            {
+                await TokenHelper.Instance.RefreshTokenAsync(AccountHelper.Instance.GetCurrentInfo().RefreshToken);
+                return await GetForCurrentUserAsync();
+            }
         }
+
+        public async Task UpdateAsync()
+        {
+            try
+            {
+                await WebHelper.PatchDeserializedResponseAsync<RedditPrefsViewModel>("/api/v1/me/prefs", GetPatchValues(), true);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                await TokenHelper.Instance.RefreshTokenAsync(AccountHelper.Instance.GetCurrentInfo().RefreshToken);
+                await UpdateAsync();
+            }
+        }
+
+        private IDictionary<string, string> GetPatchValues()
+        {
+            var settings = new Dictionary<string, string>();
+
+            if (!string.IsNullOrEmpty(AcceptPms))
+                settings["accept_pms"] = AcceptPms;
+
+            if (!string.IsNullOrEmpty(BadCommentAutocollapse))
+                settings["bad_comment_autocollapse"] = BadCommentAutocollapse;
+
+            if (!string.IsNullOrEmpty(CountryCode))
+                settings["country_code"] = CountryCode;
+
+            if (!string.IsNullOrEmpty(DefaultCommentSort))
+                settings["default_comment_sort"] = DefaultCommentSort;
+
+            if (!string.IsNullOrEmpty(Media))
+                settings["media"] = Media;
+
+            if (!string.IsNullOrEmpty(MediaPreview))
+                settings["media_preview"] = MediaPreview;
+
+            settings["beta"]                                = BoolToString(Beta);
+            settings["collapse_read_messages"]              = BoolToString(CollapseReadMessages);
+            settings["compress"]                            = BoolToString(Compress);
+            settings["email_chat_request"]                  = BoolToString(EmailChatRequest);
+            settings["email_comment_reply"]                 = BoolToString(EmailCommentReply);
+            settings["email_community_discovery"]           = BoolToString(EmailCommunityDiscovery);
+            settings["email_digests"]                       = BoolToString(EmailDigests);
+            settings["email_messages"]                      = BoolToString(EmailMessages);
+            settings["email_new_user_welcome"]              = BoolToString(EmailNewUserWelcome);
+            settings["email_post_reply"]                    = BoolToString(EmailPostReply);
+            settings["email_private_message"]               = BoolToString(EmailPrivateMessage);
+            settings["email_unsubscribe_all"]               = BoolToString(EmailUnsubscribeAll);
+            settings["email_upvote_comment"]                = BoolToString(EmailUpvoteComment);
+            settings["email_upvote_post"]                   = BoolToString(EmailUpvotePost);
+            settings["email_user_new_follower"]             = BoolToString(EmailUserNewFollower);
+            settings["email_username_mention"]              = BoolToString(EmailUsernameMention);
+            settings["enable_followers"]                    = BoolToString(EnableFollowers);
+            settings["ignore_suggested_sort"]               = BoolToString(IgnoreSuggestedSort);
+            settings["label_nsfw"]                          = BoolToString(LabelNsfw);
+            settings["legacy_search"]                       = BoolToString(LegacySearch);
+            settings["mark_messages_read"]                  = BoolToString(MarkMessagesRead);
+            settings["search_include_over_18"]              = BoolToString(SearchIncludeOver18);
+            settings["send_crosspost_messages"]             = BoolToString(SendCrosspostMessages);
+            settings["send_welcome_messages"]               = BoolToString(SendWelcomeMessages);
+            settings["show_flair"]                          = BoolToString(ShowFlair);
+            settings["show_link_flair"]                     = BoolToString(ShowLinkFlair);
+            settings["show_location_based_recommendations"] = BoolToString(ShowLocationBasedRecommendations);
+            settings["show_presence"]                       = BoolToString(ShowPresence);
+            settings["video_autoplay"]                      = BoolToString(VideoAutoplay);
+
+            return settings;
+        }
+
+        private string BoolToString(bool value)
+            => value ? "true" : "false";
     }
 }
