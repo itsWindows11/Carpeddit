@@ -12,6 +12,7 @@
 
     <Page.Resources>
         <CornerRadius x:Key="NavigationViewContentGridCornerRadius">0</CornerRadius>
+        <Thickness x:Key="NavigationViewContentMargin">0,-1,0,0</Thickness>
     </Page.Resources>
 
     <Grid>
@@ -44,7 +45,13 @@
             Canvas.ZIndex="2"
             IsFocusEngaged="False"
             PlaceholderText="Search Reddit..."
-            QueryIcon="Find" />
+            QueryIcon="Find">
+            <AutoSuggestBox.Transitions>
+                <TransitionCollection>
+                    <RepositionThemeTransition />
+                </TransitionCollection>
+            </AutoSuggestBox.Transitions>
+        </AutoSuggestBox>
 
         <muxc:NavigationView
             x:Name="NavView"
@@ -149,8 +156,15 @@
                         <AdaptiveTrigger MinWindowWidth="956" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="NavViewSearchBox.Margin" Value="360,8,0,0" />
-                        <Setter Target="NavViewSearchBox.HorizontalAlignment" Value="Left" />
+                        <Setter Target="NavViewSearchBox.Margin" Value="200,8,0,0" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="LargestState">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1200" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="NavViewSearchBox.Margin" Value="12,8,0,0" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
