@@ -128,7 +128,10 @@
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                     BorderThickness="1"
                     CornerRadius="4">
-                    <TextBlock Text="About Community" />
+                    <TextBlock
+                        Text="About Community"
+                        FontSize="16"
+                        FontWeight="SemiBold" />
 
                     <TextBlock
                         Margin="0,12"
@@ -154,7 +157,7 @@
                             <ToolTipService.ToolTip>
                                 <TextBlock>
                                     <Run Text="{x:Bind Subreddit.AccountsActive}" />
-                                    <Run Text="active members" />
+                                    <Run Text="online members" />
                                 </TextBlock>
                             </ToolTipService.ToolTip>
 
@@ -175,7 +178,7 @@
                             <TextBlock
                                 Margin="14,4,0,0"
                                 FontSize="12"
-                                Text="active members" />
+                                Text="online" />
                         </StackPanel>
 
                         <StackPanel>

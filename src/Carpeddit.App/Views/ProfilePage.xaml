@@ -119,7 +119,10 @@
                     BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                     BorderThickness="1"
                     CornerRadius="4">
-                    <TextBlock Text="About" />
+                    <TextBlock
+                        Text="About"
+                        FontSize="16"
+                        FontWeight="SemiBold" />
 
                     <StackPanel
                         Margin="0,12,0,0"
