@@ -161,6 +161,10 @@ namespace Carpeddit.App.ViewModels
         [property: JsonPropertyName("video_autoplay")]
         private bool videoAutoplay;
 
+        [ObservableProperty]
+        [property: JsonPropertyName("allow_clicktracking")]
+        private bool allowClickTracking;
+
         public static async Task<RedditPrefsViewModel> GetForCurrentUserAsync()
         {
             try
@@ -177,7 +181,7 @@ namespace Carpeddit.App.ViewModels
         {
             try
             {
-                await WebHelper.PatchDeserializedResponseAsync<RedditPrefsViewModel>("/api/v1/me/prefs", GetPatchValues(), true);
+                _ = await WebHelper.PatchDeserializedResponseAsync<RedditPrefsViewModel>("/api/v1/me/prefs", GetPatchValues(), true);
             }
             catch (UnauthorizedAccessException)
             {
@@ -237,6 +241,7 @@ namespace Carpeddit.App.ViewModels
             settings["show_location_based_recommendations"] = BoolToString(ShowLocationBasedRecommendations);
             settings["show_presence"]                       = BoolToString(ShowPresence);
             settings["video_autoplay"]                      = BoolToString(VideoAutoplay);
+            settings["allow_clicktracking"]                 = BoolToString(AllowClickTracking);
 
             return settings;
         }

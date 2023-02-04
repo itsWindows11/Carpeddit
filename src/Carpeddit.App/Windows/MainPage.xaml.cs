@@ -43,10 +43,15 @@ namespace Carpeddit.App
 
     public partial class MainPage
     {
-        private async void OnLoaded(object sender, RoutedEventArgs e)
+        private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            var user = await service.GetMeAsync();
-            ProfileBitmap.UriSource = new(WebUtility.HtmlDecode(user.IconImage));
+            _ = service.GetMeAsync().ContinueWith(async (t) =>
+            {
+                await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                {
+                    ProfileBitmap.UriSource = new(WebUtility.HtmlDecode(t.Result.IconImage));
+                });
+            });
 
             ContentFrame.Navigated += OnNavigated;
 

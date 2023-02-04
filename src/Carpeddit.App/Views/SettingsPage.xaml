@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
     xmlns:wui="using:Windows.UI"
     d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
@@ -138,21 +139,94 @@
                     </labs:SettingsExpander.Items>
                 </labs:SettingsExpander>
 
-                <labs:SettingsExpander Description="These settings will apply across all apps for Reddit." Header="Reddit preferences">
+                <labs:SettingsExpander
+                    x:Name="RedditPrefsCard"
+                    Description="These settings will change the view of the desktop website but may impact certain parts of the app."
+                    Header="Reddit web preferences"
+                    Loaded="OnRedditPrefsCardLoaded">
                     <labs:SettingsExpander.HeaderIcon>
-                        <FontIcon Glyph="&#xE713;" />
+                        <PathIcon Data="M 26.982422 4 A 1.50015 1.50015 0 0 0 25.53125 5.1933594 L 23.273438 16.027344 C 18.375528 16.16441 13.950546 17.65392 10.683594 20.021484 C 9.7845938 19.380484 8.688 19 7.5 19 C 4.462 19 2 21.462 2 24.5 C 2 26.652 3.2380625 28.511062 5.0390625 29.414062 C 5.0280625 29.610062 5 29.802 5 30 C 5 37.732 13.507 44 24 44 C 34.493 44 43 37.732 43 30 C 43 29.802 42.971938 29.610062 42.960938 29.414062 C 44.761938 28.511062 46 26.652 46 24.5 C 46 21.462 43.538 19 40.5 19 C 39.312 19 38.215406 19.380484 37.316406 20.021484 C 34.407598 17.913468 30.58056 16.499109 26.320312 16.115234 L 28.167969 7.25 L 34.126953 8.3847656 C 34.521571 9.885206 35.877358 11 37.5 11 C 39.43 11 41 9.43 41 7.5 C 41 5.57 39.43 4 37.5 4 C 36.343507 4 35.323173 4.5703812 34.685547 5.4375 L 27.28125 4.0273438 A 1.50015 1.50015 0 0 0 26.982422 4 z M 16.5 24 C 18.433 24 20 25.567 20 27.5 C 20 29.433 18.433 31 16.5 31 C 14.567 31 13 29.433 13 27.5 C 13 25.567 14.567 24 16.5 24 z M 31.5 24 C 33.433 24 35 25.567 35 27.5 C 35 29.433 33.433 31 31.5 31 C 29.567 31 28 29.433 28 27.5 C 28 25.567 29.567 24 31.5 24 z M 17.5 34 C 17.88375 34 18.267547 34.146453 18.560547 34.439453 C 18.613547 34.488453 20.262047 36 23.998047 36 C 27.771047 36 29.4225 34.455453 29.4375 34.439453 C 30.0235 33.853453 30.972594 33.853453 31.558594 34.439453 C 32.144594 35.025453 32.145547 35.975547 31.560547 36.560547 C 31.310547 36.810547 28.978 38.998047 24 38.998047 C 19.022 38.998047 16.689453 36.810547 16.439453 36.560547 C 15.853453 35.975547 15.853453 35.025453 16.439453 34.439453 C 16.732453 34.146453 17.11625 34 17.5 34 z" />
                     </labs:SettingsExpander.HeaderIcon>
-                    <Button Content="Reset" />
-
                     <labs:SettingsExpander.Items>
-                        <labs:SettingsCard Header="Sub-setting 1">
-                            <ToggleSwitch />
+                        <labs:SettingsCard
+                            Description="Show your user presence to the public."
+                            Header="User presence"
+                            HeaderIcon="{ui:FontIcon Glyph=&#xE13D;}">
+                            <ToggleSwitch IsOn="{x:Bind ViewModel.RedditPrefs.ShowPresence, Mode=TwoWay}" />
                         </labs:SettingsCard>
 
-                        <labs:SettingsCard Header="Sub-setting 2">
-                            <TextBox />
+                        <labs:SettingsCard
+                            Description="Allow Reddit to log outbound clicks for personalization."
+                            Header="Track clicks"
+                            HeaderIcon="{ui:FontIcon Glyph=&#xF271;}">
+                            <ToggleSwitch IsOn="{x:Bind ViewModel.RedditPrefs.AllowClickTracking, Mode=TwoWay}" />
+                        </labs:SettingsCard>
+
+                        <labs:SettingsCard
+                            Description="Hide thumbnails to reduce space."
+                            Header="Compress link display"
+                            HeaderIcon="{ui:FontIcon Glyph=&#xE1D8;}">
+                            <ToggleSwitch IsOn="{x:Bind ViewModel.RedditPrefs.Compress, Mode=TwoWay}" />
+                        </labs:SettingsCard>
+
+                        <labs:SettingsCard
+                            Description="Include not safe for work results in search."
+                            Header="NSFW results"
+                            HeaderIcon="{ui:FontIcon Glyph=&#xE7BA;}">
+                            <ToggleSwitch IsOn="{x:Bind ViewModel.RedditPrefs.SearchIncludeOver18, Mode=TwoWay}" />
+                        </labs:SettingsCard>
+
+                        <labs:SettingsCard Padding="99,12,48,12" Header="Send emails for:">
+                            <labs:SettingsCard.Description>
+                                <StackPanel Margin="0,8,0,0" Spacing="4">
+                                    <CheckBox
+                                        HorizontalAlignment="Stretch"
+                                        Content="Digests"
+                                        IsChecked="{x:Bind ViewModel.RedditPrefs.EmailDigests, Mode=TwoWay}" />
+                                    <CheckBox
+                                        HorizontalAlignment="Stretch"
+                                        Content="Post replies"
+                                        IsChecked="{x:Bind ViewModel.RedditPrefs.EmailPostReply, Mode=TwoWay}" />
+                                    <CheckBox
+                                        HorizontalAlignment="Stretch"
+                                        Content="Chat requests"
+                                        IsChecked="{x:Bind ViewModel.RedditPrefs.EmailChatRequest, Mode=TwoWay}" />
+                                    <CheckBox
+                                        HorizontalAlignment="Stretch"
+                                        Content="New messages"
+                                        IsChecked="{x:Bind ViewModel.RedditPrefs.EmailMessages, Mode=TwoWay}" />
+                                    <CheckBox
+                                        HorizontalAlignment="Stretch"
+                                        Content="Community recommendations"
+                                        IsChecked="{x:Bind ViewModel.RedditPrefs.EmailCommunityDiscovery, Mode=TwoWay}" />
+                                    <CheckBox
+                                        HorizontalAlignment="Stretch"
+                                        Content="Comment replies"
+                                        IsChecked="{x:Bind ViewModel.RedditPrefs.EmailCommentReply, Mode=TwoWay}" />
+
+                                    <Button
+                                        Margin="-10,0,0,0"
+                                        ui:FrameworkElementExtensions.Cursor="Hand"
+                                        Command="{x:Bind ViewModel.UnsubscribeAllEmailsCommand, Mode=OneTime}"
+                                        Content="Unsubscribe from all email notifications"
+                                        Style="{ThemeResource TransparentAccentButtonStyle}" />
+                                </StackPanel>
+                            </labs:SettingsCard.Description>
+                        </labs:SettingsCard>
+
+                        <labs:SettingsCard
+                            Description="Save your changed settings to Reddit."
+                            Header="Save settings"
+                            HeaderIcon="{ui:FontIcon Glyph=&#xE105;}">
+                            <Button Command="{x:Bind ViewModel.SaveRedditPrefsCommand}" Content="Save" />
                         </labs:SettingsCard>
                     </labs:SettingsExpander.Items>
+
+                    <muxc:ProgressRing
+                        x:Name="RedditPrefsLoadingProgressRing"
+                        Width="16"
+                        Height="16"
+                        Margin="0,0,12,0" />
                 </labs:SettingsExpander>
 
                 <TextBlock
@@ -165,7 +239,10 @@
                         <labs:SettingsCard Header="Save a copy of the logs" HeaderIcon="Save">
                             <Button Content="Save" />
                         </labs:SettingsCard>
-                        <labs:SettingsCard Header="Back up settings" HeaderIcon="Refresh">
+                        <labs:SettingsCard
+                            Description="Note: Reddit web preferences won't be included in the export."
+                            Header="Export settings"
+                            HeaderIcon="Refresh">
                             <Button Content="Save" />
                         </labs:SettingsCard>
                         <labs:SettingsCard Header="Reset app state" HeaderIcon="{ui:FontIcon Glyph=&#xEBC4;}">

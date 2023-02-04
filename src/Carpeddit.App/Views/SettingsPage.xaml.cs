@@ -2,6 +2,7 @@
 using Carpeddit.App.ViewModels.Pages;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Diagnostics;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI;
@@ -47,5 +48,13 @@ namespace Carpeddit.App.Views
 
         private void OnImageCardClick(object sender, RoutedEventArgs e)
             => ImageCardMenuFlyout.ShowAt(e.OriginalSource as FrameworkElement);
+
+        private async void OnRedditPrefsCardLoaded(object sender, RoutedEventArgs e)
+        {
+            RedditPrefsCard.IsEnabled = false;
+            ViewModel.RedditPrefs = await RedditPrefsViewModel.GetForCurrentUserAsync();
+            RedditPrefsCard.IsEnabled = true;
+            RedditPrefsLoadingProgressRing.IsActive = false;
+        }
     }
 }

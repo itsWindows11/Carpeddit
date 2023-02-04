@@ -15,6 +15,9 @@ namespace Carpeddit.App.ViewModels.Pages
     {
         public SettingsViewModel SettingsManager { get; } = App.Services.GetService<SettingsViewModel>();
 
+        [ObservableProperty]
+        private RedditPrefsViewModel redditPrefs;
+
         [RelayCommand]
         public void ChangeAppTheme()
             => ((Frame)Window.Current.Content).RequestedTheme = SettingsManager.Theme;
@@ -67,6 +70,21 @@ namespace Carpeddit.App.ViewModels.Pages
 
             if (result == ContentDialogResult.Primary && Uri.TryCreate(textbox.Text, UriKind.RelativeOrAbsolute, out _))
                 SettingsManager.TintImageUri = textbox.Text;
+        }
+
+        [RelayCommand]
+        public Task SaveRedditPrefsAsync()
+            => RedditPrefs.UpdateAsync();
+
+        [RelayCommand]
+        public void UnsubscribeAllEmails()
+        {
+            RedditPrefs.EmailDigests = false;
+            RedditPrefs.EmailPostReply = false;
+            RedditPrefs.EmailChatRequest = false;
+            RedditPrefs.EmailMessages = false;
+            RedditPrefs.EmailCommunityDiscovery = false;
+            RedditPrefs.EmailCommentReply = false;
         }
     }
 }

@@ -45,13 +45,7 @@
             Canvas.ZIndex="2"
             IsFocusEngaged="False"
             PlaceholderText="Search Reddit..."
-            QueryIcon="Find">
-            <AutoSuggestBox.Transitions>
-                <TransitionCollection>
-                    <RepositionThemeTransition />
-                </TransitionCollection>
-            </AutoSuggestBox.Transitions>
-        </AutoSuggestBox>
+            QueryIcon="Find" />
 
         <muxc:NavigationView
             x:Name="NavView"

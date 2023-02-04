@@ -204,7 +204,7 @@ namespace Carpeddit.Api.Helpers
         public static async Task<IHttpContent> MakePatchRequestAsync(string url, IDictionary<string, string> headers, IDictionary<string, string> patchData)
         {
             var message = MakeMessage(url, HttpMethod.Patch, headers);
-            message.Content = new HttpFormUrlEncodedContent(patchData);
+            message.Content = new HttpStringContent(JsonSerializer.Serialize(patchData));
 
             var response = await httpClient.SendRequestAsync(message, HttpCompletionOption.ResponseHeadersRead);
 
