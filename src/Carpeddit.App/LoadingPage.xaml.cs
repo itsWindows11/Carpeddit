@@ -26,12 +26,6 @@ namespace Carpeddit.App
             var settings = App.Services.GetService<SettingsViewModel>();
             Frame.RequestedTheme = settings.Theme;
 
-            if (!await WebHelpers.CheckIsConnectedAsync())
-            {
-                Frame.Navigate(typeof(OfflinePage), null, new SuppressNavigationTransitionInfo());
-                return;
-            }
-
             // TODO: Handle setup.
 
             var message = await IsValidSessionAsync();
