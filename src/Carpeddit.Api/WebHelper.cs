@@ -1,4 +1,5 @@
 ﻿using Carpeddit.Api.Exceptions;
+using Carpeddit.Common.Constants;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -230,7 +231,7 @@ namespace Carpeddit.Api.Helpers
 
             var message = new HttpRequestMessage(method, new Uri(url, UriKind.Absolute));
 
-            message.Headers.Add("User-Agent", "Carpeddit");
+            message.Headers["User-Agent"] = $"Carpeddit v{Constants.AppVersion} (by /u/itsWindows11)";
 
             foreach (var header in headers)
                 message.Headers.Add(header);

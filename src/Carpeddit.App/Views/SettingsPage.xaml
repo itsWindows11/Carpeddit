@@ -2,6 +2,7 @@
     x:Class="Carpeddit.App.Views.SettingsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:constants="using:Carpeddit.Common.Constants"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -251,11 +252,17 @@
                     </labs:SettingsExpander.Items>
                 </labs:SettingsExpander>
 
-                <labs:SettingsCard Description="Carpeddit, version 0.10.0.0" Header="App info">
+                <labs:SettingsCard Header="App info">
+                    <labs:SettingsCard.Description>
+                        <TextBlock IsTextSelectionEnabled="True">
+                            <Run Text="Carpeddit, version" />
+                            <Run d:Text="1.0.0.0" Text="{x:Bind constants:Constants.AppVersion}" />
+                            <Run Text=" (by /u/itsWindows11)" />
+                        </TextBlock>
+                    </labs:SettingsCard.Description>
                     <labs:SettingsCard.HeaderIcon>
                         <FontIcon Glyph="&#xE946;" />
                     </labs:SettingsCard.HeaderIcon>
-                    <Button Content="Copy version info" />
                 </labs:SettingsCard>
             </StackPanel>
 
