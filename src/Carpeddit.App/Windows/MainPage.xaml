@@ -73,7 +73,11 @@
                 <muxc:NavigationViewItem
                     Content="Mailbox"
                     Icon="Mail"
-                    Tag="mailbox" />
+                    Tag="mailbox">
+                    <muxc:NavigationViewItem.InfoBadge>
+                        <muxc:InfoBadge x:Name="UnreadBadge" Visibility="Collapsed" />
+                    </muxc:NavigationViewItem.InfoBadge>
+                </muxc:NavigationViewItem>
             </muxc:NavigationView.MenuItems>
 
             <Frame

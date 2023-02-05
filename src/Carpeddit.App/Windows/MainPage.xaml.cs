@@ -49,7 +49,14 @@ namespace Carpeddit.App
             {
                 await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    ProfileBitmap.UriSource = new(WebUtility.HtmlDecode(t.Result.IconImage));
+                    var user = t.Result;
+
+                    ProfileBitmap.UriSource = new(WebUtility.HtmlDecode(user.IconImage));
+                    
+                    UnreadBadge.Visibility = ((user.HasMail ?? false) || (user.HasModMail ?? false)) ? Visibility.Visible : Visibility.Collapsed;
+                    
+                    if (user.InboxCount > 0)
+                        UnreadBadge.Value = user.InboxCount;
                 });
             });
 
