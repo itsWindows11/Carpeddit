@@ -14,6 +14,18 @@
     Name="RootPage"
     d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
+    <Page.Resources>
+        <MenuFlyout x:Key="ProfileShareMenuFlyout">
+            <MenuFlyoutItem
+                Icon="{ui:FontIcon Glyph=&#xE1CA;}"
+                IsEnabled="False"
+                Text="Crosspost" />
+            <MenuFlyoutItem
+                Click="OnCopyLinkFlyoutItemClick"
+                Icon="{ui:FontIcon Glyph=&#xE16F;}"
+                Text="Copy link" />
+        </MenuFlyout>
+    </Page.Resources>
 
     <ListView
         x:Name="MainList"
@@ -120,9 +132,9 @@
                     BorderThickness="1"
                     CornerRadius="4">
                     <TextBlock
-                        Text="About"
                         FontSize="16"
-                        FontWeight="SemiBold" />
+                        FontWeight="SemiBold"
+                        Text="About" />
 
                     <StackPanel
                         Margin="0,12,0,0"
@@ -171,7 +183,10 @@
                                 Icon="Comment"
                                 IsHitTestVisible="False"
                                 Label="{x:Bind Post.NumComments, Converter={StaticResource FormattedNumberConverter}}" />
-                            <AppBarButton Icon="Share" Label="Share" />
+                            <AppBarButton
+                                Flyout="{StaticResource ProfileShareMenuFlyout}"
+                                Icon="Share"
+                                Label="Share" />
                             <AppBarButton Icon="Save" Label="Save" />
                         </CommandBar>
                     </uc:PostItemControl.FooterContent>

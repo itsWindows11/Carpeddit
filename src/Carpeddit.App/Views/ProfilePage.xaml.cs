@@ -16,6 +16,7 @@ using Carpeddit.Api.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Carpeddit.Api.Enums;
 using Carpeddit.Api.Models;
+using Windows.ApplicationModel.DataTransfer;
 
 namespace Carpeddit.App.Views
 {
@@ -133,5 +134,20 @@ namespace Carpeddit.App.Views
                 ShowFullPage = true,
                 ItemData = model
             });
+
+        private void OnCopyLinkFlyoutItemClick(object sender, RoutedEventArgs e)
+        {
+            if (((FrameworkElement)e.OriginalSource).DataContext is not PostViewModel item)
+                return;
+
+            var package = new DataPackage()
+            {
+                RequestedOperation = DataPackageOperation.Copy,
+            };
+
+            package.SetText("https://www.reddit.com" + item.Post.Permalink);
+
+            Clipboard.SetContent(package);
+        }
     }
 }

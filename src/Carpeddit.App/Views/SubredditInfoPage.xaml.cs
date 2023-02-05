@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Net;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
@@ -126,5 +127,20 @@ namespace Carpeddit.App.Views
                 ShowFullPage = true,
                 ItemData = model
             });
+
+        private void OnCopyLinkFlyoutItemClick(object sender, RoutedEventArgs e)
+        {
+            if (((FrameworkElement)e.OriginalSource).DataContext is not PostViewModel item)
+                return;
+
+            var package = new DataPackage()
+            {
+                RequestedOperation = DataPackageOperation.Copy,
+            };
+
+            package.SetText("https://www.reddit.com" + item.Post.Permalink);
+
+            Clipboard.SetContent(package);
+        }
     }
 }

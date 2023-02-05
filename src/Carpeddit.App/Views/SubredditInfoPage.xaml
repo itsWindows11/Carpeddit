@@ -13,6 +13,18 @@
     Name="RootPage"
     d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
+    <Page.Resources>
+        <MenuFlyout x:Key="SubredditInfoShareMenuFlyout">
+            <MenuFlyoutItem
+                Icon="{ui:FontIcon Glyph=&#xE1CA;}"
+                IsEnabled="False"
+                Text="Crosspost" />
+            <MenuFlyoutItem
+                Click="OnCopyLinkFlyoutItemClick"
+                Icon="{ui:FontIcon Glyph=&#xE16F;}"
+                Text="Copy link" />
+        </MenuFlyout>
+    </Page.Resources>
 
     <ListView
         x:Name="MainList"
@@ -245,7 +257,7 @@
                                 Icon="Comment"
                                 IsHitTestVisible="False"
                                 Label="{x:Bind Post.NumComments, Converter={StaticResource FormattedNumberConverter}}" />
-                            <AppBarButton Icon="Share" Label="Share" />
+                            <AppBarButton Icon="Share" Label="Share" Flyout="{StaticResource SubredditInfoShareMenuFlyout}" />
                             <AppBarButton Icon="Save" Label="Save" />
                         </CommandBar>
                     </uc:PostItemControl.FooterContent>

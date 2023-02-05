@@ -6,11 +6,24 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:uc="using:Carpeddit.App.UserControls"
+    xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
     xmlns:viewmodels="using:Carpeddit.App.ViewModels"
     Name="RootPage"
     d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
+    <Page.Resources>
+        <MenuFlyout x:Key="PopularShareMenuFlyout">
+            <MenuFlyoutItem
+                Icon="{ui:FontIcon Glyph=&#xE1CA;}"
+                IsEnabled="False"
+                Text="Crosspost" />
+            <MenuFlyoutItem
+                Click="OnCopyLinkFlyoutItemClick"
+                Icon="{ui:FontIcon Glyph=&#xE16F;}"
+                Text="Copy link" />
+        </MenuFlyout>
+    </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -63,7 +76,10 @@
                                     Icon="Comment"
                                     IsHitTestVisible="False"
                                     Label="{x:Bind Post.NumComments, Converter={StaticResource FormattedNumberConverter}}" />
-                                <AppBarButton Icon="Share" Label="Share" />
+                                <AppBarButton
+                                    Flyout="{StaticResource PopularShareMenuFlyout}"
+                                    Icon="Share"
+                                    Label="Share" />
                                 <AppBarButton Icon="Save" Label="Save" />
                             </CommandBar>
                         </uc:PostItemControl.FooterContent>
