@@ -129,6 +129,7 @@
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\FlairRichText.cs" />
     <Compile Include="Models\Image.cs" />
+    <Compile Include="Models\ImageContainer.cs" />
     <Compile Include="Models\Interfaces\ICreated.cs" />
     <Compile Include="Models\Interfaces\IPostReplyable.cs" />
     <Compile Include="Models\Interfaces\IVotable.cs" />

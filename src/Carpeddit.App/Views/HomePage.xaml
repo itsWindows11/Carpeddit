@@ -42,7 +42,7 @@
                     <uc:PostItemControl
                         Title="{x:Bind Title}"
                         CreationDate="{x:Bind Created}"
-                        Description="{x:Bind ShortDescription}"
+                        Description="{x:Bind ShortDescription, Mode=OneTime}"
                         IsDownvoted="{x:Bind IsDownvoted, Mode=TwoWay}"
                         IsUpvoted="{x:Bind IsUpvoted, Mode=TwoWay}"
                         Post="{x:Bind}"

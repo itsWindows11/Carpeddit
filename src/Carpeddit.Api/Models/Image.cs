@@ -3,26 +3,32 @@ using System.Text.Json.Serialization;
 
 namespace Carpeddit.Api.Models
 {
-    public record Image(
-        [property: JsonPropertyName("source")] PostImageSource Source,
-        [property: JsonPropertyName("resolutions")] IReadOnlyList<Resolution> Resolutions,
-        [property: JsonPropertyName("id")] string Id
-    );
+    public sealed class Image
+    {
+        [JsonPropertyName("u")]
+        public string Url { get; set; }
 
-    public record PostImageSource(
-        [property: JsonPropertyName("url")] string Url,
-        [property: JsonPropertyName("width")] int? Width,
-        [property: JsonPropertyName("height")] int? Height
-    );
+        [JsonPropertyName("x")]
+        public int? Width { get; set; }
 
-    public record Resolution(
-        [property: JsonPropertyName("url")] string Url,
-        [property: JsonPropertyName("width")] int? Width,
-        [property: JsonPropertyName("height")] int? Height
-    );
+        [JsonPropertyName("y")]
+        public int? Height { get; set; }
+    }
+
+    public sealed class PreviewImage
+    {
+        [JsonPropertyName("url")]
+        public string Url { get; set; }
+
+        [JsonPropertyName("width")]
+        public int? Width { get; set; }
+
+        [JsonPropertyName("height")]
+        public int? Height { get; set; }
+    }
 
     public record Preview(
-        [property: JsonPropertyName("images")] IReadOnlyList<Image> Images,
+        [property: JsonPropertyName("images")] IReadOnlyList<PreviewImage> Images,
         [property: JsonPropertyName("enabled")] bool? Enabled
     );
 }

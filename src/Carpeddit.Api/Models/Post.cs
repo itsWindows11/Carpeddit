@@ -348,5 +348,11 @@ namespace Carpeddit.Api.Models
 
         [JsonPropertyName("is_video")]
         public bool IsVideo { get; set; }
+
+        [JsonPropertyName("is_gallery")]
+        public bool? IsGallery { get; set; }
+
+        [JsonPropertyName("media_metadata")]
+        public Dictionary<string, ImageContainer> MediaMetadata { get; set; }
     }
 }

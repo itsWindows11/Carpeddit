@@ -5,6 +5,7 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:Carpeddit.Api.Models"
     d:DesignHeight="146"
     d:DesignWidth="678"
     mc:Ignorable="d">
@@ -70,7 +71,7 @@
                 <Hyperlink Click="OnUserHyperlinkClick">
                     u/<Run d:Text="user" Text="{x:Bind UserName, Mode=OneWay}" />
                 </Hyperlink>
-                <Run Text="{x:Bind CreationDate, Mode=OneWay, Converter={StaticResource RelativeTimeConverter}}" />
+                <Run d:Text="10 hours ago" Text="{x:Bind CreationDate, Mode=OneWay, Converter={StaticResource RelativeTimeConverter}}" />
                 <Run FontWeight="Light" Text="•" />
                 <Hyperlink Click="OnSubredditHyperlinkClick">
                     <Run d:Text="r/subreddit" Text="{x:Bind SubredditName, Mode=OneWay}" />
@@ -83,17 +84,70 @@
                 CommandParameter="{x:Bind Post, Mode=OneWay}"
                 Style="{ThemeResource TransparentNoHoverButtonStyle}">
                 <TextBlock
+                    d:Text="Title"
                     FontSize="20"
                     Style="{StaticResource TitleTextBlockStyle}"
-                    Text="{x:Bind Title, Mode=OneWay}"
-                    d:Text="Title" />
+                    Text="{x:Bind Title, Mode=OneWay}" />
             </Button>
 
-            <controls:MarkdownTextBlock
-                Margin="0,8,0,0"
-                Text="{x:Bind Description, Mode=OneWay}"
-                Visibility="{x:Bind ShowDescription, Mode=OneWay, Converter={StaticResource BoolToVis}}"
-                d:Text="Description" />
+            <StackPanel Margin="0,8,0,0">
+                <controls:MarkdownTextBlock
+                    d:Text="Description"
+                    CodeBackground="{ThemeResource ExpanderContentBackground}"
+                    CodeBorderBrush="{ThemeResource ControlElevationBorderBrush}"
+                    CodeBorderThickness="1"
+                    InlineCodeBackground="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    Text="{x:Bind Description, Mode=OneWay}"
+                    Visibility="{x:Bind ShowDescription, Mode=OneWay, Converter={StaticResource BoolToVis}}" />
+
+                <controls:ImageEx
+                    x:Name="PostImage"
+                    MaxHeight="400"
+                    Margin="0,4,0,0"
+                    x:Load="{x:Bind Post.HasImage, Mode=OneWay}"
+                    CornerRadius="4"
+                    DecodePixelType="Logical"
+                    Source="{x:Bind Post.ImageUri, Mode=OneWay}" />
+
+                <MediaPlayerElement
+                    x:Name="MediaRedditPlayer"
+                    MaxHeight="400"
+                    Margin="0,4,0,0"
+                    x:Load="{x:Bind Post.Post.IsVideo, Mode=OneWay}"
+                    AreTransportControlsEnabled="True"
+                    AutoPlay="False"
+                    Source="{x:Bind Post.VideoSource, Mode=OneWay}">
+                    <MediaPlayerElement.TransportControls>
+                        <MediaTransportControls
+                            IsCompact="True"
+                            IsPlaybackRateButtonVisible="True"
+                            IsPlaybackRateEnabled="True"
+                            IsZoomButtonVisible="True"
+                            IsZoomEnabled="True" />
+                    </MediaPlayerElement.TransportControls>
+                </MediaPlayerElement>
+
+                <FlipView
+                    x:Name="Flip"
+                    MaxHeight="400"
+                    Margin="0,4,0,0"
+                    x:Load="{x:Bind Post.IsGallery, Mode=OneWay}"
+                    Background="{ThemeResource ExpanderContentBackground}"
+                    BorderBrush="{ThemeResource ControlElevationBorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    ItemsSource="{x:Bind Post.Images, Mode=OneWay}">
+                    <FlipView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Image">
+                            <controls:ImageEx
+                                MaxHeight="650"
+                                Margin="0,4,0,0"
+                                DecodePixelType="Logical"
+                                Source="{x:Bind Url}" />
+                        </DataTemplate>
+                    </FlipView.ItemTemplate>
+                </FlipView>
+            </StackPanel>
 
             <ContentPresenter Content="{x:Bind FooterContent, Mode=OneWay}" />
         </StackPanel>

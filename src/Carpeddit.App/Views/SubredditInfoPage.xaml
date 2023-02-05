@@ -134,12 +134,12 @@
                         FontWeight="SemiBold" />
 
                     <TextBlock
-                        Margin="0,12"
+                        Margin="0,12,0,0"
                         Text="{x:Bind Subreddit.PublicDescription}"
                         TextWrapping="Wrap" />
 
                     <StackPanel
-                        Margin="0,8,0,0"
+                        Margin="0,12,0,0"
                         Orientation="Horizontal"
                         Spacing="8">
                         <FontIcon Glyph="&#xE163;" />

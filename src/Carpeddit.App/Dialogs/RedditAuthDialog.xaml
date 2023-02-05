@@ -54,6 +54,6 @@
             Grid.Row="1"
             Width="500"
             Margin="-16,0,-16,-17"
-            Height="400" />
+            Height="500" />
     </Grid>
 </ContentDialog>
