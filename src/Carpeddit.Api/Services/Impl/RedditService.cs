@@ -16,7 +16,7 @@ namespace Carpeddit.Api.Services
         public Task<IList<Comment>> GetCommentsAsync(string postName, ListingInput input)
             => RunAsync<IList<Comment>>(async () =>
             {
-                var response = await WebHelper.GetDeserializedResponseAsync<IList<Listing<IList<ApiObjectWithKind<Comment>>>>>($"/comments/{postName}");
+                var response = await WebHelper.GetDeserializedResponseAsync<IList<Listing<IList<ApiObjectWithKind<Comment>>>>>($"/comments/{postName}?raw_json=1");
 
                 // First listing is always the post.
                 response.RemoveAt(0);
@@ -29,7 +29,7 @@ namespace Carpeddit.Api.Services
         public Task<IList<IPostReplyable>> GetCommentsOrMoreAsync(string postName, ListingInput input)
             => RunAsync<IList<IPostReplyable>>(async () =>
             {
-                var response = await WebHelper.GetDeserializedResponseAsync<IList<Listing<IList<ApiObjectWithKind<object>>>>>($"/comments/{postName}");
+                var response = await WebHelper.GetDeserializedResponseAsync<IList<Listing<IList<ApiObjectWithKind<object>>>>>($"/comments/{postName}?raw_json=1");
 
                 // First listing is always the post.
                 response.RemoveAt(0);
@@ -56,16 +56,16 @@ namespace Carpeddit.Api.Services
 
             return RunAsync<IList<Post>>(async () =>
             {
-                var response = await WebHelper.GetDeserializedResponseAsync<Listing<IList<ApiObjectWithKind<Post>>>>("/.json?" + queryString.ToString());
+                var response = await WebHelper.GetDeserializedResponseAsync<Listing<IList<ApiObjectWithKind<Post>>>>("/.json?raw_json=1&" + queryString.ToString());
                 return response.Data.Children.Select(p => p.Data).ToList();
             });
         }
 
         public Task<User> GetMeAsync()
-            => RunAsync(() => WebHelper.GetDeserializedResponseAsync<User>("/api/v1/me", true));
+            => RunAsync(() => WebHelper.GetDeserializedResponseAsync<User>("/api/v1/me?raw_json=1", true));
 
         public Task<Subreddit> GetSubredditInfoAsync(string subreddit)
-            => RunAsync(async () => (await WebHelper.GetDeserializedResponseAsync<ApiObjectWithKind<Subreddit>>($"/r/{subreddit}/about.json")).Data);
+            => RunAsync(async () => (await WebHelper.GetDeserializedResponseAsync<ApiObjectWithKind<Subreddit>>($"/r/{subreddit}/about.json?raw_json=1")).Data);
 
         public Task<IList<Post>> GetSubredditPostsAsync(string subreddit, SortMode sort, ListingInput listingInput)
             => RunAsync<IList<Post>>(async () =>
@@ -79,13 +79,13 @@ namespace Carpeddit.Api.Services
                     queryString.Add("limit", listingInput.Limit.ToString());
                 }
 
-                var listing = await WebHelper.GetDeserializedResponseAsync<Listing<IList<ApiObjectWithKind<Post>>>>($"/r/{subreddit}/{sort.ToString().ToLower()}.json?{queryString}");
+                var listing = await WebHelper.GetDeserializedResponseAsync<Listing<IList<ApiObjectWithKind<Post>>>>($"/r/{subreddit}/{sort.ToString().ToLower()}.json?raw_json=1&{queryString}");
 
                 return listing.Data.Children.Select(p => p.Data).ToList();
             });
 
         public Task<User> GetUserAsync(string userName)
-            => RunAsync(async () => (await WebHelper.GetDeserializedResponseAsync<ApiObjectWithKind<User>>($"/user/{userName}/about.json")).Data);
+            => RunAsync(async () => (await WebHelper.GetDeserializedResponseAsync<ApiObjectWithKind<User>>($"/user/{userName}/about.json?raw_json=1")).Data);
 
         public Task<UserKarmaContainer> GetUserKarmaAsync()
         {
@@ -104,7 +104,7 @@ namespace Carpeddit.Api.Services
                     queryString.Add("limit", listingInput.Limit.ToString());
                 }
 
-                var response = await WebHelper.GetDeserializedResponseAsync<Listing<IList<ApiObjectWithKind<Post>>>>($"/user/{user}/submitted/{sort.ToString().ToLower()}.json?{queryString}");
+                var response = await WebHelper.GetDeserializedResponseAsync<Listing<IList<ApiObjectWithKind<Post>>>>($"/user/{user}/submitted/{sort.ToString().ToLower()}.json?raw_json=1&{queryString}");
 
                 return response.Data.Children.Select(p => p.Data).ToList();
             });
