@@ -118,6 +118,29 @@ namespace Carpeddit.Api.Services
                     { "id", input.Id }
                 });
             });
+
+        public Task SubscribeToSubredditsAsync(IEnumerable<string> subreddits, bool srName = false)
+            => RunAsync(() =>
+            {
+                return WebHelper.PostAsync($"/api/subscribe", new Dictionary<string, string>()
+                {
+                    { "action", "sub" },
+                    { "action_source", "o" },
+                    { "skip_initial_defaults", "false" },
+                    { srName ? "sr_name" : "sr", string.Join(", ", subreddits) }
+                });
+            });
+
+        public Task UnsubscribeFromSubredditsAsync(IEnumerable<string> subreddits, bool srName = false)
+            => RunAsync(() =>
+            {
+                return WebHelper.PostAsync($"/api/subscribe", new Dictionary<string, string>()
+                {
+                    { "action", "unsub" },
+                    { "action_source", "o" },
+                    { srName ? "sr_name" : "sr", string.Join(", ", subreddits) }
+                });
+            });
     }
 
     // Helper methods

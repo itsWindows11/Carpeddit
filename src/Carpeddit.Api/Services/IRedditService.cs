@@ -69,7 +69,23 @@ namespace Carpeddit.Api.Services
         /// </summary>
         /// <param name="accessToken">The access token.</param>
         /// <param name="input">The query data to use.</param>
-        /// <returns>The API response.</returns>
+        /// <returns>A <see cref="Task" /> which represents the operation.</returns>
         Task VoteAsync(VotingInput input);
+
+        /// <summary>
+        /// Subscribes to a list of subreddits.
+        /// </summary>
+        /// <param name="subreddits">The list of subreddits to subscribe to.</param>
+        /// <param name="srName">Whether the passed subreddit names are t5_ fullnames or subreddit display names.</param>
+        /// <returns>A <see cref="Task" /> which represents the operation.</returns>
+        Task SubscribeToSubredditsAsync(IEnumerable<string> subreddits, bool srName = false);
+
+        /// <summary>
+        /// Unsubscribes from a list of subreddits.
+        /// </summary>
+        /// <param name="subreddits">The list of subreddits to unsubscribe from.</param>
+        /// <param name="srName">Whether the passed subreddit names are t5_ fullnames or subreddit display names.</param>
+        /// <returns>A <see cref="Task" /> which represents the operation.</returns>
+        Task UnsubscribeFromSubredditsAsync(IEnumerable<string> subreddits, bool srName = false);
     }
 }

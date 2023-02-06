@@ -9,7 +9,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:uc="using:Carpeddit.App.UserControls"
     xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
-    xmlns:viewmodels="using:Carpeddit.App.ViewModels"
+    xmlns:viewmodels="using:Carpeddit.App.ViewModels" xmlns:triggers="using:Microsoft.Toolkit.Uwp.UI.Triggers"
     Name="RootPage"
     d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
@@ -113,23 +113,10 @@
                                     Margin="0,48,20,0"
                                     HorizontalAlignment="Right"
                                     Content="Join"
-                                    IsEnabled="False" />
+                                    Command="{x:Bind JoinOrLeaveSubredditCommand}"/>
                             </Grid>
                         </Grid>
                     </Border>
-
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup>
-                            <VisualState x:Name="WithDisplayName" />
-                            <VisualState x:Name="NoDisplayName">
-                                <VisualState.Setters>
-                                    <Setter Target="SubredditFriendlyName.Visibility" Value="Collapsed" />
-                                    <Setter Target="SubredditName.Style" Value="{StaticResource SubtitleTextBlockStyle}" />
-                                    <Setter Target="SubredditName.FontSize" Value="20" />
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
                 </Grid>
 
                 <StackPanel
@@ -275,5 +262,26 @@
                     Visibility="Collapsed" />
             </Grid>
         </ListView.Footer>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="DisplayNameStates">
+                <VisualState x:Name="WithDisplayName" />
+                <VisualState x:Name="NoDisplayName">
+                    <VisualState.Setters>
+                        <Setter Target="SubredditFriendlyName.Visibility" Value="Collapsed" />
+                        <Setter Target="SubredditName.Style" Value="{StaticResource SubtitleTextBlockStyle}" />
+                        <Setter Target="SubredditName.FontSize" Value="20" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+            <VisualStateGroup x:Name="JoinStates">
+                <VisualState x:Name="JoinedState">
+                    <VisualState.Setters>
+                        <Setter Target="JoinButton.Content" Value="Leave" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="NotJoinedState" />
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </ListView>
 </Page>

@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -37,8 +38,7 @@ namespace Carpeddit.App.Views
             LoadingInfoRing.IsActive = false;
             LoadingInfoRing.Visibility = Visibility.Collapsed;
 
-            if (Subreddit.UserIsSubscriber ?? false)
-                JoinButton.Content = "Leave";
+            _ = VisualStateManager.GoToState(this, (Subreddit.UserIsSubscriber ?? false) ? "JoinedState" : "NotJoinedState", false);
 
             if (string.IsNullOrWhiteSpace(Subreddit.Title) || Subreddit.Title.Equals(Subreddit.DisplayNamePrefixed))
                 _ = VisualStateManager.GoToState(this, "NoDisplayName", false);
@@ -127,6 +127,31 @@ namespace Carpeddit.App.Views
                 ShowFullPage = true,
                 ItemData = model
             });
+
+        [RelayCommand]
+        private async Task JoinOrLeaveSubredditAsync()
+        {
+            try
+            {
+                var subreddits = new[] { Subreddit.Name };
+
+                if (Subreddit.UserIsSubscriber ?? false)
+                {
+                    await service.UnsubscribeFromSubredditsAsync(subreddits);
+                    _ = VisualStateManager.GoToState(this, "NotJoinedState", false);
+                    Subreddit.UserIsSubscriber = false;
+                    return;
+                }
+
+                await service.SubscribeToSubredditsAsync(subreddits);
+                _ = VisualStateManager.GoToState(this, "JoinedState", false);
+                Subreddit.UserIsSubscriber = true;
+            }
+            catch (Exception)
+            {
+
+            }
+        }
 
         private void OnCopyLinkFlyoutItemClick(object sender, RoutedEventArgs e)
         {
