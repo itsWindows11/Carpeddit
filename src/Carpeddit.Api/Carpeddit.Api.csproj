@@ -121,6 +121,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Enums\MessageListType.cs" />
     <Compile Include="Enums\SortMode.cs" />
     <Compile Include="Exceptions\ServiceDownException.cs" />
     <Compile Include="Helpers\AccountHelper.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="Models\LinkFlairRichText.cs" />
     <Compile Include="Models\ListingInput.cs" />
     <Compile Include="Models\Listing{T}.cs" />
+    <Compile Include="Models\Message.cs" />
     <Compile Include="Models\More.cs" />
     <Compile Include="Models\Post.cs" />
     <Compile Include="Models\Subreddit.cs" />

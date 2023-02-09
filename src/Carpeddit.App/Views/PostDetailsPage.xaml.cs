@@ -1,14 +1,17 @@
-﻿using Carpeddit.Api.Models;
+﻿using Carpeddit.Api.Helpers;
+using Carpeddit.Api.Models;
 using Carpeddit.Api.Services;
 using Carpeddit.App.Models;
 using Carpeddit.App.ViewModels;
 using Carpeddit.Common.Collections;
 using Carpeddit.Models.Api;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -42,19 +45,7 @@ namespace Carpeddit.App.Views
             } else
                 TitleBar.Visibility = Visibility.Collapsed;
 
-            var comments = (await App.Services.GetService<IRedditService>()
-                .GetCommentsOrMoreAsync(ViewModel.Post.Name.Substring(3), new ListingInput())).Select<IPostReplyable, IPostReplyable>(r =>
-                {
-                    if (r is Comment comment)
-                    {
-                        return new CommentViewModel
-                        {
-                            Comment = comment
-                        };
-                    }
-
-                    return (More)r;
-                });
+            var comments = await GetCommentsAsViewModelAsync(ViewModel.Post.Name.Substring(3));
 
             this.comments.AddRange(comments);
         }
@@ -76,6 +67,26 @@ namespace Carpeddit.App.Views
 
             Frame.GoBack();
         }
+
+        private Task<IEnumerable<IPostReplyable>> GetCommentsAsViewModelAsync(string postName)
+            => (App.Services.GetService<IRedditService>() as RedditService).RunAsync(async () =>
+            {
+                var response = await WebHelper.GetDeserializedResponseAsync<IList<Listing<IList<ApiObjectWithKind<object>>>>>($"/comments/{postName}?raw_json=1");
+
+                // First listing is always the post.
+                response.RemoveAt(0);
+
+                return response.FirstOrDefault().Data.Children.Select<ApiObjectWithKind<object>, IPostReplyable>(obj =>
+                {
+                    if (obj.Kind == "more")
+                        return JsonSerializer.Deserialize<More>(obj.Data.ToString());
+
+                    return new CommentViewModel()
+                    {
+                        Comment = JsonSerializer.Deserialize<Comment>(obj.Data.ToString())
+                    };
+                });
+            });
     }
 
     public sealed class CommentItemTemplateSelector : DataTemplateSelector
@@ -97,7 +108,7 @@ namespace Carpeddit.App.Views
 
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
         {
-            if (item is Comment)
+            if (item is CommentViewModel)
                 return CommentItemTemplate;
 
             if (item is More)

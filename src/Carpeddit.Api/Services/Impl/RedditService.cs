@@ -13,6 +13,8 @@ namespace Carpeddit.Api.Services
     // Implementation
     public sealed partial class RedditService : IRedditService
     {
+        public User Me { get; set; }
+
         public Task<IList<Comment>> GetCommentsAsync(string postName, ListingInput input)
             => RunAsync<IList<Comment>>(async () =>
             {
@@ -61,8 +63,8 @@ namespace Carpeddit.Api.Services
             });
         }
 
-        public Task<User> GetMeAsync()
-            => RunAsync(() => WebHelper.GetDeserializedResponseAsync<User>("/api/v1/me?raw_json=1", true));
+        public async Task<User> GetMeAsync()
+            => Me ??= await RunAsync(() => WebHelper.GetDeserializedResponseAsync<User>("/api/v1/me?raw_json=1", true));
 
         public Task<Subreddit> GetSubredditInfoAsync(string subreddit)
             => RunAsync(async () => (await WebHelper.GetDeserializedResponseAsync<ApiObjectWithKind<Subreddit>>($"/r/{subreddit}/about.json?raw_json=1")).Data);
@@ -141,12 +143,20 @@ namespace Carpeddit.Api.Services
                     { srName ? "sr_name" : "sr", string.Join(", ", subreddits) }
                 });
             });
+
+        public Task<IList<Message>> GetMessagesAsync(MessageListType type = MessageListType.Inbox)
+            => RunAsync<IList<Message>>(async () =>
+            {
+                var messagesListing = await WebHelper.GetDeserializedResponseAsync<Listing<IList<ApiObjectWithKind<Message>>>>($"/message/{type.ToString().ToLower()}");
+
+                return messagesListing.Data.Children.Select(a => a.Data).ToList();
+            });
     }
 
     // Helper methods
     public partial class RedditService
     {
-        private async Task RunAsync(Func<Task> func)
+        public async Task RunAsync(Func<Task> func)
         {
             int retries = 0;
 
@@ -166,7 +176,7 @@ namespace Carpeddit.Api.Services
             }
         }
 
-        private async Task<T> RunAsync<T>(Func<Task<T>> func)
+        public async Task<T> RunAsync<T>(Func<Task<T>> func)
         {
             int retries = 0;
 

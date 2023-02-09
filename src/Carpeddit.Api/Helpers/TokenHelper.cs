@@ -26,11 +26,7 @@ namespace Carpeddit.Api.Helpers
 
             authInfo.RefreshToken = refreshToken;
 
-            await AccountHelper.Instance.SaveAccessInfoAsync(new()
-            {
-                AccessToken = authInfo.AccessToken,
-                RefreshToken = authInfo.RefreshToken
-            });
+            AccountHelper.Instance.SaveAccessInfo(authInfo);
 
             return authInfo;
         }

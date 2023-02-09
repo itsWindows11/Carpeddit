@@ -124,6 +124,7 @@
     <Compile Include="Collections\BulkObservableCollection.cs" />
     <Compile Include="Constants\APIConstants.cs" />
     <Compile Include="Constants\Constants.cs" />
+    <Compile Include="Converters\EmptyStringToListConverter.cs" />
     <Compile Include="Converters\BaseTimestampConverter.cs" />
     <Compile Include="Converters\LocalTimestampConverter.cs" />
     <Compile Include="Converters\UtcTimestampConverter.cs" />

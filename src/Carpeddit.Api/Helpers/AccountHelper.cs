@@ -39,27 +39,8 @@ namespace Carpeddit.Api.Helpers
         /// <param name="info">The token info.</param>
         /// <param name="userName">The user name, if not specified then it gets automatically retrieved from the API.</param>
         /// <returns>A <see cref="Task"/> which represents the operation.</returns>
-        public async Task SaveAccessInfoAsync(PasswordToken info, string userName = null)
-        {
-            var passwordValut = new PasswordVault();
-            var credentials = passwordValut.RetrieveAll();
-
-            // Fetch user info.
-            if (string.IsNullOrEmpty(userName))
-                userName = (await service.GetMeAsync()).Name;
-
-            // Remove any existing entry.
-            // Should only allow for one account to be
-            // authenticated at once. But makes it easier
-            // to handle auth in the long run.
-            if (credentials.Any())
-            {
-                foreach (var credential in credentials)
-                    passwordValut.Remove(credential);
-            }
-
-            passwordValut.Add(new("Reddit", userName, $"{info.AccessToken}:{info.RefreshToken}"));
-        }
+        public void SaveAccessInfo(TokenInfo info, string userName = null)
+            => (authService as RedditAuthService).Data = info;
 
         /// <summary>
         /// Saves the access info.
@@ -67,7 +48,7 @@ namespace Carpeddit.Api.Helpers
         /// <param name="info">The token info.</param>
         /// <param name="userName">The user name.</param>
         /// <returns>A <see cref="Task"/> which represents the operation.</returns>
-        public void SaveAccessInfo(PasswordToken info, string userName)
+        /*public void SaveAccessInfo(PasswordToken info, string userName)
         {
             var passwordValut = new PasswordVault();
             var credentials = passwordValut.RetrieveAll();
@@ -83,20 +64,21 @@ namespace Carpeddit.Api.Helpers
             }
 
             passwordValut.Add(new("Reddit", userName, $"{info.AccessToken}:{info.RefreshToken}"));
-        }
+        }*/
 
         /// <summary>
-        /// Cleans up locally stored tokens, then revokes the access token.
+        /// Cleans up locally stored user data, then revokes the access token.
         /// </summary>
         /// <returns>A <see cref="Task" /> which represents the operation.</returns>
-        public async Task SignOutAsync(bool revokeToken = true)
+        public Task SignOutAsync(bool revokeToken = true)
         {
             (authService as RedditAuthService).Data = null;
+            (service as RedditService).Me = null;
 
             if (!revokeToken)
-                return;
+                return Task.CompletedTask;
 
-            await authService.RevokeAsync(GetCurrentInfo().AccessToken);
+            return authService.RevokeAsync(GetCurrentInfo().AccessToken);
         }
 
         public TokenInfo GetCurrentInfo()

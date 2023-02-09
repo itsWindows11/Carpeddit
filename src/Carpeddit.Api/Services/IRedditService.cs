@@ -87,5 +87,12 @@ namespace Carpeddit.Api.Services
         /// <param name="srName">Whether the passed subreddit names are t5_ fullnames or subreddit display names.</param>
         /// <returns>A <see cref="Task" /> which represents the operation.</returns>
         Task UnsubscribeFromSubredditsAsync(IEnumerable<string> subreddits, bool srName = false);
+
+        /// <summary>
+        /// Gets the messages.
+        /// </summary>
+        /// <param name="type">The list type of the messages.</param>
+        /// <returns>The list of messages.</returns>
+        Task<IList<Message>> GetMessagesAsync(MessageListType type = MessageListType.Inbox);
     }
 }
