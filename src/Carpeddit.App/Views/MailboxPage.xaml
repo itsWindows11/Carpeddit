@@ -49,7 +49,7 @@
                             From <Hyperlink>u/<Run Text="{x:Bind Author}" /></Hyperlink> • Sent <Run Text="{x:Bind CreatedUTC, Converter={StaticResource RelativeTimeConverter}}" />
                         </TextBlock>
 
-                        <Button Style="{ThemeResource TransparentNoHoverButtonStyle}">
+                        <Button Click="Button_Click" Style="{ThemeResource TransparentNoHoverButtonStyle}">
                             <TextBlock Text="{x:Bind Subject}" Style="{StaticResource SubtitleTextBlockStyle}" />
                         </Button>
 

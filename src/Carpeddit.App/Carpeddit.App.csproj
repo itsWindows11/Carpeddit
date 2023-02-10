@@ -150,6 +150,9 @@
     <Compile Include="ViewModels\Pages\SettingsPageViewModel.cs" />
     <Compile Include="ViewModels\PostViewModel.cs" />
     <Compile Include="ViewModels\RedditPrefsViewModel.cs" />
+    <Compile Include="Views\MailboxDetailsPage.xaml.cs">
+      <DependentUpon>MailboxDetailsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PostDetailsPage.xaml.cs">
       <DependentUpon>PostDetailsPage.xaml</DependentUpon>
     </Compile>
@@ -284,6 +287,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\CommentItemControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MailboxDetailsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

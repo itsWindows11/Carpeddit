@@ -48,6 +48,8 @@ namespace Carpeddit.App.Views
             var comments = await GetCommentsAsViewModelAsync(ViewModel.Post.Name.Substring(3));
 
             this.comments.AddRange(comments);
+
+            MainList.ItemsSource = this.comments;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

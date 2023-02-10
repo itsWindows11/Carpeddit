@@ -96,10 +96,10 @@
         </Grid>
 
         <ListView
+            x:Name="MainList"
             Grid.Row="1"
             Padding="0,0,4,0"
             ItemTemplateSelector="{StaticResource CommentItemTemplateSelector}"
-            ItemsSource="{x:Bind comments}"
             SelectionMode="None">
             <ListView.Header>
                 <StackPanel Spacing="8">

@@ -1,0 +1,48 @@
+﻿<Page
+    x:Class="Carpeddit.App.Views.MailboxDetailsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Carpeddit.App.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:Carpeddit.Api.Models"
+    d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
+
+    <ListView Margin="0,52,0,0" x:Name="MainList">
+        <ListView.HeaderTemplate>
+            <DataTemplate x:DataType="models:Message">
+                <StackPanel>
+                    <StackPanel
+                        Margin="0,2"
+                        Padding="12,8"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4">
+                        <TextBlock>
+                            From <Hyperlink>u/<Run Text="{x:Bind Author}" /></Hyperlink> • Sent <Run Text="{x:Bind CreatedUTC, Converter={StaticResource RelativeTimeConverter}}" />
+                        </TextBlock>
+
+                        <Button Style="{ThemeResource TransparentNoHoverButtonStyle}">
+                            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind Subject}" />
+                        </Button>
+
+                        <controls:MarkdownTextBlock Margin="0,8,0,0" Text="{x:Bind Body}" />
+                    </StackPanel>
+
+                    <RichEditBox x:Name="ReplyBox" PlaceholderText="Write a reply..." MinHeight="100" MaxHeight="200" Margin="0,4,0,0" HorizontalAlignment="Stretch" />
+
+                    <Button Click="Button_Click" Margin="0,8,0,0" Content="Reply" Style="{ThemeResource AccentButtonStyle}" />
+                </StackPanel>
+            </DataTemplate>
+        </ListView.HeaderTemplate>
+
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <TextBlock Text="{Binding Body}" />
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</Page>

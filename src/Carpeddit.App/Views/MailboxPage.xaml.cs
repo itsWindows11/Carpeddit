@@ -18,7 +18,7 @@ namespace Carpeddit.App.Views
             Loaded += OnMailboxPageLoaded;
         }
 
-        private async void OnMailboxPageLoaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private async void OnMailboxPageLoaded(object sender, RoutedEventArgs e)
         {
             Loaded -= OnMailboxPageLoaded;
 
@@ -27,5 +27,8 @@ namespace Carpeddit.App.Views
             LoadingRing.IsActive = false;
             LoadingRing.Visibility = Visibility.Collapsed;
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+            => Frame.Navigate(typeof(MailboxDetailsPage), ((FrameworkElement)e.OriginalSource).DataContext);
     }
 }

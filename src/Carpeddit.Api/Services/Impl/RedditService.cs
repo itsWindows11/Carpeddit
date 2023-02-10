@@ -151,6 +151,17 @@ namespace Carpeddit.Api.Services
 
                 return messagesListing.Data.Children.Select(a => a.Data).ToList();
             });
+
+        public Task CommentAsync(string fullname, string rawMarkdownText)
+            => RunAsync(() =>
+            {
+                return WebHelper.PostAsync($"/api/comment", new Dictionary<string, string>()
+                {
+                    { "text", rawMarkdownText },
+                    { "thing_id", fullname },
+                    { "return_rtjson", "true" }
+                });
+            });
     }
 
     // Helper methods

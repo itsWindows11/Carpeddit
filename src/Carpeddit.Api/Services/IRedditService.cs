@@ -94,5 +94,13 @@ namespace Carpeddit.Api.Services
         /// <param name="type">The list type of the messages.</param>
         /// <returns>The list of messages.</returns>
         Task<IList<Message>> GetMessagesAsync(MessageListType type = MessageListType.Inbox);
+
+        /// <summary>
+        /// Comments on a link or message.
+        /// </summary>
+        /// <param name="fullname">The fullname of the comment, link or message.</param>
+        /// <param name="rawMarkdownText">The text to submit.</param>
+        /// <returns>A <see cref="Task" /> which represents the operation.</returns>
+        Task CommentAsync(string fullname, string rawMarkdownText);
     }
 }
