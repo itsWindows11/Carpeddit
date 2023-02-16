@@ -1,5 +1,6 @@
 ﻿using Carpeddit.Api.Helpers;
 using Carpeddit.Api.Services;
+using Carpeddit.Api.Watchers;
 using Carpeddit.App.Services;
 using Carpeddit.App.ViewModels;
 using Carpeddit.App.ViewModels.Pages;
@@ -22,6 +23,8 @@ namespace Carpeddit.App
         public static IServiceProvider Services { get; private set; }
 
         public static IRepository CacheRepository { get; private set; }
+
+        public static MailboxWatcher MailboxWatcher { get; set; }
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code

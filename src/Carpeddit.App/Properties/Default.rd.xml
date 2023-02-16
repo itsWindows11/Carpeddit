@@ -21,10 +21,11 @@
       An Assembly element with Name="*Application*" applies to all assemblies in
       the application package. The asterisks are not wildcards.
     -->
-    <Assembly Name="*Application*" Dynamic="Required All" />
-    
-    
-    <!-- Add your application specific runtime directives here. -->
+    <Assembly Name="Microsoft.Toolkit.Uwp.Notifications" Dynamic="Required All" />
+	<Assembly Name="Carpeddit.Api" Dynamic="Required All" />
+	<Assembly Name="Carpeddit.Models" Dynamic="Required All" />
+
+	  <!-- Add your application specific runtime directives here. -->
 
 
   </Application>

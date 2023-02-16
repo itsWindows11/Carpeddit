@@ -8,7 +8,6 @@
     xmlns:uc="using:Carpeddit.App.UserControls"
     d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
-    d:DesignWidth="400"
     mc:Ignorable="d">
 
     <Page.Resources>

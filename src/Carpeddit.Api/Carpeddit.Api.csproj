@@ -123,6 +123,7 @@
   <ItemGroup>
     <Compile Include="Enums\MessageListType.cs" />
     <Compile Include="Enums\SortMode.cs" />
+    <Compile Include="EqualityComparers\MessageEqualityComparer.cs" />
     <Compile Include="Exceptions\ServiceDownException.cs" />
     <Compile Include="Helpers\AccountHelper.cs" />
     <Compile Include="Helpers\TokenHelper.cs" />
@@ -152,6 +153,7 @@
     <Compile Include="Services\Impl\RedditService.cs" />
     <Compile Include="Services\IRedditAuthService.cs" />
     <Compile Include="Services\IRedditService.cs" />
+    <Compile Include="Watchers\MailboxWatcher.cs" />
     <Compile Include="WebHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Carpeddit.Api.rd.xml" />

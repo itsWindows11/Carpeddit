@@ -1,5 +1,6 @@
 ﻿using Carpeddit.Api.Helpers;
 using Carpeddit.Api.Services;
+using Carpeddit.Api.Watchers;
 using Carpeddit.App.ViewModels;
 using Carpeddit.App.Views;
 using Carpeddit.Common.Helpers;

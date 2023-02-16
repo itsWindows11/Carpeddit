@@ -1,8 +1,10 @@
 ﻿using Carpeddit.Api.Helpers;
 using Carpeddit.Api.Services;
+using Carpeddit.Api.Watchers;
 using Carpeddit.App.ViewModels;
 using Carpeddit.App.Views;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Uwp.Notifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using static Carpeddit.Api.Watchers.MailboxWatcher;
 using muxc = Microsoft.UI.Xaml.Controls;
 
 namespace Carpeddit.App
@@ -71,6 +74,24 @@ namespace Carpeddit.App
             Window.Current.CoreWindow.Dispatcher.AcceleratorKeyActivated += OnAcceleratorKeyActivated;
             Window.Current.CoreWindow.PointerPressed += OnCoreWindowPointerPressed;
             SystemNavigationManager.GetForCurrentView().BackRequested += OnSystemBackRequested;
+
+            App.MailboxWatcher = await WatchMailboxAsync(App.Services.GetService<IRedditService>());
+            App.MailboxWatcher.MailboxUpdated += OnMailboxUpdated;
+        }
+
+        private void OnMailboxUpdated(object sender, MailboxUpdateEventArgs e)
+        {
+            var message = e.Messages.FirstOrDefault();
+
+            if (message == null) return;
+
+            var builder = new ToastContentBuilder();
+
+            _ = builder.AddArgument("action", "viewMessage");
+            _ = builder.AddText($"New message from u/{message.Author}!");
+            _ = builder.AddText(message.Body.Length > 60 ? message.Body.Substring(0, 60) + "..." : message.Body);
+
+            builder.Show();
         }
 
         private void OnLogOutClick(object sender, RoutedEventArgs e)
