@@ -8,6 +8,7 @@
     xmlns:uc="using:Carpeddit.App.UserControls"
     d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
+    d:DesignWidth="400"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -42,10 +43,16 @@
             Width="500"
             Margin="0,8,0,0"
             VerticalAlignment="Top"
+            Background="{ThemeResource TextControlBackgroundFocused}"
+            BorderBrush="{ThemeResource TextControlBorderBrushFocused}"
             Canvas.ZIndex="2"
             IsFocusEngaged="False"
             PlaceholderText="Search Reddit..."
-            QueryIcon="Find" />
+            QueryIcon="Find">
+            <AutoSuggestBox.Resources>
+                <StaticResource x:Key="TextControlBackgroundPointerOver" ResourceKey="ControlFillColorInputActiveBrush" />
+            </AutoSuggestBox.Resources>
+        </AutoSuggestBox>
 
         <muxc:NavigationView
             x:Name="NavView"
@@ -123,6 +130,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="NavViewSearchBox.Width" Value="200" />
+                        <Setter Target="ContentFrame.Margin" Value="0,-8,0,0" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="SmallState">
@@ -131,6 +139,7 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="NavViewSearchBox.Width" Value="300" />
+                        <Setter Target="ContentFrame.Margin" Value="0,-8,0,0" />
                     </VisualState.Setters>
                 </VisualState>
                 <VisualState x:Name="MediumState">

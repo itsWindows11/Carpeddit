@@ -7,13 +7,21 @@ using Carpeddit.Common.Collections;
 using Carpeddit.Common.Helpers;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Uwp.UI;
+using Microsoft.Toolkit.Uwp.UI.Animations.Expressions;
 using System;
 using System.Linq;
 using System.Net;
+using System.Numerics;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
+using Windows.Storage.FileProperties;
+using Windows.UI;
+using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Hosting;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
@@ -27,6 +35,11 @@ namespace Carpeddit.App.Views
         private IRedditService service = App.Services.GetService<IRedditService>();
 
         private bool isLoadingMore;
+
+        private CompositionPropertySet? _scrollerPropertySet;
+        private Compositor? _compositor;
+        private SpriteVisual? _backgroundVisual;
+        private ScrollViewer? _scrollViewer;
 
         public SubredditInfoPage()
         {
@@ -43,13 +56,14 @@ namespace Carpeddit.App.Views
             if (string.IsNullOrWhiteSpace(Subreddit.Title) || Subreddit.Title.Equals(Subreddit.DisplayNamePrefixed))
                 _ = VisualStateManager.GoToState(this, "NoDisplayName", false);
 
-            try
-            {
-                SubredditHeaderImg.Source = new BitmapImage(new(WebUtility.HtmlDecode(string.IsNullOrEmpty(Subreddit.BannerBackgroundImage) ? "ms-appx:///Assets/Dummy.png" : Subreddit.BannerBackgroundImage)));
-            } catch (UriFormatException)
-            {
+            _scrollViewer = MainList.FindDescendant<ScrollViewer>();
 
-            }
+            _scrollerPropertySet = ElementCompositionPreview.GetScrollViewerManipulationPropertySet(_scrollViewer);
+            _compositor = _scrollerPropertySet.Compositor;
+
+            ManipulationPropertySetReferenceNode scrollingProperties = _scrollerPropertySet.GetSpecializedReference<ManipulationPropertySetReferenceNode>();
+
+            CreateImageBackgroundGradientVisual(scrollingProperties.Translation.Y, string.IsNullOrEmpty(Subreddit.BannerBackgroundImage) ? null : new(WebUtility.HtmlDecode(Subreddit.BannerBackgroundImage)));
 
             PostLoadingProgressRing.IsActive = true;
             PostLoadingProgressRing.Visibility = Visibility.Visible;
@@ -166,6 +180,55 @@ namespace Carpeddit.App.Views
             package.SetText("https://www.reddit.com" + item.Post.Permalink);
 
             Clipboard.SetContent(package);
+        }
+
+        private void BackgroundHost_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (_backgroundVisual == null) return;
+            _backgroundVisual.Size = new Vector2((float)e.NewSize.Width, (float)e.NewSize.Height);
+        }
+
+        private void CreateImageBackgroundGradientVisual(ScalarNode scrollVerticalOffset, Uri uri)
+        {
+            if (string.IsNullOrEmpty(uri?.AbsoluteUri) || _compositor == null) return;
+
+            var imageSurface = LoadedImageSurface.StartLoadFromUri(uri);
+            imageSurface.LoadCompleted += OnImageSurfaceLoadCompleted;
+            var imageBrush = _compositor.CreateSurfaceBrush(imageSurface);
+            imageBrush.HorizontalAlignmentRatio = 0.5f;
+            imageBrush.VerticalAlignmentRatio = 0.5f;
+            imageBrush.Stretch = CompositionStretch.UniformToFill;
+
+            var gradientBrush = _compositor.CreateLinearGradientBrush();
+            gradientBrush.EndPoint = new Vector2(0, 1);
+            gradientBrush.MappingMode = CompositionMappingMode.Relative;
+            gradientBrush.ColorStops.Add(_compositor.CreateColorGradientStop(0.6f, Colors.White));
+            gradientBrush.ColorStops.Add(_compositor.CreateColorGradientStop(1, Colors.Transparent));
+
+            var maskBrush = _compositor.CreateMaskBrush();
+            maskBrush.Source = imageBrush;
+            maskBrush.Mask = gradientBrush;
+
+            var visual = _backgroundVisual = _compositor.CreateSpriteVisual();
+            visual.Size = new Vector2((float)BackgroundHost.ActualWidth, (float)BackgroundHost.Height);
+            visual.Brush = maskBrush;
+
+            gradientBrush.StartAnimation("Offset.Y", scrollVerticalOffset * 0.15f);
+
+            ElementCompositionPreview.SetElementChildVisual(BackgroundHost, visual);
+        }
+
+        private void OnImageSurfaceLoadCompleted(LoadedImageSurface sender, LoadedImageSourceLoadCompletedEventArgs args)
+        {
+            sender.LoadCompleted -= OnImageSurfaceLoadCompleted;
+
+            var animation = _compositor.CreateScalarKeyFrameAnimation();
+
+            animation.InsertKeyFrame(0, 0);
+            animation.InsertKeyFrame(1, 1, _compositor.CreateLinearEasingFunction());
+
+            animation.Duration = TimeSpan.FromMilliseconds(600);
+            _backgroundVisual.StartAnimation("Opacity", animation);
         }
     }
 }
