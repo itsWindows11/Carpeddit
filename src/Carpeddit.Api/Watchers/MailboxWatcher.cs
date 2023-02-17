@@ -25,7 +25,7 @@ namespace Carpeddit.Api.Watchers
             _type = type;
         }
 
-        public static async Task<MailboxWatcher> WatchMailboxAsync(IRedditService service, MessageListType listType = MessageListType.Inbox)
+        public static async Task<MailboxWatcher> WatchMailboxAsync(IRedditService service, TimeSpan intervalDuration, MessageListType listType = MessageListType.Inbox)
         {
             if (service == null)
                 throw new ArgumentNullException(nameof(service));
@@ -38,7 +38,7 @@ namespace Carpeddit.Api.Watchers
 
             var timer = new DispatcherTimer()
             {
-                Interval = TimeSpan.FromMinutes(1)
+                Interval = intervalDuration
             };
 
             timer.Tick += mailboxWatcher.OnTimerTick;

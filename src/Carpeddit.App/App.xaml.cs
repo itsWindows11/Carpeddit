@@ -6,12 +6,16 @@ using Carpeddit.App.ViewModels;
 using Carpeddit.App.ViewModels.Pages;
 using Carpeddit.Repository;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Uwp.Notifications;
 using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using static Carpeddit.Api.Watchers.MailboxWatcher;
 
 namespace Carpeddit.App
 {
@@ -82,6 +86,29 @@ namespace Carpeddit.App
 
             // Ensure the current window is active
             Window.Current.Activate();
+        }
+
+        protected override async void OnBackgroundActivated(BackgroundActivatedEventArgs args)
+        {
+            base.OnBackgroundActivated(args);
+
+            MailboxWatcher = await WatchMailboxAsync(Services.GetService<IRedditService>(), TimeSpan.FromMinutes(1));
+            MailboxWatcher.MailboxUpdated += OnMailboxUpdated;
+        }
+
+        private void OnMailboxUpdated(object sender, MailboxUpdateEventArgs e)
+        {
+            var message = e.Messages.FirstOrDefault();
+
+            if (message == null) return;
+
+            var builder = new ToastContentBuilder();
+
+            _ = builder.AddArgument("action", "viewMessage");
+            _ = builder.AddText($"New message from u/{message.Author}!");
+            _ = builder.AddText(message.Body.Length > 60 ? message.Body.Substring(0, 60) + "..." : message.Body);
+
+            builder.Show();
         }
 
         /// <summary>

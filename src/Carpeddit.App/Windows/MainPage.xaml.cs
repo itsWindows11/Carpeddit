@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Windows.ApplicationModel.Background;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -75,23 +76,31 @@ namespace Carpeddit.App
             Window.Current.CoreWindow.PointerPressed += OnCoreWindowPointerPressed;
             SystemNavigationManager.GetForCurrentView().BackRequested += OnSystemBackRequested;
 
-            App.MailboxWatcher = await WatchMailboxAsync(App.Services.GetService<IRedditService>());
-            App.MailboxWatcher.MailboxUpdated += OnMailboxUpdated;
-        }
+            foreach (var registration in BackgroundTaskRegistration.AllTasks)
+            {
+                registration.Value.Unregister(true);
+            }
 
-        private void OnMailboxUpdated(object sender, MailboxUpdateEventArgs e)
-        {
-            var message = e.Messages.FirstOrDefault();
+            var requestStatus = await BackgroundExecutionManager.RequestAccessAsync();
 
-            if (message == null) return;
+            if (requestStatus != BackgroundAccessStatus.AllowedSubjectToSystemPolicy && requestStatus != BackgroundAccessStatus.AlwaysAllowed)
+            {
+                System.Diagnostics.Debug.WriteLine("Cannot use background tasks.");
+            }
+            else
+            {
+                var builder = new BackgroundTaskBuilder
+                {
+                    Name = "Carpeddit - Notifications Background Task"
+                };
 
-            var builder = new ToastContentBuilder();
+                var trigger = new ApplicationTrigger();
 
-            _ = builder.AddArgument("action", "viewMessage");
-            _ = builder.AddText($"New message from u/{message.Author}!");
-            _ = builder.AddText(message.Body.Length > 60 ? message.Body.Substring(0, 60) + "..." : message.Body);
+                builder.SetTrigger(trigger);
+                _ = builder.Register();
 
-            builder.Show();
+                await trigger.RequestAsync();
+            }
         }
 
         private void OnLogOutClick(object sender, RoutedEventArgs e)
