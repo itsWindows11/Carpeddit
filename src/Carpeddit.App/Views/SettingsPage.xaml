@@ -150,31 +150,45 @@
                     </labs:SettingsExpander.HeaderIcon>
                     <labs:SettingsExpander.Items>
                         <labs:SettingsCard
-                            Description="Show your user presence to the public."
+                            Description="Show your user presence to the public"
                             Header="User presence"
-                            HeaderIcon="{ui:FontIcon Glyph=&#xE13D;}">
+                            HeaderIcon="{ui:FontIcon Glyph=&#xE8CF;}">
                             <ToggleSwitch IsOn="{x:Bind ViewModel.RedditPrefs.ShowPresence, Mode=TwoWay}" />
                         </labs:SettingsCard>
 
                         <labs:SettingsCard
-                            Description="Allow Reddit to log outbound clicks for personalization."
+                            Description="Allow Reddit to log outbound clicks for personalization"
                             Header="Track clicks"
                             HeaderIcon="{ui:FontIcon Glyph=&#xF271;}">
                             <ToggleSwitch IsOn="{x:Bind ViewModel.RedditPrefs.AllowClickTracking, Mode=TwoWay}" />
                         </labs:SettingsCard>
 
                         <labs:SettingsCard
-                            Description="Hide thumbnails to reduce space."
+                            Description="Hide thumbnails to reduce space"
                             Header="Compress link display"
                             HeaderIcon="{ui:FontIcon Glyph=&#xE1D8;}">
                             <ToggleSwitch IsOn="{x:Bind ViewModel.RedditPrefs.Compress, Mode=TwoWay}" />
                         </labs:SettingsCard>
 
                         <labs:SettingsCard
-                            Description="Include not safe for work results in search."
+                            Description="Include not safe for work results in search"
                             Header="NSFW results"
                             HeaderIcon="{ui:FontIcon Glyph=&#xE7BA;}">
                             <ToggleSwitch IsOn="{x:Bind ViewModel.RedditPrefs.SearchIncludeOver18, Mode=TwoWay}" />
+                        </labs:SettingsCard>
+
+                        <labs:SettingsCard
+                            Description="Mark all messages as read automatically"
+                            Header="Mark as read"
+                            HeaderIcon="{ui:FontIcon Glyph=&#xE119;}">
+                            <ToggleSwitch IsOn="{x:Bind ViewModel.RedditPrefs.MarkMessagesRead, Mode=TwoWay}" />
+                        </labs:SettingsCard>
+
+                        <labs:SettingsCard
+                            Description="Enable the ability for users to follow you"
+                            Header="Allow following"
+                            HeaderIcon="{ui:FontIcon Glyph=&#xEA8C;}">
+                            <ToggleSwitch IsOn="{x:Bind ViewModel.RedditPrefs.EnableFollowers, Mode=TwoWay}" />
                         </labs:SettingsCard>
 
                         <labs:SettingsCard Padding="99,12,48,12" Header="Send emails for:">
@@ -219,7 +233,14 @@
                             Description="Save your changed settings to Reddit."
                             Header="Save settings"
                             HeaderIcon="{ui:FontIcon Glyph=&#xE105;}">
-                            <Button Command="{x:Bind ViewModel.SaveRedditPrefsCommand}" Content="Save" />
+                            <StackPanel Orientation="Horizontal" Spacing="16">
+                                <muxc:ProgressRing
+                                    Width="16"
+                                    Height="16"
+                                    IsActive="{x:Bind ViewModel.SaveRedditPrefsCommand.IsRunning, Mode=OneWay}" />
+                                
+                                <Button Command="{x:Bind ViewModel.SaveRedditPrefsCommand}" Content="Save" />
+                            </StackPanel>
                         </labs:SettingsCard>
                     </labs:SettingsExpander.Items>
 

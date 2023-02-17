@@ -48,8 +48,6 @@
                         x:Name="BackgroundHost"
                         Height="430"
                         Margin="-40,-48,-56,0"
-                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                        BorderBrush="{ThemeResource ControlElevationBorderBrush}"
                         BorderThickness="1"
                         SizeChanged="BackgroundHost_SizeChanged" />
 
@@ -87,12 +85,27 @@
                                 </StackPanel>
                             </StackPanel>
 
-                            <Button
-                                x:Name="JoinButton"
+                            <StackPanel
                                 Margin="0,48,20,0"
                                 HorizontalAlignment="Right"
-                                Command="{x:Bind JoinOrLeaveSubredditCommand}"
-                                Content="Join" />
+                                Orientation="Horizontal"
+                                Spacing="16">
+                                <StackPanel.Transitions>
+                                    <TransitionCollection>
+                                        <RepositionThemeTransition />
+                                    </TransitionCollection>
+                                </StackPanel.Transitions>
+                                
+                                <muxc:ProgressRing
+                                    Width="16"
+                                    Height="16"
+                                    IsActive="{x:Bind JoinOrLeaveSubredditCommand.IsRunning, Mode=OneWay}" />
+
+                                <Button
+                                    x:Name="JoinButton"
+                                    Command="{x:Bind JoinOrLeaveSubredditCommand}"
+                                    Content="Join" />
+                            </StackPanel>
                         </Grid>
                     </Border>
                 </Grid>
