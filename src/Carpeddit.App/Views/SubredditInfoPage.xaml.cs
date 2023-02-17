@@ -89,7 +89,7 @@ namespace Carpeddit.App.Views
         {
             var scrollViewer = (ScrollViewer)sender;
 
-            if (isLoadingMore || scrollViewer.VerticalOffset > scrollViewer.ScrollableHeight - 50)
+            if (isLoadingMore || (scrollViewer.VerticalOffset > scrollViewer.ScrollableHeight - 36 && e.IsIntermediate))
                 return;
 
             isLoadingMore = true;
