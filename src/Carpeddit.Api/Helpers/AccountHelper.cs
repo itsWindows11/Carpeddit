@@ -1,12 +1,9 @@
 ﻿using Carpeddit.Api.Models;
 using Carpeddit.Api.Services;
 using Carpeddit.Common.Constants;
-using Carpeddit.Models;
 using System;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.Security.Credentials;
 
 namespace Carpeddit.Api.Helpers
 {
@@ -72,13 +69,15 @@ namespace Carpeddit.Api.Helpers
         /// <returns>A <see cref="Task" /> which represents the operation.</returns>
         public Task SignOutAsync(bool revokeToken = true)
         {
+            var accessToken = GetCurrentInfo().AccessToken;
+
             (authService as RedditAuthService).Data = null;
             (service as RedditService).Me = null;
 
             if (!revokeToken)
                 return Task.CompletedTask;
 
-            return authService.RevokeAsync(GetCurrentInfo().AccessToken);
+            return authService.RevokeAsync(accessToken);
         }
 
         public TokenInfo GetCurrentInfo()
