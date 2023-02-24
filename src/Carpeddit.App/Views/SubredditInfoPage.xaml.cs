@@ -213,7 +213,8 @@ namespace Carpeddit.App.Views
             visual.Size = new Vector2((float)BackgroundHost.ActualWidth, (float)BackgroundHost.Height);
             visual.Brush = maskBrush;
 
-            gradientBrush.StartAnimation("Offset.Y", scrollVerticalOffset * 0.15f);
+            visual.StartAnimation("Offset.Y", scrollVerticalOffset);
+            imageBrush.StartAnimation("Offset.Y", -scrollVerticalOffset * 0.8f);
 
             ElementCompositionPreview.SetElementChildVisual(BackgroundHost, visual);
         }

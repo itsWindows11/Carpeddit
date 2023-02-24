@@ -27,168 +27,171 @@
         </MenuFlyout>
     </Page.Resources>
 
-    <ListView
-        x:Name="MainList"
-        Margin="-48,0,-56,0"
-        Padding="48,0,56,0"
-        d:Margin="0"
-        d:Padding="0"
-        ui:ScrollViewerExtensions.VerticalScrollBarMargin="0,48,0,0"
-        ItemContainerStyle="{StaticResource PostItemContainerStyle}"
-        SelectionMode="None">
-        <ListView.Header>
-            <StackPanel Margin="0,8">
-                <Grid>
-                    <muxc:ProgressRing
-                        x:Name="LoadingInfoRing"
-                        Margin="0,-12,0,0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center" />
+    <Grid Margin="-48,0,-56,0" d:Margin="0">
+        <Border
+            x:Name="BackgroundHost"
+            Height="430"
+            Margin="8,-48,0,0"
+            VerticalAlignment="Top"
+            BorderThickness="1"
+            SizeChanged="BackgroundHost_SizeChanged" />
 
-                    <Border
-                        x:Name="BackgroundHost"
-                        Height="430"
-                        Margin="-40,-48,-56,0"
-                        SizeChanged="BackgroundHost_SizeChanged" />
+        <ListView
+            x:Name="MainList"
+            Padding="48,0,56,0"
+            d:Margin="0"
+            d:Padding="0"
+            ui:ScrollViewerExtensions.VerticalScrollBarMargin="0,48,0,0"
+            ItemContainerStyle="{StaticResource PostItemContainerStyle}"
+            SelectionMode="None">
+            <ListView.Header>
+                <StackPanel Margin="0,8">
+                    <Grid>
+                        <muxc:ProgressRing
+                            x:Name="LoadingInfoRing"
+                            Margin="0,-12,0,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center" />
 
-                    <Border Margin="-16,36,-16,0" Height="300">
-                        <Grid Margin="0,0,0,-12" VerticalAlignment="Bottom">
-                            <StackPanel Padding="20,0">
-                                <controls:ImageEx
-                                    Width="64"
-                                    Height="64"
-                                    HorizontalAlignment="Center"
-                                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                                    BorderBrush="{ThemeResource ControlElevationBorderBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="32"
-                                    DecodePixelType="Logical"
-                                    Source="{x:Bind _user.IconImage, Converter={StaticResource StringToUri}, ConverterParameter=SubredditIconFallback}"
-                                    Stretch="UniformToFill" />
-                                <StackPanel Padding="0,0,0,12">
-                                    <TextBlock
-                                        x:Name="SubredditFriendlyName"
-                                        Margin="0,4,0,0"
-                                        d:Text="User"
-                                        FontWeight="SemiBold"
+                        <Border Height="300" Margin="-16,64,-16,0">
+                            <Grid Margin="0,0,0,-12" VerticalAlignment="Bottom">
+                                <StackPanel Padding="20,0">
+                                    <controls:ImageEx
+                                        Width="64"
+                                        Height="64"
                                         HorizontalAlignment="Center"
-                                        Foreground="WhiteSmoke"
-                                        Style="{StaticResource SubtitleTextBlockStyle}"
-                                        Text="{x:Bind _user.Subreddit.Title}" />
+                                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                        BorderBrush="{ThemeResource ControlElevationBorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="32"
+                                        DecodePixelType="Logical"
+                                        Source="{x:Bind _user.IconImage, Converter={StaticResource StringToUri}, ConverterParameter=SubredditIconFallback}"
+                                        Stretch="UniformToFill" />
+                                    <StackPanel Padding="0,0,0,12">
+                                        <TextBlock
+                                            x:Name="SubredditFriendlyName"
+                                            Margin="0,4,0,0"
+                                            HorizontalAlignment="Center"
+                                            d:Text="User"
+                                            FontWeight="SemiBold"
+                                            Foreground="WhiteSmoke"
+                                            Style="{StaticResource SubtitleTextBlockStyle}"
+                                            Text="{x:Bind _user.Subreddit.Title}" />
 
-                                    <TextBlock
-                                        x:Name="SubredditName"
-                                        Margin="0,4,0,0"
-                                        d:Text="u/user"
-                                        FontSize="12"
-                                        HorizontalTextAlignment="Center"
-                                        Foreground="WhiteSmoke"
-                                        Text="{x:Bind _user.Name}" />
+                                        <TextBlock
+                                            x:Name="SubredditName"
+                                            Margin="0,4,0,0"
+                                            d:Text="u/user"
+                                            FontSize="12"
+                                            Foreground="WhiteSmoke"
+                                            HorizontalTextAlignment="Center"
+                                            Text="{x:Bind _user.Name}" />
+                                    </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
 
-                            <Button
-                                x:Name="JoinButton"
-                                Margin="0,48,20,0"
-                                HorizontalAlignment="Right"
-                                Content="Follow" />
-                        </Grid>
-                    </Border>
-                </Grid>
-
-                <StackPanel
-                    Margin="0,12,0,0"
-                    Padding="12"
-                    d:Margin="12,12,12,0"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1"
-                    CornerRadius="4">
-                    <TextBlock
-                        FontSize="16"
-                        FontWeight="SemiBold"
-                        Text="About" />
+                                <Button
+                                    x:Name="JoinButton"
+                                    Margin="0,48,20,0"
+                                    HorizontalAlignment="Right"
+                                    Content="Follow" />
+                            </Grid>
+                        </Border>
+                    </Grid>
 
                     <StackPanel
-                        Margin="0,12,0,0"
-                        Orientation="Horizontal"
-                        Spacing="8">
-                        <FontIcon Glyph="&#xE163;" />
+                        Margin="0,36,0,0"
+                        Padding="12"
+                        d:Margin="12,12,12,0"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4">
+                        <TextBlock
+                            FontSize="16"
+                            FontWeight="SemiBold"
+                            Text="About" />
 
-                        <TextBlock>
-                            <Run Text="Created at" />
-                            <Run Text="{x:Bind _user.CreatedUtc}" />
-                        </TextBlock>
+                        <StackPanel
+                            Margin="0,12,0,0"
+                            Orientation="Horizontal"
+                            Spacing="8">
+                            <FontIcon Glyph="&#xE163;" />
+
+                            <TextBlock>
+                                <Run Text="Created at" />
+                                <Run Text="{x:Bind _user.CreatedUtc}" />
+                            </TextBlock>
+                        </StackPanel>
                     </StackPanel>
+
+                    <muxc:ProgressRing
+                        x:Name="PostLoadingProgressRing"
+                        Margin="0,16,0,0"
+                        IsActive="False"
+                        Visibility="Collapsed" />
+
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup>
+                            <VisualState x:Name="WithDisplayName" />
+                            <VisualState x:Name="NoDisplayName">
+                                <VisualState.Setters>
+                                    <Setter Target="SubredditFriendlyName.Visibility" Value="Collapsed" />
+                                    <Setter Target="SubredditName.Style" Value="{StaticResource SubtitleTextBlockStyle}" />
+                                    <Setter Target="SubredditName.FontSize" Value="20" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
                 </StackPanel>
+            </ListView.Header>
 
-                <muxc:ProgressRing
-                    x:Name="PostLoadingProgressRing"
-                    Margin="0,16,0,0"
-                    IsActive="False"
-                    Visibility="Collapsed" />
-            </StackPanel>
-        </ListView.Header>
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="viewmodels:PostViewModel">
+                    <uc:PostItemControl
+                        Title="{x:Bind Title}"
+                        Margin="-4,0"
+                        CreationDate="{x:Bind Created}"
+                        Description="{x:Bind ShortDescription}"
+                        IsDownvoted="{x:Bind IsDownvoted, Mode=TwoWay}"
+                        IsUpvoted="{x:Bind IsUpvoted, Mode=TwoWay}"
+                        Post="{x:Bind}"
+                        SubredditClickCommand="{Binding SubredditClickCommand, ElementName=RootPage}"
+                        SubredditName="{x:Bind Post.SubredditNamePrefixed}"
+                        TitleClickCommand="{Binding TitleClickCommand, ElementName=RootPage}"
+                        UserName="{x:Bind Post.Author}"
+                        VoteRatio="{x:Bind VoteRatio, Converter={StaticResource FormattedNumberConverter}}">
+                        <uc:PostItemControl.FooterContent>
+                            <CommandBar
+                                Margin="-10,0,0,0"
+                                Padding="0"
+                                HorizontalAlignment="Left"
+                                Background="Transparent"
+                                DefaultLabelPosition="Right">
+                                <AppBarButton
+                                    Icon="Comment"
+                                    IsHitTestVisible="False"
+                                    Label="{x:Bind Post.NumComments, Converter={StaticResource FormattedNumberConverter}}" />
+                                <AppBarButton
+                                    Flyout="{StaticResource ProfileShareMenuFlyout}"
+                                    Icon="Share"
+                                    Label="Share" />
+                                <AppBarButton Icon="Save" Label="Save" />
+                            </CommandBar>
+                        </uc:PostItemControl.FooterContent>
+                    </uc:PostItemControl>
+                </DataTemplate>
+            </ListView.ItemTemplate>
 
-        <ListView.ItemTemplate>
-            <DataTemplate x:DataType="viewmodels:PostViewModel">
-                <uc:PostItemControl
-                    Title="{x:Bind Title}"
-                    Margin="-4,0"
-                    CreationDate="{x:Bind Created}"
-                    Description="{x:Bind ShortDescription}"
-                    IsDownvoted="{x:Bind IsDownvoted, Mode=TwoWay}"
-                    IsUpvoted="{x:Bind IsUpvoted, Mode=TwoWay}"
-                    Post="{x:Bind}"
-                    SubredditClickCommand="{Binding SubredditClickCommand, ElementName=RootPage}"
-                    SubredditName="{x:Bind Post.SubredditNamePrefixed}"
-                    TitleClickCommand="{Binding TitleClickCommand, ElementName=RootPage}"
-                    UserName="{x:Bind Post.Author}"
-                    VoteRatio="{x:Bind VoteRatio, Converter={StaticResource FormattedNumberConverter}}">
-                    <uc:PostItemControl.FooterContent>
-                        <CommandBar
-                            Margin="-10,0,0,0"
-                            Padding="0"
-                            HorizontalAlignment="Left"
-                            Background="Transparent"
-                            DefaultLabelPosition="Right">
-                            <AppBarButton
-                                Icon="Comment"
-                                IsHitTestVisible="False"
-                                Label="{x:Bind Post.NumComments, Converter={StaticResource FormattedNumberConverter}}" />
-                            <AppBarButton
-                                Flyout="{StaticResource ProfileShareMenuFlyout}"
-                                Icon="Share"
-                                Label="Share" />
-                            <AppBarButton Icon="Save" Label="Save" />
-                        </CommandBar>
-                    </uc:PostItemControl.FooterContent>
-                </uc:PostItemControl>
-            </DataTemplate>
-        </ListView.ItemTemplate>
-
-        <ListView.Footer>
-            <Grid>
-                <muxc:ProgressRing
-                    x:Name="FooterProgress"
-                    Margin="0,4"
-                    HorizontalAlignment="Center"
-                    IsActive="True"
-                    Visibility="Collapsed" />
-            </Grid>
-        </ListView.Footer>
-
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup>
-                <VisualState x:Name="WithDisplayName" />
-                <VisualState x:Name="NoDisplayName">
-                    <VisualState.Setters>
-                        <Setter Target="SubredditFriendlyName.Visibility" Value="Collapsed" />
-                        <Setter Target="SubredditName.Style" Value="{StaticResource SubtitleTextBlockStyle}" />
-                        <Setter Target="SubredditName.FontSize" Value="20" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-    </ListView>
+            <ListView.Footer>
+                <Grid>
+                    <muxc:ProgressRing
+                        x:Name="FooterProgress"
+                        Margin="0,4"
+                        HorizontalAlignment="Center"
+                        IsActive="True"
+                        Visibility="Collapsed" />
+                </Grid>
+            </ListView.Footer>
+        </ListView>
+    </Grid>
 </Page>

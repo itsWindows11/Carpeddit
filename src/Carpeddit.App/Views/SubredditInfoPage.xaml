@@ -27,255 +27,255 @@
         </MenuFlyout>
     </Page.Resources>
 
-    <ListView
-        x:Name="MainList"
-        Margin="-48,0,-56,0"
-        Padding="48,0,56,0"
-        d:Margin="0"
-        d:Padding="0"
-        ui:ScrollViewerExtensions.VerticalScrollBarMargin="0,48,0,0"
-        ItemContainerStyle="{StaticResource PostItemContainerStyle}"
-        SelectionMode="None">
-        <ListView.Header>
-            <StackPanel Margin="-1,0,-1,8">
-                <Grid>
-                    <muxc:ProgressRing
-                        x:Name="LoadingInfoRing"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center" />
+    <Grid Margin="-48,0,-56,0" d:Margin="0">
+        <Border
+            x:Name="BackgroundHost"
+            Height="430"
+            Margin="8,-48,0,0"
+            VerticalAlignment="Top"
+            BorderThickness="1"
+            SizeChanged="BackgroundHost_SizeChanged" />
 
-                    <Border
-                        x:Name="BackgroundHost"
-                        Height="430"
-                        Margin="-40,-48,-56,0"
-                        BorderThickness="1"
-                        SizeChanged="BackgroundHost_SizeChanged" />
+        <ListView
+            x:Name="MainList"
+            Padding="48,0,56,0"
+            ui:ScrollViewerExtensions.VerticalScrollBarMargin="0,48,0,0"
+            ItemContainerStyle="{StaticResource PostItemContainerStyle}"
+            SelectionMode="None">
+            <ListView.Header>
+                <StackPanel Margin="-1,0,-1,8">
+                    <Grid>
+                        <muxc:ProgressRing
+                            x:Name="LoadingInfoRing"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center" />
 
-                    <Border Height="300" Margin="-16,36,-16,0">
-                        <Grid Margin="0,0,0,-12" VerticalAlignment="Bottom">
-                            <StackPanel Padding="20,0">
-                                <controls:ImageEx
-                                    Width="64"
-                                    Height="64"
-                                    HorizontalAlignment="Left"
-                                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                                    BorderBrush="{ThemeResource ControlElevationBorderBrush}"
-                                    BorderThickness="1"
-                                    CornerRadius="32"
-                                    DecodePixelType="Logical"
-                                    Source="{x:Bind Subreddit.CommunityIcon, Converter={StaticResource StringToUri}, ConverterParameter=SubredditIconFallback}"
-                                    Stretch="UniformToFill" />
-                                <StackPanel Padding="0,0,0,12">
-                                    <TextBlock
-                                        x:Name="SubredditFriendlyName"
-                                        Margin="0,4,0,0"
-                                        d:Text="Carpeddit"
-                                        FontWeight="SemiBold"
-                                        Foreground="WhiteSmoke"
-                                        Style="{StaticResource SubtitleTextBlockStyle}"
-                                        Text="{x:Bind Subreddit.Title}" />
+                        <Border Height="300" Margin="-16,64,-16,0">
+                            <Grid Margin="0,0,0,-12" VerticalAlignment="Bottom">
+                                <StackPanel Padding="20,0">
+                                    <controls:ImageEx
+                                        Width="64"
+                                        Height="64"
+                                        HorizontalAlignment="Left"
+                                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                        BorderBrush="{ThemeResource ControlElevationBorderBrush}"
+                                        BorderThickness="1"
+                                        CornerRadius="32"
+                                        DecodePixelType="Logical"
+                                        Source="{x:Bind Subreddit.CommunityIcon, Converter={StaticResource StringToUri}, ConverterParameter=SubredditIconFallback}"
+                                        Stretch="UniformToFill" />
+                                    <StackPanel Padding="0,0,0,12">
+                                        <TextBlock
+                                            x:Name="SubredditFriendlyName"
+                                            Margin="0,4,0,0"
+                                            d:Text="Carpeddit"
+                                            FontWeight="SemiBold"
+                                            Foreground="WhiteSmoke"
+                                            Style="{StaticResource SubtitleTextBlockStyle}"
+                                            Text="{x:Bind Subreddit.Title}" />
 
-                                    <TextBlock
-                                        x:Name="SubredditName"
-                                        Margin="0,4,0,0"
-                                        d:Text="r/Carpeddit"
-                                        FontSize="12"
-                                        Foreground="WhiteSmoke"
-                                        Text="{x:Bind Subreddit.DisplayNamePrefixed}" />
+                                        <TextBlock
+                                            x:Name="SubredditName"
+                                            Margin="0,4,0,0"
+                                            d:Text="r/Carpeddit"
+                                            FontSize="12"
+                                            Foreground="WhiteSmoke"
+                                            Text="{x:Bind Subreddit.DisplayNamePrefixed}" />
+                                    </StackPanel>
                                 </StackPanel>
-                            </StackPanel>
 
-                            <StackPanel
-                                Margin="0,48,20,0"
-                                HorizontalAlignment="Right"
-                                Orientation="Horizontal"
-                                Spacing="16">
-                                <StackPanel.Transitions>
-                                    <TransitionCollection>
-                                        <RepositionThemeTransition />
-                                    </TransitionCollection>
-                                </StackPanel.Transitions>
-                                
-                                <muxc:ProgressRing
-                                    Width="16"
-                                    Height="16"
-                                    IsActive="{x:Bind JoinOrLeaveSubredditCommand.IsRunning, Mode=OneWay}" />
+                                <StackPanel
+                                    Margin="0,48,20,0"
+                                    HorizontalAlignment="Right"
+                                    Orientation="Horizontal"
+                                    Spacing="16">
+                                    <StackPanel.Transitions>
+                                        <TransitionCollection>
+                                            <RepositionThemeTransition />
+                                        </TransitionCollection>
+                                    </StackPanel.Transitions>
 
-                                <Button
-                                    x:Name="JoinButton"
-                                    Command="{x:Bind JoinOrLeaveSubredditCommand}"
-                                    Content="Join" />
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-                </Grid>
+                                    <muxc:ProgressRing
+                                        Width="16"
+                                        Height="16"
+                                        IsActive="{x:Bind JoinOrLeaveSubredditCommand.IsRunning, Mode=OneWay}" />
 
-                <StackPanel
-                    Margin="0,8,0,0"
-                    Padding="12"
-                    d:Margin="12,12,12,0"
-                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                    BorderThickness="1"
-                    CornerRadius="4">
-                    <TextBlock
-                        FontSize="16"
-                        FontWeight="SemiBold"
-                        Text="About Community" />
-
-                    <TextBlock
-                        Margin="0,12,0,0"
-                        Text="{x:Bind Subreddit.PublicDescription}"
-                        TextWrapping="Wrap" />
+                                    <Button
+                                        x:Name="JoinButton"
+                                        Command="{x:Bind JoinOrLeaveSubredditCommand}"
+                                        Content="Join" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </Grid>
 
                     <StackPanel
-                        Margin="0,12,0,0"
-                        Orientation="Horizontal"
-                        Spacing="8">
-                        <FontIcon Glyph="&#xE163;" />
+                        Margin="0,24,0,0"
+                        Padding="12"
+                        d:Margin="12,24,12,0"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4">
+                        <TextBlock
+                            FontSize="16"
+                            FontWeight="SemiBold"
+                            Text="About Community" />
 
-                        <TextBlock>
-                            <Run Text="Created at" />
-                            <Run Text="{x:Bind Subreddit.CreatedUtc}" />
-                        </TextBlock>
+                        <TextBlock
+                            Margin="0,12,0,0"
+                            Text="{x:Bind Subreddit.PublicDescription}"
+                            TextWrapping="Wrap" />
+
+                        <StackPanel
+                            Margin="0,12,0,0"
+                            Orientation="Horizontal"
+                            Spacing="8">
+                            <FontIcon Glyph="&#xE163;" />
+
+                            <TextBlock>
+                                <Run Text="Created at" />
+                                <Run Text="{x:Bind Subreddit.CreatedUtc}" />
+                            </TextBlock>
+                        </StackPanel>
+
+                        <MenuFlyoutSeparator Margin="0,12" />
+
+                        <controls:WrapPanel HorizontalSpacing="12" VerticalSpacing="12">
+                            <StackPanel>
+                                <ToolTipService.ToolTip>
+                                    <TextBlock>
+                                        <Run Text="{x:Bind Subreddit.AccountsActive}" />
+                                        <Run Text="online members" />
+                                    </TextBlock>
+                                </ToolTipService.ToolTip>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <Ellipse
+                                        Width="8"
+                                        Height="8"
+                                        Fill="MediumSeaGreen" />
+
+                                    <TextBlock
+                                        Margin="8,0,0,0"
+                                        d:Text="0"
+                                        FontSize="20"
+                                        Style="{StaticResource SubtitleTextBlockStyle}"
+                                        Text="{x:Bind Subreddit.AccountsActive, Converter={StaticResource FormattedNumberConverter}}" />
+                                </StackPanel>
+
+                                <TextBlock
+                                    Margin="14,4,0,0"
+                                    FontSize="12"
+                                    Text="online" />
+                            </StackPanel>
+
+                            <StackPanel>
+                                <ToolTipService.ToolTip>
+                                    <TextBlock>
+                                        <Run Text="{x:Bind Subreddit.Subscribers}" />
+                                        <Run Text="members" />
+                                    </TextBlock>
+                                </ToolTipService.ToolTip>
+
+                                <StackPanel Orientation="Horizontal">
+                                    <Ellipse
+                                        Width="8"
+                                        Height="8"
+                                        Fill="SlateGray" />
+
+                                    <TextBlock
+                                        Margin="8,0,0,0"
+                                        d:Text="200K"
+                                        FontSize="20"
+                                        Style="{StaticResource SubtitleTextBlockStyle}"
+                                        Text="{x:Bind Subreddit.Subscribers, Converter={StaticResource FormattedNumberConverter}}" />
+                                </StackPanel>
+
+                                <TextBlock
+                                    Margin="14,4,0,0"
+                                    FontSize="12"
+                                    Text="members" />
+                            </StackPanel>
+                        </controls:WrapPanel>
                     </StackPanel>
 
-                    <MenuFlyoutSeparator Margin="0,12" />
-
-                    <controls:WrapPanel HorizontalSpacing="12" VerticalSpacing="12">
-                        <StackPanel>
-                            <ToolTipService.ToolTip>
-                                <TextBlock>
-                                    <Run Text="{x:Bind Subreddit.AccountsActive}" />
-                                    <Run Text="online members" />
-                                </TextBlock>
-                            </ToolTipService.ToolTip>
-
-                            <StackPanel Orientation="Horizontal">
-                                <Ellipse
-                                    Width="8"
-                                    Height="8"
-                                    Fill="MediumSeaGreen" />
-
-                                <TextBlock
-                                    Margin="8,0,0,0"
-                                    d:Text="0"
-                                    FontSize="20"
-                                    Style="{StaticResource SubtitleTextBlockStyle}"
-                                    Text="{x:Bind Subreddit.AccountsActive, Converter={StaticResource FormattedNumberConverter}}" />
-                            </StackPanel>
-
-                            <TextBlock
-                                Margin="14,4,0,0"
-                                FontSize="12"
-                                Text="online" />
-                        </StackPanel>
-
-                        <StackPanel>
-                            <ToolTipService.ToolTip>
-                                <TextBlock>
-                                    <Run Text="{x:Bind Subreddit.Subscribers}" />
-                                    <Run Text="members" />
-                                </TextBlock>
-                            </ToolTipService.ToolTip>
-
-                            <StackPanel Orientation="Horizontal">
-                                <Ellipse
-                                    Width="8"
-                                    Height="8"
-                                    Fill="SlateGray" />
-
-                                <TextBlock
-                                    Margin="8,0,0,0"
-                                    d:Text="200K"
-                                    FontSize="20"
-                                    Style="{StaticResource SubtitleTextBlockStyle}"
-                                    Text="{x:Bind Subreddit.Subscribers, Converter={StaticResource FormattedNumberConverter}}" />
-                            </StackPanel>
-
-                            <TextBlock
-                                Margin="14,4,0,0"
-                                FontSize="12"
-                                Text="members" />
-                        </StackPanel>
-                    </controls:WrapPanel>
+                    <muxc:ProgressRing
+                        x:Name="PostLoadingProgressRing"
+                        Margin="0,16,0,0"
+                        IsActive="False"
+                        Visibility="Collapsed" />
                 </StackPanel>
+            </ListView.Header>
 
-                <muxc:ProgressRing
-                    x:Name="PostLoadingProgressRing"
-                    Margin="0,16,0,0"
-                    IsActive="False"
-                    Visibility="Collapsed" />
-            </StackPanel>
-        </ListView.Header>
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="viewmodels:PostViewModel">
+                    <uc:PostItemControl
+                        Title="{x:Bind Title}"
+                        Margin="-4,0"
+                        CreationDate="{x:Bind Created}"
+                        Description="{x:Bind ShortDescription}"
+                        IsDownvoted="{x:Bind IsDownvoted, Mode=TwoWay}"
+                        IsUpvoted="{x:Bind IsUpvoted, Mode=TwoWay}"
+                        Post="{x:Bind}"
+                        SubredditName="{x:Bind Post.SubredditNamePrefixed}"
+                        TitleClickCommand="{Binding TitleClickCommand, ElementName=RootPage}"
+                        UserClickCommand="{Binding UserClickCommand, ElementName=RootPage}"
+                        UserName="{x:Bind Post.Author}"
+                        VoteRatio="{x:Bind VoteRatio, Converter={StaticResource FormattedNumberConverter}}">
+                        <uc:PostItemControl.FooterContent>
+                            <CommandBar
+                                Margin="-10,0,0,0"
+                                Padding="0"
+                                HorizontalAlignment="Left"
+                                Background="Transparent"
+                                DefaultLabelPosition="Right">
+                                <AppBarButton
+                                    Icon="Comment"
+                                    IsHitTestVisible="False"
+                                    Label="{x:Bind Post.NumComments, Converter={StaticResource FormattedNumberConverter}}" />
+                                <AppBarButton
+                                    Flyout="{StaticResource SubredditInfoShareMenuFlyout}"
+                                    Icon="Share"
+                                    Label="Share" />
+                                <AppBarButton Icon="Save" Label="Save" />
+                            </CommandBar>
+                        </uc:PostItemControl.FooterContent>
+                    </uc:PostItemControl>
+                </DataTemplate>
+            </ListView.ItemTemplate>
 
-        <ListView.ItemTemplate>
-            <DataTemplate x:DataType="viewmodels:PostViewModel">
-                <uc:PostItemControl
-                    Title="{x:Bind Title}"
-                    Margin="-4,0"
-                    CreationDate="{x:Bind Created}"
-                    Description="{x:Bind ShortDescription}"
-                    IsDownvoted="{x:Bind IsDownvoted, Mode=TwoWay}"
-                    IsUpvoted="{x:Bind IsUpvoted, Mode=TwoWay}"
-                    Post="{x:Bind}"
-                    SubredditName="{x:Bind Post.SubredditNamePrefixed}"
-                    TitleClickCommand="{Binding TitleClickCommand, ElementName=RootPage}"
-                    UserClickCommand="{Binding UserClickCommand, ElementName=RootPage}"
-                    UserName="{x:Bind Post.Author}"
-                    VoteRatio="{x:Bind VoteRatio, Converter={StaticResource FormattedNumberConverter}}">
-                    <uc:PostItemControl.FooterContent>
-                        <CommandBar
-                            Margin="-10,0,0,0"
-                            Padding="0"
-                            HorizontalAlignment="Left"
-                            Background="Transparent"
-                            DefaultLabelPosition="Right">
-                            <AppBarButton
-                                Icon="Comment"
-                                IsHitTestVisible="False"
-                                Label="{x:Bind Post.NumComments, Converter={StaticResource FormattedNumberConverter}}" />
-                            <AppBarButton
-                                Flyout="{StaticResource SubredditInfoShareMenuFlyout}"
-                                Icon="Share"
-                                Label="Share" />
-                            <AppBarButton Icon="Save" Label="Save" />
-                        </CommandBar>
-                    </uc:PostItemControl.FooterContent>
-                </uc:PostItemControl>
-            </DataTemplate>
-        </ListView.ItemTemplate>
+            <ListView.Footer>
+                <Grid>
+                    <muxc:ProgressRing
+                        x:Name="FooterProgress"
+                        Margin="0,4"
+                        HorizontalAlignment="Center"
+                        IsActive="True"
+                        Visibility="Collapsed" />
+                </Grid>
+            </ListView.Footer>
 
-        <ListView.Footer>
-            <Grid>
-                <muxc:ProgressRing
-                    x:Name="FooterProgress"
-                    Margin="0,4"
-                    HorizontalAlignment="Center"
-                    IsActive="True"
-                    Visibility="Collapsed" />
-            </Grid>
-        </ListView.Footer>
-
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="DisplayNameStates">
-                <VisualState x:Name="WithDisplayName" />
-                <VisualState x:Name="NoDisplayName">
-                    <VisualState.Setters>
-                        <Setter Target="SubredditFriendlyName.Visibility" Value="Collapsed" />
-                        <Setter Target="SubredditName.Style" Value="{StaticResource SubtitleTextBlockStyle}" />
-                        <Setter Target="SubredditName.FontSize" Value="20" />
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-            <VisualStateGroup x:Name="JoinStates">
-                <VisualState x:Name="JoinedState">
-                    <VisualState.Setters>
-                        <Setter Target="JoinButton.Content" Value="Leave" />
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState x:Name="NotJoinedState" />
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-    </ListView>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="DisplayNameStates">
+                    <VisualState x:Name="WithDisplayName" />
+                    <VisualState x:Name="NoDisplayName">
+                        <VisualState.Setters>
+                            <Setter Target="SubredditFriendlyName.Visibility" Value="Collapsed" />
+                            <Setter Target="SubredditName.Style" Value="{StaticResource SubtitleTextBlockStyle}" />
+                            <Setter Target="SubredditName.FontSize" Value="20" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+                <VisualStateGroup x:Name="JoinStates">
+                    <VisualState x:Name="JoinedState">
+                        <VisualState.Setters>
+                            <Setter Target="JoinButton.Content" Value="Leave" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="NotJoinedState" />
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+        </ListView>
+    </Grid>
 </Page>

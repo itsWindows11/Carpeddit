@@ -24,6 +24,7 @@ using Windows.UI.Xaml.Hosting;
 using Windows.UI.Xaml.Media;
 using Windows.UI;
 using Microsoft.Toolkit.Uwp.UI;
+using System.Threading.Tasks;
 
 namespace Carpeddit.App.Views
 {
@@ -62,6 +63,10 @@ namespace Carpeddit.App.Views
             else
             {
                 _user = await service.GetMeAsync();
+
+                // Sometimes it may load too quickly so it might crash when finding a ScrollViewer
+                await Task.Delay(150);
+
                 Page_Loaded(null, null);
                 Bindings.Update();
             }
@@ -193,7 +198,8 @@ namespace Carpeddit.App.Views
             visual.Size = new Vector2((float)BackgroundHost.ActualWidth, (float)BackgroundHost.Height);
             visual.Brush = maskBrush;
 
-            gradientBrush.StartAnimation("Offset.Y", scrollVerticalOffset * 0.15f);
+            visual.StartAnimation("Offset.Y", scrollVerticalOffset);
+            imageBrush.StartAnimation("Offset.Y", -scrollVerticalOffset * 0.8f);
 
             ElementCompositionPreview.SetElementChildVisual(BackgroundHost, visual);
         }
