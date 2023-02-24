@@ -18,6 +18,7 @@
 
     <ContentDialog.Resources>
         <Thickness x:Key="ContentDialogPadding">0</Thickness>
+        <x:Double x:Key="ContentDialogMaxWidth">720</x:Double>
     </ContentDialog.Resources>
 
     <Grid Padding="16" RowSpacing="12">
@@ -52,8 +53,8 @@
         <WebView
             x:Name="LoginWebView"
             Grid.Row="1"
-            Width="500"
-            Margin="-16,0,-16,-17"
-            Height="500" />
+            Width="720"
+            Height="500"
+            Margin="-16,0,-16,-17" />
     </Grid>
 </ContentDialog>

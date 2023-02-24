@@ -36,15 +36,15 @@ namespace Carpeddit.App
             {
                 Frame.Navigate(typeof(MainPage), null, new SuppressNavigationTransitionInfo());
                 return;
-            } else if (message == "NoNetwork")
+            } else if (message == "NotLoggedIn")
             {
-                Frame.Navigate(typeof(OfflinePage), null, new SuppressNavigationTransitionInfo());
+                // Token must not be reused, sign out the user.
+                await AccountHelper.Instance.SignOutAsync(false);
+                Frame.Navigate(typeof(LoginPage), null, new SuppressNavigationTransitionInfo());
                 return;
             }
 
-            // Token must not be reused, sign out the user.
-            await AccountHelper.Instance.SignOutAsync(false);
-            Frame.Navigate(typeof(LoginPage), null, new SuppressNavigationTransitionInfo());
+            Frame.Navigate(typeof(OfflinePage), null, new SuppressNavigationTransitionInfo());
         }
 
         private async Task<string> IsValidSessionAsync()
@@ -56,7 +56,7 @@ namespace Carpeddit.App
             }
             catch (Exception e)
             {
-                return e.Message.Contains("The server name or address could not be resolved") ? "NoNetwork" : "UnknownError";
+                return (e is UnauthorizedAccessException || AccountHelper.Instance.GetCurrentInfo() == null) ? "NotLoggedIn" : "UnknownError";
             }
         }
     }

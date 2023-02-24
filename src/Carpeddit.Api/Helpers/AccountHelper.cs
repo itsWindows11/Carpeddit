@@ -69,7 +69,7 @@ namespace Carpeddit.Api.Helpers
         /// <returns>A <see cref="Task" /> which represents the operation.</returns>
         public Task SignOutAsync(bool revokeToken = true)
         {
-            var accessToken = GetCurrentInfo().AccessToken;
+            var accessToken = GetCurrentInfo()?.AccessToken;
 
             (authService as RedditAuthService).Data = null;
             (service as RedditService).Me = null;
@@ -77,7 +77,7 @@ namespace Carpeddit.Api.Helpers
             if (!revokeToken)
                 return Task.CompletedTask;
 
-            return authService.RevokeAsync(accessToken);
+            return accessToken == null ? Task.CompletedTask : authService.RevokeAsync(accessToken);
         }
 
         public TokenInfo GetCurrentInfo()

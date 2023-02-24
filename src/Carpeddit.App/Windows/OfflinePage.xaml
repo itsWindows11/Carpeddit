@@ -17,27 +17,31 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <uc:CustomTitleBar ShowIcon="False" ShowTitle="False" />
+        <uc:CustomTitleBar
+            x:Name="TitleBar"
+            ShowIcon="False"
+            ShowTitle="False" />
 
-        <Grid Grid.Row="1">
-            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                <StackPanel Spacing="12">
-                    <FontIcon
-                        HorizontalAlignment="Left"
-                        FontSize="48"
-                        Glyph="&#xEA6A;" />
+        <Grid
+            Grid.Row="1"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center">
+            <StackPanel Spacing="12">
+                <FontIcon
+                    HorizontalAlignment="Left"
+                    FontSize="48"
+                    Glyph="&#xEA6A;" />
 
-                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="An error occurred" />
-                    <TextBlock TextWrapping="Wrap" Text="We can't reach the internet right now. Check your internet connection and try again." />
+                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="An error occurred" />
+                <TextBlock Text="We can't reach the internet right now. Check your internet connection and try again." TextWrapping="Wrap" />
 
-                    <Button Click="RefreshButton_Click">
-                        <StackPanel Orientation="Horizontal" Spacing="12">
-                            <FontIcon FontSize="14" Glyph="&#xE149;" />
-                            <TextBlock Text="Refresh" />
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-            </Grid>
+                <Button Click="RefreshButton_Click">
+                    <StackPanel Orientation="Horizontal" Spacing="12">
+                        <FontIcon FontSize="14" Glyph="&#xE149;" />
+                        <TextBlock Text="Refresh" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
         </Grid>
     </Grid>
 </Page>

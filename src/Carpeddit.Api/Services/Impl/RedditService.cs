@@ -182,7 +182,11 @@ namespace Carpeddit.Api.Services
                 if (retries == 7)
                     throw;
 
-                await TokenHelper.Instance.RefreshTokenAsync(AccountHelper.Instance.GetCurrentInfo().RefreshToken);
+                var info = AccountHelper.Instance.GetCurrentInfo();
+
+                if (info != null)
+                    _ = await TokenHelper.Instance.RefreshTokenAsync(info.RefreshToken);
+
                 await func();
             }
         }
@@ -202,7 +206,11 @@ namespace Carpeddit.Api.Services
                 if (retries == 7)
                     throw;
 
-                await TokenHelper.Instance.RefreshTokenAsync(AccountHelper.Instance.GetCurrentInfo().RefreshToken);
+                var info = AccountHelper.Instance.GetCurrentInfo();
+
+                if (info != null)
+                    _ = await TokenHelper.Instance.RefreshTokenAsync(info.RefreshToken);
+
                 return await func();
             }
         }
