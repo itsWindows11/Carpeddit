@@ -200,6 +200,33 @@
                         </controls:WrapPanel>
                     </StackPanel>
 
+                    <uc:SortAndFilterControl
+                        x:Name="SortControl"
+                        Height="36"
+                        MinWidth="128"
+                        Margin="0,8,0,0"
+                        HorizontalAlignment="Right"
+                        Label="Sort by:"
+                        SelectedContent="Hot"
+                        SelectionChangedCommand="{x:Bind SortSelectionChangedCommand, Mode=OneWay}">
+                        <uc:SortAndFilterControl.Flyout>
+                            <MenuFlyout>
+                                <muxc:RadioMenuFlyoutItem IsChecked="True" Text="Hot" />
+                                <muxc:RadioMenuFlyoutItem Text="Best" />
+                                <muxc:RadioMenuFlyoutItem Text="New" />
+                                <MenuFlyoutSubItem Text="Top">
+                                    <muxc:RadioMenuFlyoutItem Text="Now" />
+                                    <muxc:RadioMenuFlyoutItem Text="Today" />
+                                    <muxc:RadioMenuFlyoutItem Text="Week" />
+                                    <muxc:RadioMenuFlyoutItem Text="Month" />
+                                    <muxc:RadioMenuFlyoutItem Text="Year" />
+                                    <muxc:RadioMenuFlyoutItem Text="All Time" />
+                                </MenuFlyoutSubItem>
+                                <muxc:RadioMenuFlyoutItem Text="Rising" />
+                            </MenuFlyout>
+                        </uc:SortAndFilterControl.Flyout>
+                    </uc:SortAndFilterControl>
+
                     <muxc:ProgressRing
                         x:Name="PostLoadingProgressRing"
                         Margin="0,16,0,0"

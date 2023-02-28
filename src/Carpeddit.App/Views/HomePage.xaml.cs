@@ -59,6 +59,12 @@ namespace Carpeddit.App.Views
 
             isLoadingMore = true;
 
+            if (_posts.LastOrDefault() == null)
+            {
+                isLoadingMore = false;
+                return;
+            }
+
             FooterProgress.Visibility = Visibility.Visible;
 
             var posts = (await service.GetFrontpagePostsAsync(currentSort, new(after: _posts.Last().Post.Name, limit: 50))).Select(p => new PostViewModel()

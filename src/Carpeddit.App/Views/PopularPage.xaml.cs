@@ -1,4 +1,5 @@
 ﻿using Carpeddit.Api.Enums;
+using Carpeddit.Api.Helpers;
 using Carpeddit.Api.Services;
 using Carpeddit.App.Models;
 using Carpeddit.App.ViewModels;
@@ -7,6 +8,7 @@ using Carpeddit.Common.Helpers;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -17,6 +19,8 @@ namespace Carpeddit.App.Views
     {
         private BulkObservableCollection<PostViewModel> _posts = new();
         private IRedditService service = App.Services.GetService<IRedditService>();
+
+        private SortMode currentSort = SortMode.Hot;
 
         private bool isLoadingMore;
 
@@ -30,7 +34,7 @@ namespace Carpeddit.App.Views
         {
             Loaded -= HomePage_Loaded;
 
-            var posts = (await service.GetSubredditPostsAsync("popular", SortMode.Best, new(limit: 50))).Select(p => new PostViewModel()
+            var posts = (await service.GetSubredditPostsAsync("popular", currentSort, new(limit: 50))).Select(p => new PostViewModel()
             {
                 Post = p
             });
@@ -39,7 +43,7 @@ namespace Carpeddit.App.Views
 
             MainList.ItemsSource = _posts;
 
-            HomeRing.IsIndeterminate = false;
+            HomeRing.IsActive = false;
             HomeRing.Visibility = Visibility.Collapsed;
 
             var scrollViewer = ListHelpers.GetScrollViewer(MainList);
@@ -55,6 +59,12 @@ namespace Carpeddit.App.Views
                 return;
 
             isLoadingMore = true;
+
+            if (_posts.LastOrDefault() == null)
+            {
+                isLoadingMore = false;
+                return;
+            }
 
             FooterProgress.Visibility = Visibility.Visible;
 
@@ -104,6 +114,30 @@ namespace Carpeddit.App.Views
             package.SetText("https://www.reddit.com" + item.Post.Permalink);
 
             Clipboard.SetContent(package);
+        }
+
+        [RelayCommand]
+        private async Task SortSelectionChangedAsync()
+        {
+            MainList.ItemsSource = null;
+            _posts.Clear();
+
+            currentSort = StringToSortTypeConverter.ToSortMode((string)SortControl.SelectedContent);
+
+            HomeRing.Visibility = Visibility.Visible;
+            HomeRing.IsActive = true;
+
+            var posts = (await service.GetSubredditPostsAsync("popular", currentSort, new(limit: 50))).Select(p => new PostViewModel()
+            {
+                Post = p
+            });
+
+            _posts.AddRange(posts);
+
+            MainList.ItemsSource = _posts;
+
+            HomeRing.IsActive = false;
+            HomeRing.Visibility = Visibility.Collapsed;
         }
     }
 }

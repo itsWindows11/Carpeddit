@@ -31,10 +31,35 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <TextBlock
-            Margin="0,56,0,12"
-            Style="{StaticResource NavigationViewTitleTextBlockStyle}"
-            Text="Popular" />
+        <RelativePanel Margin="0,56,0,12">
+            <TextBlock Style="{StaticResource NavigationViewTitleTextBlockStyle}" Text="Popular" />
+
+            <uc:SortAndFilterControl
+                x:Name="SortControl"
+                Height="36"
+                MinWidth="128"
+                Label="Sort by:"
+                RelativePanel.AlignRightWithPanel="True"
+                SelectedContent="Hot"
+                SelectionChangedCommand="{x:Bind SortSelectionChangedCommand, Mode=OneWay}">
+                <uc:SortAndFilterControl.Flyout>
+                    <MenuFlyout>
+                        <muxc:RadioMenuFlyoutItem IsChecked="True" Text="Hot" />
+                        <muxc:RadioMenuFlyoutItem Text="Best" />
+                        <muxc:RadioMenuFlyoutItem Text="New" />
+                        <MenuFlyoutSubItem Text="Top">
+                            <muxc:RadioMenuFlyoutItem Text="Now" />
+                            <muxc:RadioMenuFlyoutItem Text="Today" />
+                            <muxc:RadioMenuFlyoutItem Text="Week" />
+                            <muxc:RadioMenuFlyoutItem Text="Month" />
+                            <muxc:RadioMenuFlyoutItem Text="Year" />
+                            <muxc:RadioMenuFlyoutItem Text="All Time" />
+                        </MenuFlyoutSubItem>
+                        <muxc:RadioMenuFlyoutItem Text="Rising" />
+                    </MenuFlyout>
+                </uc:SortAndFilterControl.Flyout>
+            </uc:SortAndFilterControl>
+        </RelativePanel>
 
         <muxc:ProgressRing
             x:Name="HomeRing"

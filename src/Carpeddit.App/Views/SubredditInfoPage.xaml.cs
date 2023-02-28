@@ -1,4 +1,5 @@
 ﻿using Carpeddit.Api.Enums;
+using Carpeddit.Api.Helpers;
 using Carpeddit.Api.Models;
 using Carpeddit.Api.Services;
 using Carpeddit.App.Models;
@@ -34,6 +35,8 @@ namespace Carpeddit.App.Views
         private BulkObservableCollection<PostViewModel> _posts = new();
         private IRedditService service = App.Services.GetService<IRedditService>();
 
+        private SortMode currentSort = SortMode.Hot;
+
         private bool isLoadingMore;
 
         private CompositionPropertySet? _scrollerPropertySet;
@@ -68,7 +71,7 @@ namespace Carpeddit.App.Views
             PostLoadingProgressRing.IsActive = true;
             PostLoadingProgressRing.Visibility = Visibility.Visible;
 
-            var posts = (await service.GetSubredditPostsAsync(Subreddit.DisplayName, SortMode.Hot, new(limit: 50))).Select(p => new PostViewModel()
+            var posts = (await service.GetSubredditPostsAsync(Subreddit.DisplayName, currentSort, new(limit: 50))).Select(p => new PostViewModel()
             {
                 Post = p
             });
@@ -94,9 +97,15 @@ namespace Carpeddit.App.Views
 
             isLoadingMore = true;
 
+            if (_posts.LastOrDefault() == null)
+            {
+                isLoadingMore = false;
+                return;
+            }
+
             FooterProgress.Visibility = Visibility.Visible;
 
-            var posts = (await service.GetSubredditPostsAsync(Subreddit.DisplayName, SortMode.Hot, new(after: _posts.Last().Post.Name, limit: 50))).Select(p => new PostViewModel()
+            var posts = (await service.GetSubredditPostsAsync(Subreddit.DisplayName, currentSort, new(after: _posts.LastOrDefault().Post.Name, limit: 50))).Select(p => new PostViewModel()
             {
                 Post = p
             });
@@ -230,6 +239,30 @@ namespace Carpeddit.App.Views
 
             animation.Duration = TimeSpan.FromMilliseconds(600);
             _backgroundVisual.StartAnimation("Opacity", animation);
+        }
+
+        [RelayCommand]
+        private async Task SortSelectionChangedAsync()
+        {
+            MainList.ItemsSource = null;
+            _posts.Clear();
+
+            currentSort = StringToSortTypeConverter.ToSortMode((string)SortControl.SelectedContent);
+
+            PostLoadingProgressRing.IsActive = true;
+            PostLoadingProgressRing.Visibility = Visibility.Visible;
+
+            var posts = (await service.GetSubredditPostsAsync(Subreddit.DisplayName, currentSort, new(limit: 50))).Select(p => new PostViewModel()
+            {
+                Post = p
+            });
+
+            _posts.AddRange(posts);
+
+            MainList.ItemsSource = _posts;
+
+            PostLoadingProgressRing.IsActive = false;
+            PostLoadingProgressRing.Visibility = Visibility.Collapsed;
         }
     }
 }
