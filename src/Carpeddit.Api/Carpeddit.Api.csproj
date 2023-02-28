@@ -126,6 +126,7 @@
     <Compile Include="EqualityComparers\MessageEqualityComparer.cs" />
     <Compile Include="Exceptions\ServiceDownException.cs" />
     <Compile Include="Helpers\AccountHelper.cs" />
+    <Compile Include="Helpers\StringToSortTypeConverter.cs" />
     <Compile Include="Helpers\TokenHelper.cs" />
     <Compile Include="Models\ApiObjectWithKind.cs" />
     <Compile Include="Models\Comment.cs" />

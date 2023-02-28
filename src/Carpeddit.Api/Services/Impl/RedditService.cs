@@ -52,13 +52,31 @@ namespace Carpeddit.Api.Services
             if (listingInput != null)
             {
                 queryString.Add("after", listingInput.After);
+                queryString.Add("raw_json", "1");
                 queryString.Add("before", listingInput.Before);
                 queryString.Add("limit", listingInput.Limit.ToString());
+
+                var sortString = sort.ToString();
+
+                if (sortString.EndsWith("All Time"))
+                {
+                    queryString.Add("t", "all");
+                } else if (sortString.EndsWith("Today"))
+                {
+                    queryString.Add("t", "day");
+                }
+                else if (sortString.EndsWith("Now"))
+                {
+                    queryString.Add("t", "hour");
+                } else
+                {
+                    queryString.Add("t", sortString.Replace("Top", string.Empty).Replace("Controversial", string.Empty).ToLower());
+                }
             }
 
             return RunAsync<IList<Post>>(async () =>
             {
-                var response = await WebHelper.GetDeserializedResponseAsync<Listing<IList<ApiObjectWithKind<Post>>>>("/.json?raw_json=1&" + queryString.ToString());
+                var response = await WebHelper.GetDeserializedResponseAsync<Listing<IList<ApiObjectWithKind<Post>>>>($"/{StringToSortTypeConverter.ToAPISort(sort)}.json?{queryString}");
                 return response.Data.Children.Select(p => p.Data).ToList();
             });
         }

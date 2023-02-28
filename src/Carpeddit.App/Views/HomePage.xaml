@@ -13,16 +13,18 @@
     NavigationCacheMode="Enabled"
     mc:Ignorable="d">
     <Page.Resources>
-        <MenuFlyout x:Key="HomeShareMenuFlyout">
-            <MenuFlyoutItem
-                Icon="{ui:FontIcon Glyph=&#xE1CA;}"
-                IsEnabled="False"
-                Text="Crosspost" />
-            <MenuFlyoutItem
-                Click="OnCopyLinkFlyoutItemClick"
-                Icon="{ui:FontIcon Glyph=&#xE16F;}"
-                Text="Copy link" />
-        </MenuFlyout>
+        <ResourceDictionary>
+            <MenuFlyout x:Key="HomeShareMenuFlyout">
+                <MenuFlyoutItem
+                    Icon="{ui:FontIcon Glyph=&#xE1CA;}"
+                    IsEnabled="False"
+                    Text="Crosspost" />
+                <MenuFlyoutItem
+                    Click="OnCopyLinkFlyoutItemClick"
+                    Icon="{ui:FontIcon Glyph=&#xE16F;}"
+                    Text="Copy link" />
+            </MenuFlyout>
+        </ResourceDictionary>
     </Page.Resources>
 
     <Grid>
@@ -31,10 +33,36 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <TextBlock
-            Margin="0,56,0,12"
-            Style="{StaticResource NavigationViewTitleTextBlockStyle}"
-            Text="Home" />
+        <RelativePanel Margin="0,56,0,12">
+            <TextBlock Style="{StaticResource NavigationViewTitleTextBlockStyle}" Text="Home" />
+
+            <uc:SortAndFilterControl
+                x:Name="SortControl"
+                Height="36"
+                MinWidth="128"
+                Label="Sort by:"
+                RelativePanel.AlignRightWithPanel="True"
+                SelectedContent="Best"
+                SelectionChangedCommand="{x:Bind SortSelectionChangedCommand, Mode=OneWay}">
+                <uc:SortAndFilterControl.Flyout>
+                    <MenuFlyout>
+                        <muxc:RadioMenuFlyoutItem Text="Hot" />
+                        <muxc:RadioMenuFlyoutItem IsChecked="True" Text="Best" />
+                        <muxc:RadioMenuFlyoutItem Text="New" />
+                        <MenuFlyoutSubItem Text="Top">
+                            <muxc:RadioMenuFlyoutItem Text="Now" />
+                            <muxc:RadioMenuFlyoutItem Text="Today" />
+                            <muxc:RadioMenuFlyoutItem Text="Week" />
+                            <muxc:RadioMenuFlyoutItem Text="Month" />
+                            <muxc:RadioMenuFlyoutItem Text="Year" />
+                            <muxc:RadioMenuFlyoutItem Text="All Time" />
+                        </MenuFlyoutSubItem>
+                        <muxc:RadioMenuFlyoutItem Text="Rising" />
+                    </MenuFlyout>
+                </uc:SortAndFilterControl.Flyout>
+            </uc:SortAndFilterControl>
+        </RelativePanel>
+
 
         <muxc:ProgressRing
             x:Name="HomeRing"
