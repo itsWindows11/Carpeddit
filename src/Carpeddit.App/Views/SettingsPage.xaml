@@ -187,7 +187,7 @@
                         <labs:SettingsCard
                             Description="Enable the ability for users to follow you"
                             Header="Allow following"
-                            HeaderIcon="{ui:FontIcon Glyph=&#xEA8C;}">
+                            HeaderIcon="{ui:FontIcon Glyph=&#xE1E2;}">
                             <ToggleSwitch IsOn="{x:Bind ViewModel.RedditPrefs.EnableFollowers, Mode=TwoWay}" />
                         </labs:SettingsCard>
 
