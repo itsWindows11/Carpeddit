@@ -1,6 +1,7 @@
 ﻿using Carpeddit.Api.Models;
 using Carpeddit.Api.Services;
 using CommunityToolkit.Labs.WinUI.SizerBaseLocal;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Windows.UI.Text;
 using Windows.UI.Xaml;
@@ -36,7 +37,7 @@ namespace Carpeddit.App.Views
             var richEditBox = MainList.FindDescendant<RichEditBox>();
             richEditBox.Document.GetText(TextGetOptions.None, out string text);
 
-            await App.Services.GetService<IRedditService>().CommentAsync("t4_" + message.Id, text);
+            await Ioc.Default.GetService<IRedditService>().CommentAsync("t4_" + message.Id, text);
 
             richEditBox.TextDocument.SetText(TextSetOptions.None, string.Empty);
         }

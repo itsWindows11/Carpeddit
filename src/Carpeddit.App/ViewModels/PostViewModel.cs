@@ -8,6 +8,7 @@ using Windows.System;
 using Windows.Media.Core;
 using System.Collections.Generic;
 using System.Linq;
+using CommunityToolkit.Mvvm.DependencyInjection;
 
 namespace Carpeddit.App.ViewModels
 {
@@ -82,7 +83,7 @@ namespace Carpeddit.App.ViewModels
                     OnPropertyChanged(nameof(IsDownvoted));
                 }
 
-                _ = App.Services.GetService<IRedditService>().VoteAsync(new(value ? 1 : 0, Post.Name));
+                _ = Ioc.Default.GetService<IRedditService>().VoteAsync(new(value ? 1 : 0, Post.Name));
             }
         }
 
@@ -101,7 +102,7 @@ namespace Carpeddit.App.ViewModels
                     OnPropertyChanged(nameof(IsUpvoted));
                 }
 
-                _ = App.Services.GetService<IRedditService>().VoteAsync(new(value ? -1 : 0, Post.Name));
+                _ = Ioc.Default.GetService<IRedditService>().VoteAsync(new(value ? -1 : 0, Post.Name));
             }
         }
 

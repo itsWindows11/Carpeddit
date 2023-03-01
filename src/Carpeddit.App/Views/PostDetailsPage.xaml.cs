@@ -5,6 +5,7 @@ using Carpeddit.App.Models;
 using Carpeddit.App.ViewModels;
 using Carpeddit.Common.Collections;
 using Carpeddit.Models.Api;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -71,7 +72,7 @@ namespace Carpeddit.App.Views
         }
 
         private Task<IEnumerable<IPostReplyable>> GetCommentsAsViewModelAsync(string postName)
-            => (App.Services.GetService<IRedditService>() as RedditService).RunAsync(async () =>
+            => (Ioc.Default.GetService<IRedditService>() as RedditService).RunAsync(async () =>
             {
                 var response = await WebHelper.GetDeserializedResponseAsync<IList<Listing<IList<ApiObjectWithKind<object>>>>>($"/comments/{postName}?raw_json=1");
 

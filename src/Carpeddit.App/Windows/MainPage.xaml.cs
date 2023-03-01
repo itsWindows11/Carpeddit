@@ -3,6 +3,7 @@ using Carpeddit.Api.Services;
 using Carpeddit.Api.Watchers;
 using Carpeddit.App.ViewModels;
 using Carpeddit.App.Views;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Uwp.Notifications;
 using System;
@@ -23,7 +24,7 @@ namespace Carpeddit.App
 {
     public sealed partial class MainPage : Page
     {
-        private SettingsViewModel SViewModel { get; } = App.Services.GetService<SettingsViewModel>();
+        private SettingsViewModel SViewModel { get; } = Ioc.Default.GetService<SettingsViewModel>();
 
         private readonly List<(string Tag, Type Page)> _pages = new()
         {
@@ -34,7 +35,7 @@ namespace Carpeddit.App
             ("profile", typeof(ProfilePage)),
         };
 
-        private IRedditService service = App.Services.GetService<IRedditService>();
+        private IRedditService service = Ioc.Default.GetService<IRedditService>();
 
         public MainPage()
         {
@@ -106,7 +107,7 @@ namespace Carpeddit.App
         private void OnLogOutClick(object sender, RoutedEventArgs e)
         {
             NavigationCacheMode = NavigationCacheMode.Disabled;
-            _ = AccountHelper.Instance.SignOutAsync();
+            _ = AccountHelper.SignOutAsync();
             Frame.Navigate(typeof(LoginPage));
         }
 

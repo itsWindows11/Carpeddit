@@ -6,6 +6,7 @@ using Carpeddit.App.Models;
 using Carpeddit.App.ViewModels;
 using Carpeddit.Common.Collections;
 using Carpeddit.Common.Helpers;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Uwp.UI;
@@ -33,7 +34,7 @@ namespace Carpeddit.App.Views
         private Subreddit Subreddit;
 
         private BulkObservableCollection<PostViewModel> _posts = new();
-        private IRedditService service = App.Services.GetService<IRedditService>();
+        private IRedditService service = Ioc.Default.GetService<IRedditService>();
 
         private SortMode currentSort = SortMode.Hot;
 

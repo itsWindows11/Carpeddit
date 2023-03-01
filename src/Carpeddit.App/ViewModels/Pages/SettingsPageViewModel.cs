@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 using Windows.Storage.Pickers;
 using Windows.Storage;
 using System;
+using CommunityToolkit.Mvvm.DependencyInjection;
 
 namespace Carpeddit.App.ViewModels.Pages
 {
     public sealed partial class SettingsPageViewModel : ObservableObject
     {
-        public SettingsViewModel SettingsManager { get; } = App.Services.GetService<SettingsViewModel>();
+        public SettingsViewModel SettingsManager { get; } = Ioc.Default.GetService<SettingsViewModel>();
 
         [ObservableProperty]
         private RedditPrefsViewModel redditPrefs;

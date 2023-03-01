@@ -92,7 +92,7 @@ namespace Carpeddit.Api.Helpers
     {
         public static Task<IHttpContent> GetAsync(string url, bool oauthOnly = false)
         {
-            var info = AccountHelper.Instance.GetCurrentInfo();
+            var info = AccountHelper.GetCurrentInfo();
 
             if (info != null)
             {
@@ -109,7 +109,7 @@ namespace Carpeddit.Api.Helpers
 
         public static Task<IHttpContent> PostAsync(string url, IDictionary<string, string> postData, bool oauthOnly = false)
         {
-            var info = AccountHelper.Instance.GetCurrentInfo();
+            var info = AccountHelper.GetCurrentInfo();
 
             if (info != null)
             {
@@ -126,7 +126,7 @@ namespace Carpeddit.Api.Helpers
 
         public static Task<IHttpContent> PatchAsync(string url, IDictionary<string, string> postData, bool oauthOnly = false)
         {
-            var info = AccountHelper.Instance.GetCurrentInfo();
+            var info = AccountHelper.GetCurrentInfo();
 
             if (info != null)
             {

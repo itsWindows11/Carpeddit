@@ -1,6 +1,6 @@
 ﻿using Carpeddit.App.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Microsoft.Extensions.DependencyInjection;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using System.Collections.Generic;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -9,7 +9,7 @@ namespace Carpeddit.App.ViewModels
 {
     public sealed class SettingsViewModel : ObservableObject
     {
-        private ISettingsService _settingsService = App.Services.GetService<ISettingsService>();
+        private ISettingsService _settingsService = Ioc.Default.GetService<ISettingsService>();
 
         /// <summary>
         /// The setup progress.

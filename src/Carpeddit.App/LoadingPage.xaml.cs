@@ -1,13 +1,10 @@
 ﻿using Carpeddit.Api.Helpers;
 using Carpeddit.Api.Services;
-using Carpeddit.Api.Watchers;
 using Carpeddit.App.ViewModels;
 using Carpeddit.App.Views;
-using Carpeddit.Common.Helpers;
-using Microsoft.Extensions.DependencyInjection;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using System;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Background;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -25,7 +22,7 @@ namespace Carpeddit.App
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
-            var settings = App.Services.GetService<SettingsViewModel>();
+            var settings = Ioc.Default.GetService<SettingsViewModel>();
             Frame.RequestedTheme = settings.Theme;
 
             // TODO: Handle setup.
@@ -39,7 +36,7 @@ namespace Carpeddit.App
             } else if (message == "NotLoggedIn")
             {
                 // Token must not be reused, sign out the user.
-                await AccountHelper.Instance.SignOutAsync(false);
+                await AccountHelper.SignOutAsync(false);
                 Frame.Navigate(typeof(LoginPage), null, new SuppressNavigationTransitionInfo());
                 return;
             }
@@ -51,12 +48,12 @@ namespace Carpeddit.App
         {
             try
             {
-                _ = await App.Services.GetService<IRedditService>().GetMeAsync();
+                _ = await Ioc.Default.GetService<IRedditService>().GetMeAsync();
                 return "Successful";
             }
             catch (Exception e)
             {
-                return (e is UnauthorizedAccessException || AccountHelper.Instance.GetCurrentInfo() == null) ? "NotLoggedIn" : "UnknownError";
+                return (e is UnauthorizedAccessException || AccountHelper.GetCurrentInfo() == null) ? "NotLoggedIn" : "UnknownError";
             }
         }
     }

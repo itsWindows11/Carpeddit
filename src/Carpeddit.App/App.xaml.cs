@@ -1,15 +1,14 @@
-﻿using Carpeddit.Api.Helpers;
-using Carpeddit.Api.Services;
+﻿using Carpeddit.Api.Services;
 using Carpeddit.Api.Watchers;
 using Carpeddit.App.Services;
 using Carpeddit.App.ViewModels;
 using Carpeddit.App.ViewModels.Pages;
 using Carpeddit.Repository;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Uwp.Notifications;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Xaml;
@@ -24,8 +23,6 @@ namespace Carpeddit.App
     /// </summary>
     public sealed partial class App : Application
     {
-        public static IServiceProvider Services { get; private set; }
-
         public static IRepository CacheRepository { get; private set; }
 
         public static MailboxWatcher MailboxWatcher { get; set; }
@@ -37,11 +34,7 @@ namespace Carpeddit.App
         public App()
         {
             InitializeComponent();
-            Services = ConfigureServices();
-
-            // Initialize the helpers.
-            _ = new AccountHelper(Services.GetService<IRedditAuthService>(), Services.GetService<IRedditService>());
-            _ = new TokenHelper(Services.GetService<IRedditAuthService>());
+            _ = ConfigureServices();
         }
 
         private IServiceProvider ConfigureServices()
@@ -54,7 +47,10 @@ namespace Carpeddit.App
             services.AddSingleton<IRedditService, RedditService>();
             services.AddTransient<SettingsPageViewModel>();
 
-            return services.BuildServiceProvider();
+            var provider = services.BuildServiceProvider();
+            Ioc.Default.ConfigureServices(provider);
+
+            return provider;
         }
 
         /// <summary>
@@ -92,7 +88,7 @@ namespace Carpeddit.App
         {
             base.OnBackgroundActivated(args);
 
-            MailboxWatcher = await WatchMailboxAsync(Services.GetService<IRedditService>(), TimeSpan.FromMinutes(1));
+            MailboxWatcher = await WatchMailboxAsync(Ioc.Default.GetService<IRedditService>(), TimeSpan.FromMinutes(1));
             MailboxWatcher.MailboxUpdated += OnMailboxUpdated;
         }
 

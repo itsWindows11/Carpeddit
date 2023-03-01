@@ -5,8 +5,8 @@ using Carpeddit.App.Models;
 using Carpeddit.App.ViewModels;
 using Carpeddit.Common.Collections;
 using Carpeddit.Common.Helpers;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
@@ -18,7 +18,7 @@ namespace Carpeddit.App.Views
     public sealed partial class PopularPage : Page
     {
         private BulkObservableCollection<PostViewModel> _posts = new();
-        private IRedditService service = App.Services.GetService<IRedditService>();
+        private IRedditService service = Ioc.Default.GetService<IRedditService>();
 
         private SortMode currentSort = SortMode.Hot;
 

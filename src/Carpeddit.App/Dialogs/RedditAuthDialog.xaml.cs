@@ -7,14 +7,15 @@ using Carpeddit.App.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Windows.UI.Xaml;
 using System.Text;
+using CommunityToolkit.Mvvm.DependencyInjection;
 
 namespace Carpeddit.App.Dialogs
 {
     public sealed partial class RedditAuthDialog : ContentDialog
     {
-        private IRedditAuthService _authService = App.Services.GetService<IRedditAuthService>();
-        private SettingsViewModel _settingsViewModel = App.Services.GetService<SettingsViewModel>();
-        private IRedditService _service = App.Services.GetService<IRedditService>();
+        private IRedditAuthService _authService = Ioc.Default.GetService<IRedditAuthService>();
+        private SettingsViewModel _settingsViewModel = Ioc.Default.GetService<SettingsViewModel>();
+        private IRedditService _service = Ioc.Default.GetService<IRedditService>();
 
         public bool IsCancelled { get; private set; }
 

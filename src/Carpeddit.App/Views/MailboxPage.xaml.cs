@@ -1,6 +1,7 @@
 ﻿using Carpeddit.Api.Models;
 using Carpeddit.Api.Services;
 using Carpeddit.Common.Collections;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -22,7 +23,7 @@ namespace Carpeddit.App.Views
         {
             Loaded -= OnMailboxPageLoaded;
 
-            Messages.AddRange(await App.Services.GetService<IRedditService>().GetMessagesAsync());
+            Messages.AddRange(await Ioc.Default.GetService<IRedditService>().GetMessagesAsync());
 
             LoadingRing.IsActive = false;
             LoadingRing.Visibility = Visibility.Collapsed;

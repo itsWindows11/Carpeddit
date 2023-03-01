@@ -26,6 +26,7 @@ using Windows.UI;
 using Microsoft.Toolkit.Uwp.UI;
 using System.Threading.Tasks;
 using Carpeddit.Api.Helpers;
+using CommunityToolkit.Mvvm.DependencyInjection;
 
 namespace Carpeddit.App.Views
 {
@@ -33,7 +34,7 @@ namespace Carpeddit.App.Views
     {
         private User _user;
         private BulkObservableCollection<PostViewModel> _posts = new();
-        private IRedditService service = App.Services.GetService<IRedditService>();
+        private IRedditService service = Ioc.Default.GetService<IRedditService>();
         private bool isLoadingMore;
         private bool _eventRegistered;
 

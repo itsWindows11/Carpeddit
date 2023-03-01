@@ -1,5 +1,5 @@
 ﻿using Carpeddit.App.ViewModels;
-using Microsoft.Extensions.DependencyInjection;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using System;
 using Windows.UI;
 using Windows.UI.Xaml.Data;
@@ -9,7 +9,7 @@ namespace Carpeddit.App.Converters
 {
     public sealed class SettingsChoiceToColorConverter : IValueConverter
     {
-        private SettingsViewModel SViewModel { get; } = App.Services.GetService<SettingsViewModel>();
+        private SettingsViewModel SViewModel { get; } = Ioc.Default.GetService<SettingsViewModel>();
 
         public object Convert(object value, Type targetType, object parameter, string language)
         {

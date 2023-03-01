@@ -1,6 +1,7 @@
 ﻿using Carpeddit.Api.Models;
 using Carpeddit.Api.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Windows.UI.Xaml;
@@ -53,7 +54,7 @@ namespace Carpeddit.App.ViewModels
                     OnPropertyChanged(nameof(IsDownvoted));
                 }
 
-                _ = App.Services.GetService<IRedditService>().VoteAsync(new(value ? 1 : 0, Comment.Name));
+                _ = Ioc.Default.GetService<IRedditService>().VoteAsync(new(value ? 1 : 0, Comment.Name));
             }
         }
 
@@ -72,7 +73,7 @@ namespace Carpeddit.App.ViewModels
                     OnPropertyChanged(nameof(IsUpvoted));
                 }
 
-                _ = App.Services.GetService<IRedditService>().VoteAsync(new(value ? -1 : 0, Comment.Name));
+                _ = Ioc.Default.GetService<IRedditService>().VoteAsync(new(value ? -1 : 0, Comment.Name));
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using Carpeddit.App.ViewModels;
 using Carpeddit.App.ViewModels.Pages;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Diagnostics;
@@ -13,7 +14,7 @@ namespace Carpeddit.App.Views
 {
     public sealed partial class SettingsPage : Page
     {
-        private SettingsPageViewModel ViewModel { get; } = App.Services.GetService<SettingsPageViewModel>();
+        private SettingsPageViewModel ViewModel { get; } = Ioc.Default.GetService<SettingsPageViewModel>();
 
         public SettingsPage()
         {

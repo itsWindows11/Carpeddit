@@ -172,7 +172,7 @@ namespace Carpeddit.App.ViewModels
                 return await WebHelper.GetDeserializedResponseAsync<RedditPrefsViewModel>("/api/v1/me/prefs", true);
             } catch (UnauthorizedAccessException)
             {
-                await TokenHelper.Instance.RefreshTokenAsync(AccountHelper.Instance.GetCurrentInfo().RefreshToken);
+                await TokenHelper.RefreshTokenAsync(AccountHelper.GetCurrentInfo().RefreshToken);
                 return await GetForCurrentUserAsync();
             }
         }
@@ -185,7 +185,7 @@ namespace Carpeddit.App.ViewModels
             }
             catch (UnauthorizedAccessException)
             {
-                await TokenHelper.Instance.RefreshTokenAsync(AccountHelper.Instance.GetCurrentInfo().RefreshToken);
+                await TokenHelper.RefreshTokenAsync(AccountHelper.GetCurrentInfo().RefreshToken);
                 await UpdateAsync();
             }
         }
