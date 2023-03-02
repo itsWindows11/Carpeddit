@@ -177,7 +177,7 @@
             <VisualStateGroup x:Name="WindowSizeStates">
                 <VisualState x:Name="VeryLargeSizeState">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="1008" />
+                        <StateTrigger IsActive="{x:Bind NavView.IsPaneOpen, Mode=OneWay}" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="TitleBar.Margin" Value="52,0,0,0" />
@@ -195,7 +195,6 @@
                     <VisualState.Setters>
                         <Setter Target="TitleBar.ShowTitle" Value="False" />
                         <Setter Target="TitleBar.Margin" Value="95,0,0,0" />
-                        <Setter Target="NavViewHeader.Margin" Value="-16,4,0,0" />
                         <Setter Target="ContentFrame.Margin" Value="0,8,0,0" />
                     </VisualState.Setters>
                 </VisualState>
