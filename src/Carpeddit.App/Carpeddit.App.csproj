@@ -364,10 +364,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Labs.Uwp.SettingsControls">
-      <Version>0.0.12</Version>
+      <Version>0.0.16</Version>
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Labs.Uwp.SizerBase">
-      <Version>0.0.3</Version>
+      <Version>0.0.4</Version>
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm">
       <Version>8.1.0</Version>
