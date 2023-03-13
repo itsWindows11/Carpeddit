@@ -2,7 +2,10 @@
     x:Class="Carpeddit.App.Views.HomePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:api="using:Carpeddit.Api.Models"
+    xmlns:corebehaviors="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:uc="using:Carpeddit.App.UserControls"
@@ -64,10 +67,11 @@
         </RelativePanel>
 
         <muxc:ProgressRing
-            x:Name="HomeRing"
             Grid.Row="1"
             Width="52"
-            Height="52" />
+            Height="52"
+            IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+            Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVis}}" />
 
         <ListView
             x:Name="MainList"
@@ -76,7 +80,8 @@
             Padding="48,0,56,0"
             d:Margin="0"
             d:Padding="0"
-            ItemContainerStyle="{StaticResource PostItemContainerStyle}">
+            ItemContainerStyle="{StaticResource PostItemContainerStyle}"
+            ItemsSource="{x:Bind ViewModel.Posts, Mode=OneWay}">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="viewmodels:PostViewModel" x:DefaultBindMode="OneWay">
                     <uc:PostItemControl
@@ -115,14 +120,11 @@
             </ListView.ItemTemplate>
 
             <ListView.Footer>
-                <Grid>
-                    <muxc:ProgressRing
-                        x:Name="FooterProgress"
-                        Margin="0,4"
-                        HorizontalAlignment="Center"
-                        IsActive="True"
-                        Visibility="Collapsed" />
-                </Grid>
+                <muxc:ProgressRing
+                    Margin="0,4"
+                    HorizontalAlignment="Center"
+                    IsActive="{x:Bind ViewModel.IsLoadingMore, Mode=OneWay}"
+                    Visibility="{x:Bind ViewModel.IsLoadingMore, Mode=OneWay, Converter={StaticResource BoolToVis}}" />
             </ListView.Footer>
         </ListView>
     </Grid>

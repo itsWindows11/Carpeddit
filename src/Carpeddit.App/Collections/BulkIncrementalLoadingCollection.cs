@@ -132,7 +132,7 @@ public class BulkIncrementalLoadingCollection<TSource, IType> : BulkObservableCo
     /// An <see cref="Action"/> that is called if an error occurs during data retrieval.
     /// </param>
     /// <seealso cref="IIncrementalSource{TSource}"/>
-    public IncrementalLoadingCollection(int itemsPerPage = 20, Action onStartLoading = null, Action onEndLoading = null, Action<Exception> onError = null)
+    public BulkIncrementalLoadingCollection(int itemsPerPage = 20, Action onStartLoading = null, Action onEndLoading = null, Action<Exception> onError = null)
         : this(Activator.CreateInstance<TSource>(), itemsPerPage, onStartLoading, onEndLoading, onError)
     {
     }
@@ -156,7 +156,7 @@ public class BulkIncrementalLoadingCollection<TSource, IType> : BulkObservableCo
     /// An <see cref="Action"/> that is called if an error occurs during data retrieval.
     /// </param>
     /// <seealso cref="IIncrementalSource{TSource}"/>
-    public IncrementalLoadingCollection(TSource source, int itemsPerPage = 20, Action onStartLoading = null, Action onEndLoading = null, Action<Exception> onError = null)
+    public BulkIncrementalLoadingCollection(TSource source, int itemsPerPage = 20, Action onStartLoading = null, Action onEndLoading = null, Action<Exception> onError = null)
     {
         if (source == null)
         {

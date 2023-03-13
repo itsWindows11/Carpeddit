@@ -3,6 +3,7 @@ using Carpeddit.Api.Helpers;
 using Carpeddit.Api.Services;
 using Carpeddit.App.Models;
 using Carpeddit.App.ViewModels;
+using Carpeddit.App.ViewModels.Pages;
 using Carpeddit.Common.Collections;
 using Carpeddit.Common.Helpers;
 using CommunityToolkit.Mvvm.DependencyInjection;
@@ -18,66 +19,16 @@ namespace Carpeddit.App.Views
 {
     public sealed partial class HomePage : Page
     {
-        private BulkObservableCollection<PostViewModel> _posts = new();
         private IRedditService service = Ioc.Default.GetService<IRedditService>();
         private SortMode currentSort = SortMode.Best;
 
         private bool isLoadingMore;
 
+        private HomePageViewModel ViewModel { get; } = Ioc.Default.GetService<HomePageViewModel>();
+
         public HomePage()
         {
             InitializeComponent();
-            Loaded += HomePage_Loaded;
-        }
-
-        private async void HomePage_Loaded(object sender, RoutedEventArgs e)
-        {
-            Loaded -= HomePage_Loaded;
-
-            var posts = (await service.GetFrontpagePostsAsync(currentSort, new(limit: 50))).Select(p => new PostViewModel()
-            {
-                Post = p
-            });
-
-            _posts.AddRange(posts);
-
-            MainList.ItemsSource = _posts;
-
-            HomeRing.IsActive = false;
-            HomeRing.Visibility = Visibility.Collapsed;
-
-            var scrollViewer = ListHelpers.GetScrollViewer(MainList);
-
-            scrollViewer.ViewChanged += OnViewChanged;
-        }
-
-        private async void OnViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
-        {
-            var scrollViewer = (ScrollViewer)sender;
-
-            if (isLoadingMore || (scrollViewer.VerticalOffset > scrollViewer.ScrollableHeight - 36 && e.IsIntermediate))
-                return;
-
-            isLoadingMore = true;
-
-            if (_posts.LastOrDefault() == null)
-            {
-                isLoadingMore = false;
-                return;
-            }
-
-            FooterProgress.Visibility = Visibility.Visible;
-
-            var posts = (await service.GetFrontpagePostsAsync(currentSort, new(after: _posts.Last().Post.Name, limit: 50))).Select(p => new PostViewModel()
-            {
-                Post = p
-            });
-
-            _posts.AddRange(posts);
-
-            FooterProgress.Visibility = Visibility.Collapsed;
-
-            isLoadingMore = false;
         }
 
         [RelayCommand]
@@ -117,27 +68,11 @@ namespace Carpeddit.App.Views
         }
 
         [RelayCommand]
-        private async Task SortSelectionChangedAsync()
+        private void SortSelectionChanged()
         {
-            MainList.ItemsSource = null;
-            _posts.Clear();
-
             currentSort = StringToSortTypeConverter.ToSortMode((string)SortControl.SelectedContent);
 
-            HomeRing.Visibility = Visibility.Visible;
-            HomeRing.IsActive = true;
-
-            var posts = (await service.GetFrontpagePostsAsync(currentSort, new(limit: 50))).Select(p => new PostViewModel()
-            {
-                Post = p
-            });
-
-            _posts.AddRange(posts);
-
-            MainList.ItemsSource = _posts;
-
-            HomeRing.IsActive = false;
-            HomeRing.Visibility = Visibility.Collapsed;
+            ViewModel.SetSortCommand?.Execute(currentSort);
         }
     }
 }

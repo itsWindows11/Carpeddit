@@ -45,6 +45,7 @@ namespace Carpeddit.App
             services.AddSingleton<SettingsViewModel>();
             services.AddSingleton<IRedditAuthService, RedditAuthService>();
             services.AddSingleton<IRedditService, RedditService>();
+            services.AddTransient<HomePageViewModel>();
             services.AddTransient<SettingsPageViewModel>();
 
             var provider = services.BuildServiceProvider();

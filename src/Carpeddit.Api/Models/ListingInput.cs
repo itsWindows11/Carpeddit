@@ -28,6 +28,8 @@ namespace Carpeddit.Api.Models
         [JsonPropertyName("count")]
         public int Count { get; set; }
 
+        public ListingInput() { }
+
         /// <summary>
         /// Populate a new listing input.
         /// </summary>
