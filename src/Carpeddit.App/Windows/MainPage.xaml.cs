@@ -1,11 +1,10 @@
 ﻿using Carpeddit.Api.Helpers;
 using Carpeddit.Api.Services;
-using Carpeddit.Api.Watchers;
 using Carpeddit.App.ViewModels;
 using Carpeddit.App.Views;
+using Carpeddit.Common.Messages;
 using CommunityToolkit.Mvvm.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Uwp.Notifications;
+using CommunityToolkit.Mvvm.Messaging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +16,6 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
-using static Carpeddit.Api.Watchers.MailboxWatcher;
 using muxc = Microsoft.UI.Xaml.Controls;
 
 namespace Carpeddit.App
@@ -43,7 +41,16 @@ namespace Carpeddit.App
             NavigationCacheMode = NavigationCacheMode.Enabled;
             Loaded += OnLoaded;
             TitleBar.Loaded += (_, _1) => TitleBar.SetAsTitleBar();
+
+            if (!WeakReferenceMessenger.Default.IsRegistered<MainFrameNavigationMessage>(this))
+                WeakReferenceMessenger.Default.Register(this);
         }
+    }
+
+    public partial class MainPage : IRecipient<MainFrameNavigationMessage>
+    {
+        public void Receive(MainFrameNavigationMessage message)
+            => ContentFrame.Navigate(message.Page, message.Parameter, message.TransitionInfo);
     }
 
     public partial class MainPage

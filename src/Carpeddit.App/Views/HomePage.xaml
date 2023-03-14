@@ -2,10 +2,7 @@
     x:Class="Carpeddit.App.Views.HomePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:api="using:Carpeddit.Api.Models"
-    xmlns:corebehaviors="using:Microsoft.Xaml.Interactions.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     xmlns:uc="using:Carpeddit.App.UserControls"
@@ -46,7 +43,7 @@
                 Label="Sort by:"
                 RelativePanel.AlignRightWithPanel="True"
                 SelectedContent="Best"
-                SelectionChangedCommand="{x:Bind SortSelectionChangedCommand, Mode=OneWay}">
+                SelectionChangedCommand="{x:Bind ViewModel.SortSelectionChangedCommand, Mode=OneWay}">
                 <uc:SortAndFilterControl.Flyout>
                     <MenuFlyout>
                         <muxc:RadioMenuFlyoutItem Text="Hot" />
@@ -91,10 +88,10 @@
                         IsDownvoted="{x:Bind IsDownvoted, Mode=TwoWay}"
                         IsUpvoted="{x:Bind IsUpvoted, Mode=TwoWay}"
                         Post="{x:Bind}"
-                        SubredditClickCommand="{Binding SubredditClickCommand, ElementName=RootPage}"
+                        SubredditClickCommand="{Binding ViewModel.SubredditClickCommand, ElementName=RootPage}"
                         SubredditName="{x:Bind Post.SubredditNamePrefixed}"
-                        TitleClickCommand="{Binding TitleClickCommand, ElementName=RootPage}"
-                        UserClickCommand="{Binding UserClickCommand, ElementName=RootPage}"
+                        TitleClickCommand="{Binding ViewModel.TitleClickCommand, ElementName=RootPage}"
+                        UserClickCommand="{Binding ViewModel.UserClickCommand, ElementName=RootPage}"
                         UserName="{x:Bind Post.Author}"
                         VoteRatio="{x:Bind VoteRatio, Converter={StaticResource FormattedNumberConverter}}">
                         <uc:PostItemControl.FooterContent>

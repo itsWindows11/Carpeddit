@@ -132,6 +132,7 @@
     <Compile Include="Extensions\PackageIdExtensions.cs" />
     <Compile Include="Helpers\ListHelpers.cs" />
     <Compile Include="Helpers\WebHelpers.cs" />
+    <Compile Include="Messages\MainFrameNavigationMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Carpeddit.Common.rd.xml" />
   </ItemGroup>

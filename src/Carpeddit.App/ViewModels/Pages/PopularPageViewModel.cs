@@ -1,6 +1,5 @@
 ﻿using Carpeddit.Api.Enums;
 using Carpeddit.Api.Helpers;
-using Carpeddit.Api.Models;
 using Carpeddit.App.Collections;
 using Carpeddit.App.Models;
 using Carpeddit.App.Views;
@@ -15,11 +14,11 @@ using Windows.UI.Xaml.Controls;
 
 namespace Carpeddit.App.ViewModels.Pages
 {
-    public sealed partial class HomePageViewModel : ObservableObject
+    public sealed partial class PopularPageViewModel : ObservableObject
     {
         public BulkIncrementalLoadingCollection<PostLoadingSource, PostViewModel> Posts { get; }
 
-        private SortMode currentSort = SortMode.Best;
+        private SortMode currentSort = SortMode.Hot;
         private readonly PostLoadingSource source;
         private bool loadedInitialPosts;
 
@@ -29,9 +28,9 @@ namespace Carpeddit.App.ViewModels.Pages
         [ObservableProperty]
         private bool isLoading;
 
-        public HomePageViewModel()
+        public PopularPageViewModel()
         {
-            source = new(sort: currentSort);
+            source = new("r/popular", currentSort);
             Posts = new(source, 50, () =>
             {
                 if (loadedInitialPosts)
