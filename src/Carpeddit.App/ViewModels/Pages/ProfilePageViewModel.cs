@@ -1,5 +1,5 @@
 ﻿using Carpeddit.Api.Enums;
-using Carpeddit.Api.Helpers;
+using Carpeddit.Api.Models;
 using Carpeddit.App.Collections;
 using Carpeddit.App.Models;
 using Carpeddit.App.Views;
@@ -14,12 +14,50 @@ using Windows.UI.Xaml.Controls;
 
 namespace Carpeddit.App.ViewModels.Pages
 {
-    public sealed partial class HomePageViewModel : ObservableObject
+    public sealed partial class ProfilePageViewModel : ObservableObject
     {
-        public BulkIncrementalLoadingCollection<PostLoadingSource, PostViewModel> Posts { get; }
+        private User user;
+
+        public User User
+        {
+            get => user;
+            set
+            {
+                user = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsTitleBlank));
+
+                source = new($"u/" + user.Name, sort: currentSort);
+                Posts = new(source, 50, () =>
+                {
+                    if (loadedInitialPosts)
+                        IsLoadingMore = true;
+                    else
+                        IsLoading = true;
+                }, () =>
+                {
+                    loadedInitialPosts = true;
+                    IsLoading = false;
+                    IsLoadingMore = false;
+                });
+            }
+        }
+
+        public bool IsTitleBlank
+        {
+            get
+            {
+                if (User == null)
+                    return true;
+
+                return string.IsNullOrWhiteSpace(User.Subreddit.Title) || User.Subreddit.Title.Equals(User.Name);
+            }
+        }
+
+        public BulkIncrementalLoadingCollection<PostLoadingSource, PostViewModel> Posts { get; private set; }
 
         private SortMode currentSort = SortMode.Best;
-        private readonly PostLoadingSource source;
+        private PostLoadingSource source;
         private bool loadedInitialPosts;
 
         [ObservableProperty]
@@ -28,22 +66,8 @@ namespace Carpeddit.App.ViewModels.Pages
         [ObservableProperty]
         private bool isLoading;
 
-        public HomePageViewModel()
-        {
-            source = new(sort: currentSort);
-            Posts = new(source, 50, () =>
-            {
-                if (loadedInitialPosts)
-                    IsLoadingMore = true;
-                else
-                    IsLoading = true;
-            }, () =>
-            {
-                loadedInitialPosts = true;
-                IsLoading = false;
-                IsLoadingMore = false;
-            });
-        }
+        [ObservableProperty]
+        private bool infoLoaded;
 
         [RelayCommand]
         public Task SetSortAsync(SortMode mode)
@@ -65,19 +89,6 @@ namespace Carpeddit.App.ViewModels.Pages
             });
 
         [RelayCommand]
-        public void UserClick(string name)
-        {
-            if (name == "[deleted]")
-                return;
-
-            WeakReferenceMessenger.Default.Send<MainFrameNavigationMessage>(new()
-            {
-                Page = typeof(ProfilePage),
-                Parameter = name
-            });
-        }
-
-        [RelayCommand]
         public void TitleClick(PostViewModel model)
             => ((Frame)Window.Current.Content).Navigate(typeof(PostDetailsPage), new PostDetailsNavigationInfo()
             {
@@ -96,13 +107,6 @@ namespace Carpeddit.App.ViewModels.Pages
             package.SetText("https://www.reddit.com" + item.Post.Permalink);
 
             Clipboard.SetContent(package);
-        }
-
-        [RelayCommand]
-        public void SortSelectionChanged(string sort)
-        {
-            currentSort = StringToSortTypeConverter.ToSortMode(sort);
-            SetSortCommand?.Execute(currentSort);
         }
     }
 }

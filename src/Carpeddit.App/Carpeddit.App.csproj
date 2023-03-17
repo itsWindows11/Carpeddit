@@ -155,8 +155,11 @@
     <Compile Include="ViewModels\Pages\PopularPageViewModel.cs" />
     <Compile Include="ViewModels\Pages\HomePageViewModel.cs" />
     <Compile Include="ViewModels\Pages\SettingsPageViewModel.cs" />
+    <Compile Include="ViewModels\Pages\ProfilePageViewModel.cs" />
+    <Compile Include="ViewModels\Pages\SubredditInfoPageViewModel.cs" />
     <Compile Include="ViewModels\PostViewModel.cs" />
     <Compile Include="ViewModels\RedditPrefsViewModel.cs" />
+    <Compile Include="ViewModels\SubredditViewModel.cs" />
     <Compile Include="Views\MailboxDetailsPage.xaml.cs">
       <DependentUpon>MailboxDetailsPage.xaml</DependentUpon>
     </Compile>
@@ -367,8 +370,11 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Labs.Uwp.SegmentedControl">
+      <Version>0.0.2</Version>
+    </PackageReference>
     <PackageReference Include="CommunityToolkit.Labs.Uwp.SettingsControls">
-      <Version>0.0.16</Version>
+      <Version>0.0.17</Version>
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Labs.Uwp.SizerBase">
       <Version>0.0.4</Version>

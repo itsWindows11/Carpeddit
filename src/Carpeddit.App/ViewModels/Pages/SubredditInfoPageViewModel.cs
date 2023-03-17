@@ -14,12 +14,38 @@ using Windows.UI.Xaml.Controls;
 
 namespace Carpeddit.App.ViewModels.Pages
 {
-    public sealed partial class HomePageViewModel : ObservableObject
+    public sealed partial class SubredditInfoPageViewModel : ObservableObject
     {
-        public BulkIncrementalLoadingCollection<PostLoadingSource, PostViewModel> Posts { get; }
+        private SubredditViewModel subreddit;
+
+        public SubredditViewModel Subreddit
+        {
+            get => subreddit;
+            set
+            {
+                subreddit = value;
+                OnPropertyChanged();
+
+                source = new(Subreddit.Subreddit.DisplayNamePrefixed, sort: currentSort);
+                Posts = new(source, 50, () =>
+                {
+                    if (loadedInitialPosts)
+                        IsLoadingMore = true;
+                    else
+                        IsLoading = true;
+                }, () =>
+                {
+                    loadedInitialPosts = true;
+                    IsLoading = false;
+                    IsLoadingMore = false;
+                });
+            }
+        }
+
+        public BulkIncrementalLoadingCollection<PostLoadingSource, PostViewModel> Posts { get; private set; }
 
         private SortMode currentSort = SortMode.Best;
-        private readonly PostLoadingSource source;
+        private PostLoadingSource source;
         private bool loadedInitialPosts;
 
         [ObservableProperty]
@@ -28,22 +54,8 @@ namespace Carpeddit.App.ViewModels.Pages
         [ObservableProperty]
         private bool isLoading;
 
-        public HomePageViewModel()
-        {
-            source = new(sort: currentSort);
-            Posts = new(source, 50, () =>
-            {
-                if (loadedInitialPosts)
-                    IsLoadingMore = true;
-                else
-                    IsLoading = true;
-            }, () =>
-            {
-                loadedInitialPosts = true;
-                IsLoading = false;
-                IsLoadingMore = false;
-            });
-        }
+        [ObservableProperty]
+        private bool infoLoaded;
 
         [RelayCommand]
         public Task SetSortAsync(SortMode mode)
@@ -55,14 +67,6 @@ namespace Carpeddit.App.ViewModels.Pages
 
             return Posts.RefreshAsync();
         }
-
-        [RelayCommand]
-        public void SubredditClick(string subreddit)
-            => WeakReferenceMessenger.Default.Send<MainFrameNavigationMessage>(new()
-            {
-                Page = typeof(SubredditInfoPage),
-                Parameter = subreddit.Substring(2)
-            });
 
         [RelayCommand]
         public void UserClick(string name)
@@ -96,13 +100,6 @@ namespace Carpeddit.App.ViewModels.Pages
             package.SetText("https://www.reddit.com" + item.Post.Permalink);
 
             Clipboard.SetContent(package);
-        }
-
-        [RelayCommand]
-        public void SortSelectionChanged(string sort)
-        {
-            currentSort = StringToSortTypeConverter.ToSortMode(sort);
-            SetSortCommand?.Execute(currentSort);
         }
     }
 }

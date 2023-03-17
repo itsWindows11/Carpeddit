@@ -4,6 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:enums="using:Carpeddit.Api.Enums"
+    xmlns:labs="using:CommunityToolkit.Labs.WinUI"
     xmlns:local="using:Carpeddit.App.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:media="using:Microsoft.Toolkit.Uwp.UI.Media"
@@ -25,6 +27,60 @@
                 Icon="{ui:FontIcon Glyph=&#xE16F;}"
                 Text="Copy link" />
         </MenuFlyout>
+
+        <MenuFlyout x:Name="TopSortFlyout">
+            <muxc:RadioMenuFlyoutItem
+                Command="{x:Bind ViewModel.SetSortCommand}"
+                CommandParameter="{x:Bind enums:SortMode.TopAllTime}"
+                Text="All Time" />
+            <muxc:RadioMenuFlyoutItem
+                Command="{x:Bind ViewModel.SetSortCommand}"
+                CommandParameter="{x:Bind enums:SortMode.TopYear}"
+                Text="Year" />
+            <muxc:RadioMenuFlyoutItem
+                Command="{x:Bind ViewModel.SetSortCommand}"
+                CommandParameter="{x:Bind enums:SortMode.TopMonth}"
+                Text="Month" />
+            <muxc:RadioMenuFlyoutItem
+                Command="{x:Bind ViewModel.SetSortCommand}"
+                CommandParameter="{x:Bind enums:SortMode.TopWeek}"
+                Text="Week" />
+            <muxc:RadioMenuFlyoutItem
+                Command="{x:Bind ViewModel.SetSortCommand}"
+                CommandParameter="{x:Bind enums:SortMode.TopToday}"
+                Text="Today" />
+            <muxc:RadioMenuFlyoutItem
+                Command="{x:Bind ViewModel.SetSortCommand}"
+                CommandParameter="{x:Bind enums:SortMode.TopNow}"
+                Text="Now" />
+        </MenuFlyout>
+
+        <MenuFlyout x:Name="ControversialSortFlyout">
+            <muxc:RadioMenuFlyoutItem
+                Command="{x:Bind ViewModel.SetSortCommand}"
+                CommandParameter="{x:Bind enums:SortMode.ControversialAllTime}"
+                Text="All Time" />
+            <muxc:RadioMenuFlyoutItem
+                Command="{x:Bind ViewModel.SetSortCommand}"
+                CommandParameter="{x:Bind enums:SortMode.ControversialYear}"
+                Text="Year" />
+            <muxc:RadioMenuFlyoutItem
+                Command="{x:Bind ViewModel.SetSortCommand}"
+                CommandParameter="{x:Bind enums:SortMode.ControversialMonth}"
+                Text="Month" />
+            <muxc:RadioMenuFlyoutItem
+                Command="{x:Bind ViewModel.SetSortCommand}"
+                CommandParameter="{x:Bind enums:SortMode.ControversialWeek}"
+                Text="Week" />
+            <muxc:RadioMenuFlyoutItem
+                Command="{x:Bind ViewModel.SetSortCommand}"
+                CommandParameter="{x:Bind enums:SortMode.ControversialToday}"
+                Text="Today" />
+            <muxc:RadioMenuFlyoutItem
+                Command="{x:Bind ViewModel.SetSortCommand}"
+                CommandParameter="{x:Bind enums:SortMode.ControversialNow}"
+                Text="Now" />
+        </MenuFlyout>
     </Page.Resources>
 
     <Grid Margin="-48,0,-56,0" d:Margin="0">
@@ -43,20 +99,36 @@
             d:Padding="0"
             ui:ScrollViewerExtensions.VerticalScrollBarMargin="0,48,0,0"
             ItemContainerStyle="{StaticResource PostItemContainerStyle}"
+            ItemsSource="{x:Bind ViewModel.Posts}"
             SelectionMode="None">
             <ListView.Header>
                 <StackPanel Margin="0,8">
-                    <Grid>
+                    <Grid x:Name="RootHeaderGrid">
                         <muxc:ProgressRing
                             x:Name="LoadingInfoRing"
                             Margin="0,-12,0,0"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center" />
 
-                        <Border Height="300" Margin="-16,64,-16,0">
+                        <TextBlock
+                            x:Name="NotFoundBannerImageMessage"
+                            Margin="0,-12,0,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontWeight="Normal"
+                            Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                            Style="{StaticResource SubtitleTextBlockStyle}"
+                            Text="Cannot find banner image"
+                            Visibility="Collapsed" />
+
+                        <Border
+                            x:Name="HeaderBorder"
+                            Height="300"
+                            Margin="-16,64,-16,0">
                             <Grid Margin="0,0,0,-12" VerticalAlignment="Bottom">
                                 <StackPanel Padding="20,0">
                                     <controls:ImageEx
+                                        x:Name="ProfileImage"
                                         Width="64"
                                         Height="64"
                                         HorizontalAlignment="Center"
@@ -65,8 +137,9 @@
                                         BorderThickness="1"
                                         CornerRadius="32"
                                         DecodePixelType="Logical"
-                                        Source="{x:Bind _user.IconImage, Converter={StaticResource StringToUri}, ConverterParameter=SubredditIconFallback}"
-                                        Stretch="UniformToFill" />
+                                        Source="{x:Bind ViewModel.User.IconImage, Converter={StaticResource StringToUri}, ConverterParameter=SubredditIconFallback}"
+                                        Stretch="UniformToFill"
+                                        Visibility="Collapsed" />
                                     <StackPanel Padding="0,0,0,12">
                                         <TextBlock
                                             x:Name="SubredditFriendlyName"
@@ -76,7 +149,7 @@
                                             FontWeight="SemiBold"
                                             Foreground="WhiteSmoke"
                                             Style="{StaticResource SubtitleTextBlockStyle}"
-                                            Text="{x:Bind _user.Subreddit.Title}" />
+                                            Text="{x:Bind ViewModel.User.Subreddit.Title}" />
 
                                         <TextBlock
                                             x:Name="SubredditName"
@@ -85,7 +158,7 @@
                                             FontSize="12"
                                             Foreground="WhiteSmoke"
                                             HorizontalTextAlignment="Center"
-                                            Text="{x:Bind _user.Name}" />
+                                            Text="{x:Bind ViewModel.User.Name}" />
                                     </StackPanel>
                                 </StackPanel>
 
@@ -99,6 +172,7 @@
                     </Grid>
 
                     <StackPanel
+                        x:Name="AboutPanel"
                         Margin="0,36,0,0"
                         Padding="12"
                         d:Margin="12,12,12,0"
@@ -119,56 +193,60 @@
 
                             <TextBlock>
                                 <Run Text="Created at" />
-                                <Run Text="{x:Bind _user.CreatedUtc}" />
+                                <Run Text="{x:Bind ViewModel.User.CreatedUtc}" />
                             </TextBlock>
                         </StackPanel>
                     </StackPanel>
 
-                    <uc:SortAndFilterControl
-                        x:Name="SortControl"
-                        Height="36"
-                        MinWidth="128"
+                    <Border
                         Margin="0,8,0,0"
-                        HorizontalAlignment="Right"
-                        Label="Sort by:"
-                        SelectedContent="New"
-                        SelectionChangedCommand="{x:Bind SortSelectionChangedCommand, Mode=OneWay}">
-                        <uc:SortAndFilterControl.Flyout>
-                            <MenuFlyout>
-                                <muxc:RadioMenuFlyoutItem Text="Hot" />
-                                <muxc:RadioMenuFlyoutItem Text="Best" />
-                                <muxc:RadioMenuFlyoutItem IsChecked="True" Text="New" />
-                                <MenuFlyoutSubItem Text="Top">
-                                    <muxc:RadioMenuFlyoutItem Text="Now" />
-                                    <muxc:RadioMenuFlyoutItem Text="Today" />
-                                    <muxc:RadioMenuFlyoutItem Text="Week" />
-                                    <muxc:RadioMenuFlyoutItem Text="Month" />
-                                    <muxc:RadioMenuFlyoutItem Text="Year" />
-                                    <muxc:RadioMenuFlyoutItem Text="All Time" />
-                                </MenuFlyoutSubItem>
-                                <muxc:RadioMenuFlyoutItem Text="Rising" />
-                            </MenuFlyout>
-                        </uc:SortAndFilterControl.Flyout>
-                    </uc:SortAndFilterControl>
+                        Padding="8"
+                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                        BorderThickness="1"
+                        CornerRadius="4">
+                        <labs:Segmented
+                            x:Name="SortSegmented"
+                            IsItemClickEnabled="True"
+                            ItemClick="Segmented_ItemClick"
+                            SelectedIndex="0">
+                            <labs:SegmentedItem>
+                                <labs:SegmentedItem.Icon>
+                                    <FontIcon Foreground="{ThemeResource AccentFillColorDefaultBrush}" Glyph="&#xF133;" />
+                                </labs:SegmentedItem.Icon>
+
+                                <TextBlock Tag="{x:Bind enums:SortMode.New}" Text="New" />
+                            </labs:SegmentedItem>
+
+                            <labs:SegmentedItem>
+                                <labs:SegmentedItem.Icon>
+                                    <PathIcon Data="M 24.019531 2.984375 A 1.50015 1.50015 0 0 0 23.019531 3.3496094 C 23.019531 3.3496094 19.285906 6.5759653 15.5625 11.40625 C 11.839094 16.236535 8 22.717802 8 29.566406 C 8 38.105071 15.212904 45 24 45 C 32.787096 45 40 38.105071 40 29.566406 C 40 22.717802 36.160906 16.236535 32.4375 11.40625 C 28.714094 6.5759653 24.980469 3.3496094 24.980469 3.3496094 A 1.50015 1.50015 0 0 0 24.019531 2.984375 z M 24 6.5527344 C 25.082955 7.548903 27.322088 9.683211 30.0625 13.238281 C 33.589094 17.813247 37 23.87401 37 29.566406 C 37 33.803154 34.790232 37.550639 31.396484 39.796875 C 31.48725 39.566535 31.571448 39.331457 31.642578 39.091797 C 31.874852 38.30919 32 37.480637 32 36.625 C 32 33.006205 30.246422 29.131773 28.570312 26.029297 C 26.894205 22.926821 25.212891 20.617187 25.212891 20.617188 A 1.50015 1.50015 0 0 0 23.912109 20.001953 A 1.50015 1.50015 0 0 0 22.787109 20.617188 C 22.787109 20.617188 21.105795 22.926821 19.429688 26.029297 C 17.753578 29.131773 16 33.006205 16 36.625 C 16 37.480637 16.125148 38.30919 16.357422 39.091797 C 16.428552 39.331457 16.51275 39.566535 16.603516 39.796875 C 13.209768 37.550639 11 33.803154 11 29.566406 C 11 23.87401 14.410906 17.813247 17.9375 13.238281 C 20.677912 9.6832109 22.917045 7.548903 24 6.5527344 z M 24 24.339844 C 24.60075 25.234894 24.963104 25.665933 25.929688 27.455078 C 27.503578 30.368352 29 34.056795 29 36.625 C 29 39.655605 26.732618 42 24 42 C 21.267382 42 19 39.655605 19 36.625 C 19 36.303974 19.022414 35.965612 19.066406 35.613281 C 19.374349 33.146964 20.693158 30.004193 22.070312 27.455078 C 23.036896 25.665933 23.39925 25.234894 24 24.339844 z" Foreground="{ThemeResource AccentFillColorDefaultBrush}" />
+                                </labs:SegmentedItem.Icon>
+
+                                <TextBlock Tag="{x:Bind enums:SortMode.Hot}" Text="Hot" />
+                            </labs:SegmentedItem>
+                            <labs:SegmentedItem>
+                                <labs:SegmentedItem.Icon>
+                                    <PathIcon Data="M 24.025391 3 A 1.50015 1.50015 0 0 0 23.533203 3.0742188 C 19.051588 4.5415375 16 8.6892464 16 13.361328 L 16 21.285156 A 1.50015 1.50015 0 0 0 15.869141 21.404297 L 10.392578 26.878906 C 8.5474437 28.724041 8.5474437 31.760334 10.392578 33.605469 C 11.515672 34.728563 13.132469 35.218621 14.691406 34.90625 L 16.552734 34.535156 C 17.153861 35.684156 18.212767 36.558121 19.490234 36.869141 C 19.179761 37.502765 19 38.211749 19 38.96875 C 19 40.366619 19.660254 41.405677 20.326172 42.476562 C 20.992089 43.547449 21.756647 44.537501 22.273438 45.177734 C 23.139059 46.250028 24.862655 46.247903 25.726562 45.177734 C 26.243927 44.536915 27.008011 43.545416 27.673828 42.474609 C 28.339645 41.403803 29 40.366272 29 38.96875 C 29 38.215804 28.814937 37.510092 28.511719 36.869141 C 29.788354 36.557718 30.846429 35.683601 31.447266 34.535156 L 33.310547 34.90625 C 34.868875 35.217814 36.484801 34.72809 37.607422 33.605469 C 39.452556 31.760334 39.452556 28.724041 37.607422 26.878906 L 32.130859 21.404297 A 1.50015 1.50015 0 0 0 32 21.285156 L 32 13.361328 C 32 8.6892464 28.948412 4.5415377 24.466797 3.0742188 A 1.50015 1.50015 0 0 0 24.025391 3 z M 24 6.1640625 C 26.999823 7.368185 29 10.167172 29 13.361328 L 29 32.5 C 29 33.346499 28.346499 34 27.5 34 L 24.394531 34 L 24.373047 33.998047 L 22.193359 33.998047 L 22.193359 34 L 20.5 34 C 19.653501 34 19 33.346499 19 32.5 L 19 13.361328 C 19 10.167172 21.000177 7.368185 24 6.1640625 z M 24 13 A 2 2 0 0 0 24 17 A 2 2 0 0 0 24 13 z M 16 25.515625 L 16 31.585938 L 14.101562 31.964844 C 13.524501 32.080472 12.932531 31.901281 12.515625 31.484375 C 11.81676 30.78551 11.81676 29.698865 12.515625 29 L 16 25.515625 z M 32 25.515625 L 35.484375 29 C 36.18324 29.698865 36.18324 30.78551 35.484375 31.484375 C 35.067469 31.901281 34.475499 32.080472 33.898438 31.964844 L 32 31.585938 L 32 25.515625 z M 23.806641 37 L 24.193359 37 C 25.219277 37.100092 26 37.916549 26 38.96875 C 26 39.01423 25.683886 39.994931 25.126953 40.890625 C 24.765138 41.472517 24.382387 41.947011 24 42.451172 C 23.617798 41.947198 23.234854 41.474414 22.873047 40.892578 C 22.315964 39.996714 22 39.013881 22 38.96875 C 22 37.916548 22.78072 37.100089 23.806641 37 z" Foreground="{ThemeResource AccentFillColorDefaultBrush}" />
+                                </labs:SegmentedItem.Icon>
+
+                                <TextBlock Tag="{x:Bind enums:SortMode.Best}" Text="Best" />
+                            </labs:SegmentedItem>
+                            <labs:SegmentedItem x:Name="TopItem">
+                                <labs:SegmentedItem.Icon>
+                                    <FontIcon Foreground="{ThemeResource AccentFillColorDefaultBrush}" Glyph="&#xE74A;" />
+                                </labs:SegmentedItem.Icon>
+
+                                <TextBlock Tag="TopItem" Text="Top" />
+                            </labs:SegmentedItem>
+                        </labs:Segmented>
+                    </Border>
 
                     <muxc:ProgressRing
                         x:Name="PostLoadingProgressRing"
                         Margin="0,16,0,0"
-                        IsActive="False"
-                        Visibility="Collapsed" />
-
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup>
-                            <VisualState x:Name="WithDisplayName" />
-                            <VisualState x:Name="NoDisplayName">
-                                <VisualState.Setters>
-                                    <Setter Target="SubredditFriendlyName.Visibility" Value="Collapsed" />
-                                    <Setter Target="SubredditName.Style" Value="{StaticResource SubtitleTextBlockStyle}" />
-                                    <Setter Target="SubredditName.FontSize" Value="20" />
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
+                        IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVis}}" />
                 </StackPanel>
             </ListView.Header>
 
@@ -176,15 +254,15 @@
                 <DataTemplate x:DataType="viewmodels:PostViewModel">
                     <uc:PostItemControl
                         Title="{x:Bind Title}"
-                        Margin="-4,0"
+                        Margin="-3,0"
                         CreationDate="{x:Bind Created}"
                         Description="{x:Bind ShortDescription}"
                         IsDownvoted="{x:Bind IsDownvoted, Mode=TwoWay}"
                         IsUpvoted="{x:Bind IsUpvoted, Mode=TwoWay}"
                         Post="{x:Bind}"
-                        SubredditClickCommand="{Binding SubredditClickCommand, ElementName=RootPage}"
+                        SubredditClickCommand="{Binding ViewModel.SubredditClickCommand, ElementName=RootPage}"
                         SubredditName="{x:Bind Post.SubredditNamePrefixed}"
-                        TitleClickCommand="{Binding TitleClickCommand, ElementName=RootPage}"
+                        TitleClickCommand="{Binding ViewModel.TitleClickCommand, ElementName=RootPage}"
                         UserName="{x:Bind Post.Author}"
                         VoteRatio="{x:Bind VoteRatio, Converter={StaticResource FormattedNumberConverter}}">
                         <uc:PostItemControl.FooterContent>
@@ -210,15 +288,70 @@
             </ListView.ItemTemplate>
 
             <ListView.Footer>
-                <Grid>
-                    <muxc:ProgressRing
-                        x:Name="FooterProgress"
-                        Margin="0,4"
-                        HorizontalAlignment="Center"
-                        IsActive="True"
-                        Visibility="Collapsed" />
-                </Grid>
+                <muxc:ProgressRing
+                    x:Name="FooterProgress"
+                    Margin="0,4"
+                    HorizontalAlignment="Center"
+                    IsActive="{x:Bind ViewModel.IsLoadingMore, Mode=OneWay}"
+                    Visibility="{x:Bind ViewModel.IsLoadingMore, Mode=OneWay, Converter={StaticResource BoolToVis}}" />
             </ListView.Footer>
         </ListView>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="DisplayNameStates">
+                <VisualState x:Name="WithDisplayName" />
+                <VisualState x:Name="NoDisplayName">
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{x:Bind ViewModel.IsTitleBlank, Mode=OneWay}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="SubredditFriendlyName.Visibility" Value="Collapsed" />
+                        <Setter Target="SubredditName.Style" Value="{StaticResource SubtitleTextBlockStyle}" />
+                        <Setter Target="SubredditName.FontSize" Value="20" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+            <VisualStateGroup x:Name="JoinStates">
+                <VisualState x:Name="JoinedState">
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{x:Bind ViewModel.User.Subreddit.UserIsSubscriber, Mode=OneWay}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="JoinButton.Content" Value="Leave" />
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="NotJoinedState" />
+            </VisualStateGroup>
+            <VisualStateGroup x:Name="LoadingStates">
+                <VisualState x:Name="NotLoadedSubredditInfoState" />
+                <VisualState x:Name="LoadedSubredditInfoState">
+                    <VisualState.StateTriggers>
+                        <StateTrigger IsActive="{x:Bind ViewModel.InfoLoaded, Mode=OneWay}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="LoadingInfoRing.Visibility" Value="Collapsed" />
+                        <Setter Target="LoadingInfoRing.IsActive" Value="False" />
+                        <Setter Target="ProfileImage.Visibility" Value="Visible" />
+                        <Setter Target="JoinButton.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+            <VisualStateGroup x:Name="HeaderStates">
+                <VisualState x:Name="FullHeaderState" />
+                <VisualState x:Name="NoHeaderState">
+                    <VisualState.Setters>
+                        <Setter Target="SubredditFriendlyName.Foreground" Value="{ThemeResource TextFillColorPrimary}" />
+                        <Setter Target="SubredditName.Foreground" Value="{ThemeResource TextFillColorPrimary}" />
+                        <Setter Target="RootHeaderGrid.Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}" />
+                        <Setter Target="RootHeaderGrid.BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}" />
+                        <Setter Target="RootHeaderGrid.BorderThickness" Value="0,0,0,1" />
+                        <Setter Target="RootHeaderGrid.Margin" Value="-39,-12,-56,0" />
+                        <Setter Target="RootHeaderGrid.Padding" Value="48,0,48,12" />
+                        <Setter Target="AboutPanel.Margin" Value="0,8,0,0" />
+                        <Setter Target="NotFoundBannerImageMessage.Visibility" Value="Visible" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </Page>

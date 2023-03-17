@@ -73,7 +73,7 @@ namespace Carpeddit.App.ViewModels.Pages
             WeakReferenceMessenger.Default.Send<MainFrameNavigationMessage>(new()
             {
                 Page = typeof(ProfilePage),
-                Parameter = name.Substring(2)
+                Parameter = name
             });
         }
 

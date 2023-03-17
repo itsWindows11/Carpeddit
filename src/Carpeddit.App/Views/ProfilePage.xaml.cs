@@ -25,25 +25,23 @@ using Windows.UI.Xaml.Media;
 using Windows.UI;
 using Microsoft.Toolkit.Uwp.UI;
 using System.Threading.Tasks;
-using Carpeddit.Api.Helpers;
 using CommunityToolkit.Mvvm.DependencyInjection;
+using Carpeddit.App.ViewModels.Pages;
 
 namespace Carpeddit.App.Views
 {
     public sealed partial class ProfilePage : Page
     {
-        private User _user;
-        private BulkObservableCollection<PostViewModel> _posts = new();
         private IRedditService service = Ioc.Default.GetService<IRedditService>();
-        private bool isLoadingMore;
-        private bool _eventRegistered;
 
-        private SortMode currentSort = SortMode.New;
+        public ProfilePageViewModel ViewModel { get; } = Ioc.Default.GetService<ProfilePageViewModel>();
 
         private CompositionPropertySet? _scrollerPropertySet;
         private Compositor? _compositor;
         private SpriteVisual? _backgroundVisual;
         private ScrollViewer? _scrollViewer;
+
+        private object selectedSort;
 
         public ProfilePage()
         {
@@ -54,19 +52,21 @@ namespace Carpeddit.App.Views
         {
             if (e.Parameter is User user)
             {
-                _user = user;
+                ViewModel.User = user;
+                ViewModel.InfoLoaded = true;
                 Loaded += Page_Loaded;
-                _eventRegistered = true;
             }
             else if (e.Parameter is string userName)
             {
-                _user = await service.GetUserAsync(userName);
+                ViewModel.User = await service.GetUserAsync(userName);
+                ViewModel.InfoLoaded = true;
                 Page_Loaded(null, null);
                 Bindings.Update();
             }
             else
             {
-                _user = await service.GetMeAsync();
+                ViewModel.User = await service.GetMeAsync();
+                ViewModel.InfoLoaded = true;
 
                 // Sometimes it may load too quickly so it might crash when finding a ScrollViewer
                 await Task.Delay(150);
@@ -78,103 +78,26 @@ namespace Carpeddit.App.Views
             base.OnNavigatedTo(e);
         }
 
-        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            if (_eventRegistered)
-                Loaded -= Page_Loaded;
-
-            LoadingInfoRing.IsActive = false;
-            LoadingInfoRing.Visibility = Visibility.Collapsed;
-
-            if (_user.Subreddit.UserIsSubscriber)
-                JoinButton.Content = "Unfollow";
-
-            if (string.IsNullOrWhiteSpace(_user.Subreddit.Title))
-                _ = VisualStateManager.GoToState(this, "NoDisplayName", false);
-
             _scrollViewer = MainList.FindDescendant<ScrollViewer>();
 
             _scrollerPropertySet = ElementCompositionPreview.GetScrollViewerManipulationPropertySet(_scrollViewer);
             _compositor = _scrollerPropertySet.Compositor;
 
+            StartTitleFadeInAnimation(_compositor);
+
             ManipulationPropertySetReferenceNode scrollingProperties = _scrollerPropertySet.GetSpecializedReference<ManipulationPropertySetReferenceNode>();
 
-            CreateImageBackgroundGradientVisual(scrollingProperties.Translation.Y, string.IsNullOrEmpty(_user.Subreddit.BannerImage) ? null : new(WebUtility.HtmlDecode(_user.Subreddit.BannerImage)));
-
-            PostLoadingProgressRing.IsActive = true;
-            PostLoadingProgressRing.Visibility = Visibility.Visible;
-
-            var posts = (await service.GetUserPostsAsync(_user.Name, currentSort, new(limit: 50))).Select(p => new PostViewModel()
-            {
-                Post = p
-            });
-
-            _posts.AddRange(posts);
-
-            MainList.ItemsSource = _posts;
-
-            PostLoadingProgressRing.IsActive = false;
-            PostLoadingProgressRing.Visibility = Visibility.Collapsed;
-
-            var scrollViewer = ListHelpers.GetScrollViewer(MainList);
-
-            scrollViewer.ViewChanged += ScrollViewer_ViewChanged;
+            CreateImageBackgroundGradientVisual(scrollingProperties.Translation.Y, string.IsNullOrEmpty(ViewModel.User.Subreddit.BannerImage) ? null : new(WebUtility.HtmlDecode(ViewModel.User.Subreddit.BannerImage)));
         }
-
-        private async void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
-        {
-            var scrollViewer = (ScrollViewer)sender;
-
-            if (isLoadingMore || (scrollViewer.VerticalOffset > scrollViewer.ScrollableHeight - 36 && e.IsIntermediate))
-                return;
-
-            isLoadingMore = true;
-
-            if (_posts.LastOrDefault() == null)
-            {
-                isLoadingMore = false;
-                return;
-            }
-
-            FooterProgress.Visibility = Visibility.Visible;
-
-            var posts = (await service.GetUserPostsAsync(_user.Name, currentSort, new(after: _posts.Last().Post.Name, limit: 50))).Select(p => new PostViewModel()
-            {
-                Post = p
-            });
-
-            _posts.AddRange(posts);
-
-            FooterProgress.Visibility = Visibility.Collapsed;
-
-            isLoadingMore = false;
-        }
-
-        [RelayCommand]
-        private void SubredditClick(string subreddit)
-            => Frame.Navigate(typeof(SubredditInfoPage), subreddit.Substring(2));
-
-        [RelayCommand]
-        private void TitleClick(PostViewModel model)
-            => ((Frame)Window.Current.Content).Navigate(typeof(PostDetailsPage), new PostDetailsNavigationInfo()
-            {
-                ShowFullPage = true,
-                ItemData = model
-            });
 
         private void OnCopyLinkFlyoutItemClick(object sender, RoutedEventArgs e)
         {
             if (((FrameworkElement)e.OriginalSource).DataContext is not PostViewModel item)
                 return;
 
-            var package = new DataPackage()
-            {
-                RequestedOperation = DataPackageOperation.Copy,
-            };
-
-            package.SetText("https://www.reddit.com" + item.Post.Permalink);
-
-            Clipboard.SetContent(package);
+            ViewModel.CopyLinkCommand?.Execute(item);
         }
 
         private void BackgroundHost_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -185,7 +108,11 @@ namespace Carpeddit.App.Views
 
         private void CreateImageBackgroundGradientVisual(ScalarNode scrollVerticalOffset, Uri uri)
         {
-            if (string.IsNullOrEmpty(uri?.AbsoluteUri) || _compositor == null) return;
+            if (string.IsNullOrEmpty(uri?.AbsoluteUri) || _compositor == null)
+            {
+                VisualStateManager.GoToState(this, "NoHeaderState", false);
+                return;
+            }
 
             var imageSurface = LoadedImageSurface.StartLoadFromUri(uri);
             imageSurface.LoadCompleted += OnImageSurfaceLoadCompleted;
@@ -227,28 +154,43 @@ namespace Carpeddit.App.Views
             _backgroundVisual.StartAnimation("Opacity", animation);
         }
 
-        [RelayCommand]
-        private async Task SortSelectionChangedAsync()
+        private void StartTitleFadeInAnimation(Compositor compositor)
         {
-            MainList.ItemsSource = null;
-            _posts.Clear();
+            var animation = compositor.CreateScalarKeyFrameAnimation();
 
-            currentSort = StringToSortTypeConverter.ToSortMode((string)SortControl.SelectedContent);
+            animation.InsertKeyFrame(0, 0);
+            animation.InsertKeyFrame(1, 1, compositor.CreateLinearEasingFunction());
 
-            PostLoadingProgressRing.IsActive = true;
-            PostLoadingProgressRing.Visibility = Visibility.Visible;
+            animation.Duration = TimeSpan.FromMilliseconds(600);
 
-            var posts = (await service.GetSubredditPostsAsync(_user.Name, currentSort, new(limit: 50))).Select(p => new PostViewModel()
+            var visual1 = SubredditFriendlyName.GetVisual();
+            var visual2 = SubredditName.GetVisual();
+
+            visual1.StartAnimation("Opacity", animation);
+            visual2.StartAnimation("Opacity", animation);
+
+            SubredditFriendlyName.Opacity = 1;
+            SubredditName.Opacity = 1;
+        }
+
+        private async void Segmented_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            if (e.ClickedItem is not FrameworkElement element)
+                return;
+
+            if (element.Tag is string tag && tag == "TopItem")
             {
-                Post = p
-            });
+                TopSortFlyout.ShowAt(TopItem);
 
-            _posts.AddRange(posts);
+                await Task.Delay(30);
+                SortSegmented.SelectedIndex = -1;
+            }
+            else if (element.Tag is SortMode mode && (!selectedSort?.Equals(element.Tag) ?? false))
+            {
+                ViewModel.SetSortCommand?.Execute(mode);
+            }
 
-            MainList.ItemsSource = _posts;
-
-            PostLoadingProgressRing.IsActive = false;
-            PostLoadingProgressRing.Visibility = Visibility.Collapsed;
+            selectedSort = element.Tag;
         }
     }
 }
