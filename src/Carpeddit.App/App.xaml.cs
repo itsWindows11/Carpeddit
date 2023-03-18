@@ -50,6 +50,7 @@ namespace Carpeddit.App
             services.AddTransient<SettingsPageViewModel>();
             services.AddTransient<SubredditInfoPageViewModel>();
             services.AddTransient<ProfilePageViewModel>();
+            services.AddTransient<MailboxPageViewModel>();
 
             var provider = services.BuildServiceProvider();
             Ioc.Default.ConfigureServices(provider);

@@ -129,6 +129,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Collections\BulkIncrementalLoadingCollection.cs" />
+    <Compile Include="Collections\MailboxLoadingSource.cs" />
     <Compile Include="Collections\PostLoadingSource.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Converters\EnumToStringConverter.cs" />
@@ -152,6 +153,7 @@
       <DependentUpon>SortAndFilterControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\CommentViewModel.cs" />
+    <Compile Include="ViewModels\Pages\MailboxPageViewModel.cs" />
     <Compile Include="ViewModels\Pages\PopularPageViewModel.cs" />
     <Compile Include="ViewModels\Pages\HomePageViewModel.cs" />
     <Compile Include="ViewModels\Pages\SettingsPageViewModel.cs" />

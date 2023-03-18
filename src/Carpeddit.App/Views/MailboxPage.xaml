@@ -8,9 +8,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="using:Carpeddit.Api.Models"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    x:Name="RootPage"
     d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    mc:Ignorable="d"
-    NavigationCacheMode="Enabled">
+    NavigationCacheMode="Enabled"
+    mc:Ignorable="d">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -27,14 +28,16 @@
             x:Name="LoadingRing"
             Grid.Row="1"
             Width="52"
-            Height="52" />
+            Height="52"
+            IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
+            Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVis}}" />
 
         <ListView
             x:Name="MainList"
             Grid.Row="1"
             Margin="-56,0"
             Padding="40,0,40,12"
-            ItemsSource="{x:Bind Messages}"
+            ItemsSource="{x:Bind ViewModel.Items}"
             SelectionMode="None">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="models:Message">
@@ -46,11 +49,18 @@
                         BorderThickness="1"
                         CornerRadius="4">
                         <TextBlock>
-                            From <Hyperlink>u/<Run Text="{x:Bind Author}" /></Hyperlink> • Sent <Run Text="{x:Bind CreatedUTC, Converter={StaticResource RelativeTimeConverter}}" />
+                            From<Hyperlink>
+                                u/
+                                <Run Text="{x:Bind Author}" />
+                            </Hyperlink>
+                            • Sent<Run Text="{x:Bind CreatedUTC, Converter={StaticResource RelativeTimeConverter}}" />
                         </TextBlock>
 
-                        <Button Click="Button_Click" Style="{ThemeResource TransparentNoHoverButtonStyle}">
-                            <TextBlock Text="{x:Bind Subject}" Style="{StaticResource SubtitleTextBlockStyle}" />
+                        <Button
+                            Command="{Binding ViewModel.GoToDetailsCommand, ElementName=RootPage}"
+                            CommandParameter="{x:Bind}"
+                            Style="{ThemeResource TransparentNoHoverButtonStyle}">
+                            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{x:Bind Subject}" />
                         </Button>
 
                         <controls:MarkdownTextBlock Margin="0,8,0,0" Text="{x:Bind Body}" />
@@ -58,14 +68,12 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.Footer>
-                <Grid>
-                    <muxc:ProgressRing
-                        x:Name="FooterProgress"
-                        Margin="0,5"
-                        HorizontalAlignment="Center"
-                        IsActive="True"
-                        Visibility="Collapsed" />
-                </Grid>
+                <muxc:ProgressRing
+                    x:Name="FooterProgress"
+                    Margin="0,4"
+                    HorizontalAlignment="Center"
+                    IsActive="{x:Bind ViewModel.IsLoadingMore, Mode=OneWay}"
+                    Visibility="{x:Bind ViewModel.IsLoadingMore, Mode=OneWay, Converter={StaticResource BoolToVis}}" />
             </ListView.Footer>
         </ListView>
     </Grid>
