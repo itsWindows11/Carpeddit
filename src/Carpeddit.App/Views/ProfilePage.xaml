@@ -210,6 +210,11 @@
                             IsItemClickEnabled="True"
                             ItemClick="Segmented_ItemClick"
                             SelectedIndex="0">
+                            <labs:Segmented.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </labs:Segmented.ItemsPanel>
                             <labs:SegmentedItem>
                                 <labs:SegmentedItem.Icon>
                                     <FontIcon Foreground="{ThemeResource AccentFillColorDefaultBrush}" Glyph="&#xF133;" />
