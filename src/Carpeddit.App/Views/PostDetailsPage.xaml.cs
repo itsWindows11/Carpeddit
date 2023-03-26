@@ -46,11 +46,17 @@ namespace Carpeddit.App.Views
             } else
                 TitleBar.Visibility = Visibility.Collapsed;
 
+            CommentsLoadingRing.IsActive = true;
+            CommentsLoadingRing.Visibility = Visibility.Visible;
+
             var comments = await GetCommentsAsViewModelAsync(ViewModel.Post.Name.Substring(3));
 
             this.comments.AddRange(comments);
 
             MainList.ItemsSource = this.comments;
+
+            CommentsLoadingRing.IsActive = false;
+            CommentsLoadingRing.Visibility = Visibility.Collapsed;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)

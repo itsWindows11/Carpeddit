@@ -112,6 +112,7 @@
                         Description="{x:Bind ViewModel.Description}"
                         IsDownvoted="{x:Bind ViewModel.IsDownvoted, Mode=TwoWay}"
                         IsUpvoted="{x:Bind ViewModel.IsUpvoted, Mode=TwoWay}"
+                        Post="{x:Bind ViewModel, Mode=OneWay}"
                         SubredditClickCommand="{Binding SubredditClickCommand, ElementName=RootPage}"
                         SubredditName="{x:Bind ViewModel.Post.SubredditNamePrefixed}"
                         UserClickCommand="{Binding UserClickCommand, ElementName=RootPage}"
@@ -141,7 +142,12 @@
             </ListView.Header>
 
             <ListView.Footer>
-                <Border Height="12" />
+                <StackPanel Padding="0,0,0,12">
+                    <muxc:ProgressRing
+                        x:Name="CommentsLoadingRing"
+                        IsActive="False"
+                        Visibility="Collapsed" />
+                </StackPanel>
             </ListView.Footer>
         </ListView>
     </Grid>
