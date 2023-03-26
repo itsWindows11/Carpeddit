@@ -89,7 +89,7 @@ namespace Carpeddit.Api.Models
         public bool Verified { get; set; }
 
         [JsonPropertyName("new_modmail_exists")]
-        public bool NewModmailExists { get; set; }
+        public bool? NewModmailExists { get; set; }
 
         [JsonPropertyName("coins")]
         public int Coins { get; set; }
