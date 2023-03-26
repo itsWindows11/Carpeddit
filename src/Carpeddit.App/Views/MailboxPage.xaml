@@ -49,11 +49,7 @@
                         BorderThickness="1"
                         CornerRadius="4">
                         <TextBlock>
-                            From<Hyperlink>
-                                u/
-                                <Run Text="{x:Bind Author}" />
-                            </Hyperlink>
-                            • Sent<Run Text="{x:Bind CreatedUTC, Converter={StaticResource RelativeTimeConverter}}" />
+                            From <Hyperlink>u/<Run Text="{x:Bind Author}" /></Hyperlink> • Sent <Run Text="{x:Bind CreatedUTC, Converter={StaticResource RelativeTimeConverter}}" />
                         </TextBlock>
 
                         <Button
