@@ -134,6 +134,7 @@
     <Compile Include="Helpers\WebHelpers.cs" />
     <Compile Include="Messages\MainFrameNavigationMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Constants\Secrets.cs" />
     <EmbeddedResource Include="Properties\Carpeddit.Common.rd.xml" />
   </ItemGroup>
   <ItemGroup>
