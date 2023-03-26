@@ -12,6 +12,7 @@
     xmlns:uc="using:Carpeddit.App.UserControls"
     xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
     xmlns:viewmodels="using:Carpeddit.App.ViewModels"
+    x:Name="RootPage"
     d:Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     mc:Ignorable="d">
@@ -112,7 +113,7 @@
                         Description="{x:Bind ViewModel.Description}"
                         IsDownvoted="{x:Bind ViewModel.IsDownvoted, Mode=TwoWay}"
                         IsUpvoted="{x:Bind ViewModel.IsUpvoted, Mode=TwoWay}"
-                        Post="{x:Bind ViewModel, Mode=OneWay}"
+                        Post="{x:Bind ViewModel}"
                         SubredditClickCommand="{Binding SubredditClickCommand, ElementName=RootPage}"
                         SubredditName="{x:Bind ViewModel.Post.SubredditNamePrefixed}"
                         UserClickCommand="{Binding UserClickCommand, ElementName=RootPage}"

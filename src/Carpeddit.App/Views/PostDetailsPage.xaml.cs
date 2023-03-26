@@ -4,8 +4,11 @@ using Carpeddit.Api.Services;
 using Carpeddit.App.Models;
 using Carpeddit.App.ViewModels;
 using Carpeddit.Common.Collections;
+using Carpeddit.Common.Messages;
 using Carpeddit.Models.Api;
 using CommunityToolkit.Mvvm.DependencyInjection;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,6 +16,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -96,6 +100,43 @@ namespace Carpeddit.App.Views
                     };
                 });
             });
+
+        [RelayCommand]
+        private async Task SubredditClick(string subreddit)
+        {
+            if (Frame.CanGoBack)
+                Frame.GoBack();
+            else
+                Frame.Navigate(typeof(MainPage));
+
+            await Task.Delay(400);
+
+            WeakReferenceMessenger.Default.Send<MainFrameNavigationMessage>(new()
+            {
+                Page = typeof(SubredditInfoPage),
+                Parameter = subreddit.Substring(2)
+            });
+        }
+
+        [RelayCommand]
+        private async Task UserClick(string username)
+        {
+            if (username == "[deleted]")
+                return;
+
+            if (Frame.CanGoBack)
+                Frame.GoBack();
+            else
+                Frame.Navigate(typeof(MainPage));
+
+            await Task.Delay(400);
+
+            WeakReferenceMessenger.Default.Send<MainFrameNavigationMessage>(new()
+            {
+                Page = typeof(ProfilePage),
+                Parameter = username
+            });
+        }
     }
 
     public sealed class CommentItemTemplateSelector : DataTemplateSelector
