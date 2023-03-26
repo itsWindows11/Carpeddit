@@ -3,6 +3,7 @@ using Carpeddit.Api.Services;
 using Carpeddit.Common.Constants;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using System;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,17 +33,24 @@ namespace Carpeddit.Api.Helpers
         /// Cleans up locally stored user data, then revokes the access token.
         /// </summary>
         /// <returns>A <see cref="Task" /> which represents the operation.</returns>
-        public static Task SignOutAsync(bool revokeToken = true)
+        public static async Task SignOutAsync(bool revokeToken = true)
         {
             var accessToken = GetCurrentInfo()?.AccessToken;
 
+            if (!string.IsNullOrEmpty(accessToken) && revokeToken)
+            {
+                try
+                {
+                    await Ioc.Default.GetService<IRedditAuthService>().RevokeAsync(accessToken);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+            }
+
             (Ioc.Default.GetService<IRedditAuthService>() as RedditAuthService).Data = null;
             (Ioc.Default.GetService<IRedditService>() as RedditService).Me = null;
-
-            if (!revokeToken)
-                return Task.CompletedTask;
-
-            return accessToken == null ? Task.CompletedTask : Ioc.Default.GetService<IRedditAuthService>().RevokeAsync(accessToken);
         }
 
         public static TokenInfo GetCurrentInfo()
