@@ -85,7 +85,10 @@ namespace Carpeddit.Api.Services
                 { "token_type_hint", "access_token" }
             };
 
-            return WebHelper.MakePostRequestAsync("https://www.reddit.com/api/v1/revoke_token", new Dictionary<string, string>(), body);
+            return WebHelper.MakePostRequestAsync("https://www.reddit.com/api/v1/revoke_token", new Dictionary<string, string>()
+            {
+                { "Authorization", "Basic " + Convert.ToBase64String(Encoding.ASCII.GetBytes(APIConstants.ClientId + ":" + APIConstants.ClientSecret)) }
+            }, body);
         }
     }
 }
