@@ -147,7 +147,6 @@
                                             HorizontalAlignment="Center"
                                             d:Text="User"
                                             FontWeight="SemiBold"
-                                            Foreground="WhiteSmoke"
                                             Style="{StaticResource SubtitleTextBlockStyle}"
                                             Text="{x:Bind ViewModel.User.Subreddit.Title}" />
 
@@ -156,7 +155,6 @@
                                             Margin="0,4,0,0"
                                             d:Text="u/user"
                                             FontSize="12"
-                                            Foreground="WhiteSmoke"
                                             HorizontalTextAlignment="Center"
                                             Text="{x:Bind ViewModel.User.Name}" />
                                     </StackPanel>

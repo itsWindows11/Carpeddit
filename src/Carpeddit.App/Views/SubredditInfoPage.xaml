@@ -143,7 +143,6 @@
                                             Margin="0,4,0,0"
                                             d:Text="Carpeddit"
                                             FontWeight="SemiBold"
-                                            Foreground="WhiteSmoke"
                                             Opacity="0"
                                             Style="{StaticResource SubtitleTextBlockStyle}"
                                             Text="{x:Bind ViewModel.Subreddit.Title}" />
@@ -153,7 +152,6 @@
                                             Margin="0,4,0,0"
                                             d:Text="r/Carpeddit"
                                             FontSize="12"
-                                            Foreground="WhiteSmoke"
                                             Opacity="0"
                                             Text="{x:Bind ViewModel.Subreddit.Subreddit.DisplayNamePrefixed}" />
                                     </StackPanel>
