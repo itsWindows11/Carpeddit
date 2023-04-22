@@ -144,7 +144,7 @@
                         VerticalAlignment="Center"
                         FontSize="24"
                         HorizontalTextAlignment="Center"
-                        Text="Select a post to open it here"
+                        Text="Select a post to open here"
                         Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisReverse}}" />
                 </Frame>
             </muxc:TwoPaneView.Pane2>

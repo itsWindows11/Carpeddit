@@ -86,6 +86,18 @@ namespace Carpeddit.App.ViewModels.Pages
             });
 
         [RelayCommand]
+        public void PostSelected(PostViewModel model)
+        {
+            if (model == null) return;
+
+            WeakReferenceMessenger.Default.Send<PostDetailsNavigationInfo>(new()
+            {
+                ShowFullPage = false,
+                ItemData = model
+            });
+        }
+
+        [RelayCommand]
         public void CopyLink(PostViewModel item)
         {
             var package = new DataPackage()
