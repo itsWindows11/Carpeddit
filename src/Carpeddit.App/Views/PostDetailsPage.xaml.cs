@@ -46,9 +46,13 @@ namespace Carpeddit.App.Views
             if (_showTitleBar)
             {
                 TitleBar.Visibility = Visibility.Visible;
+                BackButton.Visibility = Visibility.Visible;
                 TitleBar.SetAsTitleBar();
             } else
+            {
                 TitleBar.Visibility = Visibility.Collapsed;
+                BackButton.Visibility = Visibility.Collapsed;
+            }
 
             CommentsLoadingRing.IsActive = true;
             CommentsLoadingRing.Visibility = Visibility.Visible;

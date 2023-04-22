@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:triggers="using:Microsoft.Toolkit.Uwp.UI.Triggers"
     xmlns:uc="using:Carpeddit.App.UserControls"
     xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
     xmlns:viewmodels="using:Carpeddit.App.ViewModels"
@@ -70,59 +71,100 @@
             IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}"
             Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVis}}" />
 
-        <ListView
-            x:Name="MainList"
+        <muxc:TwoPaneView
+            x:Name="TwoPaneView"
             Grid.Row="1"
             Margin="-48,0,-56,0"
-            Padding="48,0,56,0"
             d:Margin="0"
             d:Padding="0"
-            ItemContainerStyle="{StaticResource PostItemContainerStyle}"
-            ItemsSource="{x:Bind ViewModel.Posts, Mode=OneWay}">
-            <ListView.ItemTemplate>
-                <DataTemplate x:DataType="viewmodels:PostViewModel" x:DefaultBindMode="OneWay">
-                    <uc:PostItemControl
-                        Title="{x:Bind Title}"
-                        CreationDate="{x:Bind Created}"
-                        Description="{x:Bind ShortDescription, Mode=OneTime}"
-                        IsDownvoted="{x:Bind IsDownvoted, Mode=TwoWay}"
-                        IsUpvoted="{x:Bind IsUpvoted, Mode=TwoWay}"
-                        Post="{x:Bind}"
-                        SubredditClickCommand="{Binding ViewModel.SubredditClickCommand, ElementName=RootPage}"
-                        SubredditName="{x:Bind Post.SubredditNamePrefixed}"
-                        TitleClickCommand="{Binding ViewModel.TitleClickCommand, ElementName=RootPage}"
-                        UserClickCommand="{Binding ViewModel.UserClickCommand, ElementName=RootPage}"
-                        UserName="{x:Bind Post.Author}"
-                        VoteRatio="{x:Bind VoteRatio, Converter={StaticResource FormattedNumberConverter}}">
-                        <uc:PostItemControl.FooterContent>
-                            <CommandBar
-                                Margin="-10,0,0,0"
-                                Padding="0"
-                                HorizontalAlignment="Left"
-                                Background="Transparent"
-                                DefaultLabelPosition="Right">
-                                <AppBarButton
-                                    Icon="Comment"
-                                    IsHitTestVisible="False"
-                                    Label="{x:Bind Post.NumComments, Converter={StaticResource FormattedNumberConverter}}" />
-                                <AppBarButton
-                                    Flyout="{StaticResource HomeShareMenuFlyout}"
-                                    Icon="Share"
-                                    Label="Share" />
-                                <AppBarButton Icon="Save" Label="Save" />
-                            </CommandBar>
-                        </uc:PostItemControl.FooterContent>
-                    </uc:PostItemControl>
-                </DataTemplate>
-            </ListView.ItemTemplate>
+            MinWideModeWidth="1000"
+            Pane1Length="*"
+            Pane2Length="*"
+            PanePriority="Pane1"
+            TallModeConfiguration="SinglePane">
+            <muxc:TwoPaneView.Pane1>
+                <ListView
+                    x:Name="MainList"
+                    Padding="48,0,8,0"
+                    ItemContainerStyle="{StaticResource PostItemContainerStyle}"
+                    ItemsSource="{x:Bind ViewModel.Posts, Mode=OneWay}"
+                    SelectionChanged="OnMainListSelectionChanged">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="viewmodels:PostViewModel" x:DefaultBindMode="OneWay">
+                            <uc:PostItemControl
+                                Title="{x:Bind Title}"
+                                CreationDate="{x:Bind Created}"
+                                Description="{x:Bind ShortDescription, Mode=OneTime}"
+                                IsDownvoted="{x:Bind IsDownvoted, Mode=TwoWay}"
+                                IsUpvoted="{x:Bind IsUpvoted, Mode=TwoWay}"
+                                Post="{x:Bind}"
+                                SubredditClickCommand="{Binding ViewModel.SubredditClickCommand, ElementName=RootPage}"
+                                SubredditName="{x:Bind Post.SubredditNamePrefixed}"
+                                TitleClickCommand="{Binding ViewModel.TitleClickCommand, ElementName=RootPage}"
+                                UserClickCommand="{Binding ViewModel.UserClickCommand, ElementName=RootPage}"
+                                UserName="{x:Bind Post.Author}"
+                                VoteRatio="{x:Bind VoteRatio, Converter={StaticResource FormattedNumberConverter}}">
+                                <uc:PostItemControl.FooterContent>
+                                    <CommandBar
+                                        Margin="-10,0,0,0"
+                                        Padding="0"
+                                        HorizontalAlignment="Left"
+                                        Background="Transparent"
+                                        DefaultLabelPosition="Right">
+                                        <AppBarButton
+                                            Icon="Comment"
+                                            IsHitTestVisible="False"
+                                            Label="{x:Bind Post.NumComments, Converter={StaticResource FormattedNumberConverter}}" />
+                                        <AppBarButton
+                                            Flyout="{StaticResource HomeShareMenuFlyout}"
+                                            Icon="Share"
+                                            Label="Share" />
+                                        <AppBarButton Icon="Save" Label="Save" />
+                                    </CommandBar>
+                                </uc:PostItemControl.FooterContent>
+                            </uc:PostItemControl>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
 
-            <ListView.Footer>
-                <muxc:ProgressRing
-                    Margin="0,4"
-                    HorizontalAlignment="Center"
-                    IsActive="{x:Bind ViewModel.IsLoadingMore, Mode=OneWay}"
-                    Visibility="{x:Bind ViewModel.IsLoadingMore, Mode=OneWay, Converter={StaticResource BoolToVis}}" />
-            </ListView.Footer>
-        </ListView>
+                    <ListView.Footer>
+                        <muxc:ProgressRing
+                            Margin="0,4"
+                            HorizontalAlignment="Center"
+                            IsActive="{x:Bind ViewModel.IsLoadingMore, Mode=OneWay}"
+                            Visibility="{x:Bind ViewModel.IsLoadingMore, Mode=OneWay, Converter={StaticResource BoolToVis}}" />
+                    </ListView.Footer>
+                </ListView>
+            </muxc:TwoPaneView.Pane1>
+
+            <muxc:TwoPaneView.Pane2>
+                <Frame x:Name="PostDetailsFrame" HorizontalAlignment="Stretch">
+                    <TextBlock
+                        MaxWidth="300"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="24"
+                        HorizontalTextAlignment="Center"
+                        Text="Select a post to open it here"
+                        Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay, Converter={StaticResource BoolToVisReverse}}" />
+                </Frame>
+            </muxc:TwoPaneView.Pane2>
+        </muxc:TwoPaneView>
+
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="ListViewStates">
+                <VisualStateGroup.States>
+                    <VisualState x:Name="TwoPaneViewWideState" />
+                    <VisualState x:Name="TwoPaneViewNonWideState">
+                        <VisualState.StateTriggers>
+                            <triggers:ControlSizeTrigger MaxWidth="1000" TargetElement="{x:Bind TwoPaneView}" />
+                        </VisualState.StateTriggers>
+                        <VisualState.Setters>
+                            <Setter Target="MainList.Padding" Value="48,0,56,0" />
+                            <Setter Target="MainList.SelectionMode" Value="None" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup.States>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
     </Grid>
 </Page>

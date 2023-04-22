@@ -51,13 +51,8 @@
     </Page.Resources>
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition Width="0.4*" />
-        </Grid.ColumnDefinitions>
-
         <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
@@ -93,7 +88,8 @@
             <uc:CustomTitleBar
                 x:Name="TitleBar"
                 Title="Post Details"
-                Grid.Column="1" />
+                Grid.Column="1"
+                Height="40" />
         </Grid>
 
         <ListView
@@ -103,7 +99,7 @@
             ItemTemplateSelector="{StaticResource CommentItemTemplateSelector}"
             SelectionMode="None">
             <ListView.Header>
-                <StackPanel Spacing="8">
+                <StackPanel Padding="0,0,0,12" Spacing="8">
                     <uc:PostItemControl
                         Title="{x:Bind ViewModel.Title}"
                         Margin="12,0"
@@ -139,17 +135,15 @@
                         <Run d:Text="5" Text="{x:Bind ViewModel.Post.NumComments}" />
                         <Run Text="comment(s)" />
                     </TextBlock>
-                </StackPanel>
-            </ListView.Header>
 
-            <ListView.Footer>
-                <StackPanel Padding="0,0,0,12">
                     <muxc:ProgressRing
                         x:Name="CommentsLoadingRing"
+                        Width="24"
+                        Height="24"
                         IsActive="False"
                         Visibility="Collapsed" />
                 </StackPanel>
-            </ListView.Footer>
+            </ListView.Header>
         </ListView>
     </Grid>
 </Page>
