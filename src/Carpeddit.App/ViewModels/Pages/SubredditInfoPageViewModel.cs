@@ -101,5 +101,14 @@ namespace Carpeddit.App.ViewModels.Pages
 
             Clipboard.SetContent(package);
         }
+
+        [RelayCommand(AllowConcurrentExecutions = true)]
+        public Task SavePostAsync(PostViewModel item)
+        {
+            if (item.Post.Saved ?? false)
+                return item.UnsaveAsync();
+
+            return item.SaveAsync();
+        }
     }
 }

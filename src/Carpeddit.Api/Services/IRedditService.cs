@@ -102,5 +102,19 @@ namespace Carpeddit.Api.Services
         /// <param name="rawMarkdownText">The text to submit.</param>
         /// <returns>A <see cref="Task" /> which represents the operation.</returns>
         Task CommentAsync(string fullname, string rawMarkdownText);
+
+        /// <summary>
+        /// Saves a link or a comment.
+        /// </summary>
+        /// <param name="fullname">The fullname of a comment or link.</param>
+        /// <returns>A <see cref="Task" /> which represents the operation.</returns>
+        Task SaveAsync(string fullname);
+
+        /// <summary>
+        /// Unsaves a link or a comment.
+        /// </summary>
+        /// <param name="fullname">The fullname of a comment or link.</param>
+        /// <returns>A <see cref="Task" /> which represents the operation.</returns>
+        Task UnsaveAsync(string fullname);
     }
 }

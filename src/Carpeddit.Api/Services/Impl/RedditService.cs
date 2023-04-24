@@ -220,6 +220,24 @@ namespace Carpeddit.Api.Services
                     { "return_rtjson", "true" }
                 });
             });
+
+        public Task SaveAsync(string fullname)
+            => RunAsync(() =>
+            {
+                return WebHelper.PostAsync($"/api/save", new Dictionary<string, string>()
+                {
+                    { "id", fullname }
+                });
+            });
+
+        public Task UnsaveAsync(string fullname)
+            => RunAsync(() =>
+            {
+                return WebHelper.PostAsync($"/api/unsave", new Dictionary<string, string>()
+                {
+                    { "id", fullname }
+                });
+            });
     }
 
     // Helper methods

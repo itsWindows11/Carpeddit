@@ -371,7 +371,11 @@
                                     Flyout="{StaticResource SubredditInfoShareMenuFlyout}"
                                     Icon="Share"
                                     Label="Share" />
-                                <AppBarButton Icon="Save" Label="Save" />
+                                <AppBarButton
+                                    Command="{Binding ViewModel.SavePostCommand, ElementName=RootPage}"
+                                    CommandParameter="{x:Bind}"
+                                    Icon="Save"
+                                    Label="Save" />
                             </CommandBar>
                         </uc:PostItemControl.FooterContent>
                     </uc:PostItemControl>

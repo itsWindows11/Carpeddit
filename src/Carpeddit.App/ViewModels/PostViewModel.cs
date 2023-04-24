@@ -9,6 +9,10 @@ using Windows.Media.Core;
 using System.Collections.Generic;
 using System.Linq;
 using CommunityToolkit.Mvvm.DependencyInjection;
+using CommunityToolkit.Mvvm.Messaging;
+using Carpeddit.Common.Messages;
+using Carpeddit.App.Views;
+using System.Threading.Tasks;
 
 namespace Carpeddit.App.ViewModels
 {
@@ -164,37 +168,65 @@ namespace Carpeddit.App.ViewModels
             }
         }
 
+        public async Task SaveAsync()
+        {
+            try
+            {
+                await Ioc.Default.GetService<IRedditService>().SaveAsync(Post.Name);
+                Post.Saved = true;
+            } catch
+            {
+
+            }
+        }
+
+        public async Task UnsaveAsync()
+        {
+            try
+            {
+                await Ioc.Default.GetService<IRedditService>().UnsaveAsync(Post.Name);
+                Post.Saved = false;
+            } catch
+            {
+
+            }
+        }
+
         public async void OnMarkdownLinkClicked(object sender, LinkClickedEventArgs e)
         {
             if (Uri.TryCreate(e.Link, UriKind.Absolute, out Uri link))
             {
                 _ = await Launcher.LaunchUriAsync(link);
-                return;
-            }
-
-            /*if (e.Link.StartsWith("/r/"))
+            } else if (e.Link.StartsWith("/r/"))
             {
-                (Window.Current.Content as Frame).Navigate(typeof(SubredditPage), App.RedditClient.Subreddit(name: e.Link.Substring(3)).About());
-                return;
-            }
-
-            if (e.Link.StartsWith("r/"))
+                WeakReferenceMessenger.Default.Send(new MainFrameNavigationMessage()
+                {
+                    Page = typeof(SubredditInfoPage),
+                    Parameter = e.Link.Substring(3)
+                });
+            } else if (e.Link.StartsWith("r/"))
             {
-                (Window.Current.Content as Frame).Navigate(typeof(SubredditPage), App.RedditClient.Subreddit(name: e.Link.Substring(2)).About());
-                return;
-            }
-
-            if (e.Link.StartsWith("/u/"))
+                WeakReferenceMessenger.Default.Send(new MainFrameNavigationMessage()
+                {
+                    Page = typeof(SubredditInfoPage),
+                    Parameter = e.Link.Substring(2)
+                });
+            } else if (e.Link.StartsWith("/u/"))
             {
-                MainPage.Current.ContentFrame.Navigate(typeof(YourProfilePage), App.RedditClient.User(name: e.Link.Substring(3)).About());
-                return;
+                WeakReferenceMessenger.Default.Send(new MainFrameNavigationMessage()
+                {
+                    Page = typeof(ProfilePage),
+                    Parameter = e.Link.Substring(3)
+                });
             }
-
-            if (e.Link.StartsWith("u/"))
+            else if (e.Link.StartsWith("u/"))
             {
-                MainPage.Current.ContentFrame.Navigate(typeof(YourProfilePage), App.RedditClient.User(name: e.Link.Substring(2)).About());
-                return;
-            }*/
+                WeakReferenceMessenger.Default.Send(new MainFrameNavigationMessage()
+                {
+                    Page = typeof(ProfilePage),
+                    Parameter = e.Link.Substring(2)
+                });
+            }
         }
     }
 }
