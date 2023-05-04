@@ -169,7 +169,7 @@ namespace Carpeddit.App.ViewModels
         {
             try
             {
-                return await WebHelper.GetDeserializedResponseAsync<RedditPrefsViewModel>("/api/v1/me/prefs", true);
+                return await WebHelper.GetDeserializedResponseAsync<RedditPrefsViewModel>("/api/v1/me/prefs", null, true);
             } catch (UnauthorizedAccessException)
             {
                 await TokenHelper.RefreshTokenAsync(AccountHelper.GetCurrentInfo().RefreshToken);
