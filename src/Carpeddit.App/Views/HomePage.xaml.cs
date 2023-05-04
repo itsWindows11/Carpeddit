@@ -37,7 +37,7 @@ namespace Carpeddit.App.Views
             if (((FrameworkElement)e.OriginalSource).DataContext is not PostViewModel item)
                 return;
 
-            ViewModel.CopyLinkCommand?.Execute(item);
+            item.CopyPermalinkCommand?.Execute(null);
         }
 
         public void Receive(PostDetailsNavigationInfo message)

@@ -283,7 +283,10 @@
                                     Flyout="{StaticResource ProfileShareMenuFlyout}"
                                     Icon="Share"
                                     Label="Share" />
-                                <AppBarButton Icon="Save" Label="Save" />
+                                <AppBarButton
+                                    Command="{x:Bind ToggleSaveCommand}"
+                                    Icon="Save"
+                                    Label="Save" />
                             </CommandBar>
                         </uc:PostItemControl.FooterContent>
                     </uc:PostItemControl>

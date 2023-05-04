@@ -118,7 +118,7 @@
                                             Icon="Share"
                                             Label="Share" />
                                         <AppBarButton
-                                            Command="{Binding ViewModel.SavePostCommand, ElementName=RootPage}"
+                                            Command="{x:Bind ToggleSaveCommand}"
                                             CommandParameter="{x:Bind}"
                                             Icon="Save"
                                             Label="Save" />

@@ -98,28 +98,6 @@ namespace Carpeddit.App.ViewModels.Pages
         }
 
         [RelayCommand]
-        public void CopyLink(PostViewModel item)
-        {
-            var package = new DataPackage()
-            {
-                RequestedOperation = DataPackageOperation.Copy,
-            };
-
-            package.SetText("https://www.reddit.com" + item.Post.Permalink);
-
-            Clipboard.SetContent(package);
-        }
-
-        [RelayCommand(AllowConcurrentExecutions = true)]
-        public Task SavePostAsync(PostViewModel item)
-        {
-            if (item.Post.Saved ?? false)
-                return item.UnsaveAsync();
-
-            return item.SaveAsync();
-        }
-
-        [RelayCommand]
         public void SortSelectionChanged(string sort)
         {
             currentSort = StringToSortTypeConverter.ToSortMode(sort);

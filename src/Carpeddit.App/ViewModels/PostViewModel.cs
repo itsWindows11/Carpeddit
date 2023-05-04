@@ -13,6 +13,8 @@ using CommunityToolkit.Mvvm.Messaging;
 using Carpeddit.Common.Messages;
 using Carpeddit.App.Views;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.Input;
+using Windows.ApplicationModel.DataTransfer;
 
 namespace Carpeddit.App.ViewModels
 {
@@ -190,6 +192,28 @@ namespace Carpeddit.App.ViewModels
             {
 
             }
+        }
+
+        [RelayCommand]
+        public void CopyPermalink()
+        {
+            var package = new DataPackage()
+            {
+                RequestedOperation = DataPackageOperation.Copy,
+            };
+
+            package.SetText("https://www.reddit.com" + Post.Permalink);
+
+            Clipboard.SetContent(package);
+        }
+
+        [RelayCommand]
+        public Task ToggleSaveAsync()
+        {
+            if (Post.Saved ?? false)
+                return UnsaveAsync();
+
+            return SaveAsync();
         }
 
         public async void OnMarkdownLinkClicked(object sender, LinkClickedEventArgs e)

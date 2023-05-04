@@ -6,7 +6,6 @@ namespace Carpeddit.Api
 {
     [JsonSerializable(typeof(More))]
     [JsonSerializable(typeof(Message))]
-    [JsonSerializable(typeof(Listing<>))]
     [JsonSerializable(typeof(Post))]
     [JsonSerializable(typeof(Comment))]
     [JsonSerializable(typeof(User))]
