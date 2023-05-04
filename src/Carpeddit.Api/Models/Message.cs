@@ -17,7 +17,7 @@ namespace Carpeddit.Api.Models
         public string Subreddit { get; set; }
 
         [JsonPropertyName("likes")]
-        public string Likes { get; set; }
+        public bool? Likes { get; set; }
 
         /*[JsonPropertyName("replies")]
         [JsonConverter(typeof(EmptyStringToListConverter<Message>))]

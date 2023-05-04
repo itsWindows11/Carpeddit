@@ -6,24 +6,24 @@ namespace Carpeddit.Api.Models
     public sealed class Listing<T>
     {
         [JsonPropertyName("kind")]
-        public string Kind { get; init; }
+        public string Kind { get; set; }
 
         [JsonPropertyName("data")]
-        public ListingData<T> Data { get; init; }
+        public ListingData<T> Data { get; set; }
     }
 
     public sealed class ListingData<T>
     {
         [JsonPropertyName("after")]
-        public string After { get; init; }
+        public string After { get; set; }
 
         [JsonPropertyName("dist")]
-        public JsonNode Dist { get; init; }
+        public JsonNode Dist { get; set; }
 
         [JsonPropertyName("before")]
-        public string Before { get; init; }
+        public string Before { get; set; }
 
         [JsonPropertyName("children")]
-        public T Children { get; init; }
+        public T Children { get; set; }
     }
 }
