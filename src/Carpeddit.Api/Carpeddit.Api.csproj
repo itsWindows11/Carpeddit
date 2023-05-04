@@ -121,6 +121,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ApiJsonContext.cs" />
     <Compile Include="Enums\MessageListType.cs" />
     <Compile Include="Enums\SortMode.cs" />
     <Compile Include="EqualityComparers\MessageEqualityComparer.cs" />

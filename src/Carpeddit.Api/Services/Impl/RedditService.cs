@@ -18,7 +18,7 @@ namespace Carpeddit.Api.Services
         public Task<IList<Comment>> GetCommentsAsync(string postName, ListingInput input)
             => RunAsync<IList<Comment>>(async () =>
             {
-                var response = await WebHelper.GetDeserializedResponseAsync<IList<Listing<IList<ApiObjectWithKind<Comment>>>>>($"/comments/{postName}?raw_json=1");
+                var response = await WebHelper.GetDeserializedResponseAsync($"/comments/{postName}?raw_json=1", ApiJsonContext.Default.IListListingIListApiObjectWithKindComment);
 
                 // First listing is always the post.
                 response.RemoveAt(0);
@@ -39,9 +39,9 @@ namespace Carpeddit.Api.Services
                 return response.FirstOrDefault().Data.Children.Select<ApiObjectWithKind<object>, IPostReplyable>(obj =>
                 {
                     if (obj.Kind == "more")
-                        return JsonSerializer.Deserialize<More>(obj.Data.ToString());
+                        return JsonSerializer.Deserialize<More>(obj.Data.ToString(), ApiJsonContext.Default.More);
 
-                    return JsonSerializer.Deserialize<Comment>(obj.Data.ToString());
+                    return JsonSerializer.Deserialize<Comment>(obj.Data.ToString(), ApiJsonContext.Default.Comment);
                 }).ToList();
             });
 
@@ -76,16 +76,16 @@ namespace Carpeddit.Api.Services
 
             return RunAsync<IList<Post>>(async () =>
             {
-                var response = await WebHelper.GetDeserializedResponseAsync<Listing<IList<ApiObjectWithKind<Post>>>>($"/{StringToSortTypeConverter.ToAPISort(sort)}.json?{queryString}");
+                var response = await WebHelper.GetDeserializedResponseAsync($"/{StringToSortTypeConverter.ToAPISort(sort)}.json?{queryString}", ApiJsonContext.Default.ListingIListApiObjectWithKindPost);
                 return response.Data.Children.Select(p => p.Data).ToList();
             });
         }
 
         public async Task<User> GetMeAsync()
-            => Me ??= await RunAsync(() => WebHelper.GetDeserializedResponseAsync<User>("/api/v1/me?raw_json=1", true));
+            => Me ??= await RunAsync(() => WebHelper.GetDeserializedResponseAsync("/api/v1/me?raw_json=1", ApiJsonContext.Default.User, true));
 
         public Task<Subreddit> GetSubredditInfoAsync(string subreddit)
-            => RunAsync(async () => (await WebHelper.GetDeserializedResponseAsync<ApiObjectWithKind<Subreddit>>($"/r/{subreddit}/about.json?raw_json=1")).Data);
+            => RunAsync(async () => (await WebHelper.GetDeserializedResponseAsync($"/r/{subreddit}/about.json?raw_json=1", ApiJsonContext.Default.ApiObjectWithKindSubreddit)).Data);
 
         public Task<IList<Post>> GetSubredditPostsAsync(string subreddit, SortMode sort, ListingInput listingInput)
             => RunAsync<IList<Post>>(async () =>
@@ -119,13 +119,13 @@ namespace Carpeddit.Api.Services
                     }
                 }
 
-                var listing = await WebHelper.GetDeserializedResponseAsync<Listing<IList<ApiObjectWithKind<Post>>>>($"/r/{subreddit}/{StringToSortTypeConverter.ToAPISort(sort)}.json?{queryString}");
+                var listing = await WebHelper.GetDeserializedResponseAsync($"/r/{subreddit}/{StringToSortTypeConverter.ToAPISort(sort)}.json?{queryString}", ApiJsonContext.Default.ListingIListApiObjectWithKindPost);
 
                 return listing.Data.Children.Select(p => p.Data).ToList();
             });
 
         public Task<User> GetUserAsync(string userName)
-            => RunAsync(async () => (await WebHelper.GetDeserializedResponseAsync<ApiObjectWithKind<User>>($"/user/{userName}/about.json?raw_json=1")).Data);
+            => RunAsync(async () => (await WebHelper.GetDeserializedResponseAsync($"/user/{userName}/about.json?raw_json=1", ApiJsonContext.Default.ApiObjectWithKindUser)).Data);
 
         public Task<UserKarmaContainer> GetUserKarmaAsync()
         {
@@ -164,7 +164,7 @@ namespace Carpeddit.Api.Services
                     }
                 }
 
-                var response = await WebHelper.GetDeserializedResponseAsync<Listing<IList<ApiObjectWithKind<Post>>>>($"/user/{user}/submitted/{StringToSortTypeConverter.ToAPISort(sort)}.json?{queryString}");
+                var response = await WebHelper.GetDeserializedResponseAsync($"/user/{user}/submitted/{StringToSortTypeConverter.ToAPISort(sort)}.json?{queryString}", ApiJsonContext.Default.ListingIListApiObjectWithKindPost);
 
                 return response.Data.Children.Select(p => p.Data).ToList();
             });
@@ -205,7 +205,7 @@ namespace Carpeddit.Api.Services
         public Task<IList<Message>> GetMessagesAsync(MessageListType type = MessageListType.Inbox)
             => RunAsync<IList<Message>>(async () =>
             {
-                var messagesListing = await WebHelper.GetDeserializedResponseAsync<Listing<IList<ApiObjectWithKind<Message>>>>($"/message/{type.ToString().ToLower()}");
+                var messagesListing = await WebHelper.GetDeserializedResponseAsync($"/message/{type.ToString().ToLower()}", ApiJsonContext.Default.ListingIListApiObjectWithKindMessage);
 
                 return messagesListing.Data.Children.Select(a => a.Data).ToList();
             });

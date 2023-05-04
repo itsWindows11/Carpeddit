@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 using System.Threading.Tasks;
 using Windows.Web.Http;
 
@@ -54,9 +55,13 @@ namespace Carpeddit.Api.Helpers
         /// <typeparam name="T">The type to deserialize to.</typeparam>
         /// <param name="url">The URL of the server.</param>
         /// <returns>The deserialized response.</returns>
-        public static async Task<T> GetDeserializedResponseAsync<T>(string url, bool oauthOnly = false)
+        public static async Task<T> GetDeserializedResponseAsync<T>(string url, JsonTypeInfo<T> info = null, bool oauthOnly = false)
         {
             var content = await GetStringAsync(url, oauthOnly);
+
+            if (info != null)
+                return JsonSerializer.Deserialize(content, info);
+
             return JsonSerializer.Deserialize<T>(content);
         }
 
@@ -66,10 +71,14 @@ namespace Carpeddit.Api.Helpers
         /// <typeparam name="T">The type to deserialize to.</typeparam>
         /// <param name="url">The URL of the server.</param>
         /// <returns>The deserialized response.</returns>
-        public static async Task<T> PostDeserializedResponseAsync<T>(string url, IDictionary<string, string> postData, bool oauthOnly = false)
+        public static async Task<T> PostDeserializedResponseAsync<T>(string url, IDictionary<string, string> postData, JsonTypeInfo<T> info = null, bool oauthOnly = false)
         {
             var content = await PostAsync(url, postData, oauthOnly);
             using var stream = await content.ReadAsInputStreamAsync();
+
+            if (info != null)
+                return await JsonSerializer.DeserializeAsync(stream.AsStreamForRead(), info);
+
             return await JsonSerializer.DeserializeAsync<T>(stream.AsStreamForRead());
         }
 
@@ -205,7 +214,7 @@ namespace Carpeddit.Api.Helpers
         public static async Task<IHttpContent> MakePatchRequestAsync(string url, IDictionary<string, string> headers, IDictionary<string, string> patchData)
         {
             var message = MakeMessage(url, HttpMethod.Patch, headers);
-            message.Content = new HttpStringContent(JsonSerializer.Serialize(patchData));
+            message.Content = new HttpStringContent(JsonSerializer.Serialize(patchData, ApiJsonContext.Default.IDictionaryStringString));
 
             var response = await httpClient.SendRequestAsync(message, HttpCompletionOption.ResponseHeadersRead);
 
