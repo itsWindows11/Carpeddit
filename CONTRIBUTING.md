@@ -28,15 +28,15 @@ If you're interested in working on a fix, leave a comment to let everyone know a
 1. Clone the project, this can be done by running `git clone https://github.com/itsWindows11/Carpeddit.git` in your favourite terminal.
 2. Launch `Carpeddit.sln` (the solution file).
 3. Create a reddit API app by [clicking on this link](https://reddit.com/prefs/apps), scrolling down until you find the "Create application" or "Create another application button". Set the name to `Carpeddit`, the redirect URL to `http://127.0.0.1:3000/reddit-callback` and the type to `web app` and click on "create app". Copy the client ID and secret for use in the next step.
-4. Modify the Constants.cs file to include the following:
+4. Modify the ApiConstants.cs file to include the following, and put the client ID and secret in their respective properties:
    ```
-   namespace Carpeddit.App.Other
+   namespace Carpeddit.Common.Constants
    {
-      public static class Constants
+      public static class APIConstants
       {
-          public static string ClientId = "YourClientIdHere";
-          public static string ClientSecret = "YourClientSecretHere";
-          public static string RedirectUri = "http://127.0.0.1:3000/reddit-callback";
+          public const string ClientId = "INSERT_CLIENT_ID";
+          public const string ClientSecret = "INSERT_CLIENT_SECRET";
+          public const string RedirectUri = "https://itswin11.netlify.app/apps/carpeddit/auth";
       }
    }
    ```
